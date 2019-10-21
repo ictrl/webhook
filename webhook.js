@@ -158,14 +158,7 @@ app.post("/", function(request, response) {
   city = request.body.shipping_address.city;
   country = request.body.shipping_address.country;
 
-  message = `Thank you for your purchase! \n
-        Hi ${first_name}, \n we're getting your order ready to be shipped. We will notify you when it has been sent. \n
-        Item: ${product} \n
-        Price: ${total_price} \n
-        Delivery Address: ${address2} ${address1} ${city} ${country} \n
-        Phone No: ${phone} \n
-        Email: ${email} \n
-        `;
+  message = `Thank%20you%20for%20your%20purchase!%20,Hi%20${first_name},%20we're%20getting%20your%20order%20ready%20to%20be%20shipped.%20We%20will%20notify%20you%20when%20it%20has%20been%20sent.%20Item:%20${product}%20%20Price:%20${total_price}%20Delivery%20Address:%20${address2}%20${address1}%20${city}%20${country}%20Phone%20No:%20${phone}%20Email:%20${email}%20`;
 
   var options = {
     method: "GET",
