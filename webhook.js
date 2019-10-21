@@ -158,8 +158,7 @@ app.post("/", function(request, response) {
   city = request.body.shipping_address.city;
   country = request.body.shipping_address.country;
 
-  message = `Thank%20you%20for%20your%20purchase!%20,Hi%20${first_name},%20we're%20getting%20your%20order%20ready%20to%20be%20shipped.%20We%20will%20notify%20you%20when%20it%20has%20been%20sent.%20Item:%20${product}%20%20Price:%20${total_price}%20Delivery%20Address:%20${address2}%20${address1}%20${city}%20${country}%20Phone%20No:%20${phone}%20Email:%20${email}%20`;
-
+  message = "Thanks%20for%20Shopping%20with%20us.";
   var options = {
     method: "GET",
     hostname: "api.msg91.com",
@@ -167,7 +166,8 @@ app.post("/", function(request, response) {
     path: `/api/sendhttp.php?mobiles=${phone}&authkey=300121AUJUTiHZXX25dada6b2&route=4&sender=MOJITO&message=${message}&country=91`,
     headers: {}
   };
-
+  console.log("------>>", phone);
+  console.log("------>>", message);
   var req = http.request(options, function(res) {
     var chunks = [];
 
