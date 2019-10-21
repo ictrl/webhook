@@ -1,4 +1,5 @@
 require("dotenv").config();
+const http = require("https");
 const express = require("express");
 const app = express();
 const crypto = require("crypto");
@@ -165,7 +166,29 @@ app.post("/", function(request, response) {
         Phone No: ${phone} \n
         Email: ${email} \n
         `;
-  console.log(message);
+
+  let options = {
+    method: "POST",
+    hostname: "control.msg91.com",
+    port: null,
+    path: `/api/sendotp.php?country=91&sender=MOJITO&message=${message}&mobile=${phone}&authkey=300121AUJUTiHZXX25dada6b2`,
+    headers: {}
+  };
+
+  var req = http.request(options, function(res) {
+    var chunks = [];
+
+    res.on("data", function(chunk) {
+      chunks.push(chunk);
+    });
+
+    res.on("end", function() {
+      var body = Buffer.concat(chunks);
+      console.log(body.toString());
+    });
+  });
+
+  req.end();
 });
 
 app.listen(process.env.PORT || 3000, () => {
