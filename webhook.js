@@ -167,11 +167,11 @@ app.post("/", function(request, response) {
         Email: ${email} \n
         `;
 
-  let options = {
-    method: "POST",
-    hostname: "control.msg91.com",
+  var options = {
+    method: "GET",
+    hostname: "api.msg91.com",
     port: null,
-    path: `/api/sendotp.php?country=91&sender=MOJITO&message=${message}&mobile=${phone}&authkey=300121AUJUTiHZXX25dada6b2`,
+    path: `/api/sendhttp.php?mobiles=${phone}&authkey=300121AUJUTiHZXX25dada6b2&route=4&sender=MOJITO&message=${message}&country=91`,
     headers: {}
   };
 
