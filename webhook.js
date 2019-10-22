@@ -24,7 +24,7 @@ let address2 = {};
 let city = {};
 let country = {};
 
-const forwardingAddress = "http://157.245.101.109/webhook"; // Replace this with your HTTPS Forwarding address
+const forwardingAddress = "https://immense-bastion-25565.herokuapp.com"; // Replace this with your HTTPS Forwarding address
 
 app.use(bodyParser.json());
 
@@ -123,7 +123,7 @@ app.get("/shopify/callback", (req, res) => {
         const webhookPayload = {
           webhook: {
             topic: "orders/create",
-            address: "http://157.245.101.109/webhook/",
+            address: "https://immense-bastion-25565.herokuapp.com/",
             format: "json"
           }
         };
