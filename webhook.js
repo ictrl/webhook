@@ -24,7 +24,7 @@ let address2 = {};
 let city = {};
 let country = {};
 
-const forwardingAddress = "https://91cfd0e1.ngrok.io"; // Replace this with your HTTPS Forwarding address
+const forwardingAddress = "http://157.245.101.109/webhook"; // Replace this with your HTTPS Forwarding address
 
 app.use(bodyParser.json());
 
@@ -123,7 +123,7 @@ app.get("/shopify/callback", (req, res) => {
         const webhookPayload = {
           webhook: {
             topic: "orders/create",
-            address: "https://91cfd0e1.ngrok.io/",
+            address: "http://157.245.101.109/webhook/",
             format: "json"
           }
         };
