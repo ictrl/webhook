@@ -24,7 +24,7 @@ let address2 = {};
 let city = {};
 let country = {};
 
-const forwardingAddress = "https://calm-hollows-65769.herokuapp.com"; // Replace this with your HTTPS Forwarding address
+const forwardingAddress = "https://91cfd0e1.ngrok.io"; // Replace this with your HTTPS Forwarding address
 
 app.use(bodyParser.json());
 
@@ -123,17 +123,18 @@ app.get("/shopify/callback", (req, res) => {
         const webhookPayload = {
           webhook: {
             topic: "orders/create",
-            address: "https://calm-hollows-65769.herokuapp.com/",
+            address: "https://91cfd0e1.ngrok.io/",
             format: "json"
           }
         };
         request
           .post(webhookUrl, { headers: webhookHeaders, json: webhookPayload })
           .then(shopResponse => {
+            console.log("post webhook called --->133");
             res.send(shopResponse);
           })
           .catch(error => {
-            res.send("131 --> error");
+            res.send("error!!!");
             console.log(error);
           });
       })
@@ -146,19 +147,7 @@ app.get("/shopify/callback", (req, res) => {
   }
 });
 
-app.post("/", function(request, response) {
-  first_name = request.body.shipping_address.first_name;
-  email = request.body.email;
-  total_price = request.body.total_price;
-
-  product = request.body.line_items.title;
-  phone = request.body.shipping_address.phone;
-  address1 = request.body.shipping_address.address1;
-  address2 = request.body.shipping_address.address2;
-  city = request.body.shipping_address.city;
-  country = request.body.shipping_address.country;
-
-  message = "Thanks%20for%20Shopping%20with%20us.";
+const sndSms = (phone, message) => {
   var options = {
     method: "GET",
     hostname: "api.msg91.com",
@@ -166,8 +155,7 @@ app.post("/", function(request, response) {
     path: `/api/sendhttp.php?mobiles=${phone}&authkey=300121AUJUTiHZXX25dada6b2&route=4&sender=MOJITO&message=${message}&country=91`,
     headers: {}
   };
-  console.log("------>>", phone);
-  console.log("------>>", message);
+
   var req = http.request(options, function(res) {
     var chunks = [];
 
@@ -182,8 +170,29 @@ app.post("/", function(request, response) {
   });
 
   req.end();
+};
+
+app.post("/", function(request, response) {
+  // console.log("requset body-->", request.body);
+  response.sendStatus(200);
+  name = request.body.shipping_address.first_name;
+  email = request.body.email;
+  orderId = request.body.name;
+  orderId = orderId.slice(1);
+
+  price = request.body.total_price;
+
+  product = request.body.line_items[0].title;
+  phone = request.body.shipping_address.phone;
+  address1 = request.body.shipping_address.address1;
+  address2 = request.body.shipping_address.address2;
+  city = request.body.shipping_address.city;
+  country = request.body.shipping_address.country;
+
+  message = `MojitoLabs:%20Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+  sndSms(phone, message);
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Example app listening on port 3000!");
+app.listen(process.env.PORT || 4000, () => {
+  console.log("Example app listening on port 4000!");
 });
