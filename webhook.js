@@ -219,17 +219,13 @@ app.post("/", function(request, response) {
 
   message = `MojitoLabs:%20Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
 
-  console.log("phone--->", phone);
-  console.log("phone1--->", phone1);
-  console.log("phone2--->", phone2);
-
-  if (phone) {
-    sndSms(phone, message);
-  } else if (phone1) {
-    sndSms(phone1, message);
-  } else if (phone2) {
-    sndSms(phone2, message);
-  }
+  // if (phone) {
+  //   sndSms(phone, message);
+  // } else if (phone1) {
+  //   sndSms(phone1, message);
+  // } else if (phone2) {
+  //   sndSms(phone2, message);
+  // }
 });
 
 app.listen(process.env.PORT || 4000, () => {
