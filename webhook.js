@@ -18,6 +18,8 @@ let email = {};
 let total_price = {};
 let price = {};
 let phone = {};
+let phone1 = {};
+let phone2 = {};
 let product = {};
 let address1 = {};
 let address2 = {};
@@ -183,7 +185,11 @@ app.post("/", function(request, response) {
   price = request.body.total_price;
 
   product = request.body.line_items[0].title;
+
   phone = request.body.shipping_address.phone;
+  phone1 = request.body.billing_address.phone;
+  phone2 = request.body.customer.phone;
+
   address1 = request.body.shipping_address.address1;
   address2 = request.body.shipping_address.address2;
   city = request.body.shipping_address.city;
@@ -192,7 +198,16 @@ app.post("/", function(request, response) {
   message = `MojitoLabs:%20Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
 
   console.log("phone--->", phone);
-  // sndSms(phone, message);
+  console.log("phone1--->", phone1);
+  console.log("phone2--->", phone2);
+
+  if (phone) {
+    sndSms(phone, message);
+  } else if (phone1) {
+    sndSms(phone1, message);
+  } else if (phone2) {
+    sndSms(phone2, message);
+  }
 });
 
 app.listen(process.env.PORT || 4000, () => {
