@@ -1,6 +1,7 @@
 require("dotenv").config();
 const http = require("https");
 const express = require("express");
+const mongoose = require("mongoose");
 const app = express();
 const crypto = require("crypto");
 const cookie = require("cookie");
@@ -27,6 +28,15 @@ let city = {};
 let country = {};
 
 const forwardingAddress = "https://immense-bastion-25565.herokuapp.com"; // Replace this with your HTTPS Forwarding address
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+
+const shopSchema = new mongoose.Schema({
+  message: String,
+  store: String,
+  phone: Number
+});
+
+const Shop = new mongoose.model("Shop", shopSchema);
 
 app.use(bodyParser.json());
 
@@ -149,7 +159,7 @@ app.get("/shopify/callback", (req, res) => {
   }
 });
 
-const sndSms = (phone, message) => {
+const sndSms = (phone, store, message) => {
   var options = {
     method: "GET",
     hostname: "api.msg91.com",
@@ -169,6 +179,18 @@ const sndSms = (phone, message) => {
       var body = Buffer.concat(chunks);
       console.log(body.toString());
     });
+  });
+
+  const shop = new Shop({
+    message: message,
+    store: store,
+    phone: phone
+  });
+
+  shop.save(function(err) {
+    if (!err) {
+      console.log("saved to DB");
+    }
   });
 
   req.end();
