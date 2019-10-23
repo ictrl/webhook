@@ -221,13 +221,13 @@ app.post("/", function(request, response) {
 
   console.log(title);
   console.log(vendor);
-  // if (phone) {
-  //   sndSms(phone, message);
-  // } else if (phone1) {
-  //   sndSms(phone1, message);
-  // } else if (phone2) {
-  //   sndSms(phone2, message);
-  // }
+  if (phone) {
+    sndSms(phone, vendor, message);
+  } else if (phone1) {
+    sndSms(phone, vendor, message);
+  } else if (phone2) {
+    sndSms(phone, vendor, message);
+  }
 });
 
 app.listen(process.env.PORT || 4000, () => {
