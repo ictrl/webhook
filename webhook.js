@@ -201,14 +201,12 @@ app.post("/", function(request, response) {
   response.sendStatus(200);
   name = request.body.shipping_address.first_name;
   email = request.body.email;
-  vendor = request.body.vendor;
-  title = request.body.title;
+  vendor = request.body.line_items[0].vendor;
+  title = request.body.line_items[0].title;
   orderId = request.body.name;
   orderId = orderId.slice(1);
 
   price = request.body.total_price;
-
-  product = request.body.line_items[0].title;
 
   phone = request.body.shipping_address.phone;
   phone1 = request.body.billing_address.phone;
