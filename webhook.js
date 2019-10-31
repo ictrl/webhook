@@ -88,7 +88,7 @@ app.get("/shopify", (req, res) => {
 
 //callback route -->
 app.get("/shopify/callback", (req, res) => {
-  console.log("callback route call");
+  console.log("callback route call -->");
   let { shop, hmac, code, state } = req.query;
   const stateCookie = cookie.parse(req.headers.cookie).state;
 
@@ -169,16 +169,19 @@ app.get("/shopify/callback", (req, res) => {
         request
           .post(webhookUrl, { headers: webhookHeaders, json: webhookPayload })
           .then(shopResponse => {
-            res.sendFile("index.html");
+            // res.sendFile("index.html");
+            res.send(shopResponse);
             console.log("173-->", shopResponse);
           })
           .catch(error => {
-            res.sendFile("index.html");
+            res.send(error);
+            // res.sendFile("index.html");
             console.log("177-->", error);
           });
       })
       .catch(error => {
-        res.sendFile("index.html");
+        // res.sendFile("index.html");
+        res.send(error);
         console.log("182-->", error);
       });
   } else {
