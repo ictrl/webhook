@@ -86,7 +86,7 @@ app.get("/shopify", (req, res) => {
   }
 });
 
-//callback route
+//callback route -->
 app.get("/shopify/callback", (req, res) => {
   console.log("callback route call");
   let { shop, hmac, code, state } = req.query;
@@ -144,7 +144,6 @@ app.get("/shopify/callback", (req, res) => {
             "orders/cancelled",
             "orders/delete",
             "orders/fulfilled",
-            ,
             "orders/paid",
             "orders/partially_fulfilled"
           ],
@@ -160,7 +159,6 @@ app.get("/shopify/callback", (req, res) => {
               "orders/cancelled",
               "orders/delete",
               "orders/fulfilled",
-              ,
               "orders/paid",
               "orders/partially_fulfilled"
             ],
@@ -172,16 +170,16 @@ app.get("/shopify/callback", (req, res) => {
           .post(webhookUrl, { headers: webhookHeaders, json: webhookPayload })
           .then(shopResponse => {
             res.sendFile("index.html");
-            console.log("175-->", shopResponse);
+            console.log("173-->", shopResponse);
           })
           .catch(error => {
             res.sendFile("index.html");
-            console.log("179-->", error);
+            console.log("177-->", error);
           });
       })
       .catch(error => {
         res.sendFile("index.html");
-        console.log("184-->", error);
+        console.log("182-->", error);
       });
   } else {
     res.status(400).send("Required parameters missing");
