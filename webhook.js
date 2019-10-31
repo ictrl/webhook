@@ -14,12 +14,12 @@ const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = [
   "read_products ",
   "read_customers",
-  "read_orders",
-  "read_inventory",
   "read_fulfillments",
   "read_checkouts",
   "read_analytics",
-  "read_script_tags"
+  "read_orders ",
+  "read_script_tags",
+  "write_script_tags"
 ];
 
 let message = {};
