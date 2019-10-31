@@ -148,7 +148,7 @@ app.get("/shopify/callback", (req, res) => {
 
         const webhookPayload = {
           webhook: {
-            topic: "orders/create,orders/cancelled",
+            topic: "orders/create",
             address: "https://immense-bastion-25565.herokuapp.com/",
             format: "json"
           }
@@ -158,18 +158,38 @@ app.get("/shopify/callback", (req, res) => {
           .then(shopResponse => {
             // res.sendFile("index.html");
             res.send(shopResponse);
-            console.log("173-->", shopResponse);
+            console.log("161-->", shopResponse);
           })
           .catch(error => {
             res.send(error);
             // res.sendFile("index.html");
-            console.log("177-->", error);
+            console.log("166-->", error);
+          });
+
+        const webhookPayload1 = {
+          webhook: {
+            topic: "orders/cancelled",
+            address: "https://immense-bastion-25565.herokuapp.com/",
+            format: "json"
+          }
+        };
+        request
+          .post(webhookUrl, { headers: webhookHeaders, json: webhookPayload1 })
+          .then(shopResponse => {
+            // res.sendFile("index.html");
+            res.send(shopResponse);
+            console.log("181-->", shopResponse);
+          })
+          .catch(error => {
+            res.send(error);
+            // res.sendFile("index.html");
+            console.log("186-->", error);
           });
       })
       .catch(error => {
         // res.sendFile("index.html");
         res.send(error);
-        console.log("182-->", error);
+        console.log("192-->", error);
       });
   } else {
     res.status(400).send("Required parameters missing");
