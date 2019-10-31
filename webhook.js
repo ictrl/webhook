@@ -135,7 +135,7 @@ app.get("/shopify/callback", (req, res) => {
       .post(accessTokenRequestUrl, { json: accessTokenPayload })
       .then(accessTokenResponse => {
         const accessToken = accessTokenResponse.access_token;
-        res.sendFile("index.html");
+        res.sendfile("index.html");
       })
       .catch(error => {
         // res.sendFile("index.html");
