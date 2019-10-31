@@ -139,14 +139,13 @@ app.get("/shopify/callback", (req, res) => {
         const webhookHeaders = {
           "Content-Type": "application/json",
           "X-Shopify-Access-Token": accessToken,
-          "X-Shopify-Topic": 
+          "X-Shopify-Topic":
             // "orders/create",
             "orders/cancelled",
-            // "orders/delete",
-            // "orders/fulfilled",
-            // "orders/paid",
-            // "orders/partially_fulfilled"
-          ,
+          // "orders/delete",
+          // "orders/fulfilled",
+          // "orders/paid",
+          // "orders/partially_fulfilled"
           "X-Shopify-Hmac-Sha256": hmac,
           "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
           "X-Shopify-API-Version": "2019-07"
@@ -156,7 +155,7 @@ app.get("/shopify/callback", (req, res) => {
           webhook: {
             topic: [
               // "orders/create",
-              "orders/cancelled",
+              "orders/cancelled"
               // "orders/delete",
               // "orders/fulfilled",
               // "orders/paid",
