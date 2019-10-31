@@ -153,14 +153,13 @@ app.get("/shopify/callback", (req, res) => {
 
         const webhookPayload = {
           webhook: {
-            topic: [
+            topic:
               // "orders/create",
-              "orders/cancelled"
-              // "orders/delete",
-              // "orders/fulfilled",
-              // "orders/paid",
-              // "orders/partially_fulfilled"
-            ],
+              "orders/cancelled",
+            // "orders/delete",
+            // "orders/fulfilled",
+            // "orders/paid",
+            // "orders/partially_fulfilled"
             address: "https://immense-bastion-25565.herokuapp.com/",
             format: "json"
           }
