@@ -123,6 +123,7 @@ app.get("/shopify/callback", (req, res) => {
     }
 
     // DONE: Exchange temporary code for a permanent access token
+
     const accessTokenRequestUrl =
       "https://" + shop + "/admin/oauth/access_token";
     const accessTokenPayload = {
@@ -139,13 +140,7 @@ app.get("/shopify/callback", (req, res) => {
         const webhookHeaders = {
           "Content-Type": "application/json",
           "X-Shopify-Access-Token": accessToken,
-          "X-Shopify-Topic":
-            // "orders/create",
-            "orders/cancelled",
-          // "orders/delete",
-          // "orders/fulfilled",
-          // "orders/paid",
-          // "orders/partially_fulfilled"
+          "X-Shopify-Topic": ["orders/create", "orders/cancelled"],
           "X-Shopify-Hmac-Sha256": hmac,
           "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
           "X-Shopify-API-Version": "2019-07"
