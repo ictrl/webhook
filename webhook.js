@@ -140,7 +140,15 @@ app.get("/shopify/callback", (req, res) => {
         const webhookHeaders = {
           "Content-Type": "application/json",
           "X-Shopify-Access-Token": accessToken,
-          "X-Shopify-Topic": ["orders/create", "orders/cancelled"],
+          "X-Shopify-Topic": "orders/create",
+          "X-Shopify-Hmac-Sha256": hmac,
+          "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
+          "X-Shopify-API-Version": "2019-07"
+        };
+        const webhookHeaders1 = {
+          "Content-Type": "application/json",
+          "X-Shopify-Access-Token": accessToken,
+          "X-Shopify-Topic": "orders/cancelled",
           "X-Shopify-Hmac-Sha256": hmac,
           "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
           "X-Shopify-API-Version": "2019-07"
@@ -174,7 +182,7 @@ app.get("/shopify/callback", (req, res) => {
           }
         };
         request
-          .post(webhookUrl, { headers: webhookHeaders, json: webhookPayload1 })
+          .post(webhookUrl, { headers: webhookHeaders1, json: webhookPayload1 })
           .then(shopResponse => {
             // res.sendFile("index.html");
             res.send(shopResponse);
