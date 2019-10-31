@@ -222,7 +222,7 @@ app.post("/myaction", function(req, res) {
 });
 
 app.get("/", function(req, res) {
-  res.sendFile("index.html");
+  res.sendFile("index.html", { root: __dirname });
 });
 
 app.listen(process.env.PORT || 4000, () => {
