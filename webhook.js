@@ -11,7 +11,16 @@ const request = require("request-promise");
 const bodyParser = require("body-parser");
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
-const scopes = ["read_orders"];
+const scopes = [
+  "read_products ",
+  "Cread_customers",
+  "Cread_fulfillments",
+  "Cread_checkouts",
+  "Cread_analytics",
+  "Cread_orders ",
+  "Cread_script_tags",
+  "Cwrite_script_tags"
+];
 
 let message = {};
 let first_name = {};
@@ -28,7 +37,10 @@ let city = {};
 let country = {};
 
 const forwardingAddress = "https://immense-bastion-25565.herokuapp.com"; // Replace this with your HTTPS Forwarding address
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 const shopSchema = new mongoose.Schema({
   message: String,
@@ -39,6 +51,8 @@ const shopSchema = new mongoose.Schema({
 const Shop = new mongoose.model("Shop", shopSchema);
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 // install route
 
@@ -159,6 +173,7 @@ app.get("/shopify/callback", (req, res) => {
   }
 });
 
+// send sms
 const sndSms = (phone, store, message) => {
   var options = {
     method: "GET",
@@ -219,15 +234,21 @@ app.post("/", function(request, response) {
 
   message = `MojitoLabs:%20Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
 
-  console.log(title);
-  console.log(vendor);
-  if (phone) {
-    sndSms(phone, vendor, message);
-  } else if (phone1) {
-    sndSms(phone, vendor, message);
-  } else if (phone2) {
-    sndSms(phone, vendor, message);
-  }
+  // if (phone) {
+  //   sndSms(phone, vendor, message);
+  // } else if (phone1) {
+  //   sndSms(phone, vendor, message);
+  // } else if (phone2) {
+  //   sndSms(phone, vendor, message);
+  // }
+});
+
+app.post("/myaction", function(req, res) {
+  console.log("req.body---->", req.body);
+});
+
+app.get("/", function(req, res) {
+  res.sendFile("index.html");
 });
 
 app.listen(process.env.PORT || 4000, () => {
