@@ -13,12 +13,12 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = [
   "read_products ",
-  "Cread_customers",
-  "Cread_fulfillments",
-  "Cread_checkouts",
-  "Cread_analytics",
-  "Cread_orders ",
-  "Cread_script_tags",
+  "Create_customers",
+  "Create_fulfillments",
+  "Create_checkouts",
+  "Create_analytics",
+  "Create_orders ",
+  "Create_script_tags",
   "Cwrite_script_tags"
 ];
 
