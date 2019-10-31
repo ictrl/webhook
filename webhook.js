@@ -135,73 +135,7 @@ app.get("/shopify/callback", (req, res) => {
       .post(accessTokenRequestUrl, { json: accessTokenPayload })
       .then(accessTokenResponse => {
         const accessToken = accessTokenResponse.access_token;
-
-        //////////////
-        const webhookUrl =
-          "https://" + shop + "/admin/api/2019-07/webhooks.json";
-        const webhookHeaders = {
-          "Content-Type": "application/json",
-          "X-Shopify-Access-Token": accessToken,
-          "X-Shopify-Topic": "orders/create",
-          "X-Shopify-Hmac-Sha256": hmac,
-          "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
-          "X-Shopify-API-Version": "2019-07"
-        };
-
-        const webhookPayload = {
-          webhook: {
-            topic: "orders/create",
-            address: "https://immense-bastion-25565.herokuapp.com/",
-            format: "json"
-          }
-        };
-        request
-          .post(webhookUrl, { headers: webhookHeaders, json: webhookPayload })
-          .then(shopResponse => {
-            // res.sendFile("index.html");
-            res.send(shopResponse);
-            console.log("173-->", shopResponse);
-            //////////////
-            const webhookUrl1 =
-              "https://" + shop + "/admin/api/2019-07/webhooks.json";
-            const webhookHeaders1 = {
-              "Content-Type": "application/json",
-              "X-Shopify-Access-Token": accessToken,
-              "X-Shopify-Topic": "orders/cancelled",
-              "X-Shopify-Hmac-Sha256": hmac,
-              "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
-              "X-Shopify-API-Version": "2019-07"
-            };
-
-            const webhookPayload1 = {
-              webhook: {
-                topic: "orders/cancelled",
-                address: "https://immense-bastion-25565.herokuapp.com/",
-                format: "json"
-              }
-            };
-            request
-              .post(webhookUrl1, {
-                headers: webhookHeaders1,
-                json: webhookPayload1
-              })
-              .then(shopResponse => {
-                // res.sendFile("index.html");
-                res.send(shopResponse);
-                console.log("second-->", shopResponse);
-              })
-              .catch(error => {
-                res.send(error);
-                // res.sendFile("index.html");
-                console.log("177-->", error);
-              });
-            //////////////
-          })
-          .catch(error => {
-            res.send(error);
-            // res.sendFile("index.html");
-            console.log("177-->", error);
-          });
+        res.sendFile("index.html");
       })
       .catch(error => {
         // res.sendFile("index.html");
