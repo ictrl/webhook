@@ -57,7 +57,7 @@ app.use(express.static("public"));
 // install route
 
 app.get("/shopify", (req, res) => {
-  console.log("install route call");
+  console.log("install route call-->");
   const shop = req.query.shop;
   if (shop) {
     const state = nonce();
@@ -139,14 +139,14 @@ app.get("/shopify/callback", (req, res) => {
         const webhookHeaders = {
           "Content-Type": "application/json",
           "X-Shopify-Access-Token": accessToken,
-          "X-Shopify-Topic": [
-            "orders/create",
+          "X-Shopify-Topic": 
+            // "orders/create",
             "orders/cancelled",
-            "orders/delete",
-            "orders/fulfilled",
-            "orders/paid",
-            "orders/partially_fulfilled"
-          ],
+            // "orders/delete",
+            // "orders/fulfilled",
+            // "orders/paid",
+            // "orders/partially_fulfilled"
+          ,
           "X-Shopify-Hmac-Sha256": hmac,
           "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
           "X-Shopify-API-Version": "2019-07"
@@ -155,12 +155,12 @@ app.get("/shopify/callback", (req, res) => {
         const webhookPayload = {
           webhook: {
             topic: [
-              "orders/create",
+              // "orders/create",
               "orders/cancelled",
-              "orders/delete",
-              "orders/fulfilled",
-              "orders/paid",
-              "orders/partially_fulfilled"
+              // "orders/delete",
+              // "orders/fulfilled",
+              // "orders/paid",
+              // "orders/partially_fulfilled"
             ],
             address: "https://immense-bastion-25565.herokuapp.com/",
             format: "json"
