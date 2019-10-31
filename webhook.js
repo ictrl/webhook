@@ -130,7 +130,6 @@ app.get("/shopify/callback", (req, res) => {
       client_secret: apiSecret,
       code
     };
-
     request
       .post(accessTokenRequestUrl, { json: accessTokenPayload })
       .then(accessTokenResponse => {
@@ -140,7 +139,15 @@ app.get("/shopify/callback", (req, res) => {
         const webhookHeaders = {
           "Content-Type": "application/json",
           "X-Shopify-Access-Token": accessToken,
-          "X-Shopify-Topic": "orders/create",
+          "X-Shopify-Topic": [
+            "orders/create",
+            "orders/cancelled",
+            "orders/delete",
+            "orders/fulfilled",
+            ,
+            "orders/paid",
+            "orders/partially_fulfilled"
+          ],
           "X-Shopify-Hmac-Sha256": hmac,
           "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
           "X-Shopify-API-Version": "2019-07"
@@ -148,7 +155,15 @@ app.get("/shopify/callback", (req, res) => {
 
         const webhookPayload = {
           webhook: {
-            topic: "orders/create",
+            topic: [
+              "orders/create",
+              "orders/cancelled",
+              "orders/delete",
+              "orders/fulfilled",
+              ,
+              "orders/paid",
+              "orders/partially_fulfilled"
+            ],
             address: "https://immense-bastion-25565.herokuapp.com/",
             format: "json"
           }
@@ -156,17 +171,17 @@ app.get("/shopify/callback", (req, res) => {
         request
           .post(webhookUrl, { headers: webhookHeaders, json: webhookPayload })
           .then(shopResponse => {
-            console.log("post webhook called --->133");
-            res.send(shopResponse);
+            res.sendFile("index.html");
+            console.log("175-->", shopResponse);
           })
           .catch(error => {
-            res.send("error!!!");
-            console.log(error);
+            res.sendFile("index.html");
+            console.log("179-->", error);
           });
       })
       .catch(error => {
-        res.send(" 137 --> error");
-        console.log(error);
+        res.sendFile("index.html");
+        console.log("184-->", error);
       });
   } else {
     res.status(400).send("Required parameters missing");
