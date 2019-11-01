@@ -202,7 +202,7 @@ const sndSms = (phone, store, message) => {
 };
 
 app.post("/:Gshop", function(request, response) {
-  const requestedShop = req.params.postId;
+  const requestedShop = request.params.postId;
 
   console.log("request body-->", request.body);
   console.log("shop name body-->", requestedShop);
