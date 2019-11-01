@@ -22,6 +22,10 @@ const scopes = [
   "write_script_tags"
 ];
 
+let Gshop = "";
+let Ghmac = "";
+let GaccessToken = "";
+
 let message = {};
 let first_name = {};
 let email = {};
@@ -90,6 +94,8 @@ app.get("/shopify", (req, res) => {
 app.get("/shopify/callback", (req, res) => {
   console.log("callback route call -->");
   let { shop, hmac, code, state } = req.query;
+  Gshop = shop;
+  Ghmac = hmac;
   const stateCookie = cookie.parse(req.headers.cookie).state;
 
   if (state !== stateCookie) {
@@ -135,6 +141,7 @@ app.get("/shopify/callback", (req, res) => {
       .post(accessTokenRequestUrl, { json: accessTokenPayload })
       .then(accessTokenResponse => {
         const accessToken = accessTokenResponse.access_token;
+        GaccessToken = accessToken;
         res.sendFile("index.html", { root: __dirname });
       })
       .catch(error => {
@@ -219,12 +226,12 @@ app.post("/", function(request, response) {
 
 app.post("/myaction", function(req, res) {
   console.log("req.body---->", req.body);
-  const webhookUrl = "https://" + shop + "/admin/api/2019-07/webhooks.json";
+  const webhookUrl = "https://" + Gshop + "/admin/api/2019-07/webhooks.json";
   const webhookHeaders = {
     "Content-Type": "application/json",
-    "X-Shopify-Access-Token": accessToken,
+    "X-Shopify-Access-Token": GaccessToken,
     "X-Shopify-Topic": "orders/create",
-    "X-Shopify-Hmac-Sha256": hmac,
+    "X-Shopify-Hmac-Sha256": Ghmac,
     "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
     "X-Shopify-API-Version": "2019-07"
   };
