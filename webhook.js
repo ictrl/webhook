@@ -24,7 +24,7 @@ const scopes = [
 
 let Gshop = "";
 let Ghmac = "";
-let GaccessToken = "";
+let accessToken = "";
 
 let message = {};
 let first_name = {};
@@ -140,8 +140,8 @@ app.get("/shopify/callback", (req, res) => {
     request
       .post(accessTokenRequestUrl, { json: accessTokenPayload })
       .then(accessTokenResponse => {
-        const accessToken = accessTokenResponse.access_token;
-        GaccessToken = accessToken;
+        accessToken = accessTokenResponse.access_token;
+
         res.sendFile("index.html", { root: __dirname });
       })
       .catch(error => {
@@ -224,40 +224,51 @@ app.post("/", function(request, response) {
   // }
 });
 
-app.post("/myaction", function(req, res) {
-  console.log("req.body---->", req.body);
-  const webhookUrl = "https://" + Gshop + "/admin/api/2019-07/webhooks.json";
-  const webhookHeaders = {
-    "Content-Type": "application/json",
-    "X-Shopify-Access-Token": GaccessToken,
-    "X-Shopify-Topic": "orders/create",
-    "X-Shopify-Hmac-Sha256": Ghmac,
-    "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
-    "X-Shopify-API-Version": "2019-07"
-  };
+const makeWebook = topic => {
+  console.log(topic);
+  // const webhookUrl = "https://" + Gshop + "/admin/api/2019-07/webhooks.json";
+  // const webhookHeaders = {
+  //   "Content-Type": "application/json",
+  //   "X-Shopify-Access-Token": accessToken,
+  //   "X-Shopify-Topic": topic,
+  //   "X-Shopify-Hmac-Sha256": Ghmac,
+  //   "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
+  //   "X-Shopify-API-Version": "2019-07"
+  // };
 
-  const webhookPayload = {
-    webhook: {
-      topic: "orders/create",
-      address: "https://immense-bastion-25565.herokuapp.com/",
-      format: "json"
-    }
-  };
-  request
-    .post(webhookUrl, {
-      headers: webhookHeaders,
-      json: webhookPayload
-    })
-    .then(shopResponse => {
-      // res.sendFile("index.html");
-      res.send(shopResponse);
-      console.log("173-->", shopResponse);
-    })
-    .catch(error => {
-      res.send(error);
-      // res.sendFile("index.html");
-      console.log("177-->", error);
-    });
+  // const webhookPayload = {
+  //   webhook: {
+  //     topic: topic,
+  //     address: "https://immense-bastion-25565.herokuapp.com/",
+  //     format: "json"
+  //   }
+  // };
+  // request
+  //   .post(webhookUrl, {
+  //     headers: webhookHeaders,
+  //     json: webhookPayload
+  //   })
+  //   .then(shopResponse => {
+  //     // res.sendFile("index.html");
+  //     res.send(shopResponse);
+  //     console.log("173-->", shopResponse);
+  //   })
+  //   .catch(error => {
+  //     res.send(error);
+  //     // res.sendFile("index.html");
+  //     console.log("177-->", error);
+  //   });
+};
+
+app.post("/myaction", function(req, res) {
+  var json_data = req.body;
+  var topics = [];
+
+  for (var i in json_data) result.push(i, json_data[i]);
+
+  topics.forEach(topic => {
+    makeWebook(topic);
+  });
 });
 
 app.get("/", function(req, res) {
