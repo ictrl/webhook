@@ -225,7 +225,7 @@ app.post("/", function(request, response) {
 });
 
 const makeWebook = topic => {
-  console.log(topic);
+  console.log("makeWebook function call-->", topic);
   const webhookUrl = "https://" + Gshop + "/admin/api/2019-07/webhooks.json";
   const webhookHeaders = {
     "Content-Type": "application/json",
@@ -249,20 +249,16 @@ const makeWebook = topic => {
       json: webhookPayload
     })
     .then(shopResponse => {
-      // res.sendFile("index.html");
-      // res.send(shopResponse);
       console.log("showResponse-->", shopResponse);
     })
     .catch(error => {
-      // res.send(error);
-      // res.sendFile("index.html");
-      console.log("catch-->", error);
+      console.log("error-->", error);
     });
 };
 
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
-  var topics = ["orders/cancelled", "orders/create"];
+  var topics = ["orders/create", "orders/cancelled"];
 
   // for (var i in json_data) {
   //   var n = i.indexOf(" ");
@@ -272,6 +268,7 @@ app.post("/myaction", function(req, res) {
   topics.splice(0, 1);
   topics.forEach(topic => {
     makeWebook(topic);
+    console.log("forEach Topic call-->", topic);
   });
 });
 
