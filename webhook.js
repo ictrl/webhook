@@ -260,14 +260,14 @@ app.post("/myaction", function(req, res) {
   var json_data = req.body;
   var topics = ["orders/create", "orders/cancelled"];
 
-  // for (var i in json_data) {
-  //   var n = i.indexOf(" ");
-  //   var res = i.substring(n + 1, -1);
-  //   topics.push(res);
-  // }
-  // topics.splice(0, 1);
+  for (var i in json_data) {
+    var n = i.indexOf(" ");
+    var res = i.substring(n + 1, -1);
+    topics.push(res);
+  }
+  topics.splice(2, 1);
   topics.forEach(topic => {
-    makeWebook(topic);
+    // makeWebook(topic);
     console.log("forEach Topic call-->", topic);
   });
 });
