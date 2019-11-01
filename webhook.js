@@ -201,13 +201,17 @@ const sndSms = (phone, store, message) => {
   req.end();
 };
 
-app.post("/store/:Gshop", function(request, response) {
-  const requestedShop = request.params.Gshop;
+app.post("/store/:Gshop/:topic", function(request, response) {
+  const shop = request.params.Gshop;
+  const topic = request.params.topic;
 
-  console.log("request body-->", request.body);
-  console.log("shop name body-->", requestedShop);
+  console.log("shop name -->", shop);
+  console.log("shop topic-->", topic);
 
   response.sendStatus(200);
+
+  //jesa topic aaya use hisab se switch case me jayega
+
   // name = request.body.shipping_address.first_name;
   // email = request.body.email;
   // vendor = request.body.line_items[0].vendor;
@@ -251,7 +255,7 @@ const makeWebook = topic => {
   const webhookPayload = {
     webhook: {
       topic: topic,
-      address: `https://immense-bastion-25565.herokuapp.com/store/${Gshop}`,
+      address: `https://immense-bastion-25565.herokuapp.com/store/${Gshop}/${topic}`,
       format: "json"
     }
   };

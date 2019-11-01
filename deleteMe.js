@@ -21,5 +21,5 @@ const json = {
 };
 
 for (x in json) {
-  console.log(x); 
+  console.log(x);
 }
