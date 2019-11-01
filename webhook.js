@@ -192,8 +192,10 @@ const sndSms = (phone, store, message) => {
   req.end();
 };
 
-app.post("/", function(request, response) {
-  console.log("requset body-->", request.body);
+app.post("/:Gshop", function(request, response) {
+  const shopName = request.params.Gshop;
+  console.log("shopName-->", shopName);
+  console.log("request body-->", request.body);
   response.sendStatus(200);
   name = request.body.shipping_address.first_name;
   email = request.body.email;
@@ -239,7 +241,7 @@ const makeWebook = topic => {
   const webhookPayload = {
     webhook: {
       topic: topic,
-      address: "https://immense-bastion-25565.herokuapp.com/",
+      address: `https://immense-bastion-25565.herokuapp.com/${Gshop}`,
       format: "json"
     }
   };
