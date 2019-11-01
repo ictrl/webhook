@@ -136,6 +136,39 @@ app.get("/shopify/callback", (req, res) => {
       .then(accessTokenResponse => {
         const accessToken = accessTokenResponse.access_token;
         res.sendFile("index.html", { root: __dirname });
+        const webhookUrl =
+          "https://" + shop + "/admin/api/2019-07/webhooks.json";
+        const webhookHeaders = {
+          "Content-Type": "application/json",
+          "X-Shopify-Access-Token": accessToken,
+          "X-Shopify-Topic": "orders/create",
+          "X-Shopify-Hmac-Sha256": hmac,
+          "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
+          "X-Shopify-API-Version": "2019-07"
+        };
+
+        const webhookPayload = {
+          webhook: {
+            topic: "orders/create",
+            address: "https://immense-bastion-25565.herokuapp.com/",
+            format: "json"
+          }
+        };
+        request
+          .post(webhookUrl, {
+            headers: webhookHeaders,
+            json: webhookPayload
+          })
+          .then(shopResponse => {
+            // res.sendFile("index.html");
+            res.send(shopResponse);
+            console.log("173-->", shopResponse);
+          })
+          .catch(error => {
+            res.send(error);
+            // res.sendFile("index.html");
+            console.log("177-->", error);
+          });
       })
       .catch(error => {
         // res.sendFile("index.html");
@@ -222,7 +255,7 @@ app.post("/myaction", function(req, res) {
 });
 
 app.get("/", function(req, res) {
-  res.sendFile("index.html", { root: __dirname });
+  // res.sendFile("index.html", { root: __dirname });
 });
 
 app.listen(process.env.PORT || 4000, () => {
