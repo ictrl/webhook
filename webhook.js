@@ -271,8 +271,8 @@ const makeWebook = topic => {
 
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
-  const admin = json["admin no"];
-  const senderID = json["sender id"];
+  const admin = json_data["admin no"];
+  const senderID = json_data["sender id"];
   var topics = [];
   //convet JSON to array
   for (var i in json_data) {
