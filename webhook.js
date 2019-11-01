@@ -264,7 +264,7 @@ app.post("/myaction", function(req, res) {
   var json_data = req.body;
   var topics = [];
 
-  for (var i in json_data) result.push(i, json_data[i]);
+  for (var i in json_data) topics.push(i, json_data[i]);
 
   topics.forEach(topic => {
     makeWebook(topic);
