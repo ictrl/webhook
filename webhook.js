@@ -250,25 +250,25 @@ const makeWebook = topic => {
     })
     .then(shopResponse => {
       // res.sendFile("index.html");
-      res.send(shopResponse);
-      console.log("173-->", shopResponse);
+      // res.send(shopResponse);
+      console.log("showResponse-->", shopResponse);
     })
     .catch(error => {
-      res.send(error);
+      // res.send(error);
       // res.sendFile("index.html");
-      console.log("177-->", error);
+      console.log("catch-->", error);
     });
 };
 
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
-  var topics = [];
+  var topics = ["orders/cancelled", "orders/create"];
 
-  for (var i in json_data) {
-    var n = i.indexOf(" ");
-    var res = i.substring(n + 1, -1);
-    topics.push(res);
-  }
+  // for (var i in json_data) {
+  //   var n = i.indexOf(" ");
+  //   var res = i.substring(n + 1, -1);
+  //   topics.push(res);
+  // }
   topics.splice(0, 1);
   topics.forEach(topic => {
     makeWebook(topic);
