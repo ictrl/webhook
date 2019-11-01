@@ -238,7 +238,6 @@ app.post("/store/:Gshop", function(request, response) {
 });
 
 const makeWebook = topic => {
-  console.log("makeWebook function call topic-->", topic);
   const webhookUrl = "https://" + Gshop + "/admin/api/2019-07/webhooks.json";
   const webhookHeaders = {
     "Content-Type": "application/json",
