@@ -258,17 +258,31 @@ const makeWebook = topic => {
 
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
-  var topics = ["orders/create", "orders/cancelled"];
+  var topics = [];
 
   for (var i in json_data) {
     var n = i.indexOf(" ");
     var res = i.substring(n + 1, -1);
     topics.push(res);
   }
+
   topics.splice(2, 1);
+
+  const set1 = new Set(topics);
+
+  let www = [...set1];
+
+  function removeElement(array, elem) {
+    var index = array.indexOf(elem);
+    if (index > -1) {
+      array.splice(index, 1);
+    }
+  }
+
+  removeElement(www, "sender");
+
   topics.forEach(topic => {
-    // makeWebook(topic);
-    console.log("forEach Topic call-->", topic);
+    makeWebook(topic);
   });
 });
 
