@@ -208,25 +208,25 @@ app.post("/:Gshop", function(request, response) {
   console.log("shop name body-->", requestedShop);
 
   response.sendStatus(200);
-  name = request.body.shipping_address.first_name;
-  email = request.body.email;
-  vendor = request.body.line_items[0].vendor;
-  title = request.body.line_items[0].title;
-  orderId = request.body.name;
-  orderId = orderId.slice(1);
+  // name = request.body.shipping_address.first_name;
+  // email = request.body.email;
+  // vendor = request.body.line_items[0].vendor;
+  // title = request.body.line_items[0].title;
+  // orderId = request.body.name;
+  // orderId = orderId.slice(1);
 
-  price = request.body.total_price;
+  // price = request.body.total_price;
 
-  phone = request.body.shipping_address.phone;
-  phone1 = request.body.billing_address.phone;
-  phone2 = request.body.customer.phone;
+  // phone = request.body.shipping_address.phone;
+  // phone1 = request.body.billing_address.phone;
+  // phone2 = request.body.customer.phone;
 
-  address1 = request.body.shipping_address.address1;
-  address2 = request.body.shipping_address.address2;
-  city = request.body.shipping_address.city;
-  country = request.body.shipping_address.country;
+  // address1 = request.body.shipping_address.address1;
+  // address2 = request.body.shipping_address.address2;
+  // city = request.body.shipping_address.city;
+  // country = request.body.shipping_address.country;
 
-  message = `MojitoLabs:%20Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+  // message = `MojitoLabs:%20Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
 
   // if (phone) {
   //   sndSms(phone, vendor, message);
