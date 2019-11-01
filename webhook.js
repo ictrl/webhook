@@ -259,19 +259,22 @@ const makeWebook = topic => {
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
   var topics = [];
-
+  //convet JSON to array
   for (var i in json_data) {
     var n = i.indexOf(" ");
     var res = i.substring(n + 1, -1);
     topics.push(res);
   }
+  //remove "admin"
+  topics.splice(0, 1);
 
-  topics.splice(2, 1);
-
+  //remove dublicate element
   const set1 = new Set(topics);
 
+  //convert to array
   let www = [...set1];
 
+  //remove "submit"
   function removeElement(array, elem) {
     var index = array.indexOf(elem);
     if (index > -1) {
@@ -279,11 +282,10 @@ app.post("/myaction", function(req, res) {
     }
   }
 
-  removeElement(www, "sender");
+  removeElement(www, "sender ");
 
   www.forEach(topic => {
     makeWebook(topic);
-    console.log("foreact topic-->", topic);
   });
 });
 
