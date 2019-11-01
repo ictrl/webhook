@@ -201,12 +201,14 @@ const sndSms = (phone, store, message) => {
   req.end();
 };
 
-app.post("/store/:Gshop/:topic", function(request, response) {
+app.post("/store/:Gshop/:topic/:subject", function(request, response) {
   const shop = request.params.Gshop;
   const topic = request.params.topic;
+  const subject = request.params.subject;
 
   console.log("shop name -->", shop);
   console.log("shop topic-->", topic);
+  console.log("shop subject-->", subject);
 
   response.sendStatus(200);
 
