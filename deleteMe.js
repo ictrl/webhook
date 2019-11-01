@@ -1,5 +1,4 @@
 var topics = [
-  "orders/cancelled",
   "orders/create",
   "orders/create",
   "orders/cancelled",

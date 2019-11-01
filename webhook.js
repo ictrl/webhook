@@ -226,34 +226,34 @@ app.post("/", function(request, response) {
 
 const makeWebook = topic => {
   console.log("makeWebook function call topic-->", topic);
-  // const webhookUrl = "https://" + Gshop + "/admin/api/2019-07/webhooks.json";
-  // const webhookHeaders = {
-  //   "Content-Type": "application/json",
-  //   "X-Shopify-Access-Token": accessToken,
-  //   "X-Shopify-Topic": topic,
-  //   "X-Shopify-Hmac-Sha256": Ghmac,
-  //   "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
-  //   "X-Shopify-API-Version": "2019-07"
-  // };
+  const webhookUrl = "https://" + Gshop + "/admin/api/2019-07/webhooks.json";
+  const webhookHeaders = {
+    "Content-Type": "application/json",
+    "X-Shopify-Access-Token": accessToken,
+    "X-Shopify-Topic": topic,
+    "X-Shopify-Hmac-Sha256": Ghmac,
+    "X-Shopify-Shop-Domain": "mojitostore.myshopify.com",
+    "X-Shopify-API-Version": "2019-07"
+  };
 
-  // const webhookPayload = {
-  //   webhook: {
-  //     topic: topic,
-  //     address: "https://immense-bastion-25565.herokuapp.com/",
-  //     format: "json"
-  //   }
-  // };
-  // request
-  //   .post(webhookUrl, {
-  //     headers: webhookHeaders,
-  //     json: webhookPayload
-  //   })
-  //   .then(shopResponse => {
-  //     console.log("showResponse-->", shopResponse);
-  //   })
-  //   .catch(error => {
-  //     console.log("error-->", error);
-  //   });
+  const webhookPayload = {
+    webhook: {
+      topic: topic,
+      address: "https://immense-bastion-25565.herokuapp.com/",
+      format: "json"
+    }
+  };
+  request
+    .post(webhookUrl, {
+      headers: webhookHeaders,
+      json: webhookPayload
+    })
+    .then(shopResponse => {
+      console.log("showResponse-->", shopResponse);
+    })
+    .catch(error => {
+      console.log("error-->", error);
+    });
 };
 
 app.post("/myaction", function(req, res) {
@@ -281,8 +281,9 @@ app.post("/myaction", function(req, res) {
 
   removeElement(www, "sender");
 
-  topics.forEach(topic => {
+  www.forEach(topic => {
     makeWebook(topic);
+    console.log("foreact topic-->", topic);
   });
 });
 
