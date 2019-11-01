@@ -9,3 +9,17 @@ app.get("/posts/:postId", function(req, res) {
     });
   });
 });
+
+var cc;
+
+const json = {
+  "admin no": "1234567890",
+  "orders/create customer": "on",
+  "refunds/create customer": "on",
+  "refunds/create admin": "on",
+  "sender id": "1234MS"
+};
+
+for (x in json) {
+  console.log(x); 
+}

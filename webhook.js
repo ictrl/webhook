@@ -54,6 +54,15 @@ const shopSchema = new mongoose.Schema({
 
 const Shop = new mongoose.model("Shop", shopSchema);
 
+const storeSchema = new mongoose.Schema({
+  name: String,
+  admin: Number,
+  senderID: String,
+  response_data: JSON
+});
+
+const Store = new mongoose.model("Store", storeSchema);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -192,8 +201,12 @@ const sndSms = (phone, store, message) => {
   req.end();
 };
 
-app.post("/", function(request, response) {
+app.post("/:Gshop", function(request, response) {
+  const requestedShop = req.params.postId;
+
   console.log("request body-->", request.body);
+  console.log("shop name body-->", requestedShop);
+
   response.sendStatus(200);
   name = request.body.shipping_address.first_name;
   email = request.body.email;
@@ -239,7 +252,7 @@ const makeWebook = topic => {
   const webhookPayload = {
     webhook: {
       topic: topic,
-      address: "https://immense-bastion-25565.herokuapp.com/",
+      address: `https://immense-bastion-25565.herokuapp.com/${Gshop}`,
       format: "json"
     }
   };
@@ -258,6 +271,8 @@ const makeWebook = topic => {
 
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
+  const admin = json["admin no"];
+  const senderID = json["sender id"];
   var topics = [];
   //convet JSON to array
   for (var i in json_data) {
@@ -292,6 +307,18 @@ app.post("/myaction", function(req, res) {
   }
 
   removeElement(www, "sender");
+
+  const store = new Store({
+    name: Gshop,
+    admin: admin,
+    senderID: senderID,
+    response_data: json_data
+  });
+  store.save(function(err) {
+    if (!err) {
+      console.log("saved to DB");
+    }
+  });
 
   www.forEach(topic => {
     makeWebook(topic);
