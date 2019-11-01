@@ -265,7 +265,7 @@ app.post("/myaction", function(req, res) {
   //   var res = i.substring(n + 1, -1);
   //   topics.push(res);
   // }
-  topics.splice(0, 1);
+  // topics.splice(0, 1);
   topics.forEach(topic => {
     makeWebook(topic);
     console.log("forEach Topic call-->", topic);
