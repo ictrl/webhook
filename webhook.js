@@ -274,6 +274,15 @@ app.post("/myaction", function(req, res) {
   //convert to array
   let www = [...set1];
 
+  function trimArray(arr) {
+    for (i = 0; i < arr.length; i++) {
+      arr[i] = arr[i].replace(/^\s\s*/, "").replace(/\s\s*$/, "");
+    }
+    return arr;
+  }
+
+  www = trimArray(www);
+
   //remove "submit"
   function removeElement(array, elem) {
     var index = array.indexOf(elem);
@@ -282,7 +291,7 @@ app.post("/myaction", function(req, res) {
     }
   }
 
-  removeElement(www, "sender ");
+  removeElement(www, "sender");
 
   www.forEach(topic => {
     makeWebook(topic);
