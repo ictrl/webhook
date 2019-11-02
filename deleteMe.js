@@ -1,25 +1,9 @@
-app.get("/posts/:postId", function(req, res) {
-  const requestedId = req.params.postId;
-  //  requestedId = requestedId.trim();
+Store.findOne({ name: name }, function(err, item) {
+  if (!err) {
+    cc = item;
 
-  Post.findOne({ _id: requestedId }, function(err, item) {
-    res.render("post", {
-      title: item.title,
-      content: item.content
-    });
-  });
+    console.log(JSON.parse(cc.response_data["admin no"]));
+    console.log(cc.response_data["sender id"]);
+    console.log(cc.response_data["admin no"]);
+  }
 });
-
-var cc;
-
-const json = {
-  "admin no": "1234567890",
-  "orders/create customer": "on",
-  "refunds/create customer": "on",
-  "refunds/create admin": "on",
-  "sender id": "1234MS"
-};
-
-for (x in json) {
-  console.log(x);
-}

@@ -203,8 +203,103 @@ const sndSms = (phone, store, message) => {
 
 app.post("/store/:Gshop/:topic/:subject", function(request, response) {
   const shop = request.params.Gshop;
-  const topic = request.params.topic;
-  const subject = request.params.subject;
+  let topic = request.params.topic;
+  const subtopic = request.params.subject;
+
+  topic = topic + "/" + subject;
+
+  switch (topic) {
+    case "orders/create":
+      if (data.response_data["orders/create customer"] != undefined) {
+        if (phone) {
+          sndSms(phone, vendor, message);
+        } else if (phone1) {
+          sndSms(phone, vendor, message);
+        } else if (phone2) {
+          sndSms(phone, vendor, message);
+        }
+      }
+      if (data.response_data["orders/create admin"] != undefined) {
+        sndSms(admin, vendor, message);
+      }
+      break;
+    case "orders/cancelled":
+      if (data.response_data["orders/cancelled customer"] != undefined) {
+        if (phone) {
+          sndSms(phone, vendor, message);
+        } else if (phone1) {
+          sndSms(phone, vendor, message);
+        } else if (phone2) {
+          sndSms(phone, vendor, message);
+        }
+      }
+      if (data.response_data["orders/cancelled admin"] != undefined) {
+        sndSms(admin, vendor, message);
+      }
+      break;
+    case "orders/fulfilled":
+      if (data.response_data["orders/fulfilled customer"] != undefined) {
+        if (phone) {
+          sndSms(phone, vendor, message);
+        } else if (phone1) {
+          sndSms(phone, vendor, message);
+        } else if (phone2) {
+          sndSms(phone, vendor, message);
+        }
+      }
+      if (data.response_data["orders/fulfilled admin"] != undefined) {
+        sndSms(admin, vendor, message);
+      }
+      break;
+    case "orders/partially_fulfilled":
+      if (
+        data.response_data["orders/partially_fulfilled customer"] != undefined
+      ) {
+        if (phone) {
+          sndSms(phone, vendor, message);
+        } else if (phone1) {
+          sndSms(phone, vendor, message);
+        } else if (phone2) {
+          sndSms(phone, vendor, message);
+        }
+      }
+      if (data.response_data["orders/partially_fulfilled admin"] != undefined) {
+        sndSms(admin, vendor, message);
+      }
+      break;
+    case "customers/create":
+      if (data.response_data["customers/create customer"] != undefined) {
+        if (phone) {
+          sndSms(phone, vendor, message);
+        } else if (phone1) {
+          sndSms(phone, vendor, message);
+        } else if (phone2) {
+          sndSms(phone, vendor, message);
+        }
+      }
+      if (data.response_data["customers/create admin"] != undefined) {
+        sndSms(admin, vendor, message);
+      }
+      break;
+    case "refunds/create":
+      if (data.response_data["refunds/create customer"] != undefined) {
+        if (phone) {
+          sndSms(phone, vendor, message);
+        } else if (phone1) {
+          sndSms(phone, vendor, message);
+        } else if (phone2) {
+          sndSms(phone, vendor, message);
+        }
+      }
+      if (data.response_data["refunds/create admin"] != undefined) {
+        sndSms(admin, vendor, message);
+      }
+      break;
+
+    default:
+      console.log("!possible");
+      break;
+  }
 
   console.log("shop name -->", shop);
   console.log("shop topic-->", topic);
@@ -328,6 +423,8 @@ app.post("/myaction", function(req, res) {
   www.forEach(topic => {
     makeWebook(topic);
   });
+
+  res.sendStatus(200);
 });
 
 app.get("/", function(req, res) {
