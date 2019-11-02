@@ -201,12 +201,32 @@ const sndSms = (phone, store, message) => {
   req.end();
 };
 
-app.post("/store/:Gshop/:topic/:subject", function(request, response) {
+app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
   const shop = request.params.Gshop;
   let topic = request.params.topic;
-  const subtopic = request.params.subject;
+  const subtopic = request.params.subtopic;
 
-  topic = topic + "/" + subject;
+  topic = topic + "/" + subtopic;
+
+  // name = request.body.shipping_address.first_name;
+  // email = request.body.email;
+  // vendor = request.body.line_items[0].vendor;
+  // title = request.body.line_items[0].title;
+  // orderId = request.body.name;
+  // orderId = orderId.slice(1);
+
+  // price = request.body.total_price;
+
+  // phone = request.body.shipping_address.phone;
+  // phone1 = request.body.billing_address.phone;
+  // phone2 = request.body.customer.phone;
+
+  // address1 = request.body.shipping_address.address1;
+  // address2 = request.body.shipping_address.address2;
+  // city = request.body.shipping_address.city;
+  // country = request.body.shipping_address.country;
+
+  // message = `MojitoLabs:%20Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
 
   switch (topic) {
     case "orders/create":
@@ -300,42 +320,7 @@ app.post("/store/:Gshop/:topic/:subject", function(request, response) {
       console.log("!possible");
       break;
   }
-
-  console.log("shop name -->", shop);
-  console.log("shop topic-->", topic);
-  console.log("shop subject-->", subject);
-
   response.sendStatus(200);
-
-  //jesa topic aaya use hisab se switch case me jayega
-
-  // name = request.body.shipping_address.first_name;
-  // email = request.body.email;
-  // vendor = request.body.line_items[0].vendor;
-  // title = request.body.line_items[0].title;
-  // orderId = request.body.name;
-  // orderId = orderId.slice(1);
-
-  // price = request.body.total_price;
-
-  // phone = request.body.shipping_address.phone;
-  // phone1 = request.body.billing_address.phone;
-  // phone2 = request.body.customer.phone;
-
-  // address1 = request.body.shipping_address.address1;
-  // address2 = request.body.shipping_address.address2;
-  // city = request.body.shipping_address.city;
-  // country = request.body.shipping_address.country;
-
-  // message = `MojitoLabs:%20Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
-
-  // if (phone) {
-  //   sndSms(phone, vendor, message);
-  // } else if (phone1) {
-  //   sndSms(phone, vendor, message);
-  // } else if (phone2) {
-  //   sndSms(phone, vendor, message);
-  // }
 });
 
 const makeWebook = topic => {
