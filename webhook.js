@@ -46,22 +46,11 @@ mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true
 });
 
-const shopSchema = new mongoose.Schema({
-  message: String,
-  store: String,
-  phone: Number
-});
-
-const Shop = new mongoose.model("Shop", shopSchema);
-
 const storeSchema = new mongoose.Schema({
-  name: String,
-  admin: Number,
-  senderID: String,
-  response_data: JSON
+  data: JSON,
+  sms: JSON,
+  smsCount: Number
 });
-
-const Store = new mongoose.model("Store", storeSchema);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -105,6 +94,9 @@ app.get("/shopify/callback", (req, res) => {
   let { shop, hmac, code, state } = req.query;
   Gshop = shop;
   Ghmac = hmac;
+
+  const Gshop = new mongoose.model(Gshop, storeSchema);
+
   const stateCookie = cookie.parse(req.headers.cookie).state;
 
   if (state !== stateCookie) {
@@ -164,12 +156,13 @@ app.get("/shopify/callback", (req, res) => {
 });
 
 // send sms
-const sndSms = (phone, store, message) => {
+const sndSms = (phone, store, message, senderID) => {
+  //sender id must be six letters
   var options = {
     method: "GET",
     hostname: "api.msg91.com",
     port: null,
-    path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=MOJITO&message=${message}&country=91`,
+    path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=${senderID}&message=${message}&country=91`,
     headers: {}
   };
 
@@ -208,118 +201,126 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
 
   topic = topic + "/" + subtopic;
 
-  // name = request.body.shipping_address.first_name;
-  // email = request.body.email;
-  // vendor = request.body.line_items[0].vendor;
-  // title = request.body.line_items[0].title;
-  // orderId = request.body.name;
-  // orderId = orderId.slice(1);
+  Store.findOne({ name: shop }, function(err, data) {
+    if (!err) {
+      switch (topic) {
+        case "orders/create":
+          if (data["orders/create customer"] != undefined) {
+            /*parse the response..take help from docs 
+            https://help.shopify.com/en/api/reference/events/webhook
+            */
+            name = request.body.shipping_address.first_name;
+            email = request.body.email;
+            vendor = request.body.line_items[0].vendor;
+            title = request.body.line_items[0].title;
+            orderId = request.body.name;
+            orderId = orderId.slice(1);
 
-  // price = request.body.total_price;
+            price = request.body.total_price;
 
-  // phone = request.body.shipping_address.phone;
-  // phone1 = request.body.billing_address.phone;
-  // phone2 = request.body.customer.phone;
+            phone = request.body.shipping_address.phone;
+            phone1 = request.body.billing_address.phone;
+            phone2 = request.body.customer.phone;
 
-  // address1 = request.body.shipping_address.address1;
-  // address2 = request.body.shipping_address.address2;
-  // city = request.body.shipping_address.city;
-  // country = request.body.shipping_address.country;
+            address1 = request.body.shipping_address.address1;
+            address2 = request.body.shipping_address.address2;
+            city = request.body.shipping_address.city;
+            country = request.body.shipping_address.country;
 
-  // message = `MojitoLabs:%20Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+            message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+            //end
 
-  switch (topic) {
-    case "orders/create":
-      if (data.response_data["orders/create customer"] != undefined) {
-        if (phone) {
-          sndSms(phone, vendor, message);
-        } else if (phone1) {
-          sndSms(phone, vendor, message);
-        } else if (phone2) {
-          sndSms(phone, vendor, message);
-        }
-      }
-      if (data.response_data["orders/create admin"] != undefined) {
-        sndSms(admin, vendor, message);
-      }
-      break;
-    case "orders/cancelled":
-      if (data.response_data["orders/cancelled customer"] != undefined) {
-        if (phone) {
-          sndSms(phone, vendor, message);
-        } else if (phone1) {
-          sndSms(phone, vendor, message);
-        } else if (phone2) {
-          sndSms(phone, vendor, message);
-        }
-      }
-      if (data.response_data["orders/cancelled admin"] != undefined) {
-        sndSms(admin, vendor, message);
-      }
-      break;
-    case "orders/fulfilled":
-      if (data.response_data["orders/fulfilled customer"] != undefined) {
-        if (phone) {
-          sndSms(phone, vendor, message);
-        } else if (phone1) {
-          sndSms(phone, vendor, message);
-        } else if (phone2) {
-          sndSms(phone, vendor, message);
-        }
-      }
-      if (data.response_data["orders/fulfilled admin"] != undefined) {
-        sndSms(admin, vendor, message);
-      }
-      break;
-    case "orders/partially_fulfilled":
-      if (
-        data.response_data["orders/partially_fulfilled customer"] != undefined
-      ) {
-        if (phone) {
-          sndSms(phone, vendor, message);
-        } else if (phone1) {
-          sndSms(phone, vendor, message);
-        } else if (phone2) {
-          sndSms(phone, vendor, message);
-        }
-      }
-      if (data.response_data["orders/partially_fulfilled admin"] != undefined) {
-        sndSms(admin, vendor, message);
-      }
-      break;
-    case "customers/create":
-      if (data.response_data["customers/create customer"] != undefined) {
-        if (phone) {
-          sndSms(phone, vendor, message);
-        } else if (phone1) {
-          sndSms(phone, vendor, message);
-        } else if (phone2) {
-          sndSms(phone, vendor, message);
-        }
-      }
-      if (data.response_data["customers/create admin"] != undefined) {
-        sndSms(admin, vendor, message);
-      }
-      break;
-    case "refunds/create":
-      if (data.response_data["refunds/create customer"] != undefined) {
-        if (phone) {
-          sndSms(phone, vendor, message);
-        } else if (phone1) {
-          sndSms(phone, vendor, message);
-        } else if (phone2) {
-          sndSms(phone, vendor, message);
-        }
-      }
-      if (data.response_data["refunds/create admin"] != undefined) {
-        sndSms(admin, vendor, message);
-      }
-      break;
+            let senderID = data["sender id"];
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["orders/create admin"] != undefined) {
+            sndSms(admin, vendor, message);
+          }
+          break;
+        case "orders/cancelled":
+          if (data["orders/cancelled customer"] != undefined) {
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["orders/cancelled admin"] != undefined) {
+            sndSms(admin, vendor, message);
+          }
+          break;
+        case "orders/fulfilled":
+          if (data["orders/fulfilled customer"] != undefined) {
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["orders/fulfilled admin"] != undefined) {
+            sndSms(admin, vendor, message);
+          }
+          break;
+        case "orders/partially_fulfilled":
+          if (data["orders/partially_fulfilled customer"] != undefined) {
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["orders/partially_fulfilled admin"] != undefined) {
+            sndSms(admin, vendor, message);
+          }
+          break;
+        case "customers/create":
+          if (data["customers/create customer"] != undefined) {
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["customers/create admin"] != undefined) {
+            sndSms(admin, vendor, message);
+          }
+          break;
+        case "refunds/create":
+          if (data["refunds/create customer"] != undefined) {
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["refunds/create admin"] != undefined) {
+            sndSms(admin, vendor, message);
+          }
+          break;
 
-    default:
-      console.log("!possible");
-      break;
-  }
+        default:
+          console.log("!possible");
+          break;
+      }
+    }
+  });
+
   response.sendStatus(200);
 });
 
@@ -356,8 +357,7 @@ const makeWebook = topic => {
 
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
-  const admin = json_data["admin no"];
-  const senderID = json_data["sender id"];
+
   var topics = [];
   //convet JSON to array
   for (var i in json_data) {
@@ -371,7 +371,7 @@ app.post("/myaction", function(req, res) {
   //remove dublicate element
   const set1 = new Set(topics);
 
-  //convert to array
+  //convert back to array
   let www = [...set1];
 
   function trimArray(arr) {
@@ -383,7 +383,7 @@ app.post("/myaction", function(req, res) {
 
   www = trimArray(www);
 
-  //remove "submit"
+  //remove "sender"
   function removeElement(array, elem) {
     var index = array.indexOf(elem);
     if (index > -1) {
@@ -393,15 +393,12 @@ app.post("/myaction", function(req, res) {
 
   removeElement(www, "sender");
 
-  const store = new Store({
-    name: Gshop,
-    admin: admin,
-    senderID: senderID,
-    response_data: json_data
+  const GshopDB = new Gshop({
+    data: json_data
   });
-  store.save(function(err) {
+  GshopDB.save(function(err) {
     if (!err) {
-      console.log("saved to DB");
+      console.log("store data saved to DB");
     }
   });
 
