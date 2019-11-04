@@ -253,9 +253,12 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
 
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
+      console.log("data", data);
       switch (topic) {
         case "orders/create":
+          console.log("case called");
           if (data["orders/create customer"] != undefined) {
+            console.log("case called customer");
             /*parse the response..take help from docs
             https://help.shopify.com/en/api/reference/events/webhook
             */
@@ -291,6 +294,8 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             }
           }
           if (data["orders/create admin"] != undefined) {
+            console.log("case called admin");
+
             let admin = data["admin no"];
             let senderID = data["sender id"];
 
@@ -372,6 +377,8 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
           console.log("!possible");
           break;
       }
+    } else {
+      console.log(err);
     }
   });
 
