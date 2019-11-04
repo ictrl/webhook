@@ -51,6 +51,7 @@ const shopSchema = new mongoose.Schema({
   data: JSON,
   sms: JSON
 });
+const Store = new mongoose.model("Store", shopSchema);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -156,7 +157,6 @@ app.get("/shopify/callback", (req, res) => {
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
 
-  const Store = new mongoose.model(Gshop, shopSchema);
   const store = new Store({
     data: req.body
   });
@@ -205,8 +205,6 @@ app.post("/myaction", function(req, res) {
   www.forEach(topic => {
     makeWebook(topic);
   });
-
-  res.sendStatus(200);
 });
 
 const makeWebook = topic => {
@@ -250,7 +248,8 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
   console.log("shop-->", shop);
   console.log("topic-->", topic);
   console.log("subtopic-->", subtopic);
-  // Store.findOne({ name: shop }, function(err, data) {
+
+  // Store.findOne({ data[]: shop }, function(err, data) {
   //   if (!err) {
   //     switch (topic) {
   //       case "orders/create":
