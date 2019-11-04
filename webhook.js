@@ -48,6 +48,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 
 const shopSchema = new mongoose.Schema({
+  name: String,
   data: JSON,
   sms: JSON
 });
@@ -158,6 +159,7 @@ app.post("/myaction", function(req, res) {
   var json_data = req.body;
 
   const store = new Store({
+    name: Gshop,
     data: req.body
   });
 
@@ -249,170 +251,174 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
   console.log("topic-->", topic);
   console.log("subtopic-->", subtopic);
 
-  // Store.findOne({ data[]: shop }, function(err, data) {
-  //   if (!err) {
-  //     switch (topic) {
-  //       case "orders/create":
-  //         if (data["orders/create customer"] != undefined) {
-  //           /*parse the response..take help from docs
-  //           https://help.shopify.com/en/api/reference/events/webhook
-  //           */
-  //           name = request.body.shipping_address.first_name;
-  //           email = request.body.email;
-  //           vendor = request.body.line_items[0].vendor;
-  //           title = request.body.line_items[0].title;
-  //           orderId = request.body.name;
-  //           orderId = orderId.slice(1);
+  Store.findOne({ name: shop }, function(err, data) {
+    if (!err) {
+      switch (topic) {
+        case "orders/create":
+          if (data["orders/create customer"] != undefined) {
+            /*parse the response..take help from docs
+            https://help.shopify.com/en/api/reference/events/webhook
+            */
+            name = request.body.shipping_address.first_name;
+            email = request.body.email;
+            vendor = request.body.line_items[0].vendor;
+            title = request.body.line_items[0].title;
+            orderId = request.body.name;
+            orderId = orderId.slice(1);
 
-  //           price = request.body.total_price;
+            price = request.body.total_price;
 
-  //           phone = request.body.shipping_address.phone;
-  //           phone1 = request.body.billing_address.phone;
-  //           phone2 = request.body.customer.phone;
+            phone = request.body.shipping_address.phone;
+            phone1 = request.body.billing_address.phone;
+            phone2 = request.body.customer.phone;
 
-  //           address1 = request.body.shipping_address.address1;
-  //           address2 = request.body.shipping_address.address2;
-  //           city = request.body.shipping_address.city;
-  //           country = request.body.shipping_address.country;
+            address1 = request.body.shipping_address.address1;
+            address2 = request.body.shipping_address.address2;
+            city = request.body.shipping_address.city;
+            country = request.body.shipping_address.country;
 
-  //           message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
-  //           //end
+            message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+            //end
 
-  //           let senderID = data["sender id"];
+            let senderID = data["sender id"];
 
-  //           if (phone) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone1) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone2) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           }
-  //         }
-  //         if (data["orders/create admin"] != undefined) {
-  //           let admin = data["admin no"];
-  //           let senderID = data["sender id"];
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["orders/create admin"] != undefined) {
+            let admin = data["admin no"];
+            let senderID = data["sender id"];
 
-  //           sndSms(admin, vendor, message, senderID);
-  //         }
-  //         break;
-  //       case "orders/cancelled":
-  //         if (data["orders/cancelled customer"] != undefined) {
-  //           if (phone) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone1) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone2) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           }
-  //         }
-  //         if (data["orders/cancelled admin"] != undefined) {
-  //           sndSms(admin, vendor, message);
-  //         }
-  //         break;
-  //       case "orders/fulfilled":
-  //         if (data["orders/fulfilled customer"] != undefined) {
-  //           if (phone) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone1) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone2) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           }
-  //         }
-  //         if (data["orders/fulfilled admin"] != undefined) {
-  //           sndSms(admin, vendor, message);
-  //         }
-  //         break;
-  //       case "orders/partially_fulfilled":
-  //         if (data["orders/partially_fulfilled customer"] != undefined) {
-  //           if (phone) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone1) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone2) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           }
-  //         }
-  //         if (data["orders/partially_fulfilled admin"] != undefined) {
-  //           sndSms(admin, vendor, message);
-  //         }
-  //         break;
-  //       case "customers/create":
-  //         if (data["customers/create customer"] != undefined) {
-  //           if (phone) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone1) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone2) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           }
-  //         }
-  //         if (data["customers/create admin"] != undefined) {
-  //           sndSms(admin, vendor, message);
-  //         }
-  //         break;
-  //       case "refunds/create":
-  //         if (data["refunds/create customer"] != undefined) {
-  //           if (phone) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone1) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           } else if (phone2) {
-  //             sndSms(phone, vendor, message, senderID);
-  //           }
-  //         }
-  //         if (data["refunds/create admin"] != undefined) {
-  //           sndSms(admin, vendor, message);
-  //         }
-  //         break;
+            sndSms(admin, vendor, message, senderID);
+          }
+          break;
+        case "orders/cancelled":
+          if (data["orders/cancelled customer"] != undefined) {
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["orders/cancelled admin"] != undefined) {
+            sndSms(admin, vendor, message);
+          }
+          break;
+        case "orders/fulfilled":
+          if (data["orders/fulfilled customer"] != undefined) {
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["orders/fulfilled admin"] != undefined) {
+            sndSms(admin, vendor, message);
+          }
+          break;
+        case "orders/partially_fulfilled":
+          if (data["orders/partially_fulfilled customer"] != undefined) {
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["orders/partially_fulfilled admin"] != undefined) {
+            sndSms(admin, vendor, message);
+          }
+          break;
+        case "customers/create":
+          if (data["customers/create customer"] != undefined) {
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["customers/create admin"] != undefined) {
+            sndSms(admin, vendor, message);
+          }
+          break;
+        case "refunds/create":
+          if (data["refunds/create customer"] != undefined) {
+            if (phone) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID);
+            }
+          }
+          if (data["refunds/create admin"] != undefined) {
+            sndSms(admin, vendor, message);
+          }
+          break;
 
-  //       default:
-  //         console.log("!possible");
-  //         break;
-  //     }
-  //   }
-  // });
+        default:
+          console.log("!possible");
+          break;
+      }
+    }
+  });
 
   response.sendStatus(200);
 });
 
 // send sms
-// const sndSms = (phone, store, message, senderID) => {
-//   //sender id must be six letters
-//   var options = {
-//     method: "GET",
-//     hostname: "api.msg91.com",
-//     port: null,
-//     path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=${senderID}&message=${message}&country=91`,
-//     headers: {}
-//   };
+const sndSms = (phone, store, message, senderID) => {
+  //sender id must be six letters
+  console.log(phone);
+  console.log(store);
+  console.log(message);
+  console.log(senderID);
+  // var options = {
+  //   method: "GET",
+  //   hostname: "api.msg91.com",
+  //   port: null,
+  //   path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=${senderID}&message=${message}&country=91`,
+  //   headers: {}
+  // };
 
-//   var req = http.request(options, function(res) {
-//     var chunks = [];
+  // var req = http.request(options, function(res) {
+  //   var chunks = [];
 
-//     res.on("data", function(chunk) {
-//       chunks.push(chunk);
-//     });
+  //   res.on("data", function(chunk) {
+  //     chunks.push(chunk);
+  //   });
 
-//     res.on("end", function() {
-//       var body = Buffer.concat(chunks);
-//       console.log(body.toString());
-//     });
-//   });
+  //   res.on("end", function() {
+  //     var body = Buffer.concat(chunks);
+  //     console.log(body.toString());
+  //   });
+  // });
 
-//    Store.findOneAndUpdate({ age: 17 }, { $set: { name: "Naomi" } }, function(
-//      err,
-//      doc
-//    ) {
-//      if (err) {
-//        console.log("Something wrong when updating data!");
-//      }
+  //  Store.findOneAndUpdate({ age: 17 }, { $set: { name: "Naomi" } }, function(
+  //    err,
+  //    doc
+  //  ) {
+  //    if (err) {
+  //      console.log("Something wrong when updating data!");
+  //    }
 
-//      console.log(doc);
-//    });
+  //    console.log(doc);
+  //  });
 
-//   req.end();
-// };
+  // req.end();
+};
 
 app.get("/", function(req, res) {
   // res.sendFile("index.html", { root: __dirname });
