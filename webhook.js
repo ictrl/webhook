@@ -50,9 +50,10 @@ mongoose.connect(process.env.MONGODB_URI, {
 const shopSchema = new mongoose.Schema({
   name: String,
   data: JSON,
-  sms: JSON,
+  sms: Array,
   smsCount: Number
 });
+
 const Store = new mongoose.model("Store", shopSchema);
 
 app.use(bodyParser.json());
@@ -385,9 +386,6 @@ const sndSms = (phone, store, message, senderID, shop) => {
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       if (data.smsCount <= 10) {
-        console.log(phone);
-        console.log(senderID);
-        console.log(message);
         //send SMS
         var options = {
           method: "GET",
@@ -408,30 +406,30 @@ const sndSms = (phone, store, message, senderID, shop) => {
             var body = Buffer.concat(chunks);
             console.log(body.toString());
           });
+          //save sms data to DB
+
+          var objFriends = {
+            fname: "fname",
+            lname: "lname",
+            surname: "surname"
+          };
+          Store.findOneAndUpdate(
+            { name: shop },
+            {
+              $push: { sms: objFriends },
+              $set: {
+                smsCount: data.smsCount + 1
+              }
+            },
+            function(error, success) {
+              if (error) {
+                console.log(error);
+              } else {
+                console.log("success sms saved to DB");
+              }
+            }
+          );
         });
-        //save sms data to DB
-        Store.findOneAndUpdate(
-          { name: shop },
-          {
-            $set: {
-              sms: {
-                message: message,
-                store: store,
-                number: phone
-              },
-              smsCount: data.smsCount + 1
-            }
-          },
-          { new: true, useFindAndModify: false },
-          (err, data) => {
-            if (!err) {
-              console.log("data-->", data);
-            } else {
-              console.log("err", err);
-            }
-            req.end();
-          }
-        );
       } else if ((data.smsCount = 11)) {
         //notify admin
         phone = adminNumber;
@@ -454,30 +452,30 @@ const sndSms = (phone, store, message, senderID, shop) => {
             var body = Buffer.concat(chunks);
             console.log(body.toString());
           });
+          // increase smsCount to 12 and save to DB
+          Store.findOneAndUpdate(
+            { name: shop },
+            {
+              $set: {
+                smsCount: 12
+              }
+            },
+            { new: true, useFindAndModify: false },
+            (err, data) => {
+              if (!err) {
+                console.log("data");
+              } else {
+                console.log("err", err);
+              }
+              req.end();
+            }
+          );
         });
-        // increase smsCount to 12 adn save to DB
-        Store.findOneAndUpdate(
-          { name: shop },
-          {
-            $set: {
-              smsCount: 12
-            }
-          },
-          { new: true, useFindAndModify: false },
-          (err, data) => {
-            if (!err) {
-              console.log("data", data);
-            } else {
-              console.log("err", err);
-            }
-            req.end();
-          }
-        );
       } else {
         console.log("admin don't recharge yet!");
       }
     } else {
-      console.log("sss", err);
+      console.log("err-->", err);
     }
   });
 };
@@ -487,5 +485,5 @@ app.get("/", function(req, res) {
 });
 
 app.listen(process.env.PORT || 4000, () => {
-  console.log("Example app listening on port 4000!");
+  console.log("app listening on port 4000!");
 });
