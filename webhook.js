@@ -244,6 +244,8 @@ const makeWebook = topic => {
 };
 
 app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
+  console.log("got response");
+
   const shop = request.params.Gshop;
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
@@ -383,6 +385,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
 
 // send sms
 const sndSms = (phone, store, message, senderID, shop) => {
+  console.log("sms fn call");
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       if (data.smsCount <= 10) {
@@ -421,11 +424,12 @@ const sndSms = (phone, store, message, senderID, shop) => {
                 smsCount: data.smsCount + 1
               }
             },
-            function(error, success) {
-              if (error) {
-                console.log(error);
+            { new: true, useFindAndModify: false },
+            (err, data) => {
+              if (!err) {
+                console.log("data");
               } else {
-                console.log("success sms saved to DB");
+                console.log("err", err);
               }
             }
           );
@@ -452,25 +456,27 @@ const sndSms = (phone, store, message, senderID, shop) => {
             var body = Buffer.concat(chunks);
             console.log(body.toString());
           });
-          // increase smsCount to 12 and save to DB
-          Store.findOneAndUpdate(
-            { name: shop },
-            {
-              $set: {
-                smsCount: 12
-              }
-            },
-            { new: true, useFindAndModify: false },
-            (err, data) => {
-              if (!err) {
-                console.log("data");
-              } else {
-                console.log("err", err);
-              }
-              req.end();
-            }
-          );
         });
+        // increase smsCount to 12 and save to DB
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $set: {
+              smsCount: 12
+            }
+          },
+          {
+            new: true,
+            useFindAndModify: false
+          },
+          (err, data) => {
+            if (!err) {
+              console.log("data");
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
       } else {
         console.log("admin don't recharge yet!");
       }
