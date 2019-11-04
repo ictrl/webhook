@@ -291,6 +291,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
           if (data.data["orders/create admin"] != undefined) {
             let admin = data.data["admin no"];
             let senderID = data.data["sender id"];
+            message = `Customer%20name:%20${name},from shop:${shop}%20order%20ID:%20${orderId}`;
 
             sndSms(admin, vendor, message, senderID, shop);
           }
@@ -413,7 +414,8 @@ const sndSms = (phone, store, message, senderID, shop) => {
             $set: {
               sms: {
                 message: message,
-                store: store
+                store: store,
+                number: phone
               },
               smsCount: data.smsCount + 1
             }
@@ -421,7 +423,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
           { new: true, useFindAndModify: false },
           (err, data) => {
             if (!err) {
-              console.log("data", data);
+              console.log("data-->", data);
             } else {
               console.log("err", err);
             }
