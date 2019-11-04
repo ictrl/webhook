@@ -382,8 +382,11 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
 // send sms
 const sndSms = (phone, store, message, senderID, shop) => {
   //sender id must be six letters
+
   console.log(phone);
-  console.log(message);
+  console.log(typeof phone);
+  console.log(phone.length);
+
   // Store.findOne({ name: shop }, function(err, data) {
   //   if (!err) {
   //     if (data.smsCount <= 10) {

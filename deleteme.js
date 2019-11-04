@@ -45,33 +45,11 @@
 // //   }
 // // });
 
-
 // // ////////
 
-
 // // ////////
-
-
-
 
 // // ///
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // var req = http.request(options, function(res) {
 //     var chunks = [];
@@ -99,3 +77,7 @@
 //   });
 
 //   req.end();
+var phone = 4567876545678;
+console.log(phone);
+console.log(typeof phone);
+console.log(phone.length);
