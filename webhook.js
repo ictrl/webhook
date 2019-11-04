@@ -385,12 +385,103 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
 
 // send sms
 const sndSms = (phone, store, message, senderID, shop) => {
-  console.log("sms fn call");
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       if (data.smsCount <= 10) {
         //send SMS
-        console.log("394--", data.smsCount);
+        var options = {
+          method: "GET",
+          hostname: "api.msg91.com",
+          port: null,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=MOJITO&message=${message}&country=91`,
+          headers: {}
+        };
+        var req = http.request(options, function(res) {
+          var chunks = [];
+
+          res.on("data", function(chunk) {
+            chunks.push(chunk);
+          });
+
+          res.on("end", function() {
+            var body = Buffer.concat(chunks);
+            console.log(body.toString());
+          });
+        });
+        //save sms data to DB
+        var obj = {
+          message: message,
+          store: store,
+          number: phone
+        };
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $push: { sms: obj },
+            $set: {
+              smsCount: data.smsCount + 1
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data");
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+        req.end();
+      } else if (data.smsCount == 11) {
+        // notify admin to recharge
+        //send SMS
+        phone = adminNumber;
+        message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
+        var options = {
+          method: "GET",
+          hostname: "api.msg91.com",
+          port: null,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=MOJITO&message=${message}&country=91`,
+          headers: {}
+        };
+        var req = http.request(options, function(res) {
+          var chunks = [];
+
+          res.on("data", function(chunk) {
+            chunks.push(chunk);
+          });
+
+          res.on("end", function() {
+            var body = Buffer.concat(chunks);
+            console.log(body.toString());
+          });
+        });
+        //save sms data to DB
+        var obj = {
+          message: message,
+          store: store,
+          number: phone
+        };
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $push: { sms: obj },
+            $set: {
+              smsCount: data.smsCount + 1
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data");
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+        req.end();
+      } else {
+        console.log("admin still not recharge");
       }
     }
   });
