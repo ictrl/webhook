@@ -408,15 +408,15 @@ const sndSms = (phone, store, message, senderID, shop) => {
           });
           //save sms data to DB
 
-          var objFriends = {
-            fname: "fname",
-            lname: "lname",
-            surname: "surname"
+          var obj = {
+            message: message,
+            store: store,
+            number: phone
           };
           Store.findOneAndUpdate(
             { name: shop },
             {
-              $push: { sms: objFriends },
+              $push: { sms: obj },
               $set: {
                 smsCount: data.smsCount + 1
               }
