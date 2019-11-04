@@ -292,7 +292,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             let admin = data.data["admin no"];
             adminNumber = admin;
             let senderID = data.data["sender id"];
-            message = `Customer%20name:%20${name},from shop:${shop}%20order%20ID:%20${orderId}`;
+            message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
 
             sndSms(admin, vendor, message, senderID, shop);
           }
@@ -393,8 +393,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
           method: "GET",
           hostname: "api.msg91.com",
           port: null,
-          // path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=${senderID}&message=${message}&country=91`,
-          path: `/api/sendhttp.php?mobiles=9199761584&authkey=${process.env.SMS_API}&route=4&sender=MOJITO&message=MEGGAFEGI&country=91`,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=${senderID}&message=${message}&country=91`,
           headers: {}
         };
 
@@ -433,47 +432,47 @@ const sndSms = (phone, store, message, senderID, shop) => {
             req.end();
           }
         );
-        // } else if ((data.smsCount = 11)) {
-        //   //notify admin
-        //   phone = adminNumber;
-        //   var options = {
-        //     method: "GET",
-        //     hostname: "api.msg91.com",
-        //     port: null,
-        //     path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=${senderID}&message=Update%20from%20MOJITO-SMS-UPDATE:%20Your%20SMS%20left%20is%200,%20please recharge&country=91`,
-        //     headers: {}
-        //   };
+      } else if ((data.smsCount = 11)) {
+        //notify admin
+        phone = adminNumber;
+        var options = {
+          method: "GET",
+          hostname: "api.msg91.com",
+          port: null,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=${senderID}&message=Update%20from%20MOJITO-SMS-UPDATE:%20Your%20SMS%20left%20is%200,%20please recharge&country=91`,
+          headers: {}
+        };
 
-        //   var req = http.request(options, function(res) {
-        //     var chunks = [];
+        var req = http.request(options, function(res) {
+          var chunks = [];
 
-        //     res.on("data", function(chunk) {
-        //       chunks.push(chunk);
-        //     });
+          res.on("data", function(chunk) {
+            chunks.push(chunk);
+          });
 
-        //     res.on("end", function() {
-        //       var body = Buffer.concat(chunks);
-        //       console.log(body.toString());
-        //     });
-        //   });
-        //   // increase smsCount to 12 adn save to DB
-        //   Store.findOneAndUpdate(
-        //     { name: shop },
-        //     {
-        //       $set: {
-        //         smsCount: 12
-        //       }
-        //     },
-        //     { new: true, useFindAndModify: false },
-        //     (err, data) => {
-        //       if (!err) {
-        //         console.log("data", data);
-        //       } else {
-        //         console.log("err", err);
-        //       }
-        //       req.end();
-        //     }
-        //   );
+          res.on("end", function() {
+            var body = Buffer.concat(chunks);
+            console.log(body.toString());
+          });
+        });
+        // increase smsCount to 12 adn save to DB
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $set: {
+              smsCount: 12
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data", data);
+            } else {
+              console.log("err", err);
+            }
+            req.end();
+          }
+        );
       } else {
         console.log("admin don't recharge yet!");
       }
