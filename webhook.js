@@ -50,7 +50,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 const shopSchema = new mongoose.Schema({
   name: String,
   data: JSON,
-  sms: JSON
+  sms: JSON,
+  smsCount: Number
 });
 const Store = new mongoose.model("Store", shopSchema);
 
@@ -160,7 +161,8 @@ app.post("/myaction", function(req, res) {
 
   const store = new Store({
     name: Gshop,
-    data: req.body
+    data: req.body,
+    smsCount: 0
   });
 
   store.save(function(err) {
@@ -247,16 +249,10 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
 
   topic = topic + "/" + subtopic;
 
-  console.log("shop-->", shop);
-  console.log("topic-->", topic);
-  console.log("subtopic-->", subtopic);
-
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
-      console.log("data", data);
       switch (topic) {
         case "orders/create":
-          console.log("case called");
           if (data.data["orders/create customer"] != undefined) {
             /*parse the response..take help from docs
             https://help.shopify.com/en/api/reference/events/webhook
@@ -285,28 +281,28 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             let senderID = data.data["sender id"];
 
             if (phone) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             }
           }
           if (data.data["orders/create admin"] != undefined) {
             let admin = data.data["admin no"];
             let senderID = data.data["sender id"];
 
-            sndSms(admin, vendor, message, senderID);
+            sndSms(admin, vendor, message, senderID, shop);
           }
           break;
         case "orders/cancelled":
           if (data.data["orders/cancelled customer"] != undefined) {
             if (phone) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             }
           }
           if (data.data["orders/cancelled admin"] != undefined) {
@@ -316,11 +312,11 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
         case "orders/fulfilled":
           if (data.data["orders/fulfilled customer"] != undefined) {
             if (phone) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             }
           }
           if (data.data["orders/fulfilled admin"] != undefined) {
@@ -330,11 +326,11 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
         case "orders/partially_fulfilled":
           if (data.data["orders/partially_fulfilled customer"] != undefined) {
             if (phone) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             }
           }
           if (data.data["orders/partially_fulfilled admin"] != undefined) {
@@ -344,11 +340,11 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
         case "customers/create":
           if (data.data["customers/create customer"] != undefined) {
             if (phone) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             }
           }
           if (data.data["customers/create admin"] != undefined) {
@@ -358,11 +354,11 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
         case "refunds/create":
           if (data.data["refunds/create customer"] != undefined) {
             if (phone) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, vendor, message, senderID);
+              sndSms(phone, vendor, message, senderID, shop);
             }
           }
           if (data.data["refunds/create admin"] != undefined) {
@@ -383,42 +379,101 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
 });
 
 // send sms
-const sndSms = (phone, store, message, senderID) => {
+const sndSms = (phone, store, message, senderID, shop) => {
   //sender id must be six letters
-  console.log(phone);
-  console.log(store);
-  console.log(message);
-  console.log(senderID);
-  var options = {
-    method: "GET",
-    hostname: "api.msg91.com",
-    port: null,
-    path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=${senderID}&message=${message}&country=91`,
-    headers: {}
-  };
 
-  var req = http.request(options, function(res) {
-    var chunks = [];
+  Store.findOne({ name: shop }, function(err, data) {
+    if (!err) {
+      if (data.smsCount <= 10) {
+        //send SMS
+        var options = {
+          method: "GET",
+          hostname: "api.msg91.com",
+          port: null,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=${senderID}&message=${message}&country=91`,
+          headers: {}
+        };
 
-    res.on("data", function(chunk) {
-      chunks.push(chunk);
-    });
+        var req = http.request(options, function(res) {
+          var chunks = [];
 
-    res.on("end", function() {
-      var body = Buffer.concat(chunks);
-      console.log(body.toString());
-    });
-  });
+          res.on("data", function(chunk) {
+            chunks.push(chunk);
+          });
 
-  Store.findOneAndUpdate({ age: 17 }, { $set: { name: "Naomi" } }, function(
-    err,
-    doc
-  ) {
-    if (err) {
-      console.log("Something wrong when updating data!");
+          res.on("end", function() {
+            var body = Buffer.concat(chunks);
+            console.log(body.toString());
+          });
+        });
+        //save sms data to DB
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $set: {
+              sms: {
+                message: message,
+                store: store
+              },
+              smsCount: data.smsCount + 1
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data", data);
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+      } else if ((data.smsCount = 11)) {
+        //notify admin
+        var options = {
+          method: "GET",
+          hostname: "api.msg91.com",
+          port: null,
+          path: `/api/sendhttp.php?mobiles=${data.data["admin no"]}&authkey=${
+            process.env.SMS_API
+          }&route=4&sender=${senderID}&message=Update%20from%20MOJITO-SMS-UPDATE:%20Your%20SMS%20left%20is%200,%20please recharge&country=91`,
+          headers: {}
+        };
+
+        var req = http.request(options, function(res) {
+          var chunks = [];
+
+          res.on("data", function(chunk) {
+            chunks.push(chunk);
+          });
+
+          res.on("end", function() {
+            var body = Buffer.concat(chunks);
+            console.log(body.toString());
+          });
+        });
+        // increase smsCount to 12 adn save to DB
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $set: {
+              smsCount: 12
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data", data);
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+      } else {
+        console.log("admin don't reacharge yet!");
+      }
+    } else {
+      console.log(err);
     }
-
-    console.log(doc);
   });
 
   req.end();
