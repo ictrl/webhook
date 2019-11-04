@@ -434,7 +434,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
         req.end();
       } else if (data.smsCount == 11) {
         // notify admin to recharge
-        //send SMS
+        //send SMS mgs91
         phone = adminNumber;
         message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
         var options = {
