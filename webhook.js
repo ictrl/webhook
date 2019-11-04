@@ -390,6 +390,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
     if (!err) {
       if (data.smsCount <= 10) {
         //send SMS
+        console.log("394--", data.smsCount);
         var options = {
           method: "GET",
           hostname: "api.msg91.com",
@@ -397,7 +398,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
           path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=${senderID}&message=${message}&country=91`,
           headers: {}
         };
-
+        
         var req = http.request(options, function(res) {
           var chunks = [];
 
