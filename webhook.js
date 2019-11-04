@@ -425,6 +425,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
             } else {
               console.log("err", err);
             }
+            req.end();
           }
         );
       } else if ((data.smsCount = 11)) {
@@ -466,17 +467,16 @@ const sndSms = (phone, store, message, senderID, shop) => {
             } else {
               console.log("err", err);
             }
+            req.end();
           }
         );
       } else {
-        console.log("admin don't reacharge yet!");
+        console.log("admin don't recharge yet!");
       }
     } else {
       console.log(err);
     }
   });
-
-  req.end();
 };
 
 app.get("/", function(req, res) {
