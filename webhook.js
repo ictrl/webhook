@@ -245,44 +245,55 @@ const makeWebook = topic => {
 
 app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
   console.log("got response");
-
   const shop = request.params.Gshop;
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
-
   topic = topic + "/" + subtopic;
-
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       switch (topic) {
         case "orders/create":
+          if (
+            data.data["orders/create customer"] != undefined &&
+            data.data["orders/create admin"] != undefined
+          ) {
+            // data.smsCount + 2
+            Store.findOneAndUpdate(
+              { name: shop },
+              {
+                $push: { sms: obj },
+                $set: {
+                  smsCount: data.smsCount + 1
+                }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("datacount + 1");
+                } else {
+                  console.log("err", err);
+                }
+              }
+            );
+          }
           if (data.data["orders/create customer"] != undefined) {
-            /*parse the response..take help from docs
-            https://help.shopify.com/en/api/reference/events/webhook
-            */
             name = request.body.shipping_address.first_name;
             email = request.body.email;
             vendor = request.body.line_items[0].vendor;
             title = request.body.line_items[0].title;
             orderId = request.body.name;
             orderId = orderId.slice(1);
-
             price = request.body.total_price;
-
             phone = request.body.shipping_address.phone;
             phone1 = request.body.billing_address.phone;
             phone2 = request.body.customer.phone;
-
             address1 = request.body.shipping_address.address1;
             address2 = request.body.shipping_address.address2;
             city = request.body.shipping_address.city;
             country = request.body.shipping_address.country;
-
             message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
             //end
-
             let senderID = data.data["sender id"];
-
             if (phone) {
               sndSms(phone, vendor, message, senderID, shop);
             } else if (phone1) {
@@ -296,12 +307,55 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             adminNumber = admin;
             let senderID = data.data["sender id"];
             message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-
             sndSms(admin, vendor, message, senderID, shop);
           }
+
           break;
+        ///////////////////////////////
         case "orders/cancelled":
+          if (
+            data.data["orders/cancelled customer"] != undefined &&
+            data.data["orders/cancelled admin"] != undefined
+          ) {
+            // data.smsCount + 2
+            Store.findOneAndUpdate(
+              { name: shop },
+              {
+                $push: { sms: obj },
+                $set: {
+                  smsCount: data.smsCount + 1
+                }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("datacount + 1");
+                } else {
+                  console.log("err", err);
+                }
+              }
+            );
+          }
           if (data.data["orders/cancelled customer"] != undefined) {
+            name = request.body.shipping_address.first_name;
+            email = request.body.email;
+            vendor = request.body.line_items[0].vendor;
+            title = request.body.line_items[0].title;
+            orderId = request.body.name;
+            orderId = orderId.slice(1);
+            price = request.body.total_price;
+            phone = request.body.shipping_address.phone;
+            phone1 = request.body.billing_address.phone;
+            phone2 = request.body.customer.phone;
+            address1 = request.body.shipping_address.address1;
+            address2 = request.body.shipping_address.address2;
+            city = request.body.shipping_address.city;
+            country = request.body.shipping_address.country;
+            cancelled_at = request.body.cancelled_at;
+            cancel_reason = request.body.cancel_reason;
+            message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
+            //end
+            let senderID = data.data["sender id"];
             if (phone) {
               sndSms(phone, vendor, message, senderID, shop);
             } else if (phone1) {
@@ -311,11 +365,59 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             }
           }
           if (data.data["orders/cancelled admin"] != undefined) {
-            sndSms(admin, vendor, message);
+            let admin = data.data["admin no"];
+            adminNumber = admin;
+            let senderID = data.data["sender id"];
+            message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+            sndSms(admin, vendor, message, senderID, shop);
           }
           break;
+        ////////////////////////////
         case "orders/fulfilled":
+          if (
+            data.data["orders/fulfilled customer"] != undefined &&
+            data.data["orders/fulfilled admin"] != undefined
+          ) {
+            // data.smsCount + 2
+            Store.findOneAndUpdate(
+              { name: shop },
+              {
+                $push: { sms: obj },
+                $set: {
+                  smsCount: data.smsCount + 1
+                }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("datacount + 1");
+                } else {
+                  console.log("err", err);
+                }
+              }
+            );
+          }
           if (data.data["orders/fulfilled customer"] != undefined) {
+            name = request.body.shipping_address.first_name;
+            email = request.body.email;
+            vendor = request.body.line_items[0].vendor;
+            title = request.body.line_items[0].title;
+            orderId = request.body.name;
+            orderId = orderId.slice(1);
+            price = request.body.total_price;
+            phone = request.body.shipping_address.phone;
+            phone1 = request.body.billing_address.phone;
+            phone2 = request.body.customer.phone;
+            address1 = request.body.shipping_address.address1;
+            address2 = request.body.shipping_address.address2;
+            city = request.body.shipping_address.city;
+            country = request.body.shipping_address.country;
+            fulfillment_status = request.body.fulfillment_status;
+            updated_at = request.body.updated_at;
+            order_status_url = request.body.order_status_url;
+            message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
+            //end
+            let senderID = data.data["sender id"];
             if (phone) {
               sndSms(phone, vendor, message, senderID, shop);
             } else if (phone1) {
@@ -325,10 +427,38 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             }
           }
           if (data.data["orders/fulfilled admin"] != undefined) {
-            sndSms(admin, vendor, message);
+            let admin = data.data["admin no"];
+            adminNumber = admin;
+            let senderID = data.data["sender id"];
+            message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
+            sndSms(admin, vendor, message, senderID, shop);
           }
           break;
+        ////////////////////////////////
         case "orders/partially_fulfilled":
+          if (
+            data.data["orders/partially customer"] != undefined &&
+            data.data["orders/partially admin"] != undefined
+          ) {
+            // data.smsCount + 2
+            Store.findOneAndUpdate(
+              { name: shop },
+              {
+                $push: { sms: obj },
+                $set: {
+                  smsCount: data.smsCount + 1
+                }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("datacount + 1");
+                } else {
+                  console.log("err", err);
+                }
+              }
+            );
+          }
           if (data.data["orders/partially_fulfilled customer"] != undefined) {
             if (phone) {
               sndSms(phone, vendor, message, senderID, shop);
@@ -343,6 +473,29 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
           }
           break;
         case "customers/create":
+          if (
+            data.data["customers/create customer"] != undefined &&
+            data.data["customers/create admin"] != undefined
+          ) {
+            // data.smsCount + 2
+            Store.findOneAndUpdate(
+              { name: shop },
+              {
+                $push: { sms: obj },
+                $set: {
+                  smsCount: data.smsCount + 1
+                }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("datacount + 1");
+                } else {
+                  console.log("err", err);
+                }
+              }
+            );
+          }
           if (data.data["customers/create customer"] != undefined) {
             if (phone) {
               sndSms(phone, vendor, message, senderID, shop);
@@ -357,6 +510,29 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
           }
           break;
         case "refunds/create":
+          if (
+            data.data["refunds/create customer"] != undefined &&
+            data.data["refunds/create admin"] != undefined
+          ) {
+            // data.smsCount + 2
+            Store.findOneAndUpdate(
+              { name: shop },
+              {
+                $push: { sms: obj },
+                $set: {
+                  smsCount: data.smsCount + 1
+                }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("datacount + 1");
+                } else {
+                  console.log("err", err);
+                }
+              }
+            );
+          }
           if (data.data["refunds/create customer"] != undefined) {
             if (phone) {
               sndSms(phone, vendor, message, senderID, shop);
@@ -370,7 +546,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             sndSms(admin, vendor, message);
           }
           break;
-
         default:
           console.log("!possible");
           break;
@@ -379,10 +554,8 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
       console.log(err);
     }
   });
-
   response.sendStatus(200);
 });
-
 // send sms
 const sndSms = (phone, store, message, senderID, shop) => {
   Store.findOne({ name: shop }, function(err, data) {
@@ -393,7 +566,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
           method: "GET",
           hostname: "api.msg91.com",
           port: null,
-          path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=MOJITO&message=${message}&country=91`,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=${senderID}&message=${message}&country=91`,
           headers: {}
         };
         var req = http.request(options, function(res) {
