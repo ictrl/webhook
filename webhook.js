@@ -261,7 +261,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             Store.findOneAndUpdate(
               { name: shop },
               {
-                $push: { sms: obj },
                 $set: {
                   smsCount: data.smsCount + 1
                 }
@@ -321,7 +320,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             Store.findOneAndUpdate(
               { name: shop },
               {
-                $push: { sms: obj },
                 $set: {
                   smsCount: data.smsCount + 1
                 }
@@ -382,7 +380,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             Store.findOneAndUpdate(
               { name: shop },
               {
-                $push: { sms: obj },
                 $set: {
                   smsCount: data.smsCount + 1
                 }
@@ -444,7 +441,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             Store.findOneAndUpdate(
               { name: shop },
               {
-                $push: { sms: obj },
                 $set: {
                   smsCount: data.smsCount + 1
                 }
@@ -481,7 +477,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             Store.findOneAndUpdate(
               { name: shop },
               {
-                $push: { sms: obj },
                 $set: {
                   smsCount: data.smsCount + 1
                 }
@@ -518,7 +513,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             Store.findOneAndUpdate(
               { name: shop },
               {
-                $push: { sms: obj },
                 $set: {
                   smsCount: data.smsCount + 1
                 }
