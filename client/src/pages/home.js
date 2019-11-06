@@ -112,6 +112,9 @@ export default function Home() {
 											{' '}
 											<input type="checkbox" name="orders/cancelled admin" /> Notify Admin{' '}
 										</td>
+										<td>
+											<Link to='/templete'> Edit template </Link>
+										</td>
 									</tr>
 									<tr>
 										<td>Fulfilled: </td>
@@ -123,6 +126,9 @@ export default function Home() {
 											{' '}
 											<input type="checkbox" name="orders/fulfilled admin" /> Notify Admin{' '}
 										</td>
+										<td>
+											<Link to='/templete'> Edit template </Link>
+										</td>
 									</tr>
 									<tr>
 										<td>Partially Fulfilled: </td>
@@ -133,6 +139,9 @@ export default function Home() {
 										<td>
 											{' '}
 											<input type="checkbox" name="orders/partially_fulfilled admin" /> Notify Admin{' '}
+										</td>
+										<td>
+											<Link to='/templete'> Edit template </Link>
 										</td>
 									</tr>
 									<tr>
@@ -148,6 +157,9 @@ export default function Home() {
 											{' '}
 											<input type="checkbox" name="customers/create admin" /> Notify Admin{' '}
 										</td>
+										<td>
+											<Link to='/templete'> Edit template </Link>
+										</td>
 									</tr>
 									<tr>
 										<th>Refunds</th>
@@ -161,6 +173,9 @@ export default function Home() {
 										<td>
 											{' '}
 											<input type="checkbox" name="refunds/create admin" /> Notify Admin{' '}
+										</td>
+										<td>
+											<Link to='/templete'> Edit template </Link>
 										</td>
 									</tr>
 								</tbody>
