@@ -98,6 +98,9 @@ export default function Home() {
 											{' '}
 											<input type="checkbox" name="orders/create admin" /> Notify Admin{' '}
 										</td>
+										<td>
+											<Link to='/templete'> Edit template </Link>
+										</td>
 									</tr>
 									<tr>
 										<td>Cancelled: </td>
