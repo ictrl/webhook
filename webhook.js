@@ -723,9 +723,10 @@ app.get("/api/smsCount", function(req, res) {
   Gshop != undefined ? (shop = "mojitostore.myshopify.com") : (shop = Gshop);
   console.log("722", Gshop);
   Store.findOne({ name: shop }, function(err, data) {
-    var sms = data.smsCount + "";
+    if (data.smsCount == null) {
+      res.send("0");
+    } else var sms = data.smsCount + "";
     res.send(sms);
-    // res.send("19");
   });
 });
 
