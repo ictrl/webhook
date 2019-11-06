@@ -1,20 +1,21 @@
 import React, { useState, useEffect, Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { TemplateContext } from '../App';
-
 // import { visible } from 'ansi-colors';
 
-
-
-
+import { TempleteContext } from '../App';
 
 export default function Home() {
 	const [ smsLeft, setSmsLeft ] = useState(0);
 
-	const { temp, setTemp } = useContext(TemplateContext);
+	const context = useContext(TempleteContext);
 
-	console.log(temp);
+	const { templete, setTemplete } = context;
+
+	console.log(context)
+	console.log(templete)
+
+
 
 	const validate = (e) => {
 		let text = document.getElementById('admin-phone').value;
@@ -43,6 +44,11 @@ export default function Home() {
 
 	return (
 		<Fragment>
+
+			{/* <button onClick={() => {
+				setTemplete({ ...templete, topic: })
+}}> state update  </button> */}
+
 			<div className="container-fluid">
 				<section id="sms">
 					<div className="row">
@@ -113,15 +119,7 @@ export default function Home() {
 											<input type="checkbox" name="orders/create admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'order_create' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 									<tr>
@@ -135,15 +133,7 @@ export default function Home() {
 											<input type="checkbox" name="orders/cancelled admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'order_cancelled' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 									<tr>
@@ -157,15 +147,7 @@ export default function Home() {
 											<input type="checkbox" name="orders/fulfilled admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'order_fulfilled' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 									<tr>
@@ -179,15 +161,7 @@ export default function Home() {
 											<input type="checkbox" name="orders/partially_fulfilled admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'order_partially_fulfilled' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 									<tr>
@@ -204,15 +178,7 @@ export default function Home() {
 											<input type="checkbox" name="customers/create admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'customer_create' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 									<tr>
@@ -229,15 +195,7 @@ export default function Home() {
 											<input type="checkbox" name="refunds/create admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'refund_create' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 								</tbody>

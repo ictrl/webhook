@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+// import Navbar from './components/Navbar';
 
 import './App.css';
 
@@ -10,18 +11,18 @@ import Templete from './pages/templete';
 
 const util = require('util');
 
-export const TemplateContext = React.createContext();
-// export const ChannelContext = React.createContext();
+export const TempleteContext = React.createContext({});
 
-const App = () => {
-	const [ temp, setTemp ] = useState({
-		topic: 'Enter your own topic',
-		ann: ''
-	});
+function App({ children }) {
+	const initialTemplete = 
+		'Please enter topic'
+	;
+
+	const [ templete, setTemplete ] = useState(initialTemplete);
 
 	const showStae = (params) => {
 		console.log(
-			util.inspect(temp, {
+			util.inspect(templete, {
 				showHidden: true,
 				depth: null
 			})
@@ -30,18 +31,18 @@ const App = () => {
 
 	return (
 		<Router>
-			<TemplateContext.Provider value={{ temp, setTemp }}>
-				<div id="showState" style={{ backgroundColor: 'orange' }} onClick={showStae}>
-					Show State
-				</div>
-				<Route exact path="/" component={Home} />
+			<Route exact path="/" component={Home} />
+
+			<TempleteContext.Provider value={{ templete, setTemplete }}>
+				<div onClick={showStae}>Show </div>
 
 				<Route exact path="/templete" component={Templete} />
-			</TemplateContext.Provider>
+			</TempleteContext.Provider>
+
 			<Route exact path="/recharge" component={Recharge} />
 			<Route exact path="/history" component={History} />
 		</Router>
 	);
-};
+}
 
 export default App;

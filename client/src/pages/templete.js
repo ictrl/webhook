@@ -1,15 +1,19 @@
-import React, {  Fragment } from 'react';
-// import { Link } from 'react-router-dom';
-// import axios from 'axios';
+import React, {  Fragment, useContext } from 'react';
 
-// let first = '';
+import { TemplateContext } from '../App';
+
 let second = '';
-export default function templete(props) {
-	console.log(props)
-	// document.getElementById('outputTextArea').value = 'JSON.stringify(props);'
+let third = '';
+export default function Templete(props) {
+
+
+	const { temp, setTemp } = useContext(TemplateContext);
+
+	console.log(temp);
 	
 	const convertData = (e) => {
 		second = e.target.value;
+
 		console.log(second);
 
 		var i = 0,
@@ -23,8 +27,7 @@ export default function templete(props) {
 
 	const showOutput = (parameter) => {
 		let outputTextArea = document.getElementById('outputTextArea');
-		// params = params.replace(" ", "%20")
-		outputTextArea.value = parameter;
+		outputTextArea.value = `"${parameter}"`;
 	};
 
 	return (
