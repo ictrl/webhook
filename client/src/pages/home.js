@@ -1,10 +1,12 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { visible } from 'ansi-colors';
+// import { visible } from 'ansi-colors';
 
 export default function Home() {
 	const [ smsLeft, setSmsLeft ] = useState(0);
+
+
 
 	const validate = (e) => {
 		let text = document.getElementById('admin-phone').value;
@@ -99,7 +101,7 @@ export default function Home() {
 											<input type="checkbox" name="orders/create admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link to='/templete'> Edit template </Link>
+											<Link params={'hello'} to='/templete'> Edit template </Link>
 										</td>
 									</tr>
 									<tr>

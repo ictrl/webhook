@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+// import { Link, Redirect } from 'react-router-dom';
 
 let PATH = 'http://localhost:6000';
 
@@ -113,27 +113,27 @@ export default function Recharge() {
 						</div>
 						<ul className="select-box__list">
 							<li>
-								<label className="select-box__option" htmlFor={0} aria-hidden="aria-hidden" onClick={handler}>
+								<label className="select-box__option" htmlFor={0} aria-hidden="false" onClick={handler}>
 									₹100 for 1000 SMS
 								</label>
 							</li>
 							<li>
-								<label className="select-box__option" onClick={handler} htmlFor={1} aria-hidden="aria-hidden">
+								<label className="select-box__option" onClick={handler} htmlFor={1} aria-hidden="false">
 									₹200 for 2000 SMS
 								</label>
 							</li>
 							<li>
-								<label className="select-box__option" htmlFor={2} onClick={handler} aria-hidden="aria-hidden">
+								<label className="select-box__option" htmlFor={2} onClick={handler} aria-hidden="false">
 									₹300 for 3000 SMS
 								</label>
 							</li>
 							<li>
-								<label onClick={handler} className="select-box__option" htmlFor={3} aria-hidden="aria-hidden">
+								<label onClick={handler} className="select-box__option" htmlFor={3} aria-hidden="false">
 									₹400 for 4000 SMS
 								</label>
 							</li>
 							<li>
-								<label className="select-box__option" htmlFor={4} aria-hidden="aria-hidden" onClick={handler}>
+								<label className="select-box__option" htmlFor={4} aria-hidden="false" onClick={handler}>
 									₹500 for 5000 SMS
 								</label>
 							</li>
@@ -142,9 +142,8 @@ export default function Recharge() {
 
 					<button
 						className="select-box rum-pum"
-						style={{ textAlign: 'left' }}
-						onClick={payment}
-						style={{ height: '56px', width: 180, cursor: 'pointer' }}
+							onClick={payment}
+						style={{textAlign: 'left' , height: '56px', width: '180', cursor: 'pointer' }}
 					>
 						Purchase
 					</button>
