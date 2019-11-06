@@ -39,11 +39,11 @@ export default function Home() {
 						<div className="col-md-4 sms centerr">SMS LEFT {smsLeft}</div>
 						{/* <Link> */}{' '}
 						<div className="col-md-4 buy centerr">
-							<Link to="/recharge">Buy more sms</Link>
+							<Link to="/recharge" style={{color: 'white'}}>Buy more sms</Link>
 						</div>
 						{/* </Link> */}
 						<div className="col-md-4 country centerr">
-							<Link to="/recharge">SMS History</Link>
+							<Link to="/recharge" style={{color: 'white'}}>SMS History</Link>
 						</div>
 					</div>
 				</section>
@@ -59,7 +59,7 @@ export default function Home() {
 								</p>
 							</form>
 						</div>
-						<div className="col-md-4 admin2 mr-2 gray">
+						<div className="col-md-4 admin2 gray">
 							<label htmlFor="input">Admin Phone No:</label> <br />
 							<input type="number" size="10" id="admin-phone" name="admin no" placeholder="Type Number" />
 							<p id="lbltext" style={{ color: 'red', display: 'none' }}>
