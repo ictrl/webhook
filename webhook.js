@@ -714,13 +714,17 @@ const sndSms = (phone, store, message, senderID, shop) => {
   });
 };
 
-app.get("/", function(req, res) {
-  // res.sendFile("index.html", { root: __dirname });
-  res.send("gogomaster");
-});
+// app.get("/api/smsCount/:shop", function(req, res) {
 app.get("/api/smsCount", function(req, res) {
-  // res.sendFile("index.html", { root: __dirname });
-  res.send("9");
+  // const shop = req.params.shop;
+  var shop;
+  Gshop != undefined ? (shop = "mojitostore.myshopify.com") : (shop = Gshop);
+  console.log("722", Gshop);
+  Store.findOne({ name: shop }, function(err, data) {
+    var sms = data.smsCount + "";
+    res.send(sms);
+    // res.send("19");
+  });
 });
 
 if (process.env.NODE_ENV === "production") {
