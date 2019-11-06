@@ -2,6 +2,7 @@ require("dotenv").config();
 const http = require("https");
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 const app = express();
 const crypto = require("crypto");
 const cookie = require("cookie");
@@ -715,8 +716,22 @@ const sndSms = (phone, store, message, senderID, shop) => {
 
 app.get("/", function(req, res) {
   // res.sendFile("index.html", { root: __dirname });
+  res.send("gogomaster");
+});
+app.get("/api/smsCount", function(req, res) {
+  // res.sendFile("index.html", { root: __dirname });
+  res.send("9");
 });
 
-app.listen(process.env.PORT || 4000, () => {
-  console.log("app listening on port 4000!");
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+
+const port = process.env.PORT || 4000;
+
+app.listen(port, () => {
+  console.log(`app listening on port ${port}!`);
 });
