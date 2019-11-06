@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 
 export default function Navbar() {
 	return (
-		<nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+		<Fragment>
+	
+	<h1>hi</h1>
+	
+		{/*	<nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
 			<div className="container">
 				<a className="navbar-brand" href="#">
 					SMS Update
@@ -45,5 +49,11 @@ export default function Navbar() {
 				</div>
 			</div>
 		</nav>
+
+*/}
+			</Fragment>
+
 	);
+
+
 }
