@@ -36,9 +36,15 @@ export default function Home() {
 			<div className="container-fluid">
 				<section id="sms">
 					<div className="row">
-						<div className="col-md-4 sms">SMS LEFT {smsLeft} </div>
-						{/* <Link> */} <div className="col-md-4 buy">Buy more sms</div> {/* </Link> */}
-						<div className="col-md-4 country">SMS History</div>
+						<div className="col-md-4 sms centerr">SMS LEFT {smsLeft}</div>
+						{/* <Link> */}{' '}
+						<div className="col-md-4 buy centerr">
+							<Link to="/recharge">Buy more sms</Link>
+						</div>
+						{/* </Link> */}
+						<div className="col-md-4 country centerr">
+							<Link to="/recharge">SMS History</Link>
+						</div>
 					</div>
 				</section>
 				<section id="admin">

@@ -40,7 +40,15 @@ input[type=number]::-webkit-outer-spin-button {
 
 /* ////////////////////////////////////////////////// */
 
-button {
+.centerr {
+	text-align: center;
+}
+Link {
+	text-decoration: none;
+	color: black;
+}
+
+rum-pum {
 	border: none;
 	background-color: #066cd3;
 	color: #fff !important;
