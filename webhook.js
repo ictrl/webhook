@@ -146,7 +146,8 @@ app.get("/shopify/callback", (req, res) => {
       .then(accessTokenResponse => {
         accessToken = accessTokenResponse.access_token;
 
-        res.sendFile("index.html", { root: __dirname });
+        // res.sendFile("index.html", { root: __dirname });
+        res.redirect("/");
       })
       .catch(error => {
         // res.sendFile("index.html");
@@ -160,6 +161,7 @@ app.get("/shopify/callback", (req, res) => {
 
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
+  res.send(200); //add
 
   const store = new Store({
     name: Gshop,
