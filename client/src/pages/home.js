@@ -1,10 +1,18 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 // import { visible } from 'ansi-colors';
 
+import { TempleteContext } from '../App';
+
 export default function Home() {
 	const [ smsLeft, setSmsLeft ] = useState(0);
+
+	const context = useContext(TempleteContext);
+
+	const { templete, setTemplete } = context;
+
+	// console.log(templete);
 
 
 
@@ -35,17 +43,26 @@ export default function Home() {
 
 	return (
 		<Fragment>
+
+			<div onClick={() => {
+				setTemplete( 'updated')
+}}> state update  </div>
+
 			<div className="container-fluid">
 				<section id="sms">
 					<div className="row">
 						<div className="col-md-4 sms centerr">SMS LEFT {smsLeft}</div>
 						{/* <Link> */}{' '}
 						<div className="col-md-4 buy centerr">
-							<Link to="/recharge" style={{color: 'white'}}>Buy more sms</Link>
+							<Link to="/recharge" style={{ color: 'white' }}>
+								Buy more sms
+							</Link>
 						</div>
 						{/* </Link> */}
 						<div className="col-md-4 country centerr">
-							<Link to="/recharge" style={{color: 'white'}}>SMS History</Link>
+							<Link to="/recharge" style={{ color: 'white' }}>
+								SMS History
+							</Link>
 						</div>
 					</div>
 				</section>
@@ -101,7 +118,7 @@ export default function Home() {
 											<input type="checkbox" name="orders/create admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link params={'hello'} to='/templete'> Edit template </Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 									<tr>
@@ -115,7 +132,7 @@ export default function Home() {
 											<input type="checkbox" name="orders/cancelled admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link to='/templete'> Edit template </Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 									<tr>
@@ -129,7 +146,7 @@ export default function Home() {
 											<input type="checkbox" name="orders/fulfilled admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link to='/templete'> Edit template </Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 									<tr>
@@ -143,7 +160,7 @@ export default function Home() {
 											<input type="checkbox" name="orders/partially_fulfilled admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link to='/templete'> Edit template </Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 									<tr>
@@ -160,7 +177,7 @@ export default function Home() {
 											<input type="checkbox" name="customers/create admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link to='/templete'> Edit template </Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 									<tr>
@@ -177,7 +194,7 @@ export default function Home() {
 											<input type="checkbox" name="refunds/create admin" /> Notify Admin{' '}
 										</td>
 										<td>
-											<Link to='/templete'> Edit template </Link>
+											<Link to="/templete"> Edit template </Link>
 										</td>
 									</tr>
 								</tbody>
