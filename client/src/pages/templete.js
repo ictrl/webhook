@@ -1,33 +1,31 @@
-import React, {  Fragment, useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
 
 import { TemplateContext } from '../App';
 
 let second = '';
 let third = '';
 export default function Templete(props) {
-
-
 	const { temp, setTemp } = useContext(TemplateContext);
 
 	console.log(temp);
-	
-	const convertData = (e) => {
-		second = e.target.value;
 
-		console.log(second);
+	const convertDat = () => {
+		console.log(document.getElementById('inputTextArea'));
+		third = document.getElementById('inputTextArea').value;
+		console.log(third);
 
-		var i = 0,
-			strLength = second.length;
-		for (i; i < strLength; i++) {
-			second = second.replace(' ', '%20');
+		for (let i = 0; i < third.length; i++) {
+			third = third.replace(' ', '%20');
+			third = third.replace('(', '${');
+			third = third.replace(')', '}');
 		}
-
-		showOutput(second);
+		showOutput(third);
 	};
 
 	const showOutput = (parameter) => {
 		let outputTextArea = document.getElementById('outputTextArea');
 		outputTextArea.value = `"${parameter}"`;
+		console.log(parameter);
 	};
 
 	return (
@@ -47,16 +45,11 @@ export default function Templete(props) {
 									required
 									autoFocus
 									defaultValue={''}
-									onChange={convertData}
 								/>
 								<div className="invalid-feedback">Please enter Data in the textarea.</div>
-								{/* <button
-            type="submit"
-            className="btn btn-primary my-3"
-            onclick=""
-          >
-            Convert me!
-          </button> */}
+								<button className="btn btn-primary my-3" onClick={convertDat}>
+									Convert me!
+								</button>
 								<textarea className="form-control" id="outputTextArea" rows={5} defaultValue={''} />
 							</div>
 						</div>
