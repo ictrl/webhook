@@ -146,7 +146,8 @@ app.get("/shopify/callback", (req, res) => {
       .then(accessTokenResponse => {
         accessToken = accessTokenResponse.access_token;
 
-        res.sendFile("index.html", { root: __dirname });
+        // res.sendFile("index.html", { root: __dirname });
+        res.redirect("/");
       })
       .catch(error => {
         // res.sendFile("index.html");
@@ -160,6 +161,7 @@ app.get("/shopify/callback", (req, res) => {
 
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
+  res.send(200); //add
 
   const store = new Store({
     name: Gshop,
@@ -714,13 +716,17 @@ const sndSms = (phone, store, message, senderID, shop) => {
   });
 };
 
-app.get("/", function(req, res) {
-  // res.sendFile("index.html", { root: __dirname });
-  res.send("gogomaster");
-});
+// app.get("/api/smsCount/:shop", function(req, res) {
 app.get("/api/smsCount", function(req, res) {
-  // res.sendFile("index.html", { root: __dirname });
-  res.send("9");
+  // const shop = req.params.shop;
+  var shop;
+  Gshop != undefined ? (shop = "mojitostore.myshopify.com") : (shop = Gshop);
+  console.log("722", Gshop);
+  Store.findOne({ name: shop }, function(err, data) {
+    var sms = data.smsCount + "";
+    res.send(sms);
+    // res.send("19");
+  });
 });
 
 if (process.env.NODE_ENV === "production") {

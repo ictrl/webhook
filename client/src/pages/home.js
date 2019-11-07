@@ -32,7 +32,7 @@ export default function Home() {
 	};
 
 	const smsCount = () => {
-		axios.get('/api/smsCount').then((res) => {
+		axios.get('/api/smsCount/').then((res) => {
 			setSmsLeft(res.data);
 		});
 	};
