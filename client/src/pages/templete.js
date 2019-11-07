@@ -8,14 +8,14 @@ export default function Templete(props) {
 	// var inputTextArea = document.getElementById('inputTextArea');
 
 	const convertData = (param) => {
-		console.log(param);
+		// console.log(param);
 		let inputTextArea = document.getElementById(param.textareaId);
 		let btn = document.getElementById(param.btnId);
 		// console.log(inputTextArea);
 		// console.log(btn);
 		let strLength = 0;
 		let luna = document.getElementById(param.textareaId).className;
-		console.log(luna);
+		// console.log(luna);
 		var inputData = document.getElementById(param.textareaId).value;
 		if (inputData != '' && inputData != null) {
 			// start and end spaces
@@ -34,10 +34,10 @@ export default function Templete(props) {
 
 			if (luna.indexOf('is-invalid') > -1) {
 				strLength = luna.split(' ').length;
-				console.log(strLength);
+				// console.log(strLength);
 				for (let i = 0; i < strLength; i++) {
 					luna = luna.replace('is-invalid', '');
-					console.log('for under', luna);
+					// console.log('for under', luna);
 				}
 
 				// luna = luna.replace('is-invalid', '');
@@ -48,7 +48,7 @@ export default function Templete(props) {
 			luna = document.getElementById(param.textareaId).className;
 			luna = luna.concat(' ');
 			luna = luna.concat('is-invalid');
-			console.log('3', luna);
+			// console.log('3', luna);
 			document.getElementById(param.textareaId).className = luna;
 			// document.getElementById('outputTextArea').value = '';
 		}
