@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import './App.css';
+import "./App.css";
 
-import Home from './pages/home';
-import Recharge from './pages/recharge';
-import History from './pages/history';
-import Templete from './pages/templete';
+import Home from "./pages/home";
+import Recharge from "./pages/recharge";
+import Thanks from "./pages/thanks";
+import History from "./pages/history";
+import Templete from "./pages/templete";
 
-const util = require('util');
+const util = require("util");
 
 export const TemplateContext = React.createContext();
 // export const ChannelContext = React.createContext();
