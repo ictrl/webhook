@@ -104,259 +104,214 @@ export default function Home() {
               </div>
             </div>
 
-	const smsCount = () => {
-		axios.get('/api/smsCount/').then((res) => {
-			setSmsLeft(res.data);
-		});
-	};
-
-	useEffect(() => {
-		smsCount();
-	}, []);
-
-	return (
-		<Fragment>
-			<div className="container-fluid">
-				<section id="sms">
-					<div className="row">
-						<div className="col-md-4 sms centerr">SMS LEFT {smsLeft}</div>
-						{/* <Link> */}{' '}
-						<div className="col-md-4 buy centerr">
-							<Link to="/recharge" style={{ color: 'white' }}>
-								Buy more sms
-							</Link>
-						</div>
-						{/* </Link> */}
-						<div className="col-md-4 country centerr">
-							<Link to="/recharge" style={{ color: 'white' }}>
-								SMS History
-							</Link>
-						</div>
-					</div>
-				</section>
-				<section id="admin">
-					<div className="row">
-						<div className="col-md-4 admin">
-							<form action="https://immense-bastion-25565.herokuapp.com/myaction" method="post">
-								{/* <form action="http://localhost:4000/myaction" method="post"> */}
-								<p>
-									<b>Admin Phone No.</b> <br />
-									<br />
-									Admin will be notify on this no. by selecting Notify Admin.
-								</p>
-							</form>
-						</div>
-						<div className="col-md-4 admin2 gray">
-							<label htmlFor="input">Admin Phone No:</label> <br />
-							<input type="number" size="10" id="admin-phone" name="admin no" placeholder="Type Number" />
-							<p id="lbltext" style={{ color: 'red', display: 'none' }}>
-								Invalid
-							</p>
-						</div>
-						<div className="col-md-3 licence ml-5  px-2 gray">
-							<br />
-							<p>Licence Key: a43b4c25f400f37988ef7b5b6727b00f</p>
-							<br />
-						</div>
-					</div>
-				</section>
-				<hr />
-				<section id="notification">
-					<div className="row">
-						<div className="col-md-4 notification">
-							<br />
-							<br />
-							<b>Notification Preference</b> <br /> <br />
-							<p>Select when to send SMS</p>
-						</div>
-						<div className="col-md-8 gray ">
-							<table>
-								<tbody>
-									<tr>
-										<th>Orders</th>
-									</tr>
-									<tr>
-										<td>Create: </td>
-										<td>
-											{' '}
-											<input type="checkbox" name="orders/create customer" /> Notify Customer{' '}
-										</td>
-										<td>
-											{' '}
-											<input type="checkbox" name="orders/create admin" /> Notify Admin{' '}
-										</td>
-										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'order_create' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
-										</td>
-									</tr>
-									<tr>
-										<td>Cancelled: </td>
-										<td>
-											{' '}
-											<input type="checkbox" name="orders/cancelled customer" /> Notify Customer{' '}
-										</td>
-										<td>
-											{' '}
-											<input type="checkbox" name="orders/cancelled admin" /> Notify Admin{' '}
-										</td>
-										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'order_cancelled' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
-										</td>
-									</tr>
-									<tr>
-										<td>Fulfilled: </td>
-										<td>
-											{' '}
-											<input type="checkbox" name="orders/fulfilled customer" /> Notify Customer{' '}
-										</td>
-										<td>
-											{' '}
-											<input type="checkbox" name="orders/fulfilled admin" /> Notify Admin{' '}
-										</td>
-										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'order_fulfilled' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
-										</td>
-									</tr>
-									<tr>
-										<td>Partially Fulfilled: </td>
-										<td>
-											{' '}
-											<input type="checkbox" name="orders/partially_fulfilled customer" /> Notify Customer{' '}
-										</td>
-										<td>
-											{' '}
-											<input type="checkbox" name="orders/partially_fulfilled admin" /> Notify Admin{' '}
-										</td>
-										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'order_partially_fulfilled' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
-										</td>
-									</tr>
-									<tr>
-										<th>Customers Account</th>
-									</tr>
-									<tr>
-										<td>Create: </td>
-										<td>
-											{' '}
-											<input type="checkbox" name="customers/create customer" /> Notify Customer{' '}
-										</td>
-										<td>
-											{' '}
-											<input type="checkbox" name="customers/create admin" /> Notify Admin{' '}
-										</td>
-										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'customer_create' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
-										</td>
-									</tr>
-									<tr>
-										<th>Refunds</th>
-									</tr>
-									<tr>
-										<td>Create: </td>
-										<td>
-											{' '}
-											<input type="checkbox" name="refunds/create customer" /> Notify Customer{' '}
-										</td>
-										<td>
-											{' '}
-											<input type="checkbox" name="refunds/create admin" /> Notify Admin{' '}
-										</td>
-										<td>
-											<Link
-												to="/templete"
-												onClick={() => {
-													setTemp({ ...temp, topic: 'refund_create' });
-												}}
-											>
-												{' '}
-												Edit template{' '}
-											</Link>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</section>
-				<hr />
-				<section id="sender">
-					<div className="row">
-						<div className="col-md-4 admin">
-							<p>
-								<br />
-								<br />
-								<b>Sender Id</b> <br /> <br />
-								Customise sender id according to your needs.
-							</p>
-						</div>
-						<div className="col-md-7 admin2 mr-2 gray">
-							<label htmlFor="input">Sender ID:</label>
-							<input className="mx-5" autoCapitalize="true" type="text" name="sender id" maxLength={6} />
-							<br />
-							<br />
-							<p>
-								<b>What is Sender ID?</b> <br />
-							</p>
-							<ul>
-								<li>
-									Sender ID is the alpha-character name or number which appears on the mobile phone as the sender of a
-									SMS (It is used to identify who’s sending the message to the recipient). Sender ID can be a
-									alphacharacter name such as the name of your company.
-								</li>
-								<li>
-									You can enter sender id for approval, once approved all your sms notifications will be sent with
-									approved sender id for you.
-								</li>
-								<li>Sender ID will be maximum of 6 Characters.</li>
-							</ul>
-							<p />
-							<button type="submit" onClick={validate} className>
-								Save
-							</button>
-						</div>
-					</div>
-				</section>
-			</div>
-		</Fragment>
-	);
+            <hr />
+            <section id="notification">
+              <div className="row">
+                <div className="col-md-4 notification">
+                  <br />
+                  <br />
+                  <b>Notification Preference</b> <br /> <br />
+                  <p>Select when to send SMS</p>
+                </div>
+                <div className="col-md-8 gray ">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <th>Orders</th>
+                      </tr>
+                      <tr>
+                        <td>Create: </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="orders/create customer"
+                          />{" "}
+                          Notify Customer{" "}
+                        </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="orders/create admin"
+                          />{" "}
+                          Notify Admin{" "}
+                        </td>
+                        <td>
+                          <Link to="/templete"> Edit template </Link>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Cancelled: </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="orders/cancelled customer"
+                          />{" "}
+                          Notify Customer{" "}
+                        </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="orders/cancelled admin"
+                          />{" "}
+                          Notify Admin{" "}
+                        </td>
+                        <td>
+                          <Link to="/templete"> Edit template </Link>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Fulfilled: </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="orders/fulfilled customer"
+                          />{" "}
+                          Notify Customer{" "}
+                        </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="orders/fulfilled admin"
+                          />{" "}
+                          Notify Admin{" "}
+                        </td>
+                        <td>
+                          <Link to="/templete"> Edit template </Link>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Partially Fulfilled: </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="orders/partially_fulfilled customer"
+                          />{" "}
+                          Notify Customer{" "}
+                        </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="orders/partially_fulfilled admin"
+                          />{" "}
+                          Notify Admin{" "}
+                        </td>
+                        <td>
+                          <Link to="/templete"> Edit template </Link>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Customers Account</th>
+                      </tr>
+                      <tr>
+                        <td>Create: </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="customers/create customer"
+                          />{" "}
+                          Notify Customer{" "}
+                        </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="customers/create admin"
+                          />{" "}
+                          Notify Admin{" "}
+                        </td>
+                        <td>
+                          <Link to="/templete"> Edit template </Link>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Refunds</th>
+                      </tr>
+                      <tr>
+                        <td>Create: </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="refunds/create customer"
+                          />{" "}
+                          Notify Customer{" "}
+                        </td>
+                        <td>
+                          {" "}
+                          <input
+                            type="checkbox"
+                            name="refunds/create admin"
+                          />{" "}
+                          Notify Admin{" "}
+                        </td>
+                        <td>
+                          <Link to="/templete"> Edit template </Link>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+            <hr />
+            <section id="sender">
+              <div className="row">
+                <div className="col-md-4 admin">
+                  <p>
+                    <br />
+                    <br />
+                    <b>Sender Id</b> <br /> <br />
+                    Customise sender id according to your needs.
+                  </p>
+                </div>
+                <div className="col-md-7 admin2 mr-2 gray">
+                  <label htmlFor="input">Sender ID:</label>
+                  <input
+                    className="mx-5"
+                    autoCapitalize="true"
+                    type="text"
+                    name="sender id"
+                    maxLength={6}
+                  />
+                  <br />
+                  <br />
+                  <p>
+                    <b>What is Sender ID?</b> <br />
+                  </p>
+                  <ul>
+                    <li>
+                      Sender ID is the alpha-character name or number which
+                      appears on the mobile phone as the sender of a SMS (It is
+                      used to identify who’s sending the message to the
+                      recipient). Sender ID can be a alphacharacter name such as
+                      the name of your company.
+                    </li>
+                    <li>
+                      You can enter sender id for approval, once approved all
+                      your sms notifications will be sent with approved sender
+                      id for you.
+                    </li>
+                    <li>Sender ID will be maximum of 6 Characters.</li>
+                  </ul>
+                  <p />
+                  <button type="submit" onClick={validate} className>
+                    Save
+                  </button>
+                </div>
+              </div>
+            </section>
+          </form>
+        </section>
+      </div>
+    </Fragment>
+  );
 }
