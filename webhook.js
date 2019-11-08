@@ -621,7 +621,7 @@ app.post("/api/template", function(req, res) {
   let data = req.body;
   console.log("data", data);
 
-  if (Gshop !== "") {
+  if (Gshop != "") {
     Store.findOneAndUpdate(
       { name: Gshop },
       {
@@ -744,16 +744,25 @@ const sndSms = (phone, store, message, senderID, shop) => {
   });
 };
 
+// app.get("/api/smsCount", function(req, res) {
+//   if (Gshop == "") {
+//     res.send("0");
+//   } else {
+//     Store.findOne({ name: Gshop }, function(err, data) {
+//       var sms = data.smsCount + "";
+//       res.send(sms);
+//     });
+//   }
+// });
 app.get("/api/smsCount", function(req, res) {
-  console.log("720 shop-->", Gshop);
-  if (Gshop == "") {
-    res.send("0");
-  } else {
-    Store.findOne({ name: Gshop }, function(err, data) {
+  Store.findOne({ name: Gshop }, function(err, data) {
+    if (data) {
       var sms = data.smsCount + "";
       res.send(sms);
-    });
-  }
+    } else {
+      res.send("00");
+    }
+  });
 });
 
 if (process.env.NODE_ENV === "production") {
