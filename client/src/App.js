@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import "./App.css";
 
@@ -12,38 +11,38 @@ import Templete from "./pages/templete";
 
 const util = require("util");
 
-export const TempleteContext = React.createContext({});
+export const TemplateContext = React.createContext();
+// export const ChannelContext = React.createContext();
 
-const initialTemplete = {
-  topic: "Please enter topic"
+const App = () => {
+	const [ temp, setTemp ] = useState({
+		topic: 'Enter your own topic',
+		ann: ''
+	});
+
+	const showStae = (params) => {
+		console.log(
+			util.inspect(temp, {
+				showHidden: true,
+				depth: null
+			})
+		);
+	};
+
+	return (
+		<Router>
+			<TemplateContext.Provider value={{ temp, setTemp }}>
+				<div id="showState" style={{ backgroundColor: 'orange' }} onClick={showStae}>
+					Show State
+				</div>
+				<Route exact path="/" component={Home} />
+
+				<Route exact path="/templete" component={Templete} />
+			</TemplateContext.Provider>
+			<Route exact path="/recharge" component={Recharge} />
+			<Route exact path="/history" component={History} />
+		</Router>
+	);
 };
-
-function App({ children }) {
-  const [templete, setTemplete] = useState(initialTemplete);
-
-  const show = () => {
-    console.log(
-      util.inspect(templete, {
-        showHidden: true,
-        depth: null
-      })
-    );
-  };
-
-  return (
-    <Router>
-      <Route exact path="/" component={Home} />
-      <Navbar />
-      <TempleteContext.Provider value={{ templete, setTemplete }}>
-        <div onClick={show}>show</div>
-        <Route exact path="/templete" component={Templete} />
-      </TempleteContext.Provider>
-
-      <Route exact path="/recharge" component={Recharge} />
-      <Route exact path="/history" component={History} />
-      <Route exact path="/thanks" component={Thanks} />
-    </Router>
-  );
-}
 
 export default App;
