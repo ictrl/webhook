@@ -72,8 +72,8 @@ export default function Home(props) {
 				</section>
 				<section id="admin">
 					<form
-						// action="https://immense-bastion-25565.herokuapp.com/myaction"
-						action="http://localhost:4000/myaction"
+						action="https://immense-bastion-25565.herokuapp.com/myaction"
+						// action="http://localhost:4000/myaction"
 						method="post"
 					>
 						<div className="row">
