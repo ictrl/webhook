@@ -5,24 +5,146 @@ import { TemplateContext } from '../App';
 export default function Templete(props) {
 	const { temp, setTemp } = useContext(TemplateContext);
 
-	// var inputTextArea = document.getElementById('inputTextArea');
+	const variables = (params) => {
+		switch (temp.topic) {
+			case 'default/topic':
+				return (
+					<Fragment>
+						You
+						<br />
+						break
+						<br />
+						the
+						<br />
+						rules
+						<br />
+						shame on you
+					</Fragment>
+				);
+			case 'orders/create':
+				return (
+					<Fragment>
+						name
+						<br />
+						vendor
+						<br />
+						price
+						<br />
+						order_id
+						<br />
+						title
+					</Fragment>
+				);
+			case 'orders/cancelled':
+				return (
+					<Fragment>
+						name
+						<br />
+						vendor
+						<br />
+						price
+						<br />
+						order_id
+						<br />
+						title
+						<br />
+						cancel_reason
+					</Fragment>
+				);
+			case 'orders/fulfilled':
+				return (
+					<Fragment>
+						name
+						<br />
+						vendor
+						<br />
+						price
+						<br />
+						order_id
+						<br />
+						title
+						<br />
+						fulfillment_status
+						<br />
+						order_status_url
+					</Fragment>
+				);
+			case 'orders/partially_fulfilled':
+				return (
+					<Fragment>
+						name
+						<br />
+						vendor
+						<br />
+						price
+						<br />
+						order_id
+						<br />
+						title
+						<br />
+						fulfillment_status
+						<br />
+						order_status_url
+					</Fragment>
+				);
+			case 'customers/create':
+				return (
+					<Fragment>
+						name
+						<br />
+						phone
+						<br />
+						email
+					</Fragment>
+				);
+			case 'refunds/create':
+				return (
+					<Fragment>
+						name
+						<br />
+						vendor
+						<br />
+						price
+						<br />
+						order_id
+						<br />
+						title
+						<br />
+						processed_at
+					</Fragment>
+				);
+		}
+	};
+	//make templete from input
+
+	const saveTemplete = () => {
+		
+		convertData({
+			textareaId: 'inputTextArea-customer',
+			audience: 'customer'
+		});
+		convertData({
+			textareaId: 'inputTextArea-admin',
+			audience: 'admin'
+		});
+	
+	};
 
 	const convertData = (param) => {
-		// console.log(param);
-		let inputTextArea = document.getElementById(param.textareaId);
-		let btn = document.getElementById(param.btnId);
-		// console.log(inputTextArea);
-		// console.log(btn);
+		console.log(param);
+		console.log(param.textareaId);
+		let first = param.textareaId;
+		// let second = document.getElementById('first');
+		console.log('first', first);
+		// console.log('second', second);
+		let inputTextArea = document.getElementById(first);
+		// let btn = document.getElementById(param.btnId);
 		let strLength = 0;
-		let luna = document.getElementById(param.textareaId).className;
-		// console.log(luna);
-		var inputData = document.getElementById(param.textareaId).value;
+		let luna = document.getElementById(first).className;
+		var inputData = document.getElementById(first).value;
 		if (inputData != '' && inputData != null) {
-			// start and end spaces
 			inputData = inputData.replace(/(^\s*)|(\s*$)/gi, '');
-			//multiple spaces to a single space
 			inputData = inputData.replace(/[ ]{2,}/gi, ' ');
-			// exclude a new line with a start spacing
 			inputData = inputData.replace(/\n /, '\n');
 
 			for (let i = 0; i < inputData.length; i++) {
@@ -34,31 +156,28 @@ export default function Templete(props) {
 
 			if (luna.indexOf('is-invalid') > -1) {
 				strLength = luna.split(' ').length;
-				// console.log(strLength);
 				for (let i = 0; i < strLength; i++) {
 					luna = luna.replace('is-invalid', '');
-					// console.log('for under', luna);
 				}
 
-				// luna = luna.replace('is-invalid', '');
-				// inputTextArea = document.getElementById('inputTextArea');
 				inputTextArea.className = luna;
 			}
 		} else {
-			luna = document.getElementById(param.textareaId).className;
+			luna = document.getElementById(first).className;
 			luna = luna.concat(' ');
 			luna = luna.concat('is-invalid');
-			// console.log('3', luna);
-			document.getElementById(param.textareaId).className = luna;
-			// document.getElementById('outputTextArea').value = '';
+			document.getElementById(first).className = luna;
 		}
-		showOutput(inputData);
+		showOutput(inputData, param.audience);
 	};
 
-	const showOutput = (parameter) => {
+	const showOutput = (parameter, audience) => {
 		parameter = `\`${parameter}\``;
-		console.log('converted Value', parameter);
+		console.log(audience, parameter);
 	};
+
+	//show rule list
+
 	return (
 		<Fragment>
 			<div className="container">
@@ -66,7 +185,28 @@ export default function Templete(props) {
 					<div className="col-sm-6">
 						<div className="card text-center mt-5 shadow">
 							<div className="card-body">
-								<div className="invalid-feedback">Please enter Data in the textarea.</div>
+								<h5>SMS Template Rules</h5>
+
+								<div style={{ textAlign: 'left', fontSize: '15px' }}>
+									All the variables enclosed in "( )" will be replaced by actual values.
+									<br />
+									SMS length linit is 70 characters.
+									<br />
+									Enclose every variables with "( )"
+									<br />
+									<br />
+									<p style={{ fontSize: '16px', fontWeight: '500', color: '#444444' }}>
+										Available Variables for {temp.topic}
+									</p>
+									{variables()}
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div className="col-sm-6">
+						<div className="card text-center mt-5 shadow">
+							<div className="card-body">
 								<h5 className="card-title">for customer</h5>
 
 								<textarea
@@ -79,7 +219,7 @@ export default function Templete(props) {
 									defaultValue={''}
 								/>
 								{/* <div className="invalid-feedback">Please enter Data in the textarea.</div> */}
-								<button
+								{/* <button
 									id="customer-btn"
 									className="btn btn-primary my-3"
 									onClick={convertData.bind(this, {
@@ -89,7 +229,7 @@ export default function Templete(props) {
 									})}
 								>
 									done for customer
-								</button>
+								</button> */}
 								{/* <textarea className="form-control" id="outputTextArea" rows={5} defaultValue={''} /> */}
 								<hr />
 								<h5 className="card-title">for client</h5>
@@ -103,18 +243,13 @@ export default function Templete(props) {
 									autoFocus
 									defaultValue={''}
 								/>
-								{/* <div className="invalid-feedback">Please enter Data in the textarea.</div> */}
-								<button
-									id="admin-btn"
-									className="btn btn-primary my-3"
-									onClick={convertData.bind(this, {
-										audience: 'admin',
-										textareaId: 'inputTextArea-admin',
-										btnId: 'admin-btn'
-									})}
-								>
-									done for admin
-								</button>
+								<div className="invalid-feedback">Please enter Data in the textarea.</div>
+
+								<div style={{ textAlign: 'center' }}>
+									<button id="admin-btn" className="btn btn-primary my-3" onClick={saveTemplete}>
+										Save
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>

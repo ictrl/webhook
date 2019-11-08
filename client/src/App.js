@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import "./App.css";
@@ -16,8 +16,8 @@ export const TemplateContext = React.createContext();
 
 const App = () => {
 	const [ temp, setTemp ] = useState({
-		topic: 'Enter your own topic',
-		ann: ''
+		topic: 'default/topic',
+		ann: 'default'
 	});
 
 	const showStae = (params) => {
@@ -31,9 +31,13 @@ const App = () => {
 
 	return (
 		<Router>
+			
 			<TemplateContext.Provider value={{ temp, setTemp }}>
-				<div id="showState" style={{ backgroundColor: 'orange' }} onClick={showStae}>
-					Show State
+				<div id="showState" style={{ backgroundColor: 'orange', fontWeight: '900', color: 'green', textAlign: 'right', position: 'fixed',top: 0, height: '100%',zIndex: 999 }}  onClick={showStae}>
+					
+					<p style={{color: 'orange'}}>
+						hola
+					</p>
 				</div>
 				<Route exact path="/" component={Home} />
 
