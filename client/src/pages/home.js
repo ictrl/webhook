@@ -3,11 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { TemplateContext } from '../App';
 
-// import { visible } from 'ansi-colors';
-
-
-
-
 
 export default function Home() {
 	const [ smsLeft, setSmsLeft ] = useState(0);
