@@ -4,12 +4,12 @@ import { Redirect } from "react-router-dom";
 import axios from "axios";
 // import { visible } from 'ansi-colors';
 
-import { TempleteContext } from "../App";
+// import { TempleteContext } from "../App";
 
 export default function Home() {
   const [smsLeft, setSmsLeft] = useState(0);
-  const context = useContext(TempleteContext);
-  const { templete, setTemplete } = context;
+  // const context = useContext(TempleteContext);
+  // const { templete, setTemplete } = context;
 
   // console.log(templete);
 
@@ -45,7 +45,7 @@ export default function Home() {
     <Fragment>
       <div
         onClick={() => {
-          setTemplete("updated");
+          // setTemplete("updated");
         }}
       >
         {" "}
