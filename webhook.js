@@ -620,6 +620,25 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
 app.post("/api/template", function(req, res) {
   let data = req.body;
   console.log("data", data);
+
+  if (Gshop !== "") {
+    Store.findOneAndUpdate(
+      { name: Gshop },
+      {
+        $push: { template: data }
+      },
+      { new: true, useFindAndModify: false },
+      (err, data) => {
+        if (!err) {
+          console.log("data");
+        } else {
+          console.log("err", err);
+        }
+      }
+    );
+  } else {
+    console.log("Gshop-->640", Gshop);
+  }
 });
 
 const sndSms = (phone, store, message, senderID, shop) => {
