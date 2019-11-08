@@ -161,6 +161,7 @@ app.get("/shopify/callback", (req, res) => {
 
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
+  console.log(req.body);
   res.send(200); //add
 
   const store = new Store({
@@ -716,18 +717,16 @@ const sndSms = (phone, store, message, senderID, shop) => {
   });
 };
 
-// app.get("/api/smsCount/:shop", function(req, res) {
 app.get("/api/smsCount", function(req, res) {
-  // const shop = req.params.shop;
-  var shop;
-  Gshop != undefined ? (shop = "mojitostore.myshopify.com") : (shop = Gshop);
-  console.log("722", Gshop);
-  Store.findOne({ name: shop }, function(err, data) {
-    if (data.smsCount == null) {
-      res.send("0");
-    } else var sms = data.smsCount + "";
-    res.send(sms);
-  });
+  console.log("720 shop-->", Gshop);
+  if (Gshop == "") {
+    res.send("0");
+  } else {
+    Store.findOne({ name: Gshop }, function(err, data) {
+      var sms = data.smsCount + "";
+      res.send(sms);
+    });
+  }
 });
 
 if (process.env.NODE_ENV === "production") {

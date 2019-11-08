@@ -1,47 +1,47 @@
-import React, { useState, useEffect, Fragment, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect, Fragment, useContext } from "react";
+import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import axios from "axios";
 // import { visible } from 'ansi-colors';
 
-import { TempleteContext } from '../App';
+import { TempleteContext } from "../App";
 
 export default function Home() {
-	const [ smsLeft, setSmsLeft ] = useState(0);
+  const [smsLeft, setSmsLeft] = useState(0);
+  const context = useContext(TempleteContext);
+  const { templete, setTemplete } = context;
 
-	const context = useContext(TempleteContext);
+  // console.log(templete);
 
-	const { templete, setTemplete } = context;
+  const validate = e => {
+    // e.preventDefault();
+    let text = document.getElementById("admin-phone").value;
 
-	// console.log(templete);
+    let regx = /^[6-9][0-9]{9}$/;
+    if (regx.test(text)) {
+      document.getElementById("lbltext").innerHTML = "all okay";
+      document.getElementById("lbltext").style.display = "block";
+      document.getElementById("lbltext").style.color = "green";
+      return <Link to="/thanks" />;
+    } else {
+      document.getElementById("lbltext").innerHTML =
+        "Mobile no. is invalid Valid";
+      document.getElementById("lbltext").style.display = "block";
+      document.getElementById("lbltext").style.color = "red";
+    }
+  };
 
+  const smsCount = () => {
+    axios.get("/api/smsCount/").then(res => {
+      setSmsLeft(res.data);
+    });
+  };
 
+  useEffect(() => {
+    smsCount();
+  }, []);
 
-	const validate = (e) => {
-		let text = document.getElementById('admin-phone').value;
-
-		let regx = /^[6-9][0-9]{9}$/;
-		if (regx.test(text)) {
-			document.getElementById('lbltext').innerHTML = 'all okay';
-			document.getElementById('lbltext').style.display = 'block';
-			document.getElementById('lbltext').style.color = 'green';
-		} else {
-			document.getElementById('lbltext').innerHTML = 'Mobile no. is invalid Valid';
-			document.getElementById('lbltext').style.display = 'block';
-			document.getElementById('lbltext').style.color = 'red';
-		}
-	};
-
-	const smsCount = () => {
-		axios.get('/api/smsCount/').then((res) => {
-			setSmsLeft(res.data);
-		});
-	};
-
-	useEffect(() => {
-		smsCount();
-	}, []);
-
-	return (
+  return (
     <Fragment>
       <div
         onClick={() => {
@@ -64,7 +64,7 @@ export default function Home() {
             </div>
             {/* </Link> */}
             <div className="col-md-4 country centerr">
-              <Link to="/recharge" style={{ color: "white" }}>
+              <Link to="/history" style={{ color: "white" }}>
                 SMS History
               </Link>
             </div>
@@ -72,7 +72,8 @@ export default function Home() {
         </section>
         <section id="admin">
           <form
-            action="https://immense-bastion-25565.herokuapp.com/myaction"
+            // action="https://immense-bastion-25565.herokuapp.com/myaction"
+            action="http://localhost:4000/myaction"
             method="post"
           >
             <div className="row">
