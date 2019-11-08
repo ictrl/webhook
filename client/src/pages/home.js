@@ -4,14 +4,13 @@ import { Redirect } from "react-router-dom";
 import axios from "axios";
 // import { visible } from 'ansi-colors';
 
-// import { TempleteContext } from "../App";
+import { TemplateContext } from '../App';
 
-export default function Home() {
+export default function Home( props) {
   const [smsLeft, setSmsLeft] = useState(0);
-  // const context = useContext(TempleteContext);
-  // const { templete, setTemplete } = context;
+  const { temp, setTemp } = useContext(TemplateContext);
 
-  // console.log(templete);
+  console.log(temp);
 
   const validate = e => {
     // e.preventDefault();
@@ -138,7 +137,9 @@ export default function Home() {
                           Notify Admin{" "}
                         </td>
                         <td>
-                          <Link to="/templete"> Edit template </Link>
+													<Link
+														onClick={()=>setTemp({topic: 'create'})}
+														to="/templete"> Edit template </Link>
                         </td>
                       </tr>
                       <tr>
