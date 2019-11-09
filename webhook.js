@@ -748,21 +748,19 @@ app.post("/api/template", function(req, res) {
 
 // send rechage smscount to db
 app.post("/api/recharge", function(req, res) {
-  let data = req.body;
-  console.log("data", data.smsCount);
-  console.log("data typeof", typeof data.smsCount);
-  console.log("data parse to int", parseInt(data.smsCount));
+  let sms = req.body;
+  console.log("selected  sms pack ", parseInt(sms.smsCount));
 
   if (Gshop != "") {
     Store.findOne({ name: Gshop }, function(err, data) {
       if (data) {
         var smsleft = data.smsCount;
-
+        console.log("smsLeft", smsLeft);
         Store.findOneAndUpdate(
           { name: Gshop },
           {
             $set: {
-              smsCount: smsleft + parseInt(data.smsCount)
+              smsCount: smsleft + parseInt(sms.smsCount)
             }
           },
           { new: true, useFindAndModify: false },
