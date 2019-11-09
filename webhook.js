@@ -303,10 +303,25 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
                 if (element.topic === topic) {
                   if (element.customer) {
                     message = element.customer;
-                    console.log("307 normal", message);
-                    message = `${element.customer}`;
+                    console.log("normal 306-->", message);
 
-                    console.log("307 temp", message);
+                    //convert data
+                    let inputData = element.customer;
+
+                    inputData = inputData.replace(/(^\s*)|(\s*$)/gi, "");
+                    inputData = inputData.replace(/[ ]{2,}/gi, " ");
+                    inputData = inputData.replace(/\n /, "\n");
+
+                    for (let i = 0; i < inputData.length; i++) {
+                      inputData = inputData.replace(" ", "%20");
+                      inputData = inputData.replace("(", "${");
+                      inputData = inputData.replace(")", "}");
+                      inputData = inputData.replace("\n", "%0A");
+                    }
+
+                    ///////////
+                    message = inputData;
+                    console.log("convert data 306-->", message);
                   } else {
                     message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
                   }
