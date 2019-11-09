@@ -1,9 +1,18 @@
 import React, { Fragment, useContext } from 'react';
 
 import { TemplateContext } from '../App';
+import axios from 'axios';
 
 export default function Templete(props) {
 	const { temp, setTemp } = useContext(TemplateContext);
+
+	const sendTemplate = (tempObj) => {
+		if (tempObj.customer && tempObj.admin && tempObj.topic) {
+			console.log(tempObj);
+		} else {
+			console.log(" couldn't know what happened");
+		}
+	};
 
 	const variables = (params) => {
 		switch (temp.topic) {
@@ -115,10 +124,18 @@ export default function Templete(props) {
 				);
 		}
 	};
+
+	let tempObj = {
+		topic: temp.topic,
+		customer: '',
+		admin: ''
+	};
+	let finObj = {};
+	console.log('temp obj', tempObj);
+
 	//make templete from input
 
 	const saveTemplete = () => {
-		
 		convertData({
 			textareaId: 'inputTextArea-customer',
 			audience: 'customer'
@@ -127,15 +144,14 @@ export default function Templete(props) {
 			textareaId: 'inputTextArea-admin',
 			audience: 'admin'
 		});
-	
 	};
 
 	const convertData = (param) => {
-		console.log(param);
-		console.log(param.textareaId);
+		// console.log(param);
+		// console.log(param.textareaId);
 		let first = param.textareaId;
 		// let second = document.getElementById('first');
-		console.log('first', first);
+		// console.log('first', first);
 		// console.log('second', second);
 		let inputTextArea = document.getElementById(first);
 		// let btn = document.getElementById(param.btnId);
@@ -174,8 +190,29 @@ export default function Templete(props) {
 	const showOutput = (parameter, audience) => {
 		parameter = `\`${parameter}\``;
 		console.log(audience, parameter);
-		
+
+		if (audience == 'customer') {
+			tempObj.customer = parameter;
+		} else if (audience == 'admin') {
+			tempObj.admin = parameter;
+		} else {
+			console.log('something went wrong ');
+		}
+		console.log(tempObj);
+		sendTemplate(tempObj);
 	};
+
+	// const saveTemplate = (a, b) => {
+	// let obj = {
+	// 	a: a,
+	// 	b: b
+	// };
+	//   axios
+	//     .post("/api/template", obj)
+	//     .then(res => console.log(res))
+	//     .catch(err => console.error(err));
+	// console.log(obj);
+	// };
 
 	//show rule list
 
@@ -196,7 +233,13 @@ export default function Templete(props) {
 									Enclose every variables with "( )"
 									<br />
 									<br />
-									<p style={{ fontSize: '16px', fontWeight: '500', color: '#444444' }}>
+									<p
+										style={{
+											fontSize: '16px',
+											fontWeight: '500',
+											color: '#444444'
+										}}
+									>
 										Available Variables for {temp.topic}
 									</p>
 									{variables()}
@@ -255,7 +298,8 @@ export default function Templete(props) {
 						</div>
 					</div>
 				</div>
-			</div>;
+			</div>
+			;
 		</Fragment>
 	);
 }

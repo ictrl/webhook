@@ -52,7 +52,8 @@ const shopSchema = new mongoose.Schema({
   name: String,
   data: JSON,
   sms: Array,
-  smsCount: Number
+  smsCount: Number,
+  template: Array
 });
 
 const Store = new mongoose.model("Store", shopSchema);
@@ -162,12 +163,13 @@ app.get("/shopify/callback", (req, res) => {
 app.post("/myaction", function(req, res) {
   var json_data = req.body;
   console.log(req.body);
-  res.send(200); //add
+  // res.send(200); //add
+  res.sendStatus(200); //add
 
   const store = new Store({
     name: Gshop,
     data: req.body,
-    smsCount: 0
+    smsCount: 100
   });
 
   store.save(function(err) {
@@ -266,7 +268,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
               { name: shop },
               {
                 $set: {
-                  smsCount: data.smsCount + 1
+                  smsCount: data.smsCount - 1
                 }
               },
               { new: true, useFindAndModify: false },
@@ -294,6 +296,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             address2 = request.body.shipping_address.address2;
             city = request.body.shipping_address.city;
             country = request.body.shipping_address.country;
+            //check in data base if there is exist any template for  orders/create
             message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
             //end
             let senderID = data.data["sender id"];
@@ -309,6 +312,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             let admin = data.data["admin no"];
             adminNumber = admin;
             let senderID = data.data["sender id"];
+            //check in data base if there is exist any template for  orders/create for admin
             message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
             sndSms(admin, vendor, message, senderID, shop);
           }
@@ -323,7 +327,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
               { name: shop },
               {
                 $set: {
-                  smsCount: data.smsCount + 1
+                  smsCount: data.smsCount - 1
                 }
               },
               { new: true, useFindAndModify: false },
@@ -382,7 +386,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
               { name: shop },
               {
                 $set: {
-                  smsCount: data.smsCount + 1
+                  smsCount: data.smsCount - 1
                 }
               },
               { new: true, useFindAndModify: false },
@@ -442,7 +446,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
               { name: shop },
               {
                 $set: {
-                  smsCount: data.smsCount + 1
+                  smsCount: data.smsCount - 1
                 }
               },
               { new: true, useFindAndModify: false },
@@ -510,7 +514,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
               { name: shop },
               {
                 $set: {
-                  smsCount: data.smsCount + 1
+                  smsCount: data.smsCount - 1
                 }
               },
               { new: true, useFindAndModify: false },
@@ -559,7 +563,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
               { name: shop },
               {
                 $set: {
-                  smsCount: data.smsCount + 1
+                  smsCount: data.smsCount - 1
                 }
               },
               { new: true, useFindAndModify: false },
@@ -613,11 +617,11 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
   });
   response.sendStatus(200);
 });
-// send sms
+
 const sndSms = (phone, store, message, senderID, shop) => {
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
-      if (data.smsCount <= 10) {
+      if (data.smsCount > 0) {
         //send SMS
         var options = {
           method: "GET",
@@ -649,7 +653,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
           {
             $push: { sms: obj },
             $set: {
-              smsCount: data.smsCount + 1
+              smsCount: data.smsCount - 1
             }
           },
           { new: true, useFindAndModify: false },
@@ -662,7 +666,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
           }
         );
         req.end();
-      } else if (data.smsCount == 11) {
+      } else if (data.smsCount == 0 || data.smsCount == -1) {
         // notify admin to recharge
         //send SMS mgs91
         phone = adminNumber;
@@ -697,7 +701,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
           {
             $push: { sms: obj },
             $set: {
-              smsCount: data.smsCount + 1
+              smsCount: data.smsCount - 1
             }
           },
           { new: true, useFindAndModify: false },
@@ -717,16 +721,84 @@ const sndSms = (phone, store, message, senderID, shop) => {
   });
 };
 
-app.get("/api/smsCount", function(req, res) {
-  console.log("720 shop-->", Gshop);
-  if (Gshop == "") {
-    res.send("0");
+// save template to db
+app.post("/api/template", function(req, res) {
+  let data = req.body;
+  console.log("data", data);
+
+  if (Gshop != "") {
+    Store.findOneAndUpdate(
+      { name: Gshop },
+      {
+        $push: { template: data }
+      },
+      { new: true, useFindAndModify: false },
+      (err, data) => {
+        if (!err) {
+          console.log("data");
+        } else {
+          console.log("err", err);
+        }
+      }
+    );
   } else {
+    console.log("Gshop-->640", Gshop);
+  }
+});
+
+// send rechage smscount to db
+app.post("/api/recharge", function(req, res) {
+  let sms = req.body;
+  console.log("selected  sms pack ", parseInt(sms.smsCount));
+
+  if (Gshop != "") {
     Store.findOne({ name: Gshop }, function(err, data) {
+      if (data) {
+        var smsLeft = data.smsCount;
+        console.log("smsLeft", smsLeft);
+        Store.findOneAndUpdate(
+          { name: Gshop },
+          {
+            $set: {
+              smsCount: smsLeft + parseInt(sms.smsCount)
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data");
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+      } else {
+        res.send("100");
+      }
+    });
+  } else {
+    console.log("Gshop-->640", Gshop);
+  }
+});
+
+app.get("/api/smsCount", function(req, res) {
+  Store.findOne({ name: Gshop }, function(err, data) {
+    if (data) {
       var sms = data.smsCount + "";
       res.send(sms);
-    });
-  }
+    } else {
+      res.send("100");
+    }
+  });
+});
+
+app.get("/api/history", function(req, res) {
+  Store.findOne({ name: Gshop }, function(err, data) {
+    if (data) {
+      var history = data.sms;
+      res.send(history);
+    }
+  });
 });
 
 if (process.env.NODE_ENV === "production") {
