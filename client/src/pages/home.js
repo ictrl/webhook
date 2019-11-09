@@ -107,7 +107,7 @@ export default function Home(props) {
 									<b>Notification Preference</b> <br /> <br />
 									<p>Select when to send SMS</p>
 								</div>
-								<div className="col-md-8 gray ">
+								<div className="col-md-7 gray ">
 									<table>
 										<tbody>
 											<tr>
@@ -116,68 +116,61 @@ export default function Home(props) {
 											<tr>
 												<td>Create: </td>
 												<td>
-													{' '}
-													<input type="checkbox" name="orders/create customer" /> Notify Customer{' '}
+													<input type="checkbox" name="orders/create customer" /> Notify Customer&nbsp;&nbsp;
 												</td>
 												<td>
-													{' '}
-													<input type="checkbox" name="orders/create admin" /> Notify Admin{' '}
+													&nbsp;&nbsp;
+													<input type="checkbox" name="orders/create admin" /> Notify Admin&nbsp;&nbsp;
 												</td>
 												<td>
 													<Link onClick={topicHandler} name="orders/create" to="/templete">
-														{' '}
-														Edit template{' '}
+														&nbsp;&nbsp; Edit template&nbsp;&nbsp;
 													</Link>
 												</td>
 											</tr>
 											<tr>
 												<td>Cancelled: </td>
 												<td>
-													{' '}
-													<input type="checkbox" name="orders/cancelled customer" /> Notify Customer{' '}
+													<input type="checkbox" name="orders/cancelled customer" /> Notify Customer&nbsp;&nbsp;
 												</td>
 												<td>
-													{' '}
-													<input type="checkbox" name="orders/cancelled admin" /> Notify Admin{' '}
+													&nbsp;&nbsp;
+													<input type="checkbox" name="orders/cancelled admin" /> Notify Admin&nbsp;&nbsp;
 												</td>
 												<td>
 													<Link onClick={topicHandler} name="orders/cancelled" to="/templete">
-														{' '}
-														Edit template{' '}
+														&nbsp;&nbsp; Edit template&nbsp;&nbsp;
 													</Link>
 												</td>
 											</tr>
 											<tr>
 												<td>Fulfilled: </td>
 												<td>
-													{' '}
-													<input type="checkbox" name="orders/fulfilled customer" /> Notify Customer{' '}
+													<input type="checkbox" name="orders/fulfilled customer" /> Notify Customer&nbsp;&nbsp;
 												</td>
 												<td>
-													{' '}
-													<input type="checkbox" name="orders/fulfilled admin" /> Notify Admin{' '}
+													&nbsp;&nbsp;
+													<input type="checkbox" name="orders/fulfilled admin" /> Notify Admin&nbsp;&nbsp;
 												</td>
 												<td>
 													<Link onClick={topicHandler} name="orders/fulfilled" to="/templete">
-														{' '}
-														Edit template{' '}
+														&nbsp;&nbsp; Edit template&nbsp;&nbsp;
 													</Link>
 												</td>
 											</tr>
 											<tr>
 												<td>Partially Fulfilled: </td>
 												<td>
-													{' '}
-													<input type="checkbox" name="orders/partially_fulfilled customer" /> Notify Customer{' '}
+													<input type="checkbox" name="orders/partially_fulfilled customer" /> Notify
+													Customer&nbsp;&nbsp;
 												</td>
 												<td>
-													{' '}
-													<input type="checkbox" name="orders/partially_fulfilled admin" /> Notify Admin{' '}
+													&nbsp;&nbsp;
+													<input type="checkbox" name="orders/partially_fulfilled admin" /> Notify Admin&nbsp;&nbsp;
 												</td>
 												<td>
 													<Link onClick={topicHandler} name="orders/partially_fulfilled" to="/templete">
-														{' '}
-														Edit template{' '}
+														&nbsp;&nbsp; Edit template&nbsp;&nbsp;
 													</Link>
 												</td>
 											</tr>
@@ -187,17 +180,15 @@ export default function Home(props) {
 											<tr>
 												<td>Create: </td>
 												<td>
-													{' '}
-													<input type="checkbox" name="customers/create customer" /> Notify Customer{' '}
+													<input type="checkbox" name="customers/create customer" /> Notify Customer&nbsp;&nbsp;
 												</td>
 												<td>
-													{' '}
-													<input type="checkbox" name="customers/create admin" /> Notify Admin{' '}
+													&nbsp;&nbsp;
+													<input type="checkbox" name="customers/create admin" /> Notify Admin&nbsp;&nbsp;
 												</td>
 												<td>
 													<Link onClick={topicHandler} name="customers/create" to="/templete">
-														{' '}
-														Edit template{' '}
+														&nbsp;&nbsp; Edit template&nbsp;&nbsp;
 													</Link>
 												</td>
 											</tr>
@@ -207,17 +198,15 @@ export default function Home(props) {
 											<tr>
 												<td>Create: </td>
 												<td>
-													{' '}
-													<input type="checkbox" name="refunds/create customer" /> Notify Customer{' '}
+													<input type="checkbox" name="refunds/create customer" /> Notify Customer&nbsp;&nbsp;
 												</td>
 												<td>
-													{' '}
-													<input type="checkbox" name="refunds/create admin" /> Notify Admin{' '}
+													&nbsp;&nbsp;
+													<input type="checkbox" name="refunds/create admin" /> Notify Admin&nbsp;&nbsp;
 												</td>
 												<td>
 													<Link onClick={topicHandler} name="refunds/create" to="/templete">
-														{' '}
-														Edit template{' '}
+														&nbsp;&nbsp; Edit template&nbsp;&nbsp;
 													</Link>
 												</td>
 											</tr>

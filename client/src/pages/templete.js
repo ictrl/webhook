@@ -131,7 +131,7 @@ export default function Templete(props) {
 		admin: ''
 	};
 	let finObj = {};
-	console.log('temp obj', tempObj);
+	// console.log('temp obj', tempObj);
 
 	//make templete from input
 
@@ -150,9 +150,7 @@ export default function Templete(props) {
 		// console.log(param);
 		// console.log(param.textareaId);
 		let first = param.textareaId;
-		// let second = document.getElementById('first');
-		// console.log('first', first);
-		// console.log('second', second);
+	
 		let inputTextArea = document.getElementById(first);
 		// let btn = document.getElementById(param.btnId);
 		let strLength = 0;
@@ -189,7 +187,7 @@ export default function Templete(props) {
 
 	const showOutput = (parameter, audience) => {
 		parameter = `\`${parameter}\``;
-		console.log(audience, parameter);
+		// console.log(audience, parameter);
 
 		if (audience == 'customer') {
 			tempObj.customer = parameter;
@@ -198,7 +196,7 @@ export default function Templete(props) {
 		} else {
 			console.log('something went wrong ');
 		}
-		console.log(tempObj);
+		// console.log(tempObj);
 		sendTemplate(tempObj);
 	};
 
