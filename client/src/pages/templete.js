@@ -192,7 +192,8 @@ export default function Templete(props) {
   };
 
   const showOutput = (parameter, audience) => {
-    parameter = "`${parameter}`";
+    // parameter = `\`${parameter}\``;
+    parameter = parameter;
     // console.log(audience, parameter);
 
     if (audience == "customer") {

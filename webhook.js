@@ -303,7 +303,9 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
               data.template.forEach(element => {
                 if (element.topic === topic) {
                   if (element.customer) {
-                    message = element.customer;
+                    console.log("306", message);
+                    message = `${element.customer}`;
+                    console.log("307", message);
                   } else {
                     message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
                   }
@@ -333,7 +335,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
                 if (element.topic === topic) {
                   if (element.customer) {
                     message = element.admin;
-                    
                   } else {
                     message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
                   }
