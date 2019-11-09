@@ -21,7 +21,7 @@ export default function History(props) {
     //     number: "9898989898"
     //   }
     // ];
-    // setHistory(myarr); 
+    // setHistory(myarr);
   };
 
   useEffect(() => {
