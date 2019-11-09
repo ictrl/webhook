@@ -617,30 +617,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
   });
   response.sendStatus(200);
 });
-// send sms
-app.post("/api/template", function(req, res) {
-  let data = req.body;
-  console.log("data", data);
-
-  if (Gshop != "") {
-    Store.findOneAndUpdate(
-      { name: Gshop },
-      {
-        $push: { template: data }
-      },
-      { new: true, useFindAndModify: false },
-      (err, data) => {
-        if (!err) {
-          console.log("data");
-        } else {
-          console.log("err", err);
-        }
-      }
-    );
-  } else {
-    console.log("Gshop-->640", Gshop);
-  }
-});
 
 const sndSms = (phone, store, message, senderID, shop) => {
   Store.findOne({ name: shop }, function(err, data) {
@@ -744,6 +720,68 @@ const sndSms = (phone, store, message, senderID, shop) => {
     }
   });
 };
+
+// save template to db
+app.post("/api/template", function(req, res) {
+  let data = req.body;
+  console.log("data", data);
+
+  if (Gshop != "") {
+    Store.findOneAndUpdate(
+      { name: Gshop },
+      {
+        $push: { template: data }
+      },
+      { new: true, useFindAndModify: false },
+      (err, data) => {
+        if (!err) {
+          console.log("data");
+        } else {
+          console.log("err", err);
+        }
+      }
+    );
+  } else {
+    console.log("Gshop-->640", Gshop);
+  }
+});
+
+// send rechage smscount to db
+app.post("/api/recharge", function(req, res) {
+  let data = req.body;
+  console.log("data", data.smsCount);
+  console.log("data typeof", typeof data.smsCount);
+  console.log("data parse to int", parseInt(data.smsCount));
+
+  if (Gshop != "") {
+    Store.findOne({ name: Gshop }, function(err, data) {
+      if (data) {
+        var smsleft = data.smsCount;
+
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $set: {
+              smsCount: smsleft + parseInt(data.smsCount)
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data");
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+      } else {
+        res.send("100");
+      }
+    });
+  } else {
+    console.log("Gshop-->640", Gshop);
+  }
+});
 
 app.get("/api/smsCount", function(req, res) {
   Store.findOne({ name: Gshop }, function(err, data) {
