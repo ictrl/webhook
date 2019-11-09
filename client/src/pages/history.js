@@ -5,23 +5,23 @@ export default function History(props) {
   const [history, setHistory] = useState([]);
 
   const smsHistory = () => {
-    // axios.get("/api/history/").then(res => {
-    //   console.log("history", res.data);
-    //   setHistory(res.data);
-    // });
-    var myarr = [
-      {
-        message: "Hi%20Samrat,%20Thanks%20order%20ID:%201104",
-        store: "Liam Fashions",
-        number: "1234567900"
-      },
-      {
-        message: "Customer%20name:%20Sa%20order%20ID:%201104",
-        store: "Liam Fashions",
-        number: "9898989898"
-      }
-    ];
-    setHistory(myarr); 
+    axios.get("/api/history/").then(res => {
+      console.log("history", res.data);
+      setHistory(res.data);
+    });
+    // var myarr = [
+    //   {
+    //     message: "Hi%20Samrat,%20Thanks%20order%20ID:%201104",
+    //     store: "Liam Fashions",
+    //     number: "1234567900"
+    //   },
+    //   {
+    //     message: "Customer%20name:%20Sa%20order%20ID:%201104",
+    //     store: "Liam Fashions",
+    //     number: "9898989898"
+    //   }
+    // ];
+    // setHistory(myarr);
   };
 
   useEffect(() => {

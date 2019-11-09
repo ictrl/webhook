@@ -297,7 +297,17 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             city = request.body.shipping_address.city;
             country = request.body.shipping_address.country;
             //check in data base if there is exist any template for  orders/create
-            message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+            data.template.forEach(element => {
+              if (element.topic === topic) {
+                if (element.customer) {
+                  message = element.customer;
+                } else {
+                  message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+                }
+              } else {
+                message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+              }
+            });
             //end
             let senderID = data.data["sender id"];
             if (phone) {
@@ -313,7 +323,17 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             adminNumber = admin;
             let senderID = data.data["sender id"];
             //check in data base if there is exist any template for  orders/create for admin
-            message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+            data.template.forEach(element => {
+              if (element.topic === topic) {
+                if (element.customer) {
+                  message = element.admin;
+                } else {
+                  message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+                }
+              } else {
+                message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+              }
+            });
             sndSms(admin, vendor, message, senderID, shop);
           }
 

@@ -56,7 +56,7 @@ export default function Home(props) {
 				<section id="sms">
 					<div className="row">
 						<div className="col-md-4 sms centerr">SMS LEFT {smsLeft}</div>
-						{/* <Link> */}{' '}
+						{/* <Link> */}
 						<div className="col-md-4 buy centerr">
 							<Link to="/recharge" style={{ color: 'white' }}>
 								Buy more sms
