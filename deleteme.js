@@ -78,4 +78,3 @@ Store.findOne({ name: shop }, function(err, data) {
 // });
 
 // console.log(message);
-

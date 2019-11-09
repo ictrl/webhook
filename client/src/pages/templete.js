@@ -163,6 +163,17 @@ export default function Templete(props) {
     let luna = document.getElementById(first).className;
     var inputData = document.getElementById(first).value;
     if (inputData != "" && inputData != null) {
+      inputData = inputData.replace(/(^\s*)|(\s*$)/gi, "");
+      inputData = inputData.replace(/[ ]{2,}/gi, " ");
+      inputData = inputData.replace(/\n /, "\n");
+
+      for (let i = 0; i < inputData.length; i++) {
+        inputData = inputData.replace(" ", "%20");
+        inputData = inputData.replace("(", "${");
+        inputData = inputData.replace(")", "}");
+        inputData = inputData.replace("\n", "%0A");
+      }
+
       if (luna.indexOf("is-invalid") > -1) {
         strLength = luna.split(" ").length;
         for (let i = 0; i < strLength; i++) {
@@ -182,6 +193,8 @@ export default function Templete(props) {
 
   const showOutput = (parameter, audience) => {
     parameter = `\`${parameter}\``;
+    // parameter = parameter;
+    // console.log(audience, parameter);
 
     if (audience == "customer") {
       tempObj.customer = parameter;
