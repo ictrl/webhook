@@ -174,6 +174,7 @@ export default function Templete(props) {
 	const showOutput = (parameter, audience) => {
 		parameter = `\`${parameter}\``;
 		console.log(audience, parameter);
+		
 	};
 
 	//show rule list
