@@ -754,13 +754,13 @@ app.post("/api/recharge", function(req, res) {
   if (Gshop != "") {
     Store.findOne({ name: Gshop }, function(err, data) {
       if (data) {
-        var smsleft = data.smsCount;
+        var smsLeft = data.smsCount;
         console.log("smsLeft", smsLeft);
         Store.findOneAndUpdate(
           { name: Gshop },
           {
             $set: {
-              smsCount: smsleft + parseInt(sms.smsCount)
+              smsCount: smsLeft + parseInt(sms.smsCount)
             }
           },
           { new: true, useFindAndModify: false },
