@@ -917,6 +917,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
 });
 
 const sndSms = (phone, store, message, senderID, shop) => {
+  console.log("message sms-->", message);
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       if (data.smsCount > 0) {
