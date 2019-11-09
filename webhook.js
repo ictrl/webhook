@@ -333,6 +333,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
                 if (element.topic === topic) {
                   if (element.customer) {
                     message = element.admin;
+                    
                   } else {
                     message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
                   }
