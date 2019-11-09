@@ -192,9 +192,7 @@ export default function Templete(props) {
   };
 
   const showOutput = (parameter, audience) => {
-    // parameter = `\`${parameter}\``;
-    parameter = parameter;
-    // console.log(audience, parameter);
+    parameter = `\`${parameter}\``;
 
     if (audience == "customer") {
       tempObj.customer = parameter;

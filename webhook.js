@@ -298,14 +298,15 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             country = request.body.shipping_address.country;
             //check in data base if there is exist any template for  orders/create
             message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
-
             if (data.template !== undefined) {
               data.template.forEach(element => {
                 if (element.topic === topic) {
                   if (element.customer) {
-                    console.log("306", message);
+                    message = element.customer;
+                    console.log("307 normal", message);
                     message = `${element.customer}`;
-                    console.log("307", message);
+
+                    console.log("307 temp", message);
                   } else {
                     message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
                   }
