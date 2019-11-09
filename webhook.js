@@ -759,7 +759,7 @@ app.post("/api/recharge", function(req, res) {
         var smsleft = data.smsCount;
 
         Store.findOneAndUpdate(
-          { name: shop },
+          { name: Gshop },
           {
             $set: {
               smsCount: smsleft + parseInt(data.smsCount)
