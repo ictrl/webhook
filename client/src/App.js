@@ -33,12 +33,12 @@ const App = () => {
 		<Router>
 			
 			<TemplateContext.Provider value={{ temp, setTemp }}>
-				<div id="showState" style={{ backgroundColor: 'orange', fontWeight: '900', color: 'green', textAlign: 'right', position: 'fixed',top: 0, height: '100%',zIndex: 999 }}  onClick={showStae}>
+				{/* <div id="showState" style={{ backgroundColor: 'orange', fontWeight: '900', color: 'green', textAlign: 'right', position: 'fixed',top: 0, height: '100%',zIndex: 999 }}  onClick={showStae}>
 					
 					<p style={{color: 'orange'}}>
 						hola
 					</p>
-				</div>
+				</div> */}
 				<Route exact path="/" component={Home} />
 
 				<Route exact path="/templete" component={Templete} />

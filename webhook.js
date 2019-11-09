@@ -792,6 +792,15 @@ app.get("/api/smsCount", function(req, res) {
   });
 });
 
+app.get("/api/history", function(req, res) {
+  Store.findOne({ name: Gshop }, function(err, data) {
+    if (data) {
+      var history = data.sms;
+      res.send(history);
+    }
+  });
+});
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
   app.get("*", (req, res) => {
