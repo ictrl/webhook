@@ -181,10 +181,11 @@ export default function Templete(props) {
       a: a,
       b: b
     };
-    axios
-      .post("/api/template", obj)
-      .then(res => console.log(res))
-      .catch(err => console.error(err));
+  //   axios
+  //     .post("/api/template", obj)
+  //     .then(res => console.log(res))
+  //     .catch(err => console.error(err));
+  console.log(obj)
   };
 
   //show rule list
