@@ -303,7 +303,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
               data.template.forEach(element => {
                 if (element.topic === topic) {
                   if (element.customer) {
-                    console.log("306", message);
+                    message = element.customer;
                     for (let i = 0; i < message.length; i++) {
                       message = message.replace("${name}", name);
                       message = message.replace("${vendor}", vendor);
@@ -311,7 +311,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
                       message = message.replace("${order_id}", orderId);
                       message = message.replace("${title}", title);
                     }
-                    console.log("307", message);
                   } else {
                     message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
                   }
@@ -336,11 +335,19 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             let senderID = data.data["sender id"];
             //check in data base if there is exist any template for  orders/create for admin
             message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+
             if (data.template !== undefined) {
               data.template.forEach(element => {
                 if (element.topic === topic) {
                   if (element.customer) {
-                    message = element.admin;
+                    message = element.customer;
+                    for (let i = 0; i < message.length; i++) {
+                      message = message.replace("${name}", name);
+                      message = message.replace("${vendor}", vendor);
+                      message = message.replace("${price}", price);
+                      message = message.replace("${order_id}", orderId);
+                      message = message.replace("${title}", title);
+                    }
                   } else {
                     message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
                   }
@@ -349,6 +356,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
                 }
               });
             }
+            //end
             sndSms(admin, vendor, message, senderID, shop);
           }
 
