@@ -113,8 +113,7 @@ export default function Templete(props) {
       case "refunds/create":
         return (
           <Fragment>
-            name
-            <br />
+        
             vendor
             <br />
             price
