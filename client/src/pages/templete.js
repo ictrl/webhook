@@ -31,7 +31,7 @@ export default function Templete(props) {
             <br />
             rules
             <br />
-            shame on you
+          
           </Fragment>
         );
       case "orders/create":
