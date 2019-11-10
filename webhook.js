@@ -822,13 +822,10 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             );
           }
           if (data.data["refunds/create customer"] != undefined) {
-            vendor = request.body.refund_line_items[0].line_item.vendor;
             title = request.body.refund_line_items[0].line_item.title;
             orderId = request.body.order_id;
-            vendor = request.body.line_items[0].vendor;
-
             price = request.body.refund_line_items[0].subtotal;
-            processed_at = request.body.processed_at;
+
 
             message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20processed%20at%20${processed_at}.%20Your%20order%20ID:%20${orderId}`;
             //end
@@ -839,11 +836,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
                   if (element.customer) {
                     message = element.customer;
                     for (let i = 0; i < message.length; i++) {
-                      message = message.replace(
-                        "${processed_at}",
-                        processed_at
-                      );
-                      message = message.replace("${vendor}", vendor);
+
                       message = message.replace("${price}", price);
                       message = message.replace("${order_id}", orderId);
                       message = message.replace("${title}", title);
