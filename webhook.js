@@ -440,7 +440,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             let admin = data.data["admin no"];
             adminNumber = admin;
             let senderID = data.data["sender id"];
-            message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+            message = `Customer%20name:%20${name},cancel%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
 
             if (data.template !== undefined) {
               data.template.forEach(element => {
@@ -825,8 +825,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             vendor = request.body.refund_line_items[0].line_item.vendor;
             title = request.body.refund_line_items[0].line_item.title;
             orderId = request.body.order_id;
-
-            name = request.body.shipping_address.first_name;
             vendor = request.body.line_items[0].vendor;
 
             price = request.body.refund_line_items[0].subtotal;
@@ -845,7 +843,6 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
                         "${processed_at}",
                         processed_at
                       );
-                      message = message.replace("${name}", name);
                       message = message.replace("${vendor}", vendor);
                       message = message.replace("${price}", price);
                       message = message.replace("${order_id}", orderId);
@@ -874,7 +871,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             let admin = data.data["admin no"];
             adminNumber = admin;
             let senderID = data.data["sender id"];
-            message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
+            message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
 
             if (data.template !== undefined) {
               data.template.forEach(element => {
@@ -886,17 +883,16 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
                         "${processed_at}",
                         processed_at
                       );
-                      message = message.replace("${name}", name);
                       message = message.replace("${vendor}", vendor);
                       message = message.replace("${price}", price);
                       message = message.replace("${order_id}", orderId);
                       message = message.replace("${title}", title);
                     }
                   } else {
-                    message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
+                    message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
                   }
                 } else {
-                  message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
+                  message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
                 }
               });
             }
