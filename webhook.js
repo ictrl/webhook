@@ -220,7 +220,7 @@ const makeWebook = (topic) => {
 		'X-Shopify-API-Version': '2019-07'
 	};
 
-	console.log(Gshop)
+	
 
 	const webhookPayload = {
 		webhook: {
@@ -1069,6 +1069,7 @@ app.get('/api/smsCount', function(req, res) {
 		} else {
 			res.send('100');
 		}
+		console.log(Gshop)
 	});
 });
 
