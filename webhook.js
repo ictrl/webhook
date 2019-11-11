@@ -826,8 +826,7 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
             orderId = request.body.order_id;
             price = request.body.refund_line_items[0].subtotal;
 
-
-            message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20processed%20at%20${processed_at}.%20Your%20order%20ID:%20${orderId}`;
+            message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
             //end
 
             if (data.template !== undefined) {
@@ -836,16 +835,15 @@ app.post("/store/:Gshop/:topic/:subtopic", function(request, response) {
                   if (element.customer) {
                     message = element.customer;
                     for (let i = 0; i < message.length; i++) {
-
                       message = message.replace("${price}", price);
                       message = message.replace("${order_id}", orderId);
                       message = message.replace("${title}", title);
                     }
                   } else {
-                    message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20processed%20at%20${processed_at}.%20Your%20order%20ID:%20${orderId}`;
+                    message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
                   }
                 } else {
-                  message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20processed%20at%20${processed_at}.%20Your%20order%20ID:%20${orderId}`;
+                  message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
                 }
               });
             }
