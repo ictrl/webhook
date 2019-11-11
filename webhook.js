@@ -216,7 +216,7 @@ const makeWebook = (topic) => {
 		'X-Shopify-Access-Token': accessToken,
 		'X-Shopify-Topic': topic,
 		'X-Shopify-Hmac-Sha256': Ghmac,
-		'X-Shopify-Shop-Domain': 'mojitostore.myshopify.com',
+		'X-Shopify-Shop-Domain': Gshop,
 		'X-Shopify-API-Version': '2019-07'
 	};
 
