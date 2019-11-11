@@ -220,6 +220,8 @@ const makeWebook = (topic) => {
 		'X-Shopify-API-Version': '2019-07'
 	};
 
+	console.log(Gshop)
+
 	const webhookPayload = {
 		webhook: {
 			topic: topic,
