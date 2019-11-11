@@ -31,7 +31,6 @@ export default function Templete(props) {
             <br />
             rules
             <br />
-          
           </Fragment>
         );
       case "orders/create":
@@ -113,16 +112,11 @@ export default function Templete(props) {
       case "refunds/create":
         return (
           <Fragment>
-        
-            vendor
-            <br />
             price
             <br />
             order_id
             <br />
             title
-            <br />
-            processed_at
           </Fragment>
         );
     }
