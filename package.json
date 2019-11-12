@@ -4,13 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node webhook.js",
-    "server": "nodemon webhook.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "start": "nodemon webhook.js"
   },
-  "author": "Samrat Saueav Jaiswal & Aditya Kumar Jha",
+  "author": "Samrat Saurav Jaiswal & Aditya Kumar Jha",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -19,10 +15,14 @@
     "cookie": "^0.4.0",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
+    "ejs": "^2.7.1",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "mongoose": "^5.7.6",
     "nonce": "^1.0.4",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^5.0.1",
     "redis": "^2.8.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4"
