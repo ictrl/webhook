@@ -1,6 +1,6 @@
 require('dotenv').config();
 const http = require('https');
-const session = require('express-session');
+// const session = require('express-session');
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
