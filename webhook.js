@@ -129,7 +129,7 @@ app.get("/shopify/callback", (req, res) => {
         const webhookPayload = {
           webhook: {
             topic: "orders/create",
-            address: "https://immense-bastion-25565.herokuapp.com/",
+            address: `https://immense-bastion-25565.herokuapp.com/${shop}`,
             format: "json"
           }
         };
@@ -153,10 +153,15 @@ app.get("/shopify/callback", (req, res) => {
   }
 });
 
-app.post("/", (req, res) => {
+app.post("/:shop", (req, res) => {
+  res.sendStatus(200);
+  console.log("----------------", shop);
   console.log(req.body);
+  console.log("----------------", shop);
 });
 const saveDB = name => {
+  console.log("saveDB==>", name);
+
   const store = new Store({
     name: name
   });
