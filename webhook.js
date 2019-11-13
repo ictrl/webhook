@@ -154,13 +154,31 @@ app.get("/shopify/callback", (req, res) => {
       .post(accessTokenRequestUrl, { json: accessTokenPayload })
       .then(accessTokenResponse => {
         //regiter or login
-        const store = new Store({
-          name: shop,
-          state: state
-        });
-        req.login(store, err => {
-          if (err) {
+
+        Store.findOne({ username: shop }, function(err, data) {
+          console.log("159");
+          if (!err) {
+            //login
+            console.log("162");
+            const store = new Store({
+              username: shop,
+              state: state
+            });
+            req.login(store, err => {
+              if (err) {
+                //register
+                console.log("170-->", err);
+              } else {
+                passport.authenticate("local")(req, res, function() {
+                  //login
+                  console.log("174");
+                  res.redirect("/");
+                });
+              }
+            });
+          } else {
             //register
+            console.log("181");
             Store.register(
               {
                 username: shop,
@@ -171,26 +189,22 @@ app.get("/shopify/callback", (req, res) => {
               state,
               function(err, user) {
                 if (err) {
-                  console.log(err);
+                  console.log("192", err);
                   res.send(err);
                 } else {
                   passport.authenticate("local")(req, res, function() {
+                    console.log("196");
                     res.redirect("/");
                   });
                 }
               }
             );
-          } else {
-            passport.authenticate("local")(req, res, function() {
-              //login
-              res.redirect("/");
-            });
           }
         });
       })
       .catch(error => {
         res.send(error);
-        console.log("182-->", error);
+        console.log("207-->", error);
       });
   } else {
     res.status(400).send("Required parameters missing");
@@ -205,18 +219,19 @@ app.get("/", (req, res) => {
   }
 });
 
-app.post("/myaction", function(req, res) {
+app.post("/submit", function(req, res) {
   var json_data = req.body;
   res.sendStatus(200);
 
   User.findById(req.user.id, function(err, foundUser) {
     if (err) {
-      console.log(err);
+      console.log("228", err);
     } else {
       if (foundUser) {
         foundUser.data = json_data;
         foundUser.save(function() {
-          res.redirect("/secrets");
+          res.redirect("/");
+          console.log("234");
         });
       }
     }
