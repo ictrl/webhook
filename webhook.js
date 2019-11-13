@@ -11,7 +11,7 @@ const bodyParser = require("body-parser");
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 
-const forwardingAddress = "https://immense-bastion-25565.herokuapp.com/"; // Replace this with your HTTPS Forwarding address
+const forwardingAddress = "https://immense-bastion-25565.herokuapp.com"; // Replace this with your HTTPS Forwarding address
 
 app.use(bodyParser.json());
 
