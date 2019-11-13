@@ -163,7 +163,7 @@ app.get("/shopify/callback", (req, res) => {
             //register
             Store.register(
               {
-                name: shop,
+                username: shop,
                 smsCount: 100,
                 hmac: hmac,
                 token: accessTokenResponse.access_token
