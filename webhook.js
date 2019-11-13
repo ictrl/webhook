@@ -176,3 +176,5 @@ const saveDB = name => {
 app.listen(process.env.PORT || 3000, () => {
   console.log("Example app listening on port 3000!");
 });
+
+// "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
