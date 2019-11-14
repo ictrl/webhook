@@ -78,6 +78,7 @@ app.get("/shopify", (req, res) => {
       redirectUri;
 
     res.cookie(shop, state);
+    console.log(state, "<--stateNshop-->", shop);
 
     res.redirect(installUrl);
   } else {
@@ -93,7 +94,9 @@ app.get("/shopify", (req, res) => {
 app.get("/shopify/callback", (req, res) => {
   let { shop, hmac, code, state } = req.query;
   console.log("callback route call -->", shop);
-  const stateCookie = cookie.parse(req.headers.cookie).state;
+  const stateCookie = `cookie.parse(req.headers.cookie).${shop}`;
+  console.log("state", state);
+  console.log("stateCookie", stateCookie);
 
   if (state !== stateCookie) {
     return res.status(403).send("Request origin cannot be verified");
