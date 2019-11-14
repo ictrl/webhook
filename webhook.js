@@ -145,6 +145,7 @@ app.get("/shopify/callback", (req, res) => {
         req.session.shop = shop;
         req.session.token = hmac;
         req.session.hmac = accessTokenResponse.access_token;
+        console.log("top shop", req.session.shop);
         res.redirect("/");
       })
       .catch(error => {
@@ -162,7 +163,7 @@ app.post("/myaction", function(req, res) {
     let token = req.session.token;
     let hmac = req.session.hmac;
     var json_data = req.body;
-    console.log(req.body);
+    console.log("session", req.session);
     res.sendStatus(200);
     const store = new Store({
       name: shop,
@@ -220,39 +221,43 @@ app.post("/myaction", function(req, res) {
 });
 
 const makeWebook = (topic, shop, accessToken, hmac) => {
-  const webhookUrl = "https://" + shop + "/admin/api/2019-07/webhooks.json";
-  const webhookHeaders = {
-    "Content-Type": "application/json",
-    "X-Shopify-Access-Token": accessToken,
-    "X-Shopify-Topic": topic,
-    "X-Shopify-Hmac-Sha256": hmac,
-    "X-Shopify-Shop-Domain": shop,
-    "X-Shopify-API-Version": "2019-07"
-  };
+  console.log("topic", topic);
+  console.log("shop", shop);
+  console.log("accessToken", accessToken);
+  console.log("hmac", hmac);
+  // const webhookUrl = "https://" + shop + "/admin/api/2019-07/webhooks.json";
+  // const webhookHeaders = {
+  //   "Content-Type": "application/json",
+  //   "X-Shopify-Access-Token": accessToken,
+  //   "X-Shopify-Topic": topic,
+  //   "X-Shopify-Hmac-Sha256": hmac,
+  //   "X-Shopify-Shop-Domain": shop,
+  //   "X-Shopify-API-Version": "2019-07"
+  // };
 
-  const webhookPayload = {
-    webhook: {
-      topic: topic,
-      address: `https://immense-bastion-25565.herokuapp.com/store/${shop}/${topic}`,
-      format: "json"
-    }
-  };
-  request
-    .post(webhookUrl, {
-      headers: webhookHeaders,
-      json: webhookPayload
-    })
-    .then(shopResponse => {
-      console.log("showResponse-->", shopResponse);
-    })
-    .catch(error => {
-      console.log("error-->", error);
-    });
+  // const webhookPayload = {
+  //   webhook: {
+  //     topic: topic,
+  //     address: `https://immense-bastion-25565.herokuapp.com/store/${shop}/${topic}`,
+  //     format: "json"
+  //   }
+  // };
+  // request
+  //   .post(webhookUrl, {
+  //     headers: webhookHeaders,
+  //     json: webhookPayload
+  //   })
+  //   .then(shopResponse => {
+  //     console.log("showResponse-->", shopResponse);
+  //   })
+  //   .catch(error => {
+  //     console.log("error-->", error);
+  //   });
 };
 
 app.get("/api/smsCount", function(req, res) {
   if (req.session.shop) {
-    Store.findOne({ name: Gshop }, function(err, data) {
+    Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
         var sms = data.smsCount + "";
         console.log("sms", sms);
@@ -260,25 +265,25 @@ app.get("/api/smsCount", function(req, res) {
       } else {
         res.send("100");
       }
-      console.log(Gshop);
+      console.log("263", req.session.shop);
     });
   } else {
     console.log("cant find session key form get /api/smsCount");
   }
 });
 
-app.get("/api/history", function(req, res) {
-  if (req.session.shop) {
-    Store.findOne({ name: Gshop }, function(err, data) {
-      if (data) {
-        var history = data.sms;
-        res.send(history);
-      }
-    });
-  } else {
-    console.log("cant find session key form get /api/history");
-  }
-});
+// app.get("/api/history", function(req, res) {
+//   if (req.session.shop) {
+//     Store.findOne({ name: Gshop }, function(err, data) {
+//       if (data) {
+//         var history = data.sms;
+//         res.send(history);
+//       }
+//     });
+//   } else {
+//     console.log("cant find session key form get /api/history");
+//   }
+// });
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
