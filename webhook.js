@@ -52,6 +52,7 @@ const Store = new mongoose.model("Store", shopSchema);
 app.get("/shopify", (req, res) => {
   req.session.shop = req.query.shop;
   const shop = req.query.shop;
+
   console.log("install route call-->", shop);
   if (shop) {
     const state = nonce();
@@ -77,7 +78,7 @@ app.get("/shopify", (req, res) => {
       "&redirect_uri=" +
       redirectUri;
 
-    res.cookie(shop, state);
+    res.cookie(req.session.shop, state);
 
     res.redirect(installUrl);
   } else {
@@ -93,11 +94,12 @@ app.get("/shopify", (req, res) => {
 app.get("/shopify/callback", (req, res) => {
   let { shop, hmac, code, state } = req.query;
   console.log("callback route call -->", shop);
-  const stateCookie = cookie.parse(req.headers.cookie).shop;
-  console.log("state", state);
-  console.log("stateCookie", stateCookie);
+  const stateCookie = cookie.parse(req.headers.cookie).state;
+  console.log("cookies", cookie.parse(req.headers.cookie));
+  console.log("Statecookies", stateCookie);
+  console.log("req headr", req.headers.cookie);
 
-  if (req.session.shop !== shop) {
+  if (state !== stateCookie) {
     return res.status(403).send("Request origin cannot be verified");
   }
 
@@ -143,6 +145,8 @@ app.get("/shopify/callback", (req, res) => {
 
         req.session.hmac = hmac;
         req.session.token = accessTokenResponse.access_token;
+
+        console.log("top shop", req.session.shop);
         res.redirect("/");
       })
       .catch(error => {
