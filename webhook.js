@@ -22,6 +22,10 @@ mongoose.connect(process.env.MONGODB_URI, {
   useCreateIndex: true
 });
 
+let Gshop = "";
+let Ghmac = "";
+let Gtoken = "";
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -97,6 +101,8 @@ app.get("/shopify", (req, res) => {
 app.get("/shopify/callback", (req, res) => {
   let { shop, hmac, code, state } = req.query;
   console.log("callback route call -->", shop);
+  Gshop = shop;
+  Ghmac = hmac;
 
   const stateCookie = cookie.parse(req.headers.cookie).state;
 
@@ -142,6 +148,8 @@ app.get("/shopify/callback", (req, res) => {
     request
       .post(accessTokenRequestUrl, { json: accessTokenPayload })
       .then(accessTokenResponse => {
+        Gtoken = accessTokenResponse.access_token;
+
         req.session.shop = shop;
         req.session.token = hmac;
         req.session.hmac = accessTokenResponse.access_token;
@@ -160,15 +168,13 @@ app.get("/shopify/callback", (req, res) => {
 app.post("/myaction", function(req, res) {
   if (req.session.shop) {
     let shop = req.session.shop;
-    let token = req.session.token;
-    let hmac = req.session.hmac;
     var json_data = req.body;
-    console.log("session", req.session);
+
     res.sendStatus(200);
     const store = new Store({
       name: shop,
       data: req.body,
-      smsCount: 100
+      smsCount: 90
     });
 
     store.save(function(err) {
@@ -213,26 +219,39 @@ app.post("/myaction", function(req, res) {
     removeElement(www, "sender");
 
     www.forEach(topic => {
-      makeWebook(topic, shop, token, hmac);
+      makeWebook(topic);
     });
   } else {
     console.log("cant find session key form post /myacion");
   }
 });
 
-const makeWebook = (topics, shops, accessTokens, hmacs) => {
-  const topic = topics.trim();
-  const shop = shops.trim();
-  const accessToken = accessTokens.trim();
-  const hmac = hmacs.trim();
+const makeWebook = topic => {
+  let token = req.session.token;
+  let hmac = req.session.hmac;
+  if (hmac === Ghmac) {
+    console.log("hmac equall");
+  } else {
+    console.log(hmac, " hmac ", Ghmac);
+  }
+  if (token === Gtoken) {
+    console.log("token equall");
+  } else {
+    console.log(token, " token ", Gtoken);
+  }
+  if (shop === Gshop) {
+    console.log("shop equall");
+  } else {
+    console.log(shop, " shop ", Ghmac);
+  }
 
-  const webhookUrl = "https://" + shop + "/admin/api/2019-07/webhooks.json";
+  const webhookUrl = "https://" + Gshop + "/admin/api/2019-07/webhooks.json";
   const webhookHeaders = {
     "Content-Type": "application/json",
-    "X-Shopify-Access-Token": accessToken,
+    "X-Shopify-Access-Token": Gtoken,
     "X-Shopify-Topic": topic,
-    "X-Shopify-Hmac-Sha256": hmac,
-    "X-Shopify-Shop-Domain": shop,
+    "X-Shopify-Hmac-Sha256": Ghmac,
+    "X-Shopify-Shop-Domain": Gshop,
     "X-Shopify-API-Version": "2019-07"
   };
 
