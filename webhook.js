@@ -94,10 +94,9 @@ app.get("/shopify", (req, res) => {
 app.get("/shopify/callback", (req, res) => {
   let { shop, hmac, code, state } = req.query;
   console.log("callback route call -->", shop);
-  const stateCookie = cookie.parse(req.headers.cookie).state;
-  console.log("cookies", cookie.parse(req.headers.cookie));
+  const stateCookie = cookie.parse(req.headers.cookie)[`${shop}`];
+
   console.log("Statecookies", stateCookie);
-  console.log("req headr", req.headers.cookie);
 
   if (state !== stateCookie) {
     return res.status(403).send("Request origin cannot be verified");

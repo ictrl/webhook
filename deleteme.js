@@ -78,3 +78,19 @@
 // // });
 
 // // console.log(message);
+//  var ss = mojitostest.myshopify.com=157371121157400; mojitotest.myshopify.com=157371152834700; mojitostore.myshopify.com=157371535774500; connect.sid=s%3A7bxHT-8M8TjQYQdPxKHfFWIQPBu233Kq.FaaMo6Hg64LT3NBj0VXjs9f%2F1CWl9wrq%2Fdx80eh2yJI
+
+// var cookies = {
+//   "mojitostest.myshopify.com": "157371121157400",
+//   state: "157371121157400",
+//   "mojitotest.myshopify.com": "157371152834700",
+//   "mojitostore.myshopify.com": "157371535774500",
+//   "connect.sid":
+//     "s:7bxHT-8M8TjQYQdPxKHfFWIQPBu233Kq.FaaMo6Hg64LT3NBj0VXjs9f/1CWl9wrq/dx80eh2yJI"
+// };
+
+// var name = "mojitostest.myshopify.com";
+
+// const stateCookie = cookies[`${name}`];
+
+// console.log(stateCookie);
