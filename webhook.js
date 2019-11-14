@@ -219,15 +219,16 @@ app.post("/myaction", function(req, res) {
     removeElement(www, "sender");
     let token = req.session.token;
     let hmac = req.session.hmac;
+    let shop = req.session.shop;
     www.forEach(topic => {
-      makeWebook(topic, token, hmac);
+      makeWebook(topic, token, hmac, shop);
     });
   } else {
     console.log("cant find session key form post /myacion");
   }
 });
 
-const makeWebook = (topic, token, hmac) => {
+const makeWebook = (topic, token, hmac, shop) => {
   if (hmac === Ghmac) {
     console.log("hmac equall");
   } else {
