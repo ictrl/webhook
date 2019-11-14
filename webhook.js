@@ -173,7 +173,7 @@ app.post("/myaction", function(req, res) {
 
     store.save(function(err) {
       if (!err) {
-        console.log(`${Gshop} data store to DB`);
+        console.log(`${shop} data store to DB`);
       }
     });
 
@@ -220,39 +220,40 @@ app.post("/myaction", function(req, res) {
   }
 });
 
-const makeWebook = (topic, shop, accessToken, hmac) => {
-  console.log("topic", topic);
-  console.log("shop", shop);
-  console.log("accessToken", accessToken);
-  console.log("hmac", hmac);
-  // const webhookUrl = "https://" + shop + "/admin/api/2019-07/webhooks.json";
-  // const webhookHeaders = {
-  //   "Content-Type": "application/json",
-  //   "X-Shopify-Access-Token": accessToken,
-  //   "X-Shopify-Topic": topic,
-  //   "X-Shopify-Hmac-Sha256": hmac,
-  //   "X-Shopify-Shop-Domain": shop,
-  //   "X-Shopify-API-Version": "2019-07"
-  // };
+const makeWebook = (topics, shops, accessTokens, hmacs) => {
+  const topic = topics.trim();
+  const shop = shops.trim();
+  const accessToken = accessTokens.trim();
+  const hmac = hmacs.trim();
 
-  // const webhookPayload = {
-  //   webhook: {
-  //     topic: topic,
-  //     address: `https://immense-bastion-25565.herokuapp.com/store/${shop}/${topic}`,
-  //     format: "json"
-  //   }
-  // };
-  // request
-  //   .post(webhookUrl, {
-  //     headers: webhookHeaders,
-  //     json: webhookPayload
-  //   })
-  //   .then(shopResponse => {
-  //     console.log("showResponse-->", shopResponse);
-  //   })
-  //   .catch(error => {
-  //     console.log("error-->", error);
-  //   });
+  const webhookUrl = "https://" + shop + "/admin/api/2019-07/webhooks.json";
+  const webhookHeaders = {
+    "Content-Type": "application/json",
+    "X-Shopify-Access-Token": accessToken,
+    "X-Shopify-Topic": topic,
+    "X-Shopify-Hmac-Sha256": hmac,
+    "X-Shopify-Shop-Domain": shop,
+    "X-Shopify-API-Version": "2019-07"
+  };
+
+  const webhookPayload = {
+    webhook: {
+      topic: topic,
+      address: `https://immense-bastion-25565.herokuapp.com/store/${shop}/${topic}`,
+      format: "json"
+    }
+  };
+  request
+    .post(webhookUrl, {
+      headers: webhookHeaders,
+      json: webhookPayload
+    })
+    .then(shopResponse => {
+      console.log("showResponse-->", shopResponse);
+    })
+    .catch(error => {
+      console.log("error-->", error);
+    });
 };
 
 app.get("/api/smsCount", function(req, res) {
@@ -274,7 +275,7 @@ app.get("/api/smsCount", function(req, res) {
 
 // app.get("/api/history", function(req, res) {
 //   if (req.session.shop) {
-//     Store.findOne({ name: Gshop }, function(err, data) {
+//     Store.findOne({ name: shop }, function(err, data) {
 //       if (data) {
 //         var history = data.sms;
 //         res.send(history);
