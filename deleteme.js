@@ -78,8 +78,3 @@
 // // });
 
 // // console.log(message);
-
-var message = `Samrat, jasia Liam Shirt%20from%20customer`;
-message = message.replace(/ /g, "%20");
-
-console.log(message);

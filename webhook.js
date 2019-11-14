@@ -22,10 +22,6 @@ mongoose.connect(process.env.MONGODB_URI, {
   useCreateIndex: true
 });
 
-let Gshop = "";
-let Ghmac = "";
-let Gtoken = "";
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -36,11 +32,6 @@ app.use(
     store: new mongoConnect({ mongooseConnection: mongoose.connection })
   })
 );
-
-// store: new mongoStore({
-//   mongoose_connection: mongoose.connection,
-//   collection: "sessions"
-// });
 
 app.use(function(req, res, next) {
   res.locals.session = req.session;
@@ -101,9 +92,6 @@ app.get("/shopify", (req, res) => {
 app.get("/shopify/callback", (req, res) => {
   let { shop, hmac, code, state } = req.query;
   console.log("callback route call -->", shop);
-  Gshop = shop;
-  Ghmac = hmac;
-
   const stateCookie = cookie.parse(req.headers.cookie).state;
 
   if (state !== stateCookie) {
@@ -151,8 +139,9 @@ app.get("/shopify/callback", (req, res) => {
         Gtoken = accessTokenResponse.access_token;
 
         req.session.shop = shop;
-        req.session.token = hmac;
-        req.session.hmac = accessTokenResponse.access_token;
+        req.session.hmac = hmac;
+        req.session.token = accessTokenResponse.access_token;
+
         console.log("top shop", req.session.shop);
         res.redirect("/");
       })
@@ -168,6 +157,8 @@ app.get("/shopify/callback", (req, res) => {
 app.post("/myaction", function(req, res) {
   if (req.session.shop) {
     let shop = req.session.shop;
+    let token = req.session.token;
+    let hmac = req.session.hmac;
     var json_data = req.body;
 
     res.sendStatus(200);
@@ -217,8 +208,7 @@ app.post("/myaction", function(req, res) {
     }
 
     removeElement(www, "sender");
-    let token = req.session.token;
-    let hmac = req.session.hmac;
+
     www.forEach(topic => {
       makeWebook(topic, token, hmac, shop);
     });
@@ -228,29 +218,24 @@ app.post("/myaction", function(req, res) {
 });
 
 const makeWebook = (topic, token, hmac, shop) => {
-  if (hmac === Ghmac) {
-    console.log("hmac equall");
-  } else {
-    console.log(hmac, " hmac ", Ghmac);
-  }
-  if (token === Gtoken) {
-    console.log("token equall");
-  } else {
-    console.log(token, " token ", Gtoken);
-  }
-  if (shop === Gshop) {
-    console.log("shop equall");
-  } else {
-    console.log(shop, " shop ", Ghmac);
-  }
+  // if (hmac === Ghmac) {
+  //   console.log("hmac equall");
+  // } else {
+  //   console.log(hmac, " hmac ", Ghmac);
+  // }
+  // if (token === Gtoken) {
+  //   console.log("token equall");
+  // } else {
+  //   console.log(token, " token ", Gtoken);
+  // }
 
-  const webhookUrl = "https://" + Gshop + "/admin/api/2019-07/webhooks.json";
+  const webhookUrl = "https://" + shop + "/admin/api/2019-07/webhooks.json";
   const webhookHeaders = {
     "Content-Type": "application/json",
-    "X-Shopify-Access-Token": Gtoken,
+    "X-Shopify-Access-Token": token,
     "X-Shopify-Topic": topic,
-    "X-Shopify-Hmac-Sha256": Ghmac,
-    "X-Shopify-Shop-Domain": Gshop,
+    "X-Shopify-Hmac-Sha256": hmac,
+    "X-Shopify-Shop-Domain": shop,
     "X-Shopify-API-Version": "2019-07"
   };
 
