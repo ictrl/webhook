@@ -50,7 +50,7 @@ const Store = new mongoose.model("Store", shopSchema);
 
 // install route ==>"/shopify/shop=?shopname.shopify.com
 app.get("/shopify", (req, res) => {
-  req.session.shop = shop;
+  req.session.shop = req.query.shop;
   const shop = req.query.shop;
   console.log("install route call-->", shop);
   if (shop) {
