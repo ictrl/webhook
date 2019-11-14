@@ -219,7 +219,6 @@ app.post("/myaction", function(req, res) {
     removeElement(www, "sender");
     let token = req.session.token;
     let hmac = req.session.hmac;
-    let shop = req.session.shop;
     www.forEach(topic => {
       makeWebook(topic, token, hmac, shop);
     });
