@@ -46,7 +46,7 @@ export default function Home(props) {
 			setSmsLeft(res.data);
 		});
 	};
-	const shopName = () => {
+	const getName = () => {
     axios.get("/api/name/").then(res => {
       setShopName(res.data);
     });
@@ -54,7 +54,7 @@ export default function Home(props) {
 
 	useEffect(() => {
 		smsCount();
-		shopName();
+		getName();
 	}, []);
 
 	return (
