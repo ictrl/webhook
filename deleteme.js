@@ -78,3 +78,14 @@
 // // });
 
 // // console.log(message);
+install route call--> mojitotest.myshopify.com
+157371020462600 <--stateNshop--> mojitotest.myshopify.com
+
+install route call--> mojitostore.myshopify.com
+ 157371020591200 <--stateNshop--> mojitostore.myshopify.com
+
+
+
+ callback route call --> mojitostore.myshopify.com
+ state 157371020591200
+ stateCookie cookie.parse(req.headers.cookie).mojitostore.myshopify.com
