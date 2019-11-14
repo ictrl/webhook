@@ -29,9 +29,15 @@ app.use(
     secret: "mylittleSecrets.",
     resave: false,
     saveUninitialized: false,
-    store: new mongoConnect({ mongooseConnection: mongoose.connect })
+    store: new mongoConnect({ mongooseConnection: mongoose.connection })
   })
 );
+
+// store: new mongoStore({
+//   mongoose_connection: mongoose.connection,
+//   collection: "sessions"
+// });
+
 app.use(function(req, res, next) {
   res.locals.session = req.session;
   next();
