@@ -38,6 +38,20 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(function(req, res, next) {
+  if (!req.session.views) {
+    req.session.views = {};
+  }
+
+  // get the url pathname
+  var pathname = parseurl(req).pathname;
+
+  // count the views
+  req.session.views[pathname] = (req.session.views[pathname] || 0) + 1;
+
+  next();
+});
+
 const shopSchema = new mongoose.Schema({
   name: String,
   data: JSON,
@@ -168,7 +182,7 @@ app.post("/myaction", function(req, res) {
     const store = new Store({
       name: shop,
       data: req.body,
-      smsCount: 90
+      smsCount: 100
     });
 
     store.save(function(err) {
@@ -259,7 +273,7 @@ app.get("/api/smsCount", function(req, res) {
         console.log("sms", sms);
         res.send(sms);
       } else {
-        res.send("100");
+        res.send("0");
       }
       console.log("263", req.session.shop);
     });
@@ -267,6 +281,14 @@ app.get("/api/smsCount", function(req, res) {
     console.log(
       "cant find session key form get /api/smsCount || your session timeout"
     );
+  }
+});
+
+app.get("/api/name", (req, res) => {
+  if (req.session.shop) {
+    res.send(req.session.shop);
+  } else {
+    res.send("unknown");
   }
 });
 

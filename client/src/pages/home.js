@@ -8,6 +8,7 @@ import { TemplateContext } from '../App';
 
 export default function Home(props) {
 	const [ smsLeft, setSmsLeft ] = useState(0);
+	const [shopName, setShopName] = useState("Loading");
 	const { temp, setTemp } = useContext(TemplateContext);
 
 	// console.log(temp);
@@ -45,9 +46,15 @@ export default function Home(props) {
 			setSmsLeft(res.data);
 		});
 	};
+	const shopName = () => {
+    axios.get("/api/name/").then(res => {
+      setShopName(res.data);
+    });
+  };
 
 	useEffect(() => {
 		smsCount();
+		shopName();
 	}, []);
 
 	return (
@@ -55,7 +62,7 @@ export default function Home(props) {
 			<div className="container-fluid">
 				<section id="sms">
 					<div className="row">
-						<div className="col-md-4 sms centerr">SMS LEFT {smsLeft}</div>
+	<div className="col-md-4 sms centerr">SMS LEFT {smsLeft} @ {shopName}</div>
 						{/* <Link> */}
 						<div className="col-md-4 buy centerr">
 							<Link to="/recharge" style={{ color: 'white' }}>
