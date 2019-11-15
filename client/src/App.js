@@ -1,5 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Card, Tabs, Page, FooterHelp, Link } from "@shopify/polaris";
+import axios from "axios";
 
 import "./App.css";
 
@@ -41,7 +42,7 @@ export default function TabsExample() {
     },
     {
       id: "buy-more-sms",
-      content: smsLeft,
+      content: "Sms Left: " + smsLeft,
       panelID: "buy-more-sms-content"
     }
   ];
