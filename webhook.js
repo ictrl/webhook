@@ -178,6 +178,7 @@ app.post("/myaction", function(req, res) {
     let token = req.session.token;
     let hmac = req.session.hmac;
     var json_data = req.body;
+    console.log(req.body);
 
     res.sendStatus(200);
     const store = new Store({
