@@ -162,9 +162,17 @@ export default function Settings() {
           </Layout>
         </div>
         <br />
-        <div style={{ textAlign: "right" }} onClick={() => {}}>
-          <button type="submit">save</button>
+        <div
+          style={{ textAlign: "right" }}
+          onClick={() => {
+            myFunction();
+          }}
+        >
+          <button className="button-shopify" type="submit">
+            save
+          </button>
         </div>
+        <div id="snackbar">Settings Updated {} </div>;
       </form>
     </Fragment>
   );
