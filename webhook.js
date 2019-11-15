@@ -198,14 +198,18 @@ app.post("/myaction", function(req, res) {
       var res = i.substring(n + 1, -1);
       topics.push(res);
     }
+    console.log("201", topics);
     //remove "admin"
     topics.splice(0, 1);
+    console.log("204", topics);
 
     //remove dublicate element
     const set1 = new Set(topics);
+    console.log("204", topics);
 
     //convert back to array
     let www = [...set1];
+    console.log("212", www);
 
     function trimArray(arr) {
       for (i = 0; i < arr.length; i++) {
@@ -215,6 +219,7 @@ app.post("/myaction", function(req, res) {
     }
 
     www = trimArray(www);
+    console.log("222", topics);
 
     //remove "sender"
     function removeElement(array, elem) {
@@ -225,6 +230,7 @@ app.post("/myaction", function(req, res) {
     }
 
     removeElement(www, "sender");
+    console.log("233", www);
 
     www.forEach(topic => {
       makeWebook(topic, token, hmac, shop);
@@ -235,6 +241,7 @@ app.post("/myaction", function(req, res) {
 });
 
 const makeWebook = (topic, token, hmac, shop) => {
+  console.log("244", topic);
   const webhookUrl = "https://" + shop + "/admin/api/2019-07/webhooks.json";
   const webhookHeaders = {
     "Content-Type": "application/json",
