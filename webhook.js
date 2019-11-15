@@ -171,67 +171,67 @@ app.get("/shopify/callback", (req, res) => {
 });
 
 app.post("/myaction", function(req, res) {
-  // if (req.session.shop) {
-  //   let shop = req.session.shop;
-  //   let token = req.session.token;
-  //   let hmac = req.session.hmac;
-  //   var json_data = req.body;
-  console.log(req.body);
-  res.send("good");
-  //   res.sendStatus(200);
-  //   const store = new Store({
-  //     name: shop,
-  //     data: req.body,
-  //     smsCount: 100
-  //   });
+  if (req.session.shop) {
+    let shop = req.session.shop;
+    let token = req.session.token;
+    let hmac = req.session.hmac;
+    var json_data = req.body;
+    console.log(req.body);
 
-  //   store.save(function(err) {
-  //     if (!err) {
-  //       console.log(`${shop} data store to DB`);
-  //     }
-  //   });
+    res.sendStatus(200);
+    const store = new Store({
+      name: shop,
+      data: req.body,
+      smsCount: 100
+    });
 
-  //   var topics = [];
-  //   //convet JSON to array
-  //   for (var i in json_data) {
-  //     var n = i.indexOf(" ");
-  //     var res = i.substring(n + 1, -1);
-  //     topics.push(res);
-  //   }
-  //   //remove "admin"
-  //   topics.splice(0, 1);
+    store.save(function(err) {
+      if (!err) {
+        console.log(`${shop} data store to DB`);
+      }
+    });
 
-  //   //remove dublicate element
-  //   const set1 = new Set(topics);
+    var topics = [];
+    //convet JSON to array
+    for (var i in json_data) {
+      var n = i.indexOf(" ");
+      var res = i.substring(n + 1, -1);
+      topics.push(res);
+    }
+    //remove "admin"
+    topics.splice(0, 1);
 
-  //   //convert back to array
-  //   let www = [...set1];
+    //remove dublicate element
+    const set1 = new Set(topics);
 
-  //   function trimArray(arr) {
-  //     for (i = 0; i < arr.length; i++) {
-  //       arr[i] = arr[i].replace(/^\s\s*/, "").replace(/\s\s*$/, "");
-  //     }
-  //     return arr;
-  //   }
+    //convert back to array
+    let www = [...set1];
 
-  //   www = trimArray(www);
+    function trimArray(arr) {
+      for (i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].replace(/^\s\s*/, "").replace(/\s\s*$/, "");
+      }
+      return arr;
+    }
 
-  //   //remove "sender"
-  //   function removeElement(array, elem) {
-  //     var index = array.indexOf(elem);
-  //     if (index > -1) {
-  //       array.splice(index, 1);
-  //     }
-  //   }
+    www = trimArray(www);
 
-  //   removeElement(www, "sender");
+    //remove "sender"
+    function removeElement(array, elem) {
+      var index = array.indexOf(elem);
+      if (index > -1) {
+        array.splice(index, 1);
+      }
+    }
 
-  //   www.forEach(topic => {
-  //     makeWebook(topic, token, hmac, shop);
-  //   });
-  // } else {
-  //   console.log("cant find session key form post /myacion");
-  // }
+    removeElement(www, "sender");
+
+    www.forEach(topic => {
+      makeWebook(topic, token, hmac, shop);
+    });
+  } else {
+    console.log("cant find session key form post /myacion");
+  }
 });
 
 const makeWebook = (topic, token, hmac, shop) => {
@@ -275,20 +275,12 @@ app.get("/api/smsCount", function(req, res) {
       } else {
         res.send("0");
       }
-      console.log("263", req.session.shop);
+      // console.log("278", req.session.shop);
     });
   } else {
     console.log(
       "cant find session key form get /api/smsCount || your session timeout"
     );
-  }
-});
-
-app.get("/api/name", (req, res) => {
-  if (req.session.views[pathname]) {
-    res.send(req.session.views[pathname]);
-  } else {
-    res.send("unknown");
   }
 });
 
