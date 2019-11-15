@@ -988,9 +988,9 @@ const sndSms = (phone, store, message, senderID, shop) => {
         //save sms data to DB
 
         var obj = {
-          description: message.replace(/%20/g, " "),
-          term: store
-          // number: phone
+          description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
+          term: phone
+          // number: shop
         };
 
         Store.findOneAndUpdate(
@@ -1020,7 +1020,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
           method: "GET",
           hostname: "api.msg91.com",
           port: null,
-          path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=MOJITO&message=${message}&country=91`,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
           headers: {}
         };
         var req = http.request(options, function(res) {

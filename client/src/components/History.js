@@ -6,8 +6,7 @@ export default function History(props) {
   const [history, setHistory] = useState([]);
 
   const smsHistory = () => {
-    axios.get("/api/history/").then(res => {
-      console.log("history", res.data);
+    axios.get("/api/history").then(res => {
       setHistory(res.data);
     });
   };
