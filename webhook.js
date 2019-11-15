@@ -17,7 +17,7 @@ const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require("connect-mongo")(session);
 const forwardingAddress = "https://immense-bastion-25565.herokuapp.com"; // Replace this with your HTTPS Forwarding address
 // get the url pathname
-const pathname = parseurl(req).pathname;
+let pathname;
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -44,7 +44,7 @@ app.use(function(req, res, next) {
   if (!req.session.views) {
     req.session.views = {};
   }
-
+  pathname = parseurl(req).pathname;
   // count the views
   req.session.views[pathname] = (req.session.views[pathname] || 0) + 1;
 

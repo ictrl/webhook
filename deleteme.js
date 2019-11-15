@@ -110,3 +110,7 @@
 //    'refunds/create admin': 'on',
 //    'sender id': 'MOJITO'
 //  }
+
+let  pathname;
+pathname = "ss";
+console.log(pathname);
