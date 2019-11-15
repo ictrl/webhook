@@ -93,24 +93,21 @@
 
 // const stateCookie = cookies[`${name}`];
 
-// console.log(stateCookie);
-//  {
-//    'admin no': '1234567890',
-//    'orders/create customer': 'on',
-//    'orders/create admin': 'on',
-//    'orders/cancelled customer': 'on',
-//    'orders/cancelled admin': 'on',
-//    'orders/fulfilled customer': 'on',
-//    'orders/fulfilled admin': 'on',
-//    'orders/partially_fulfilled customer': 'on',
-//    'orders/partially_fulfilled admin': 'on',
-//    'customers/create customer': 'on',
-//    'customers/create admin': 'on',
-//    'refunds/create customer': 'on',
-//    'refunds/create admin': 'on',
-//    'sender id': 'MOJITO'
-//  }
+// var myarr = [
+//   {
+//     term: "Hi%20Samrat,%20Thanks%20order%20ID:%201104",
+//     description: "Liam Fashions"
+//     // number: "1234567900"
+//   },
+//   {
+//     term: "Customer%20name:%20Sa%20order%20ID:%201104",
+//     description: "Liam Fashions"
+//     // number: "9898989898"
+//   }
+// ];
 
-let  pathname;
-pathname = "ss";
-console.log(pathname);
+// {
+//   myarr.map(function(element, index) {
+//     return console.log(element);
+//   });
+// }

@@ -1,52 +1,75 @@
-import React, { useState} from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import React, { useCallback, useState } from 'react';
+import { Card, Tabs, Page, FooterHelp, Link } from '@shopify/polaris';
 
-import "./App.css";
+import './App.css';
 
-import Home from "./pages/home";
-import Recharge from "./pages/recharge";
-import Thanks from "./pages/thanks";
-import History from "./pages/history";
-import Templete from "./pages/templete";
+import Setting from './components/Setting';
+import Template from './components/Template';
+import History from './components/History';
+import BuyMoreSMS from './components/BuyMoreSMS';
 
-const util = require("util");
+export default function TabsExample() {
+	const [ selected, setSelected ] = useState(0);
 
-export const TemplateContext = React.createContext();
-// export const ChannelContext = React.createContext();
+	const handleTabChange = useCallback((selectedTabIndex) => setSelected(selectedTabIndex), []);
 
-const App = () => {
-	const [ temp, setTemp ] = useState({
-		topic: 'default/topic',
-		ann: 'default'
-	});
+	const tabs = [
+		{
+			id: 'all-customers',
+			content: 'Settings',
+			accessibilityLabel: 'All customers',
+			panelID: 'all-customers-content'
+		},
+		{
+			id: 'accepts-marketing',
+			content: 'Edit Template',
+			panelID: 'accepts-marketing-content'
+		},
+		{
+			id: 'repeat-customers',
+			content: 'SMS History',
+			panelID: 'repeat-customers-content'
+		},
+		{
+			id: 'buy-more-sms',
+			content: 'Buy More SMS',
+			panelID: 'buy-more-sms-content'
+		}
+	];
 
-	const showStae = (params) => {
-		console.log(
-			util.inspect(temp, {
-				showHidden: true,
-				depth: null
-			})
-		);
+	const tabChangeHandler = (params) => {
+		switch (tabs[selected].content) {
+			case 'Settings':
+				return <Setting />;
+
+			case 'Edit Template':
+				return <Template />;
+
+			case 'Buy More SMS':
+				return <BuyMoreSMS />;
+			case 'SMS History':
+				return <History />;
+
+			default:
+				break;
+		}
 	};
 
 	return (
-		<Router>
-			
-			<TemplateContext.Provider value={{ temp, setTemp }}>
-				{/* <div id="showState" style={{ backgroundColor: 'orange', fontWeight: '900', color: 'green', textAlign: 'right', position: 'fixed',top: 0, height: '100%',zIndex: 999 }}  onClick={showStae}>
-					
-					<p style={{color: 'orange'}}>
-						hola
-					</p>
-				</div> */}
-				<Route exact path="/" component={Home} />
+		<Page>
+			<Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
+				<Card.Section>
+					{tabChangeHandler()}
 
-				<Route exact path="/templete" component={Templete} />
-			</TemplateContext.Provider>
-			<Route exact path="/recharge" component={Recharge} />
-			<Route exact path="/history" component={History} />
-		</Router>
+					{/* <Settings /> */}
+				</Card.Section>
+			</Tabs>
+			<FooterHelp>
+				Learn more about{' '}
+				<Link url="https://adijha.com" external>
+					Mojitolabs
+				</Link>
+			</FooterHelp>
+		</Page>
 	);
-};
-
-export default App;
+}

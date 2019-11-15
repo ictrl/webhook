@@ -171,67 +171,67 @@ app.get("/shopify/callback", (req, res) => {
 });
 
 app.post("/myaction", function(req, res) {
-  if (req.session.shop) {
-    let shop = req.session.shop;
-    let token = req.session.token;
-    let hmac = req.session.hmac;
-    var json_data = req.body;
-    console.log(req.body);
+  // if (req.session.shop) {
+  //   let shop = req.session.shop;
+  //   let token = req.session.token;
+  //   let hmac = req.session.hmac;
+  //   var json_data = req.body;
+  console.log(req.body);
+  res.send("good");
+  //   res.sendStatus(200);
+  //   const store = new Store({
+  //     name: shop,
+  //     data: req.body,
+  //     smsCount: 100
+  //   });
 
-    res.sendStatus(200);
-    const store = new Store({
-      name: shop,
-      data: req.body,
-      smsCount: 100
-    });
+  //   store.save(function(err) {
+  //     if (!err) {
+  //       console.log(`${shop} data store to DB`);
+  //     }
+  //   });
 
-    store.save(function(err) {
-      if (!err) {
-        console.log(`${shop} data store to DB`);
-      }
-    });
+  //   var topics = [];
+  //   //convet JSON to array
+  //   for (var i in json_data) {
+  //     var n = i.indexOf(" ");
+  //     var res = i.substring(n + 1, -1);
+  //     topics.push(res);
+  //   }
+  //   //remove "admin"
+  //   topics.splice(0, 1);
 
-    var topics = [];
-    //convet JSON to array
-    for (var i in json_data) {
-      var n = i.indexOf(" ");
-      var res = i.substring(n + 1, -1);
-      topics.push(res);
-    }
-    //remove "admin"
-    topics.splice(0, 1);
+  //   //remove dublicate element
+  //   const set1 = new Set(topics);
 
-    //remove dublicate element
-    const set1 = new Set(topics);
+  //   //convert back to array
+  //   let www = [...set1];
 
-    //convert back to array
-    let www = [...set1];
+  //   function trimArray(arr) {
+  //     for (i = 0; i < arr.length; i++) {
+  //       arr[i] = arr[i].replace(/^\s\s*/, "").replace(/\s\s*$/, "");
+  //     }
+  //     return arr;
+  //   }
 
-    function trimArray(arr) {
-      for (i = 0; i < arr.length; i++) {
-        arr[i] = arr[i].replace(/^\s\s*/, "").replace(/\s\s*$/, "");
-      }
-      return arr;
-    }
+  //   www = trimArray(www);
 
-    www = trimArray(www);
+  //   //remove "sender"
+  //   function removeElement(array, elem) {
+  //     var index = array.indexOf(elem);
+  //     if (index > -1) {
+  //       array.splice(index, 1);
+  //     }
+  //   }
 
-    //remove "sender"
-    function removeElement(array, elem) {
-      var index = array.indexOf(elem);
-      if (index > -1) {
-        array.splice(index, 1);
-      }
-    }
+  //   removeElement(www, "sender");
 
-    removeElement(www, "sender");
-
-    www.forEach(topic => {
-      makeWebook(topic, token, hmac, shop);
-    });
-  } else {
-    console.log("cant find session key form post /myacion");
-  }
+  //   www.forEach(topic => {
+  //     makeWebook(topic, token, hmac, shop);
+  //   });
+  // } else {
+  //   console.log("cant find session key form post /myacion");
+  // }
 });
 
 const makeWebook = (topic, token, hmac, shop) => {
@@ -988,10 +988,11 @@ const sndSms = (phone, store, message, senderID, shop) => {
         });
         //save sms data to DB
         var obj = {
-          message: message,
-          store: store,
-          number: phone
+          description: message,
+          term: store
+          // number: phone
         };
+
         Store.findOneAndUpdate(
           { name: shop },
           {
