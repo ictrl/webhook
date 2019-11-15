@@ -119,12 +119,12 @@ export default function Settings() {
                     <div style={{ width: "15rem" }}>
                       <Checkbox
                         label="Notify Customer"
-                        name="orders/fullfilled customer"
+                        name="orders/fulfilled customer"
                       />
                     </div>
                     <Checkbox
                       label="Notify Admin"
-                      name="orders/fullfilled admin"
+                      name="orders/fulfilled admin"
                     />
                   </div>
 

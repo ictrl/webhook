@@ -986,8 +986,9 @@ const sndSms = (phone, store, message, senderID, shop) => {
           });
         });
         //save sms data to DB
+
         var obj = {
-          description: message,
+          description: message.replace(/%20/g, " "),
           term: store
           // number: phone
         };
@@ -1135,3 +1136,17 @@ const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`app listening on port ${port}!`);
 });
+
+
+
+
+ orders/create
+  orders/cancelled
+orders/fulfilled
+
+
+ app/uninstalled, carts/create, carts/update, checkouts/create, checkouts/delete, checkouts/update, checkouts/paid, collections/create, 
+ collections/delete, collections/update, customer_groups/create, customer_groups/delete, customer_groups/update, customers/create, customers/delete,
+  customers/disable, customers/enable, customers/update, fulfillment_events/create, fulfillment_events/delete, fulfillments/create, fulfillments/update,
+   order_transactions/create, orders/cancelled, orders/create, orders/delete, orders/edited, orders/fulfilled, orders/paid, orders/partially_fulfilled, 
+   orders/updated, products/create, products/delete, products/update, refunds/create, shop/update, tender_transactions/create, 
