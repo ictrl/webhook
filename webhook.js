@@ -988,8 +988,8 @@ const sndSms = (phone, store, message, senderID, shop) => {
         //save sms data to DB
 
         var obj = {
-          description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
-          term: phone
+          description: message.replace(/%20/g, " "),
+          term: store
           // number: phone
         };
 
