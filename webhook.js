@@ -287,15 +287,15 @@ app.get("/api/smsCount", function(req, res) {
 });
 
 app.get("/api/name", (req, res) => {
-  if (req.session.shop) {
-    res.send(req.session.shop);
+  if (req.session.views[pathname]) {
+    res.send(req.session.views[pathname]);
   } else {
     res.send("unknown");
   }
 });
 
 app.get("/api/history", function(req, res) {
-  if (req.session.shop) {
+  if (req.session.views[pathname]) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
         var history = data.sms;
