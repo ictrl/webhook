@@ -4,7 +4,6 @@ import { Checkbox } from '@shopify/polaris';
 export default function CheckboxExample(props) {
 	const [checked, setChecked] = useState(false);
 	
-	const [group, setGroup] = useState({})
 	const handleChange = useCallback((newChecked) =>
 		setChecked(newChecked),
 
