@@ -176,8 +176,8 @@ app.post("/myaction", function(req, res) {
     let token = req.session.token;
     let hmac = req.session.hmac;
     Store.findOne({ name: shop }, function(err, data) {
-      if (!err) {
-        console.log("store found in DB");
+      if (data) {
+        console.log("store found in DB", data);
         res.status(200).redirect("back");
         Store.findOneAndUpdate(
           { name: shop },
