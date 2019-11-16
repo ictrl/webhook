@@ -177,62 +177,71 @@ app.post("/myaction", function(req, res) {
     let hmac = req.session.hmac;
     var json_data = req.body;
     console.log(req.body);
-    res.redirect(`https://${shop}/admin/apps/sms_update`);
+    // res.redirect(`https://${shop}/admin/apps/sms_update`);
     // res.sendStatus(200);
-    const store = new Store({
-      name: shop,
-      data: req.body,
-      smsCount: 100
-    });
+    res.status(200).redirect("back");
+    // res.redirect(req.originalUrl);
 
-    store.save(function(err) {
+    Store.findOne({ name: shop }, function(err, data) {
       if (!err) {
-        console.log(`${shop} data store to DB`);
+        Store.findOneAndUpdate(
+          { name: shop },
+          { data: req.body },
+          {
+            new: true
+          }
+        );
+      } else {
+        const store = new Store({
+          name: shop,
+          data: req.body,
+          smsCount: 100
+        });
+
+        store.save(function(err) {
+          if (!err) {
+            console.log(`${shop} data store to DB`);
+          }
+        });
       }
     });
 
-    var topics = [];
+    var topics = ["orders/cancelled", "orders/fullfilled", "orders/create"];
     //convet JSON to array
-    for (var i in json_data) {
-      var n = i.indexOf(" ");
-      var res = i.substring(n + 1, -1);
-      topics.push(res);
-    }
-    console.log("201", topics);
-    //remove "admin"
-    topics.splice(0, 1);
-    console.log("204", topics);
+    // for (var i in json_data) {
+    //   var n = i.indexOf(" ");
+    //   var res = i.substring(n + 1, -1);
+    //   topics.push(res);
+    // }
+    //     //remove "admin"
+    // topics.splice(0, 1);
 
-    //remove dublicate element
-    const set1 = new Set(topics);
-    console.log("204", topics);
+    // //remove dublicate element
+    // const set1 = new Set(topics);
 
-    //convert back to array
-    let www = [...set1];
-    console.log("212", www);
+    // //convert back to array
+    // let www = [...set1];
 
-    function trimArray(arr) {
-      for (i = 0; i < arr.length; i++) {
-        arr[i] = arr[i].replace(/^\s\s*/, "").replace(/\s\s*$/, "");
-      }
-      return arr;
-    }
+    // function trimArray(arr) {
+    //   for (i = 0; i < arr.length; i++) {
+    //     arr[i] = arr[i].replace(/^\s\s*/, "").replace(/\s\s*$/, "");
+    //   }
+    //   return arr;
+    // }
 
-    www = trimArray(www);
-    console.log("222", topics);
+    // www = trimArray(www);
 
-    //remove "sender"
-    function removeElement(array, elem) {
-      var index = array.indexOf(elem);
-      if (index > -1) {
-        array.splice(index, 1);
-      }
-    }
+    // //remove "sender"
+    // function removeElement(array, elem) {
+    //   var index = array.indexOf(elem);
+    //   if (index > -1) {
+    //     array.splice(index, 1);
+    //   }
+    // }
 
-    removeElement(www, "sender");
-    console.log("233", www);
+    // removeElement(www, "sender");
 
-    www.forEach(topic => {
+    topics.forEach(topic => {
       makeWebook(topic, token, hmac, shop);
     });
   } else {
@@ -241,7 +250,6 @@ app.post("/myaction", function(req, res) {
 });
 
 const makeWebook = (topic, token, hmac, shop) => {
-  console.log("244", topic);
   const webhookUrl = "https://" + shop + "/admin/api/2019-07/webhooks.json";
   const webhookHeaders = {
     "Content-Type": "application/json",
@@ -272,6 +280,21 @@ const makeWebook = (topic, token, hmac, shop) => {
     });
 };
 
+app.get("/api/option", function(req, res) {
+  if (req.session.shop) {
+    Store.findOne({ name: req.session.shop }, function(err, data) {
+      if (data) {
+        res.send(data);
+      } else {
+        res.send("");
+      }
+    });
+  } else {
+    console.log(
+      "cant find session key form get /api/smsCount || your session timeout"
+    );
+  }
+});
 app.get("/api/smsCount", function(req, res) {
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
@@ -305,7 +328,7 @@ app.get("/api/history", function(req, res) {
     );
   }
 });
-////////////////////
+
 app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   const shop = request.params.shop;
   let topic = request.params.topic;

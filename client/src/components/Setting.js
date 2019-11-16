@@ -1,5 +1,6 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Card, Layout, Heading, Button } from "@shopify/polaris";
+import axios from "axios";
 
 import Checkbox from "./Checkbox";
 
@@ -13,11 +14,35 @@ function myFunction() {
 }
 
 export default function Settings() {
+  const [admin, setAdmin] = useState("");
+  const [sender, setSender] = useState("");
+  const [orderCreateCustomer, setOrderCreateCustomer] = useState("");
+  const [orderCreateAdmin, setOrderCreateAdmin] = useState("");
+  const [orderCancelledAdmin, setOrderCancelledAdmin] = useState("");
+  const [orderCancelledCustomer, setOrderCancelledCustomer] = useState("");
+  const [orderFulfilledledAdmin, setOrderFulfilledAdmin] = useState("");
+  const [orderFulfilledCustomer, setorderFulfilledCustomer] = useState("");
+
+  const getOption = () => {
+    axios.get("/api/option").then(res => {
+      setAdmin(res.data["admin no"]);
+      setSender(res.data["sender id"]);
+      setOrderCreateCustomer(res.data["orders/create customer"]);
+      setOrderCreateAdmin(res.data["sender id"]);
+      setOrderCancelledCustomer(res.data["sender id"]);
+      setOrderCancelledAdmin(res.data["sender id"]);
+      setOrderFulfilledAdmin(res.data["sender id"]);
+      setorderFulfilledCustomer(res.data["sender id"]);
+    });
+  };
+  useEffect(() => {
+    getOption();
+  }, []);
   return (
     <Fragment>
       <form
-        action="https://immense-bastion-25565.herokuapp.com/myaction"
-        // action="http://localhost:4000/myaction"
+        // action="https://immense-bastion-25565.herokuapp.com/myaction"
+        action="http://localhost:4000/myaction"
         method="post"
       >
         <div>
@@ -33,6 +58,7 @@ export default function Settings() {
                     label="Admin Phone No."
                     type="text"
                     maxLength="10"
+                    value={admin}
                   />
                 </div>
               </Card>
@@ -48,6 +74,7 @@ export default function Settings() {
                     label="Sender ID"
                     type="text"
                     maxLength="6"
+                    value={sender}
                   />
                 </div>
               </Card>
@@ -71,9 +98,14 @@ export default function Settings() {
                         name="orders/create customer"
                         label="Notify Customer"
                         hell="orders/create"
+                        value={orderCreateCustomer}
                       />
                     </div>
-                    <Checkbox label="Notify Admin" name="orders/create admin" />
+                    <Checkbox
+                      label="Notify Admin"
+                      name="orders/create admin"
+                      value={orderCreateAdmin}
+                    />
                   </div>
                   <div style={{ display: "flex" }}>
                     <div style={{ marginRight: "1rem", width: "15rem" }}>
@@ -84,11 +116,13 @@ export default function Settings() {
                       <Checkbox
                         label="Notify Customer"
                         name="orders/cancelled customer"
+                        value={orderCancelledCustomer}
                       />
                     </div>
                     <Checkbox
                       label="Notify Admin"
                       name="orders/cancelled admin"
+                      value={orderCancelledAdmin}
                     />
                   </div>
                   {/* <div style={{ display: 'flex' }}>
@@ -120,11 +154,13 @@ export default function Settings() {
                       <Checkbox
                         label="Notify Customer"
                         name="orders/fulfilled customer"
+                        value={orderFulfilledCustomer}
                       />
                     </div>
                     <Checkbox
                       label="Notify Admin"
                       name="orders/fulfilled admin"
+                      value={orderFulfilledledAdmin}
                     />
                   </div>
 

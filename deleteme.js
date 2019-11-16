@@ -112,6 +112,6 @@
 //   });
 // }
 
-var sms = `name:%20abhishek,%20vendor:%20mojitotest,%20price:%20100.00,%0Aorder_id:%201012,%20title:%20abhse%20from%20customer`;
+// var sms = 789;
 
-console.log(sms.replace(/%20/g, " ").replace(/%0A/g, " "));
+// console.log(sms.length);
