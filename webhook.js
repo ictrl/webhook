@@ -175,15 +175,9 @@ app.post("/myaction", function(req, res) {
     let shop = req.session.shop;
     let token = req.session.token;
     let hmac = req.session.hmac;
-    var json_data = req.body;
-    console.log(req.body);
-    // res.redirect(`https://${shop}/admin/apps/sms_update`);
-    // res.sendStatus(200);
-    res.status(200).redirect("back");
-    // res.redirect(req.originalUrl);
-
     Store.findOne({ name: shop }, function(err, data) {
       if (!err) {
+        res.status(200).redirect("back");
         Store.findOneAndUpdate(
           { name: shop },
           { data: req.body },
@@ -192,6 +186,7 @@ app.post("/myaction", function(req, res) {
           }
         );
       } else {
+        res.redirect(`https://${shop}/admin/apps/sms_update`);
         const store = new Store({
           name: shop,
           data: req.body,
@@ -207,39 +202,6 @@ app.post("/myaction", function(req, res) {
     });
 
     var topics = ["orders/cancelled", "orders/fulfilled", "orders/create"];
-    //convet JSON to array
-    // for (var i in json_data) {
-    //   var n = i.indexOf(" ");
-    //   var res = i.substring(n + 1, -1);
-    //   topics.push(res);
-    // }
-    //     //remove "admin"
-    // topics.splice(0, 1);
-
-    // //remove dublicate element
-    // const set1 = new Set(topics);
-
-    // //convert back to array
-    // let www = [...set1];
-
-    // function trimArray(arr) {
-    //   for (i = 0; i < arr.length; i++) {
-    //     arr[i] = arr[i].replace(/^\s\s*/, "").replace(/\s\s*$/, "");
-    //   }
-    //   return arr;
-    // }
-
-    // www = trimArray(www);
-
-    // //remove "sender"
-    // function removeElement(array, elem) {
-    //   var index = array.indexOf(elem);
-    //   if (index > -1) {
-    //     array.splice(index, 1);
-    //   }
-    // }
-
-    // removeElement(www, "sender");
 
     topics.forEach(topic => {
       makeWebook(topic, token, hmac, shop);
