@@ -25,6 +25,7 @@ export default function Settings() {
 
   const getOption = () => {
     axios.get("/api/option/").then(res => {
+      console.log("optn", res);
       setAdmin(res.data["admin no"]);
       setSender(res.data["sender id"]);
       setOrderCreateCustomer(res.data["orders/create customer"]);

@@ -179,11 +179,21 @@ app.post("/myaction", function(req, res) {
       if (data) {
         console.log("store found in DB", data);
         res.status(200).redirect("back");
+
         Store.findOneAndUpdate(
           { name: shop },
-          { data: req.body },
           {
-            new: true
+            $set: {
+              data: req.body
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("datacount + 1");
+            } else {
+              console.log("err", err);
+            }
           }
         );
       } else {
