@@ -32,8 +32,8 @@ export default function Settings() {
       setOrderCreateAdmin(res.data["orders/create admin"]);
       setOrderCancelledCustomer(res.data["orders/cancelled customer"]);
       setOrderCancelledAdmin(res.data["orders/cancelled admin"]);
-      setOrderFulfilledAdmin(res.data["orders/fulfilled customer"]);
-      setorderFulfilledCustomer(res.data["orders/fulfilled admin"]);
+      setOrderFulfilledAdmin(res.data["orders/fulfilled admin"]);
+      setorderFulfilledCustomer(res.data["orders/fulfilled customer"]);
     });
   };
 
