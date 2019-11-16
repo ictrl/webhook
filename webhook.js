@@ -178,7 +178,7 @@ app.post("/myaction", function(req, res) {
     var json_data = req.body;
     console.log(req.body);
     res.redirect(`https://${shop}/admin/apps/sms_update`);
-    res.sendStatus(200);
+    // res.sendStatus(200);
     const store = new Store({
       name: shop,
       data: req.body,
