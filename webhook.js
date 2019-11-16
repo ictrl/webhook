@@ -206,7 +206,7 @@ app.post("/myaction", function(req, res) {
       }
     });
 
-    var topics = ["orders/cancelled", "orders/fullfilled", "orders/create"];
+    var topics = ["orders/cancelled", "orders/fulfilled", "orders/create"];
     //convet JSON to array
     // for (var i in json_data) {
     //   var n = i.indexOf(" ");
