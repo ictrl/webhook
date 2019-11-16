@@ -24,7 +24,7 @@ export default function Settings() {
   const [orderFulfilledCustomer, setorderFulfilledCustomer] = useState("");
 
   const getOption = () => {
-    axios.get("/api/option").then(res => {
+    axios.get("/api/option/").then(res => {
       setAdmin(res.data["admin no"]);
       setSender(res.data["sender id"]);
       setOrderCreateCustomer(res.data["orders/create customer"]);
@@ -35,14 +35,15 @@ export default function Settings() {
       setorderFulfilledCustomer(res.data["sender id"]);
     });
   };
+
   useEffect(() => {
     getOption();
   }, []);
   return (
     <Fragment>
       <form
-        // action="https://immense-bastion-25565.herokuapp.com/myaction"
-        action="http://localhost:4000/myaction"
+        action="https://immense-bastion-25565.herokuapp.com/myaction"
+        // action="http://localhost:4000/myaction"
         method="post"
       >
         <div>
