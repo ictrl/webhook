@@ -258,7 +258,7 @@ app.get("/api/option", function(req, res) {
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
-        res.send(data);
+        res.send(data.data);
       } else {
         res.send("");
       }
