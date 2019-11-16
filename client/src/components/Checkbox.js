@@ -19,6 +19,7 @@ export default function CheckboxExample(props) {
         label={props.label}
         name={props.name}
         checked={checked}
+        value={checked}
         onChange={handleChange}
       />
     </Fragment>

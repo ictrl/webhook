@@ -29,11 +29,11 @@ export default function Settings() {
       setAdmin(res.data["admin no"]);
       setSender(res.data["sender id"]);
       setOrderCreateCustomer(res.data["orders/create customer"]);
-      setOrderCreateAdmin(res.data["sender id"]);
-      setOrderCancelledCustomer(res.data["sender id"]);
-      setOrderCancelledAdmin(res.data["sender id"]);
-      setOrderFulfilledAdmin(res.data["sender id"]);
-      setorderFulfilledCustomer(res.data["sender id"]);
+      setOrderCreateAdmin(res.data["orders/create admin"]);
+      setOrderCancelledCustomer(res.data["orders/cancelled customer"]);
+      setOrderCancelledAdmin(res.data["orders/cancelled admin"]);
+      setOrderFulfilledAdmin(res.data["orders/fulfilled customer"]);
+      setorderFulfilledCustomer(res.data["orders/fulfilled admin"]);
     });
   };
 
