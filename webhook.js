@@ -177,7 +177,7 @@ app.post("/myaction", function(req, res) {
     let hmac = req.session.hmac;
     var json_data = req.body;
     console.log(req.body);
-
+    res.redirect(`https://${shop}/admin/apps/sms_update`);
     res.sendStatus(200);
     const store = new Store({
       name: shop,
@@ -1013,7 +1013,7 @@ const sndSms = (phone, store, message, senderID, shop) => {
         req.end();
       } else if (data.smsCount == 0 || data.smsCount == -1) {
         // notify admin to recharge
-        //send SMS mgs91
+        //send SMS mgs91ed
         phone = adminNumber;
         message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
         var options = {
