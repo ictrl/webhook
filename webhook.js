@@ -177,6 +177,7 @@ app.post("/myaction", function(req, res) {
     let hmac = req.session.hmac;
     Store.findOne({ name: shop }, function(err, data) {
       if (!err) {
+        console.log("store found in DB");
         res.status(200).redirect("back");
         Store.findOneAndUpdate(
           { name: shop },
@@ -186,6 +187,7 @@ app.post("/myaction", function(req, res) {
           }
         );
       } else {
+        console.log("store !found in DB");
         res.redirect(`https://${shop}/admin/apps/sms_update`);
         const store = new Store({
           name: shop,
@@ -198,13 +200,13 @@ app.post("/myaction", function(req, res) {
             console.log(`${shop} data store to DB`);
           }
         });
+
+        var topics = ["orders/cancelled", "orders/fulfilled", "orders/create"];
+
+        topics.forEach(topic => {
+          makeWebook(topic, token, hmac, shop);
+        });
       }
-    });
-
-    var topics = ["orders/cancelled", "orders/fulfilled", "orders/create"];
-
-    topics.forEach(topic => {
-      makeWebook(topic, token, hmac, shop);
     });
   } else {
     console.log("cant find session key form post /myacion");
