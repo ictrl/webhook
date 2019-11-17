@@ -171,67 +171,56 @@ app.get("/shopify/callback", (req, res) => {
 });
 
 app.post("/myaction", function(req, res) {
-  // if (req.session.shop) {
-  //   let shop = req.session.shop;
-  //   let token = req.session.token;
-  //   let hmac = req.session.hmac;
-  //   var json_data = req.body;
-  console.log(req.body);
-  res.send("good");
-  //   res.sendStatus(200);
-  //   const store = new Store({
-  //     name: shop,
-  //     data: req.body,
-  //     smsCount: 100
-  //   });
+  if (req.session.shop) {
+    let shop = req.session.shop;
+    let token = req.session.token;
+    let hmac = req.session.hmac;
+    Store.findOne({ name: shop }, function(err, data) {
+      if (data) {
+        console.log("store found in DB", data);
+        res.status(200).redirect("back");
 
-  //   store.save(function(err) {
-  //     if (!err) {
-  //       console.log(`${shop} data store to DB`);
-  //     }
-  //   });
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $set: {
+              data: req.body
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("datacount + 1");
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+      } else {
+        console.log("store !found in DB");
+        res.redirect(`https://${shop}/admin/apps/sms_update`);
+        const store = new Store({
+          name: shop,
+          data: req.body,
+          smsCount: 100
+        });
 
-  //   var topics = [];
-  //   //convet JSON to array
-  //   for (var i in json_data) {
-  //     var n = i.indexOf(" ");
-  //     var res = i.substring(n + 1, -1);
-  //     topics.push(res);
-  //   }
-  //   //remove "admin"
-  //   topics.splice(0, 1);
+        store.save(function(err) {
+          if (!err) {
+            console.log(`${shop} data store to DB`);
+          }
+        });
 
-  //   //remove dublicate element
-  //   const set1 = new Set(topics);
+        var topics = ["orders/cancelled", "orders/fulfilled", "orders/create"];
 
-  //   //convert back to array
-  //   let www = [...set1];
-
-  //   function trimArray(arr) {
-  //     for (i = 0; i < arr.length; i++) {
-  //       arr[i] = arr[i].replace(/^\s\s*/, "").replace(/\s\s*$/, "");
-  //     }
-  //     return arr;
-  //   }
-
-  //   www = trimArray(www);
-
-  //   //remove "sender"
-  //   function removeElement(array, elem) {
-  //     var index = array.indexOf(elem);
-  //     if (index > -1) {
-  //       array.splice(index, 1);
-  //     }
-  //   }
-
-  //   removeElement(www, "sender");
-
-  //   www.forEach(topic => {
-  //     makeWebook(topic, token, hmac, shop);
-  //   });
-  // } else {
-  //   console.log("cant find session key form post /myacion");
-  // }
+        topics.forEach(topic => {
+          makeWebook(topic, token, hmac, shop);
+        });
+      }
+    });
+  } else {
+    console.log("cant find session key form post /myacion");
+  }
 });
 
 const makeWebook = (topic, token, hmac, shop) => {
@@ -265,6 +254,21 @@ const makeWebook = (topic, token, hmac, shop) => {
     });
 };
 
+app.get("/api/option", function(req, res) {
+  if (req.session.shop) {
+    Store.findOne({ name: req.session.shop }, function(err, data) {
+      if (data) {
+        res.send(data.data);
+      } else {
+        res.send("");
+      }
+    });
+  } else {
+    console.log(
+      "cant find session key form get /api/smsCount || your session timeout"
+    );
+  }
+});
 app.get("/api/smsCount", function(req, res) {
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
@@ -275,20 +279,12 @@ app.get("/api/smsCount", function(req, res) {
       } else {
         res.send("0");
       }
-      console.log("263", req.session.shop);
+      // console.log("278", req.session.shop);
     });
   } else {
     console.log(
       "cant find session key form get /api/smsCount || your session timeout"
     );
-  }
-});
-
-app.get("/api/name", (req, res) => {
-  if (req.session.views[pathname]) {
-    res.send(req.session.views[pathname]);
-  } else {
-    res.send("unknown");
   }
 });
 
@@ -306,7 +302,7 @@ app.get("/api/history", function(req, res) {
     );
   }
 });
-////////////////////
+
 app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   const shop = request.params.shop;
   let topic = request.params.topic;
@@ -987,10 +983,11 @@ const sndSms = (phone, store, message, senderID, shop) => {
           });
         });
         //save sms data to DB
+
         var obj = {
-          description: message,
-          term: store
-          // number: phone
+          description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
+          term: phone
+          // number: shop
         };
 
         Store.findOneAndUpdate(
@@ -1013,14 +1010,14 @@ const sndSms = (phone, store, message, senderID, shop) => {
         req.end();
       } else if (data.smsCount == 0 || data.smsCount == -1) {
         // notify admin to recharge
-        //send SMS mgs91
+        //send SMS mgs91ed
         phone = adminNumber;
         message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
         var options = {
           method: "GET",
           hostname: "api.msg91.com",
           port: null,
-          path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=MOJITO&message=${message}&country=91`,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
           headers: {}
         };
         var req = http.request(options, function(res) {

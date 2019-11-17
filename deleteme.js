@@ -111,3 +111,7 @@
 //     return console.log(element);
 //   });
 // }
+
+// var sms = 789;
+
+// console.log(sms.length);

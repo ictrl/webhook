@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { TextField } from "@shopify/polaris";
 
 export default function DefaultTextField(props) {
@@ -6,9 +6,10 @@ export default function DefaultTextField(props) {
 
   const handleChange = useCallback(newValue => {
     setValue(newValue);
-    console.log(newValue);
   }, []);
-
+  useEffect(() => {
+    setValue(props.value);
+  }, [props]);
   return (
     <TextField
       label={props.label}

@@ -1,11 +1,24 @@
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
+<<<<<<< HEAD
 	-webkit-appearance: none;
 	margin: 0;
 }
 /* body { */
 /* background-color: cadetblue; */
 /* } */
+||||||| merged common ancestors
+  -webkit-appearance: none;
+  margin: 0;
+}
+body {
+  background-color: cadetblue;
+}
+=======
+  -webkit-appearance: none;
+  margin: 0;
+}
+>>>>>>> 7591bc9604819a89096b1a09fe28f5590391ae4d
 /* ///////////////////////// */
 /* template topic switcher */
 .bog {
