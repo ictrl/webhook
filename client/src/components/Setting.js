@@ -172,7 +172,7 @@ export default function Settings() {
             save
           </button>
         </div>
-        <div id="snackbar">Settings Updated {} </div>;
+        <div id="snackbar">Settings Updated </div>;
       </form>
     </Fragment>
   );

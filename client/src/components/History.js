@@ -8,6 +8,7 @@ export default function History(props) {
   const smsHistory = () => {
     axios.get("/api/history/").then(res => {
       console.log("history", res.data);
+      
       setHistory(res.data);
     });
   };
