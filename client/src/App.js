@@ -23,6 +23,12 @@ export default function TabsExample() {
 	};
 	const tabs = [
 		{
+			id: 'all-customers',
+			content: 'Settings',
+			accessibilityLabel: 'All customers',
+			panelID: 'all-customers-content'
+		},
+		{
 			id: 'accepts-marketing',
 			content: 'Edit Template',
 			panelID: 'accepts-marketing-content'
@@ -33,12 +39,6 @@ export default function TabsExample() {
 			panelID: 'abandan-checkout'
 		},
 
-		{
-			id: 'all-customers',
-			content: 'Settings',
-			accessibilityLabel: 'All customers',
-			panelID: 'all-customers-content'
-		},
 		{
 			id: 'repeat-customers',
 			content: 'SMS History',
