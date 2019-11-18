@@ -180,8 +180,9 @@ export default function Template(props) {
 
 				<Layout.AnnotatedSection
 					title="SMS Template Rules"
-					description={`All the variables enclosed in "( )" will be replaced by actual values.
-				SMS length linit is 70 characters.   
+					description={`All the variables enclosed in "( )" 
+					will be replaced by actual values.
+				SMS length linit is 70 characters.  
 				Enclose every variables with "( )".  
 				Available Variables for ${topics.topic} are :- 
 				 ${topics.topicVariables}`}
@@ -198,7 +199,7 @@ export default function Template(props) {
 								required
 								autoFocus
 								defaultValue={''}
-								style={{ fontSize: '15px' }}
+								style={{ fontSize: '14px' }}
 							/>
 
 							<br />
@@ -212,7 +213,7 @@ export default function Template(props) {
 								required
 								autoFocus
 								defaultValue={''}
-								style={{ fontSize: '15px' }}
+								style={{ fontSize: '14px' }}
 							/>
 							<div className="invalid-feedback">Please enter Data in the textarea.</div>
 

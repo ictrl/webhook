@@ -22,13 +22,34 @@ export default function Abandan() {
 		}, 2000);
 	}
 
-	const options = [
+	const option1 = [
 		{ label: '30 minutes later', value: '30' },
 		{ label: '60 minutes later', value: '60' },
 		{ label: '6 hours later', value: '360' },
 		{ label: '12 hours later', value: '720' }
 	];
-	const statuss = [ { label: 'Enable', value: 'enable' }, { label: 'Disable', value: 'disable' } ];
+	const option2 = [
+		{ label: '30 minutes later', value: '30' },
+		{ label: '60 minutes later', value: '60' },
+		{ label: '6 hours later', value: '360' },
+		{ label: '12 hours later', value: '720' }
+	];
+	const option3 = [
+		{ label: '30 minutes later', value: '30' },
+		{ label: '60 minutes later', value: '60' },
+		{ label: '6 hours later', value: '360' },
+		{ label: '12 hours later', value: '720' }
+	];
+	const option4 = [
+		{ label: '30 minutes later', value: '30' },
+		{ label: '60 minutes later', value: '60' },
+		{ label: '6 hours later', value: '360' },
+		{ label: '12 hours later', value: '720' }
+	];
+	const status1 = [ { label: 'Enable', value: 'enable' }, { label: 'Disable', value: 'disable' } ];
+	const status2 = [ { label: 'Enable', value: 'enable' }, { label: 'Disable', value: 'disable' } ];
+	const status3 = [ { label: 'Enable', value: 'enable' }, { label: 'Disable', value: 'disable' } ];
+	const status4 = [ { label: 'Enable', value: 'enable' }, { label: 'Disable', value: 'disable' } ];
 
 	return (
 		<Layout>
@@ -55,9 +76,9 @@ export default function Abandan() {
 					</div>
 
 					<div className="mt-2 a-card-contents">
-						<Select label="Date range" options={options} onChange={handleSelectChange} value={selected} />
+						<Select label="Date range" options={option1} onChange={handleSelectChange} value={selected} />
 
-						<Select label="Status" options={statuss} onChange={handleStatusChange} value={status} />
+						<Select label="Status" options={status2} onChange={handleStatusChange} value={status} />
 
 						<div className="mt-5">
 							<button
@@ -97,9 +118,9 @@ export default function Abandan() {
 					</div>
 
 					<div className="mt-2 a-card-contents">
-						<Select label="Date range" options={options} onChange={handleSelectChange} value={selected} />
+						<Select label="Date range" options={option2} onChange={handleSelectChange} value={selected} />
 
-						<Select label="Status" options={statuss} onChange={handleStatusChange} value={status} />
+						<Select label="Status" options={status2} onChange={handleStatusChange} value={status} />
 
 						<div className="mt-5">
 							<button
@@ -139,9 +160,9 @@ export default function Abandan() {
 					</div>
 
 					<div className="mt-2 a-card-contents">
-						<Select label="Date range" options={options} onChange={handleSelectChange} value={selected} />
+						<Select label="Date range" options={option3} onChange={handleSelectChange} value={selected} />
 
-						<Select label="Status" options={statuss} onChange={handleStatusChange} value={status} />
+						<Select label="Status" options={status3} onChange={handleStatusChange} value={status} />
 
 						<div className="mt-5">
 							<button
@@ -181,9 +202,9 @@ export default function Abandan() {
 					</div>
 
 					<div className="mt-2 a-card-contents">
-						<Select label="Date range" options={options} onChange={handleSelectChange} value={selected} />
+						<Select label="Date range" options={option4} onChange={handleSelectChange} value={selected} />
 
-						<Select label="Status" options={statuss} onChange={handleStatusChange} value={status} />
+						<Select label="Status" options={status4} onChange={handleStatusChange} value={status} />
 
 						<div className="mt-5">
 							<button

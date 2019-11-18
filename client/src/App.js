@@ -36,7 +36,7 @@ export default function TabsExample() {
 		{
 			id: 'abandan-checkout',
 			content: 'Abandan Checkout',
-			panelID: 'abandan-checkout'
+			panelID: 'abandan-checkout-content'
 		},
 
 		{
