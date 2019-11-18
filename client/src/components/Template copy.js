@@ -1,12 +1,12 @@
-import React, { useCallback, useState, Fragment } from 'react';
-import { TextField, Layout, AnnotatedSection, Select, Card, Button } from '@shopify/polaris';
+import React, { Fragment, useState } from 'react';
+import { Button, Card } from '@shopify/polaris';
 
 import axios from 'axios';
 
 export default function Template(props) {
 	let defaultTopic = {
 		topic: 'orders/create',
-		topicVariables: 'name  price order_id title'
+		topicVariables: 'name vendor price order_id title'
 	};
 
 	const [ topics, setTopics ] = useState(defaultTopic);
@@ -97,28 +97,28 @@ export default function Template(props) {
 				setTopics({
 					...topics,
 					topic: selectedValue,
-					topicVariables: 'name price order_id title '
+					topicVariables: 'name  vendor  price order_id title '
 				});
 				break;
 			case 'orders/cancelled':
 				setTopics({
 					...topics,
 					topic: selectedValue,
-					topicVariables: 'name price order_id title cancel_reason'
+					topicVariables: 'name vendor price order_id title cancel_reason'
 				});
 				break;
 			case 'orders/fulfilled':
 				setTopics({
 					...topics,
 					topic: selectedValue,
-					topicVariables: 'name price order_id title fulfillment_status order_status_url'
+					topicVariables: 'name vendor price order_id title fulfillment_status order_status_url'
 				});
 				break;
 			case 'orders/partially_fulfilled':
 				setTopics({
 					...topics,
 					topic: selectedValue,
-					topicVariables: 'name price order_id title fulfillment_status order_status_url'
+					topicVariables: 'name vendor price order_id title fulfillment_status order_status_url'
 				});
 				break;
 			case 'customers/create':
@@ -159,9 +159,11 @@ export default function Template(props) {
 
 	return (
 		<Fragment>
-			<div id="snackbar">Template Updated for {topics.topic} </div>
+			<h2>Select Topic</h2>
 
-			<div className="bog col-md-12 mb-5">
+			<div id="snackbar">Template Updated for {topics.topic} </div>
+			<br />
+			<div className="bog col-md-12">
 				<div className="butti " onClick={topicHandler}>
 					orders/create
 				</div>
@@ -172,62 +174,97 @@ export default function Template(props) {
 				<div className="butt " onClick={topicHandler}>
 					orders/fulfilled
 				</div>
-			</div>
-			<Layout>
-				{/* <div className="mt-3 mb-2 " style={{ textAlign: 'left' }}>
-				<h2>Select Topic</h2>
-			</div> */}
-
-				<Layout.AnnotatedSection
-					title="SMS Template Rules"
-					description={`All the variables enclosed in "( )" will be replaced by actual values.
-				SMS length linit is 70 characters.   
-				Enclose every variables with "( )".  
-				Available Variables for ${topics.topic} are :- 
-				 ${topics.topicVariables}`}
-				>
-					<Card sectioned>
-						<div style={{ padding: '2rem' }}>
-							<h5 className="card-title">Customer Message templete</h5>
-
-							<textarea
-								className="form-control"
-								id="inputTextArea-customer"
-								placeholder="Enter customer message here"
-								rows={5}
-								required
-								autoFocus
-								defaultValue={''}
-								style={{ fontSize: '15px' }}
-							/>
-
-							<br />
-							<h5 className="card-title">Admin Message Templete</h5>
-
-							<textarea
-								className="form-control"
-								id="inputTextArea-admin"
-								placeholder="Enter admin message here"
-								rows={5}
-								required
-								autoFocus
-								defaultValue={''}
-								style={{ fontSize: '15px' }}
-							/>
-							<div className="invalid-feedback">Please enter Data in the textarea.</div>
-
-							<br />
-
-							<div style={{ textAlign: 'center' }} onClick={saveTemplete}>
-								<Button primary>Save Template</Button>
-							</div>
-						</div>
-					</Card>
-				</Layout.AnnotatedSection>
-				<div id="snackbar" style={{ zIndex: '999' }}>
-					Abandan Updated{' '}
+				{/* <div className="butt " onClick={topicHandler}>
+					orders/partially_fulfilled
 				</div>
-			</Layout>
+				<div className="butt " onClick={topicHandler}>
+					customers/create
+				</div>
+				<div className="butt " onClick={topicHandler}>
+					refunds/create
+				</div> */}
+			</div>
+
+			<div className="row ">
+				<div className="col-sm-6">
+					<div className="card mt-5 shadow">
+						<Card>
+							<div style={{ padding: '2rem' }}>
+								<h5>SMS Template Rules</h5>
+
+								<div style={{ textAlign: 'left', fontSize: '15px' }}>
+									All the variables enclosed in "( )" will be replaced by actual values.
+									<br />
+									SMS length linit is 70 characters.
+									<br />
+									Enclose every variables with "( )"
+									<br />
+									<br />
+									<p
+										style={{
+											fontSize: '16px',
+											fontWeight: '500',
+											color: '#444444'
+										}}
+									>
+										Available Variables for {topics.topic}
+									</p>
+									<div id="places" style={{ wordSpacing: '50px', width: '120px' }}>
+										{topics.topicVariables}
+									</div>
+								</div>
+							</div>
+						</Card>
+					</div>
+				</div>
+
+				<div className="col-sm-6">
+					<div className="card text-center mt-5 shadow">
+						<Card>
+							<div style={{ padding: '2rem' }}>
+								<h5 className="card-title">Customer Message templete</h5>
+
+								<textarea
+									className="form-control"
+									id="inputTextArea-customer"
+									placeholder="Enter customer message here"
+									rows={5}
+									required
+									autoFocus
+									defaultValue={''}
+									style={{ fontSize: '15px' }}
+								/>
+
+								<hr />
+								<h5 className="card-title">Admin Message Templete</h5>
+
+								<textarea
+									className="form-control"
+									id="inputTextArea-admin"
+									placeholder="Enter admin message here"
+									rows={5}
+									required
+									autoFocus
+									defaultValue={''}
+									style={{ fontSize: '15px' }}
+								/>
+								<div className="invalid-feedback">Please enter Data in the textarea.</div>
+
+								<br />
+								{/* <div style={{ textAlign: 'center' }} onClick={() => {}}>
+								<Button primary>Show State</Button>
+							</div>
+							<div style={{ textAlign: 'center' }} onClick={myFunction}>
+								<Button primary>Save Template</Button>
+							</div> */}
+								<div style={{ textAlign: 'center' }} onClick={saveTemplete}>
+									<Button primary>Save Template</Button>
+								</div>
+							</div>
+						</Card>
+					</div>
+				</div>
+			</div>
 		</Fragment>
 	);
 }
