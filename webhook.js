@@ -67,7 +67,7 @@ app.get("/shopify", (req, res) => {
   req.session.shop = req.query.shop;
   const shop = req.query.shop;
 
-  console.log("install route call-->", shop);
+  //   console.log("install route call-->", shop);
   if (shop) {
     const state = nonce();
     const redirectUri = forwardingAddress + "/shopify/callback";
@@ -107,10 +107,10 @@ app.get("/shopify", (req, res) => {
 //callback route -->
 app.get("/shopify/callback", (req, res) => {
   let { shop, hmac, code, state } = req.query;
-  console.log("callback route call -->", shop);
+  //   console.log("callback route call -->", shop);
   const stateCookie = cookie.parse(req.headers.cookie)[`${shop}`];
 
-  console.log("Statecookies", stateCookie);
+  //   console.log("Statecookies", stateCookie);
 
   if (state !== stateCookie) {
     return res.status(403).send("Request origin cannot be verified");
@@ -159,12 +159,12 @@ app.get("/shopify/callback", (req, res) => {
         req.session.hmac = hmac;
         req.session.token = accessTokenResponse.access_token;
 
-        console.log("top shop", req.session.shop);
+        // console.log("top shop", req.session.shop);
         res.redirect("/");
       })
       .catch(error => {
         res.send(error);
-        console.log("144-->", error);
+        // console.log("144-->", error);
       });
   } else {
     res.status(400).send("Required parameters missing");
@@ -178,7 +178,7 @@ app.post("/myaction", function(req, res) {
     let hmac = req.session.hmac;
     Store.findOne({ name: shop }, function(err, data) {
       if (data) {
-        console.log("store found in DB", data);
+        // console.log("store found in DB", data);
         res.status(200).redirect("back");
 
         Store.findOneAndUpdate(
@@ -191,14 +191,14 @@ app.post("/myaction", function(req, res) {
           { new: true, useFindAndModify: false },
           (err, data) => {
             if (!err) {
-              console.log("datacount + 1");
+              //   console.log("datacount + 1");
             } else {
-              console.log("err", err);
+              //   console.log("err", err);
             }
           }
         );
       } else {
-        console.log("store !found in DB");
+        // console.log("store !found in DB");
         res.redirect(`https://${shop}/admin/apps/sms_update`);
         const store = new Store({
           name: shop,
@@ -208,7 +208,7 @@ app.post("/myaction", function(req, res) {
 
         store.save(function(err) {
           if (!err) {
-            console.log(`${shop} data store to DB`);
+            // console.log(`${shop} data store to DB`);
           }
         });
 
@@ -226,7 +226,7 @@ app.post("/myaction", function(req, res) {
       }
     });
   } else {
-    console.log("cant find session key form post /myacion");
+    // console.log("cant find session key form post /myacion");
   }
 });
 
@@ -254,10 +254,10 @@ const makeWebook = (topic, token, hmac, shop) => {
       json: webhookPayload
     })
     .then(shopResponse => {
-      console.log("showResponse-->", shopResponse);
+      //   console.log("webhook topic :", topic);
     })
     .catch(error => {
-      console.log("error-->", error);
+      //   console.log("error-->", error);
     });
 };
 
@@ -285,9 +285,9 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               { new: true, useFindAndModify: false },
               (err, data) => {
                 if (!err) {
-                  console.log("datacount + 1");
+                  //   console.log("datacount + 1");
                 } else {
-                  console.log("err", err);
+                  //   console.log("err", err);
                 }
               }
             );
@@ -779,11 +779,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
           }
           break;
         default:
-          console.log("!possible");
+          //   console.log("!possible");
           break;
       }
     } else {
-      console.log(err);
+      //   console.log(err);
     }
   });
   response.sendStatus(200);
@@ -956,20 +956,20 @@ app.post("/api/template", function(req, res) {
       { new: true, useFindAndModify: false },
       (err, data) => {
         if (!err) {
-          console.log("data");
+          //   console.log("data");
         } else {
-          console.log("err", err);
+          //   console.log("err", err);
         }
       }
     );
   } else {
-    console.log("session timeout");
+    // console.log("session timeout");
   }
 });
 // save abandan template to db
 app.post("/api/abandan", function(req, res) {
   let data = req.body;
-  console.log(data);
+  //   console.log(data);
   if (req.session.shop) {
     Store.findOneAndUpdate(
       { name: req.session.shop },
@@ -979,14 +979,14 @@ app.post("/api/abandan", function(req, res) {
       { new: true, useFindAndModify: false },
       (err, data) => {
         if (!err) {
-          console.log("data");
+          //   console.log("data");
         } else {
-          console.log("err", err);
+          //   console.log("err", err);
         }
       }
     );
   } else {
-    console.log("session timeout");
+    // console.log("session timeout");
   }
 });
 
