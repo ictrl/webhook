@@ -240,7 +240,7 @@ export default function Abandan() {
 				description="Admin will be notify on this no. by selecting Notify Admin."
 			>
 				<Card sectioned>
-					<TextField label="Shipping address" value={template1} onChange={handleTemplate1} multiline helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link" />
+					<TextField label="Template" value={template1} onChange={handleTemplate1} multiline helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link" />
 					<br />
 					{/* <div className="a-card">
 						<div className="mr-4 a-card-1">
@@ -275,7 +275,7 @@ export default function Abandan() {
 				description="Admin will be notify on this no. by selecting Notify Admin."
 			>
 				<Card sectioned>
-					<TextField label="Shipping address" value={template2} onChange={handleTemplate2} multiline />
+					<TextField label="Template" value={template2} onChange={handleTemplate2} multiline />
 					<br />
 					{/* <div className="a-card">
 						<div className="mr-4 a-card-2">
@@ -309,7 +309,7 @@ export default function Abandan() {
 				description="Admin will be notify on this no. by selecting Notify Admin."
 			>
 				<Card sectioned>
-					<TextField label="Shipping address" value={template3} onChange={handleTemplate3} multiline />
+					<TextField label="Template" value={template3} onChange={handleTemplate3} multiline />
 					<br />
 					{/* <div className="a-card">
 						<div className="mr-4 a-card-3">
@@ -343,7 +343,7 @@ export default function Abandan() {
 				description="Admin will be notify on this no. by selecting Notify Admin."
 			>
 				<Card sectioned>
-					<TextField label="Shipping address" value={template4} onChange={handleTemplate4} multiline />
+					<TextField label="Template" value={template4} onChange={handleTemplate4} multiline />
 					<br />
 					{/* <div className="a-card">
 						<div className="mr-4 a-card-4">
