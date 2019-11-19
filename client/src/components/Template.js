@@ -29,7 +29,7 @@ export default function Template(props) {
 	};
 	let finObj = {};
 
-	const saveTemplete = () => {
+	const saveTemplete = async () => {
 		convertData({
 			textareaId: 'inputTextArea-customer',
 			audience: 'customer'
@@ -38,6 +38,10 @@ export default function Template(props) {
 			textareaId: 'inputTextArea-admin',
 			audience: 'admin'
 		});
+
+		setTimeout(() => {
+			sendTemplate(tempObj);
+		}, 1500);
 	};
 
 	const convertData = (param) => {
@@ -89,7 +93,7 @@ export default function Template(props) {
 		} else {
 			console.log('something went wrong ');
 		}
-		sendTemplate(tempObj);
+		// sendTemplate(tempObj);
 	};
 
 	const topicHandler = (params) => {
