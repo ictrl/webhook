@@ -270,6 +270,8 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
     if (!err) {
       switch (topic) {
         case "orders/create":
+          console.log(`topic:-->${topic}`, req.body);
+
           if (
             data.data["orders/create customer"] != undefined &&
             data.data["orders/create admin"] != undefined
