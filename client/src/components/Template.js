@@ -39,9 +39,11 @@ export default function Template(props) {
 			audience: 'admin'
 		});
 
-		setTimeout(() => {
-			sendTemplate(tempObj);
-		}, 1500);
+		dummy();
+	};
+
+	const dummy = () => {
+		sendTemplate(tempObj);
 	};
 
 	const convertData = (param) => {
