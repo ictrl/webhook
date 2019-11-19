@@ -218,26 +218,10 @@ export default function Abandan() {
 	////////////////////////////end 4/////////////
 	return (
 		<Layout>
-			<div
-				style={{ backgroundColor: 'yellow' }}
-				onClick={() => {
-					console.log('template1', template1);
-					console.log('customer1', checkedCustomer1);
-					console.log('Admin1', checkedAdmin1);
-					console.log('selected1', selected1);
-					console.log('status1', status1);
-					console.log('template2', template2);
-					console.log('customer2', checkedCustomer2);
-					console.log('Admin2', checkedAdmin2);
-					console.log('selected2', selected2);
-					console.log('status2', status2);
-				}}
-			>
-				Show state
-			</div>
+			
 			<Layout.AnnotatedSection
 				title="First Follow Up"
-				description="Admin will be notify on this no. by selecting Notify Admin."
+				description="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link."
 			>
 				<Card sectioned>
 					<TextField label="Template" value={template1} onChange={handleTemplate1} multiline helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link" />
