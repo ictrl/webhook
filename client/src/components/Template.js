@@ -12,7 +12,9 @@ export default function Template(props) {
 	const [ topics, setTopics ] = useState(defaultTopic);
 
 	const sendTemplate = (tempObj) => {
-		if (tempObj.customer && tempObj.admin && tempObj.topic) {
+		console.log(tempObj.customer, tempObj.admin, tempObj.topic);
+
+		if (tempObj.customer !== '``' && tempObj.admin !== '``' && tempObj.topic) {
 			console.log(tempObj);
 			axios.post('/api/template', tempObj).then((res) => console.log(res)).catch((err) => console.error(err));
 		} else {
@@ -65,6 +67,7 @@ export default function Template(props) {
 				}
 
 				inputTextArea.className = luna;
+				return;
 			}
 			myFunction();
 		} else {
