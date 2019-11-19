@@ -254,7 +254,7 @@ const makeWebook = (topic, token, hmac, shop) => {
       json: webhookPayload
     })
     .then(shopResponse => {
-      //   console.log("webhook topic :", topic);
+      console.log("webhook topic :", topic);
     })
     .catch(error => {
       //   console.log("error-->", error);
@@ -266,11 +266,12 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
   topic = topic + "/" + subtopic;
+  console.log(`top wala topic:-->${topic}`, request.body);
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       switch (topic) {
         case "orders/create":
-          console.log(`topic:-->${topic}`, req.body);
+          console.log(`topic:-->${topic}`, request.body);
 
           if (
             data.data["orders/create customer"] != undefined &&
@@ -375,7 +376,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 
           break;
         case "checkouts/create" || "checkouts/update":
-          console.log(`topic:-->${topic}`, req.body);
+          console.log(`topic:-->${topic}`, request.body);
           // if (
           // 	data.abandan['checkouts/create customer'] != undefined &&
           // 	data.abandan['checkouts/create admin'] != undefined
