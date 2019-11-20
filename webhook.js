@@ -376,90 +376,32 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 
           break;
         case "checkouts/create" || "checkouts/update":
-          console.log(`topic:-->${topic}`, request.body);
-          // if (
-          // 	data.abandan['checkouts/create customer'] != undefined &&
-          // 	data.abandan['checkouts/create admin'] != undefined
-          // ) {
-          // 	Store.findOneAndUpdate(
-          // 		{ name: shop },
-          // 		{
-          // 			$set: {
-          // 				smsCount: data.smsCount - 1
-          // 			}
-          // 		},
-          // 		{ new: true, useFindAndModify: false },
-          // 		(err, data) => {
-          // 			if (!err) {
-          // 				console.log('datacount + 1');
-          // 			} else {
-          // 				console.log('err', err);
-          // 			}
-          // 		}
-          // 	);
-          // }
-          // if (data.abandan['checkouts/create customer'] != undefined) {
-          // 	abandoned_checkout_url = request.body.abandoned_checkout_url;
-          // 	vendor = request.body.line_items[0].vendor;
+          // console.log(`topic:-->${topic}`, request.body);
+          let obj = {
+            id : request.body.id,
+            phone : request.body.phone,
+            email : request.body.email,
+            token : request.body.token,
+            url : request.body.abandoned_checkout_url,
+          }
 
-          // 	message = `Hi%20Customer,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${abandoned_checkout_url}`;
-
-          // 	if (data.template !== undefined) {
-          // 		data.template.forEach((element) => {
-          // 			if (element.topic === topic) {
-          // 				if (element.customer) {
-          // 					message = element.customer;
-          // 					for (let i = 0; i < message.length; i++) {
-          // 						message = message.replace('${abandoned_checkout_url}', abandoned_checkout_url);
-          // 					}
-          // 				} else {
-          // 					message = `Hi%20,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${abandoned_checkout_url}`;
-          // 				}
-          // 			} else {
-          // 				message = `Hi%20,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${abandoned_checkout_url}`;
-          // 			}
-          // 		});
-          // 	}
-
-          // 	//end
-          // 	let senderID = data.data['sender id'];
-          // 	if (phone) {
-          // 		sndSms(phone, vendor, message, senderID, shop);
-          // 	} else if (phone1) {
-          // 		sndSms(phone, vendor, message, senderID, shop);
-          // 	} else if (phone2) {
-          // 		sndSms(phone, vendor, message, senderID, shop);
-          // 	}
-          // }
-          // if (data.data['orders/cancelled admin'] != undefined) {
-          // 	let admin = data.data['admin no'];
-          // 	adminNumber = admin;
-          // 	let senderID = data.data['sender id'];
-          // 	message = `Customer%20name:%20${name},cancel%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
-
-          // 	if (data.template !== undefined) {
-          // 		data.template.forEach((element) => {
-          // 			if (element.topic === topic) {
-          // 				if (element.admin) {
-          // 					message = element.admin;
-          // 					for (let i = 0; i < message.length; i++) {
-          // 						message = message.replace('${name}', name);
-          // 						message = message.replace('${vendor}', vendor);
-          // 						message = message.replace('${price}', price);
-          // 						message = message.replace('${order_id}', orderId);
-          // 						message = message.replace('${title}', title);
-          // 					}
-          // 				} else {
-          // 					message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-          // 				}
-          // 			} else {
-          // 				message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-          // 			}
-          // 		});
-          // 	}
-
-          // 	sndSms(admin, vendor, message, senderID, shop);
-          // }
+          Store.findOneAndUpdate(
+            { name: shop },
+            {
+              $push: { abandan: obj },
+              $set: {
+                smsCount: data.smsCount - 1
+              }
+            },
+            { new: true, useFindAndModify: false },
+            (err, data) => {
+              if (!err) {
+                console.log("data");
+              } else {
+                console.log("err", err);
+              }
+            }
+          );
           break;
         case "orders/fulfilled":
           if (
