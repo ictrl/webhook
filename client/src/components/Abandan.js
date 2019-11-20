@@ -43,7 +43,7 @@ export default function Abandan() {
 		sendTemplate(tempObj);
 	};
 
-	///////////////////////////////// 11111
+	/////////////////////////////////  
 	function myFunction1() {
 		tempObj.followUp = 1;
 		tempObj.time = selected1;

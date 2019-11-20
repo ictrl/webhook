@@ -69,7 +69,7 @@ const  checkoutsCreate = {
    total_price: '100.00',
    total_tax: '0.00',
    subtotal_price: '100.00'
- }
+}
 
  const checkoutsCreate = {
    id: 11926364454982,
@@ -142,7 +142,7 @@ const  checkoutsCreate = {
    total_price: '100.00',
    total_tax: '0.00',
    subtotal_price: '100.00'
- }
+}
 
  const checkoutsUpdate =  {
    id: 11926364454982,
@@ -296,7 +296,7 @@ const  checkoutsCreate = {
        default: true
      }
    }
- }
+}
 
 //after buy
  const ordersCreate ={
@@ -519,7 +519,7 @@ const  checkoutsCreate = {
        default: true
      }
    }
- }
+}
 
 const  checkoutsUpdate =  {
    id: 11926364454982,
@@ -690,11 +690,4 @@ const  checkoutsUpdate =  {
        default: true
      }
    }
- }
-
-
-
-
-
-
-
+}

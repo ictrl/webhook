@@ -948,20 +948,46 @@ app.get("/api/history", function(req, res) {
 });
 // save template to db
 app.post("/api/template", function(req, res) {
+  req.session.shop = "mojitolabs.myshopify.com"; //delete this
+  let topic = req.body.topic.trim();
+  let customer = req.body.customer;
+  let admin = req.body.admin;
   let data = req.body;
 
   if (req.session.shop) {
-    Store.findOneAndUpdate(
-      { name: req.session.shop },
+    Store.updateOne(
+      { "template.topic": topic },
       {
-        $push: { template: data }
+        $set: {
+          "template.$.customer": customer,
+          "template.$.admin": admin
+        }
       },
-      { new: true, useFindAndModify: false },
-      (err, data) => {
-        if (!err) {
-          //   console.log("data");
+      (err, model) => {
+        if (err) {
+          console.log("err", err);
         } else {
-          //   console.log("err", err);
+          Store.findOneAndUpdate(
+            {
+              name: req.session.shop
+            },
+            {
+              $push: {
+                template: data
+              }
+            },
+            {
+              new: true,
+              useFindAndModify: false
+            },
+            (err, data) => {
+              if (!err) {
+                //   console.log("data");
+              } else {
+                //   console.log("err", err);
+              }
+            }
+          );
         }
       }
     );
