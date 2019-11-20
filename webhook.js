@@ -890,7 +890,7 @@ app.get("/api/history", function(req, res) {
 });
 // save template to db
 app.post("/api/template", function(req, res) {
-  req.session.shop = "mojitolabs.myshopify.com"; //delete this
+  // req.session.shop = "mojitolabs.myshopify.com"; //delete this
   let topic = req.body.topic.trim();
   let customer = req.body.customer;
   let admin = req.body.admin;
