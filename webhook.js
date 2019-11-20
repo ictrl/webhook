@@ -54,7 +54,7 @@ app.use(function(req, res, next) {
 const shopSchema = new mongoose.Schema({
 	name: String,
 	data: JSON,
-	abandan: JSON,
+	abandan: Array,
 	sms: Array,
 	smsCount: Number,
 	template: Array
