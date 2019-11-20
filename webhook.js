@@ -252,505 +252,477 @@ const makeWebook = (topic, token, hmac, shop) => {
 		});
 };
 
-app.post('/store/:shop/:topic/:subtopic', function(request, response) {
-	const shop = request.params.shop;
-	let topic = request.params.topic;
-	const subtopic = request.params.subtopic;
-	topic = topic + '/' + subtopic;
-	console.log(`top wala topic:-->${topic}`, request.body);
-	Store.findOne({ name: shop }, function(err, data) {
-		if (!err) {
-			switch (topic) {
-				case 'orders/create':
-					console.log(`topic:-->${topic}`, request.body);
+app.post("/store/:shop/:topic/:subtopic", function(request, response) {
+  const shop = request.params.shop;
+  let topic = request.params.topic;
+  const subtopic = request.params.subtopic;
+  topic = topic + "/" + subtopic;
+  console.log(`top wala topic:-->${topic}`, request.body);
+  Store.findOne({ name: shop }, function(err, data) {
+    if (!err) {
+      switch (topic) {
+        case "orders/create":
+          console.log(`topic:-->${topic}`, request.body);
 
-					if (data.data['orders/create customer'] != undefined && data.data['orders/create admin'] != undefined) {
-						// data.smsCount + 2
-						Store.findOneAndUpdate(
-							{ name: shop },
-							{
-								$set: {
-									smsCount: data.smsCount - 1
-								}
-							},
-							{ new: true, useFindAndModify: false },
-							(err, data) => {
-								if (!err) {
-									//   console.log("datacount + 1");
-								} else {
-									//   console.log("err", err);
-								}
-							}
-						);
-					}
-					if (data.data['orders/create customer'] != undefined) {
-						name = request.body.shipping_address.first_name;
-						email = request.body.email;
-						vendor = request.body.line_items[0].vendor;
-						title = request.body.line_items[0].title;
-						orderId = request.body.name;
-						orderId = orderId.slice(1);
-						price = request.body.total_price;
-						phone = request.body.shipping_address.phone;
-						phone1 = request.body.billing_address.phone;
-						phone2 = request.body.customer.phone;
-						address1 = request.body.shipping_address.address1;
-						address2 = request.body.shipping_address.address2;
-						city = request.body.shipping_address.city;
-						country = request.body.shipping_address.country;
-						//check in data base if there is exist any template for  orders/create
-						message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+          if (
+            data.data["orders/create customer"] != undefined &&
+            data.data["orders/create admin"] != undefined
+          ) {
+            // data.smsCount + 2
+            Store.findOneAndUpdate(
+              { name: shop },
+              {
+                $set: {
+                  smsCount: data.smsCount - 1
+                }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  //   console.log("datacount + 1");
+                } else {
+                  //   console.log("err", err);
+                }
+              }
+            );
+          }
+          if (data.data["orders/create customer"] != undefined) {
+            name = request.body.shipping_address.first_name;
+            email = request.body.email;
+            vendor = request.body.line_items[0].vendor;
+            title = request.body.line_items[0].title;
+            orderId = request.body.name;
+            orderId = orderId.slice(1);
+            price = request.body.total_price;
+            phone = request.body.shipping_address.phone;
+            phone1 = request.body.billing_address.phone;
+            phone2 = request.body.customer.phone;
+            address1 = request.body.shipping_address.address1;
+            address2 = request.body.shipping_address.address2;
+            city = request.body.shipping_address.city;
+            country = request.body.shipping_address.country;
+            //check in data base if there is exist any template for  orders/create
+            message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
 
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.customer) {
-										message = element.customer;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-										}
-									} else {
-										message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
-									}
-								} else {
-									message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
-								}
-							});
-						}
-						//end
-						let senderID = data.data['sender id'];
-						if (phone) {
-							sndSms(phone, vendor, message, senderID, shop);
-						} else if (phone1) {
-							sndSms(phone, vendor, message, senderID, shop);
-						} else if (phone2) {
-							sndSms(phone, vendor, message, senderID, shop);
-						}
-					}
-					if (data.data['orders/create admin'] != undefined) {
-						let admin = data.data['admin no'];
-						adminNumber = admin;
-						let senderID = data.data['sender id'];
-						//check in data base if there is exist any template for  orders/create for admin
-						message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+            if (data.template !== undefined) {
+              data.template.forEach(element => {
+                if (element.topic === topic) {
+                  if (element.customer) {
+                    message = element.customer;
+                    for (let i = 0; i < message.length; i++) {
+                      message = message.replace("${name}", name);
+                      message = message.replace("${vendor}", vendor);
+                      message = message.replace("${price}", price);
+                      message = message.replace("${order_id}", orderId);
+                      message = message.replace("${title}", title);
+                    }
+                  } else {
+                    message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+                  }
+                } else {
+                  message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+                }
+              });
+            }
+            //end
+            let senderID = data.data["sender id"];
+            if (phone) {
+              sndSms(phone, vendor, message, senderID, shop);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID, shop);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID, shop);
+            }
+          }
+          if (data.data["orders/create admin"] != undefined) {
+            let admin = data.data["admin no"];
+            adminNumber = admin;
+            let senderID = data.data["sender id"];
+            //check in data base if there is exist any template for  orders/create for admin
+            message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
 
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.admin) {
-										message = element.admin;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-										}
-									} else {
-										message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-									}
-								} else {
-									message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-								}
-							});
-						}
-						//end
-						sndSms(admin, vendor, message, senderID, shop);
-					}
+            if (data.template !== undefined) {
+              data.template.forEach(element => {
+                if (element.topic === topic) {
+                  if (element.admin) {
+                    message = element.admin;
+                    for (let i = 0; i < message.length; i++) {
+                      message = message.replace("${name}", name);
+                      message = message.replace("${vendor}", vendor);
+                      message = message.replace("${price}", price);
+                      message = message.replace("${order_id}", orderId);
+                      message = message.replace("${title}", title);
+                    }
+                  } else {
+                    message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+                  }
+                } else {
+                  message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+                }
+              });
+            }
+            //end
+            sndSms(admin, vendor, message, senderID, shop);
+          }
 
-					break;
-				case 'checkouts/create' || 'checkouts/update':
-					console.log(`topic:-->${topic}`, request.body);
-					if (
-						data.abandan['checkouts/create template'] != undefined &&
-						data.abandan['checkouts/create admin'] != undefined
-					) {
-						Store.findOneAndUpdate(
-							{ name: shop },
-							{
-								$set: {
-									smsCount: data.smsCount - 1
-								}
-							},
-							{ new: true, useFindAndModify: false },
-							(err, data) => {
-								if (!err) {
-									console.log('datacount + 1');
-								} else {
-									console.log('err', err);
-								}
-							}
-						);
-					}
-					if (data.abandan['checkouts/create customer'] != undefined) {
-						abandoned_checkout_url = request.body.abandoned_checkout_url;
-						vendor = request.body.line_items[0].vendor;
+          break;
+        case "checkouts/create" || "checkouts/update":
+          // console.log(`topic:-->${topic}`, request.body);
+          let obj = {
+            id : request.body.id,
+            phone : request.body.phone,
+            email : request.body.email,
+            token : request.body.token,
+            url : request.body.abandoned_checkout_url,
+          }
 
-						message = `Hi%20Customer,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${abandoned_checkout_url}`;
+          Store.findOneAndUpdate(
+            { name: shop },
+            {
+              $push: { abandan: obj },
+              $set: {
+                smsCount: data.smsCount - 1
+              }
+            },
+            { new: true, useFindAndModify: false },
+            (err, data) => {
+              if (!err) {
+                console.log("data");
+              } else {
+                console.log("err", err);
+              }
+            }
+          );
+          break;
+        case "orders/fulfilled":
+          if (
+            data.data["orders/fulfilled customer"] != undefined &&
+            data.data["orders/fulfilled admin"] != undefined
+          ) {
+            // data.smsCount + 2
+            Store.findOneAndUpdate(
+              { name: shop },
+              {
+                $set: {
+                  smsCount: data.smsCount - 1
+                }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("datacount + 1");
+                } else {
+                  console.log("err", err);
+                }
+              }
+            );
+          }
+          if (data.data["orders/fulfilled customer"] != undefined) {
+            name = request.body.shipping_address.first_name;
+            email = request.body.email;
+            vendor = request.body.line_items[0].vendor;
+            title = request.body.line_items[0].title;
+            orderId = request.body.name;
+            orderId = orderId.slice(1);
+            price = request.body.total_price;
+            phone = request.body.shipping_address.phone;
+            phone1 = request.body.billing_address.phone;
+            phone2 = request.body.customer.phone;
+            address1 = request.body.shipping_address.address1;
+            address2 = request.body.shipping_address.address2;
+            city = request.body.shipping_address.city;
+            country = request.body.shipping_address.country;
+            fulfillment_status = request.body.fulfillment_status;
+            updated_at = request.body.updated_at;
+            order_status_url = request.body.order_status_url;
+            message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
+            //end
 
-						// if (data.template !== undefined) {
-						// 	data.template.forEach((element) => {
-						// 		if (element.topic === topic) {
-						// 			if (element.customer) {
-						// 				message = element.customer;
-						// 				for (let i = 0; i < message.length; i++) {
-						// 					message = message.replace('${abandoned_checkout_url}', abandoned_checkout_url);
-						// 				}
-						// 			} else {
-						// 				message = `Hi%20,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${abandoned_checkout_url}`;
-						// 			}
-						// 		} else {
-						// 			message = `Hi%20,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${abandoned_checkout_url}`;
-						// 		}
-						// 	});
-						// }
+            if (data.template !== undefined) {
+              data.template.forEach(element => {
+                if (element.topic === topic) {
+                  if (element.customer) {
+                    message = element.customer;
+                    for (let i = 0; i < message.length; i++) {
+                      message = message.replace("${name}", name);
+                      message = message.replace("${vendor}", vendor);
+                      message = message.replace("${price}", price);
+                      message = message.replace("${order_id}", orderId);
+                      message = message.replace("${title}", title);
+                      message = message.replace(
+                        "${fulfillment_status}",
+                        fulfillment_status
+                      );
+                      message = message.replace(
+                        "${order_status_url}",
+                        order_status_url
+                      );
+                    }
+                  } else {
+                    message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
+                  }
+                } else {
+                  message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
+                }
+              });
+            }
 
-						// 	//end
-						// let senderID = data.data['sender id'];
-						// if (phone) {
-						// 	sndSms(phone, vendor, message, senderID, shop);
-						// } else if (phone1) {
-						// 	sndSms(phone, vendor, message, senderID, shop);
-						// } else if (phone2) {
-						// 	sndSms(phone, vendor, message, senderID, shop);
-						// }
-					}
-					if (data.data['orders/cancelled admin'] != undefined) {
-						let admin = data.data['admin no'];
-						adminNumber = admin;
-						let senderID = data.data['sender id'];
-						message = `Customer%20name:%20${name},cancel%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
+            let senderID = data.data["sender id"];
+            if (phone) {
+              sndSms(phone, vendor, message, senderID, shop);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID, shop);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID, shop);
+            }
+          }
+          if (data.data["orders/fulfilled admin"] != undefined) {
+            let admin = data.data["admin no"];
+            adminNumber = admin;
+            let senderID = data.data["sender id"];
+            message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
 
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.admin) {
-										message = element.admin;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-										}
-									} else {
-										message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-									}
-								} else {
-									message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-								}
-							});
-						}
+            if (data.template !== undefined) {
+              data.template.forEach(element => {
+                if (element.topic === topic) {
+                  if (element.admin) {
+                    message = element.admin;
+                    for (let i = 0; i < message.length; i++) {
+                      message = message.replace("${name}", name);
+                      message = message.replace("${vendor}", vendor);
+                      message = message.replace("${price}", price);
+                      message = message.replace("${order_id}", orderId);
+                      message = message.replace("${title}", title);
+                      message = message.replace(
+                        "${fulfillment_status}",
+                        fulfillment_status
+                      );
+                      message = message.replace(
+                        "${order_status_url}",
+                        order_status_url
+                      );
+                    }
+                  } else {
+                    message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
+                  }
+                } else {
+                  message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
+                }
+              });
+            }
 
-						sndSms(admin, vendor, message, senderID, shop);
-					}
-					break;
-				case 'orders/fulfilled':
-					if (data.data['orders/fulfilled customer'] != undefined && data.data['orders/fulfilled admin'] != undefined) {
-						// data.smsCount + 2
-						Store.findOneAndUpdate(
-							{ name: shop },
-							{
-								$set: {
-									smsCount: data.smsCount - 1
-								}
-							},
-							{ new: true, useFindAndModify: false },
-							(err, data) => {
-								if (!err) {
-									console.log('datacount + 1');
-								} else {
-									console.log('err', err);
-								}
-							}
-						);
-					}
-					if (data.data['orders/fulfilled customer'] != undefined) {
-						name = request.body.shipping_address.first_name;
-						email = request.body.email;
-						vendor = request.body.line_items[0].vendor;
-						title = request.body.line_items[0].title;
-						orderId = request.body.name;
-						orderId = orderId.slice(1);
-						price = request.body.total_price;
-						phone = request.body.shipping_address.phone;
-						phone1 = request.body.billing_address.phone;
-						phone2 = request.body.customer.phone;
-						address1 = request.body.shipping_address.address1;
-						address2 = request.body.shipping_address.address2;
-						city = request.body.shipping_address.city;
-						country = request.body.shipping_address.country;
-						fulfillment_status = request.body.fulfillment_status;
-						updated_at = request.body.updated_at;
-						order_status_url = request.body.order_status_url;
-						message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
-						//end
+            sndSms(admin, vendor, message, senderID, shop);
+          }
+          break;
 
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.customer) {
-										message = element.customer;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-											message = message.replace('${fulfillment_status}', fulfillment_status);
-											message = message.replace('${order_status_url}', order_status_url);
-										}
-									} else {
-										message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
-									}
-								} else {
-									message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
-								}
-							});
-						}
+        case "refunds/create":
+          if (
+            data.data["refunds/create customer"] != undefined &&
+            data.data["refunds/create admin"] != undefined
+          ) {
+            // data.smsCount + 2
+            Store.findOneAndUpdate(
+              { name: shop },
+              {
+                $set: {
+                  smsCount: data.smsCount - 1
+                }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("datacount + 1");
+                } else {
+                  console.log("err", err);
+                }
+              }
+            );
+          }
+          if (data.data["refunds/create customer"] != undefined) {
+            title = request.body.refund_line_items[0].line_item.title;
+            orderId = request.body.order_id;
+            price = request.body.refund_line_items[0].subtotal;
 
-						let senderID = data.data['sender id'];
-						if (phone) {
-							sndSms(phone, vendor, message, senderID, shop);
-						} else if (phone1) {
-							sndSms(phone, vendor, message, senderID, shop);
-						} else if (phone2) {
-							sndSms(phone, vendor, message, senderID, shop);
-						}
-					}
-					if (data.data['orders/fulfilled admin'] != undefined) {
-						let admin = data.data['admin no'];
-						adminNumber = admin;
-						let senderID = data.data['sender id'];
-						message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
+            message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
+            //end
 
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.admin) {
-										message = element.admin;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-											message = message.replace('${fulfillment_status}', fulfillment_status);
-											message = message.replace('${order_status_url}', order_status_url);
-										}
-									} else {
-										message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
-									}
-								} else {
-									message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
-								}
-							});
-						}
+            if (data.template !== undefined) {
+              data.template.forEach(element => {
+                if (element.topic === topic) {
+                  if (element.customer) {
+                    message = element.customer;
+                    for (let i = 0; i < message.length; i++) {
+                      message = message.replace("${price}", price);
+                      message = message.replace("${order_id}", orderId);
+                      message = message.replace("${title}", title);
+                    }
+                  } else {
+                    message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
+                  }
+                } else {
+                  message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
+                }
+              });
+            }
 
-						sndSms(admin, vendor, message, senderID, shop);
-					}
-					break;
+            let senderID = data.data["sender id"];
 
-				case 'refunds/create':
-					if (data.data['refunds/create customer'] != undefined && data.data['refunds/create admin'] != undefined) {
-						// data.smsCount + 2
-						Store.findOneAndUpdate(
-							{ name: shop },
-							{
-								$set: {
-									smsCount: data.smsCount - 1
-								}
-							},
-							{ new: true, useFindAndModify: false },
-							(err, data) => {
-								if (!err) {
-									console.log('datacount + 1');
-								} else {
-									console.log('err', err);
-								}
-							}
-						);
-					}
-					if (data.data['refunds/create customer'] != undefined) {
-						title = request.body.refund_line_items[0].line_item.title;
-						orderId = request.body.order_id;
-						price = request.body.refund_line_items[0].subtotal;
+            if (phone) {
+              sndSms(phone, vendor, message, senderID, shop);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID, shop);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID, shop);
+            }
+          }
+          if (data.data["refunds/create admin"] != undefined) {
+            let admin = data.data["admin no"];
+            adminNumber = admin;
+            let senderID = data.data["sender id"];
+            message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
 
-						message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
-						//end
+            if (data.template !== undefined) {
+              data.template.forEach(element => {
+                if (element.topic === topic) {
+                  if (element.admin) {
+                    message = element.admin;
+                    for (let i = 0; i < message.length; i++) {
+                      message = message.replace(
+                        "${processed_at}",
+                        processed_at
+                      );
+                      message = message.replace("${vendor}", vendor);
+                      message = message.replace("${price}", price);
+                      message = message.replace("${order_id}", orderId);
+                      message = message.replace("${title}", title);
+                    }
+                  } else {
+                    message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
+                  }
+                } else {
+                  message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
+                }
+              });
+            }
 
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.customer) {
-										message = element.customer;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-										}
-									} else {
-										message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
-									}
-								} else {
-									message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
-								}
-							});
-						}
+            sndSms(admin, vendor, message, senderID, shop);
+          }
+          break;
+        case "orders/cancelled":
+          if (
+            data.data["orders/cancelled customer"] != undefined &&
+            data.data["orders/cancelled admin"] != undefined
+          ) {
+            Store.findOneAndUpdate(
+              { name: shop },
+              {
+                $set: {
+                  smsCount: data.smsCount - 1
+                }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("datacount + 1");
+                } else {
+                  console.log("err", err);
+                }
+              }
+            );
+          }
+          if (data.data["orders/cancelled customer"] != undefined) {
+            name = request.body.shipping_address.first_name;
+            email = request.body.email;
+            vendor = request.body.line_items[0].vendor;
+            title = request.body.line_items[0].title;
+            orderId = request.body.name;
+            orderId = orderId.slice(1);
+            price = request.body.total_price;
+            phone = request.body.shipping_address.phone;
+            phone1 = request.body.billing_address.phone;
+            phone2 = request.body.customer.phone;
+            address1 = request.body.shipping_address.address1;
+            address2 = request.body.shipping_address.address2;
+            city = request.body.shipping_address.city;
+            country = request.body.shipping_address.country;
+            cancelled_at = request.body.cancelled_at;
+            cancel_reason = request.body.cancel_reason;
+            message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
 
-						let senderID = data.data['sender id'];
+            if (data.template !== undefined) {
+              data.template.forEach(element => {
+                if (element.topic === topic) {
+                  if (element.customer) {
+                    message = element.customer;
+                    for (let i = 0; i < message.length; i++) {
+                      message = message.replace("${name}", name);
+                      message = message.replace("${vendor}", vendor);
+                      message = message.replace("${price}", price);
+                      message = message.replace("${order_id}", orderId);
+                      message = message.replace("${title}", title);
+                      message = message.replace(
+                        "${cancel_reason}",
+                        cancel_reason
+                      );
+                    }
+                  } else {
+                    message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
+                  }
+                } else {
+                  message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
+                }
+              });
+            }
 
-						if (phone) {
-							sndSms(phone, vendor, message, senderID, shop);
-						} else if (phone1) {
-							sndSms(phone, vendor, message, senderID, shop);
-						} else if (phone2) {
-							sndSms(phone, vendor, message, senderID, shop);
-						}
-					}
-					if (data.data['refunds/create admin'] != undefined) {
-						let admin = data.data['admin no'];
-						adminNumber = admin;
-						let senderID = data.data['sender id'];
-						message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
+            //end
+            let senderID = data.data["sender id"];
+            if (phone) {
+              sndSms(phone, vendor, message, senderID, shop);
+            } else if (phone1) {
+              sndSms(phone, vendor, message, senderID, shop);
+            } else if (phone2) {
+              sndSms(phone, vendor, message, senderID, shop);
+            }
+          }
+          if (data.data["orders/cancelled admin"] != undefined) {
+            let admin = data.data["admin no"];
+            adminNumber = admin;
+            let senderID = data.data["sender id"];
+            message = `Customer%20name:%20${name},cancel%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
 
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.admin) {
-										message = element.admin;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${processed_at}', processed_at);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-										}
-									} else {
-										message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
-									}
-								} else {
-									message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
-								}
-							});
-						}
+            if (data.template !== undefined) {
+              data.template.forEach(element => {
+                if (element.topic === topic) {
+                  if (element.admin) {
+                    message = element.admin;
+                    for (let i = 0; i < message.length; i++) {
+                      message = message.replace("${name}", name);
+                      message = message.replace("${vendor}", vendor);
+                      message = message.replace("${price}", price);
+                      message = message.replace("${order_id}", orderId);
+                      message = message.replace("${title}", title);
+                    }
+                  } else {
+                    message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+                  }
+                } else {
+                  message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+                }
+              });
+            }
 
-						sndSms(admin, vendor, message, senderID, shop);
-					}
-					break;
-				case 'orders/cancelled':
-					if (data.data['orders/cancelled customer'] != undefined && data.data['orders/cancelled admin'] != undefined) {
-						Store.findOneAndUpdate(
-							{ name: shop },
-							{
-								$set: {
-									smsCount: data.smsCount - 1
-								}
-							},
-							{ new: true, useFindAndModify: false },
-							(err, data) => {
-								if (!err) {
-									console.log('datacount + 1');
-								} else {
-									console.log('err', err);
-								}
-							}
-						);
-					}
-					if (data.data['orders/cancelled customer'] != undefined) {
-						name = request.body.shipping_address.first_name;
-						email = request.body.email;
-						vendor = request.body.line_items[0].vendor;
-						title = request.body.line_items[0].title;
-						orderId = request.body.name;
-						orderId = orderId.slice(1);
-						price = request.body.total_price;
-						phone = request.body.shipping_address.phone;
-						phone1 = request.body.billing_address.phone;
-						phone2 = request.body.customer.phone;
-						address1 = request.body.shipping_address.address1;
-						address2 = request.body.shipping_address.address2;
-						city = request.body.shipping_address.city;
-						country = request.body.shipping_address.country;
-						cancelled_at = request.body.cancelled_at;
-						cancel_reason = request.body.cancel_reason;
-						message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
-
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.customer) {
-										message = element.customer;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-											message = message.replace('${cancel_reason}', cancel_reason);
-										}
-									} else {
-										message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
-									}
-								} else {
-									message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
-								}
-							});
-						}
-
-						//end
-						let senderID = data.data['sender id'];
-						if (phone) {
-							sndSms(phone, vendor, message, senderID, shop);
-						} else if (phone1) {
-							sndSms(phone, vendor, message, senderID, shop);
-						} else if (phone2) {
-							sndSms(phone, vendor, message, senderID, shop);
-						}
-					}
-					if (data.data['orders/cancelled admin'] != undefined) {
-						let admin = data.data['admin no'];
-						adminNumber = admin;
-						let senderID = data.data['sender id'];
-						message = `Customer%20name:%20${name},cancel%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
-
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.admin) {
-										message = element.admin;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-										}
-									} else {
-										message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-									}
-								} else {
-									message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-								}
-							});
-						}
-
-						sndSms(admin, vendor, message, senderID, shop);
-					}
-					break;
-				default:
-					//   console.log("!possible");
-					break;
-			}
-		} else {
-			//   console.log(err);
-		}
-	});
-	response.sendStatus(200);
+            sndSms(admin, vendor, message, senderID, shop);
+          }
+          break;
+        default:
+          //   console.log("!possible");
+          break;
+      }
+    } else {
+      //   console.log(err);
+    }
+  });
+  response.sendStatus(200);
 });
 
 const sndSms = (phone, store, message, senderID, shop) => {
@@ -902,27 +874,53 @@ app.get('/api/history', function(req, res) {
 	}
 });
 // save template to db
-app.post('/api/template', function(req, res) {
-	let data = req.body;
+app.post("/api/template", function(req, res) {
+  // req.session.shop = "mojitolabs.myshopify.com"; //delete this
+  let topic = req.body.topic.trim();
+  let customer = req.body.customer;
+  let admin = req.body.admin;
+  let data = req.body;
 
-	if (req.session.shop) {
-		Store.findOneAndUpdate(
-			{ name: req.session.shop },
-			{
-				$push: { template: data }
-			},
-			{ new: true, useFindAndModify: false },
-			(err, data) => {
-				if (!err) {
-					//   console.log("data");
-				} else {
-					//   console.log("err", err);
-				}
-			}
-		);
-	} else {
-		// console.log("session timeout");
-	}
+  if (req.session.shop) {
+    Store.updateOne(
+      { "template.topic": topic },
+      {
+        $set: {
+          "template.$.customer": customer,
+          "template.$.admin": admin
+        }
+      },
+      (err, model) => {
+        if (err) {
+          console.log("err", err);
+        } else {
+          Store.findOneAndUpdate(
+            {
+              name: req.session.shop
+            },
+            {
+              $push: {
+                template: data
+              }
+            },
+            {
+              new: true,
+              useFindAndModify: false
+            },
+            (err, data) => {
+              if (!err) {
+                //   console.log("data");
+              } else {
+                //   console.log("err", err);
+              }
+            }
+          );
+        }
+      }
+    );
+  } else {
+    // console.log("session timeout");
+  }
 });
 // save abandan template to db
 app.post('/api/abandan', function(req, res) {
