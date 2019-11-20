@@ -366,7 +366,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 				case 'checkouts/create' || 'checkouts/update':
 					console.log(`topic:-->${topic}`, request.body);
 					if (
-						data.abandan['checkouts/create customer'] != undefined &&
+						data.abandan['checkouts/create template'] != undefined &&
 						data.abandan['checkouts/create admin'] != undefined
 					) {
 						Store.findOneAndUpdate(
@@ -392,32 +392,32 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 
 						message = `Hi%20Customer,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${abandoned_checkout_url}`;
 
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.customer) {
-										message = element.customer;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${abandoned_checkout_url}', abandoned_checkout_url);
-										}
-									} else {
-										message = `Hi%20,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${abandoned_checkout_url}`;
-									}
-								} else {
-									message = `Hi%20,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${abandoned_checkout_url}`;
-								}
-							});
-						}
+						// if (data.template !== undefined) {
+						// 	data.template.forEach((element) => {
+						// 		if (element.topic === topic) {
+						// 			if (element.customer) {
+						// 				message = element.customer;
+						// 				for (let i = 0; i < message.length; i++) {
+						// 					message = message.replace('${abandoned_checkout_url}', abandoned_checkout_url);
+						// 				}
+						// 			} else {
+						// 				message = `Hi%20,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${abandoned_checkout_url}`;
+						// 			}
+						// 		} else {
+						// 			message = `Hi%20,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${abandoned_checkout_url}`;
+						// 		}
+						// 	});
+						// }
 
 						// 	//end
-						let senderID = data.data['sender id'];
-						if (phone) {
-							sndSms(phone, vendor, message, senderID, shop);
-						} else if (phone1) {
-							sndSms(phone, vendor, message, senderID, shop);
-						} else if (phone2) {
-							sndSms(phone, vendor, message, senderID, shop);
-						}
+						// let senderID = data.data['sender id'];
+						// if (phone) {
+						// 	sndSms(phone, vendor, message, senderID, shop);
+						// } else if (phone1) {
+						// 	sndSms(phone, vendor, message, senderID, shop);
+						// } else if (phone2) {
+						// 	sndSms(phone, vendor, message, senderID, shop);
+						// }
 					}
 					if (data.data['orders/cancelled admin'] != undefined) {
 						let admin = data.data['admin no'];
