@@ -972,7 +972,7 @@ app.post("/api/template", function(req, res) {
 // save abandan template to db
 app.post("/api/abandan", function(req, res) {
   let data = req.body;
-  //   console.log(data);
+    console.log(data);
   if (req.session.shop) {
     Store.findOneAndUpdate(
       { name: req.session.shop },
@@ -982,16 +982,24 @@ app.post("/api/abandan", function(req, res) {
       { new: true, useFindAndModify: false },
       (err, data) => {
         if (!err) {
-          //   console.log("data");
+            console.log("data");
         } else {
-          //   console.log("err", err);
+            console.log("err", err);
         }
       }
     );
   } else {
-    // console.log("session timeout");
+    console.log("session timeout");
   }
 });
+
+// http://immense-bastion-25565.herokuapp.com
+
+// heroku git:remote -a immense-bastion-25565
+
+
+// https://mojitolabs.myshopify.com/admin/apps/sms_update
+
 
 // send rechage smscount to db
 app.post("/api/recharge", function(req, res) {
