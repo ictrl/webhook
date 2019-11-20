@@ -370,8 +370,8 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
           // console.log(`topic:-->${topic}`, request.body);
           let obj = {
             id : request.body.id,
-            phone : request.body.phone,
-            email : request.body.email,
+            phone : request.body.shipping_address.phone,
+            email : request.body.shipping_address.email,
             token : request.body.token,
             url : request.body.abandoned_checkout_url,
           }
