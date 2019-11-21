@@ -1,8 +1,14 @@
 import React, { useCallback, useState } from 'react';
-import { TextField, Layout, AnnotatedSection, Checkbox, Select, Card, Button } from '@shopify/polaris';
+import { TextField, Layout, Frame, Page, Toast, Select, Card, Button } from '@shopify/polaris';
 import axios from 'axios';
 
 export default function Abandan() {
+	const [ active, setActive ] = useState(false);
+
+	const toggleActive = useCallback(() => setActive((active) => !active), []);
+
+	const toastMarkup = active ? <Toast content="FollowUp Updated" onDismiss={toggleActive} /> : null;
+
 	const sendTemplate = (tempObj) => {
 		console.log(tempObj, 'before send post');
 
@@ -43,7 +49,7 @@ export default function Abandan() {
 		sendTemplate(tempObj);
 	};
 
-	/////////////////////////////////  
+	/////////////////////////////////
 	function myFunction1() {
 		tempObj.followUp = 1;
 		tempObj.time = selected1;
@@ -54,11 +60,13 @@ export default function Abandan() {
 				text: template1
 			});
 		}
-		var x = document.getElementById('snackbar');
-		x.className = 'show';
-		setTimeout(function() {
-			x.className = x.className.replace('show', '');
-		}, 2000);
+
+		toggleActive();
+		// var x = document.getElementById('snackbar');
+		// x.className = 'show';
+		// setTimeout(function() {
+		// 	x.className = x.className.replace('show', '');
+		// }, 2000);
 	}
 	const [ template1, setTemplate1 ] = useState('1111111111111\n First follow Up (Template1)');
 
@@ -217,16 +225,27 @@ export default function Abandan() {
 	const statusOption4 = [ { label: 'Enabled', value: 'enabled' }, { label: 'Disabled', value: 'disabled' } ];
 	////////////////////////////end 4/////////////
 	return (
-		<Layout>
-			
-			<Layout.AnnotatedSection
-				title="First Follow Up"
-				description="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link."
-			>
-				<Card sectioned>
-					<TextField label="Template" value={template1} onChange={handleTemplate1} multiline helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link" />
-					<br />
-					{/* <div className="a-card">
+		<div style={{ margin: 0, padding: 0 }}>
+			{' '}
+			<Frame>
+				<Layout>
+					<Button onClick={toggleActive}>Show Toast</Button>
+					{toastMarkup}
+
+					<Layout.AnnotatedSection
+						title="First Follow Up"
+						description="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link."
+					>
+						<Card sectioned>
+							<TextField
+								label="Template"
+								value={template1}
+								onChange={handleTemplate1}
+								multiline
+								helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link"
+							/>
+							<br />
+							{/* <div className="a-card">
 						<div className="mr-4 a-card-1">
 							<Checkbox label="Notify Customer" checked={checkedCustomer1} onChange={handleCustomerCheck1} />
 						</div>
@@ -234,34 +253,34 @@ export default function Abandan() {
 							<Checkbox label="Notify Admin" checked={checkedAdmin1} onChange={handleAdminCheck1} />
 						</div>
 					</div> */}
-					<div className="mt-2 a-card-contents">
-						<Select label="Time After" options={option1} onChange={handleSelectChange1} value={selected1} />
+							<div className="mt-2 a-card-contents">
+								<Select label="Time After" options={option1} onChange={handleSelectChange1} value={selected1} />
 
-						<Select label="Status" options={statusOption1} onChange={handleStatus1} value={status1} />
+								<Select label="Status" options={statusOption1} onChange={handleStatus1} value={status1} />
 
-						<div className="mt-5">
-							<button
-								onClick={() => {
-									myFunction1();
-								}}
-								style={{ height: '34px' }}
-								className="button-shopify"
-							>
-								Save
-							</button>
-						</div>
-					</div>
-				</Card>
-			</Layout.AnnotatedSection>
+								<div className="mt-5">
+									<button
+										onClick={() => {
+											myFunction1();
+										}}
+										style={{ height: '34px' }}
+										className="button-shopify"
+									>
+										Save
+									</button>
+								</div>
+							</div>
+						</Card>
+					</Layout.AnnotatedSection>
 
-			<Layout.AnnotatedSection
-				title="Second Follow Up"
-				description="Admin will be notify on this no. by selecting Notify Admin."
-			>
-				<Card sectioned>
-					<TextField label="Template" value={template2} onChange={handleTemplate2} multiline />
-					<br />
-					{/* <div className="a-card">
+					<Layout.AnnotatedSection
+						title="Second Follow Up"
+						description="Admin will be notify on this no. by selecting Notify Admin."
+					>
+						<Card sectioned>
+							<TextField label="Template" value={template2} onChange={handleTemplate2} multiline />
+							<br />
+							{/* <div className="a-card">
 						<div className="mr-4 a-card-2">
 							<Checkbox label="Notify Customer" checked={checkedCustomer2} onChange={handleCustomerCheck2} />
 						</div>
@@ -269,33 +288,33 @@ export default function Abandan() {
 							<Checkbox label="Notify Admin" checked={checkedAdmin2} onChange={handleAdminCheck2} />
 						</div>
 					</div> */}
-					<div className="mt-2 a-card-contents">
-						<Select label="Time After" options={option2} onChange={handleSelectChange2} value={selected2} />
+							<div className="mt-2 a-card-contents">
+								<Select label="Time After" options={option2} onChange={handleSelectChange2} value={selected2} />
 
-						<Select label="Status" options={statusOption2} onChange={handleStatus2} value={status2} />
+								<Select label="Status" options={statusOption2} onChange={handleStatus2} value={status2} />
 
-						<div className="mt-5">
-							<button
-								onClick={() => {
-									myFunction2();
-								}}
-								style={{ height: '34px' }}
-								className="button-shopify"
-							>
-								Save
-							</button>
-						</div>
-					</div>
-				</Card>
-			</Layout.AnnotatedSection>
-			<Layout.AnnotatedSection
-				title="Third Follow Up"
-				description="Admin will be notify on this no. by selecting Notify Admin."
-			>
-				<Card sectioned>
-					<TextField label="Template" value={template3} onChange={handleTemplate3} multiline />
-					<br />
-					{/* <div className="a-card">
+								<div className="mt-5">
+									<button
+										onClick={() => {
+											myFunction2();
+										}}
+										style={{ height: '34px' }}
+										className="button-shopify"
+									>
+										Save
+									</button>
+								</div>
+							</div>
+						</Card>
+					</Layout.AnnotatedSection>
+					<Layout.AnnotatedSection
+						title="Third Follow Up"
+						description="Admin will be notify on this no. by selecting Notify Admin."
+					>
+						<Card sectioned>
+							<TextField label="Template" value={template3} onChange={handleTemplate3} multiline />
+							<br />
+							{/* <div className="a-card">
 						<div className="mr-4 a-card-3">
 							<Checkbox label="Notify Customer" checked={checkedCustomer3} onChange={handleCustomerCheck3} />
 						</div>
@@ -303,33 +322,33 @@ export default function Abandan() {
 							<Checkbox label="Notify Admin" checked={checkedAdmin3} onChange={handleAdminCheck3} />
 						</div>
 					</div> */}
-					<div className="mt-3 a-card-contents">
-						<Select label="Time After" options={option3} onChange={handleSelectChange3} value={selected3} />
+							<div className="mt-3 a-card-contents">
+								<Select label="Time After" options={option3} onChange={handleSelectChange3} value={selected3} />
 
-						<Select label="Status" options={statusOption3} onChange={handleStatus3} value={status3} />
+								<Select label="Status" options={statusOption3} onChange={handleStatus3} value={status3} />
 
-						<div className="mt-5">
-							<button
-								onClick={() => {
-									myFunction3();
-								}}
-								style={{ height: '34px' }}
-								className="button-shopify"
-							>
-								Save
-							</button>
-						</div>
-					</div>
-				</Card>
-			</Layout.AnnotatedSection>
-			<Layout.AnnotatedSection
-				title="Fourth Follow Up"
-				description="Admin will be notify on this no. by selecting Notify Admin."
-			>
-				<Card sectioned>
-					<TextField label="Template" value={template4} onChange={handleTemplate4} multiline />
-					<br />
-					{/* <div className="a-card">
+								<div className="mt-5">
+									<button
+										onClick={() => {
+											myFunction3();
+										}}
+										style={{ height: '34px' }}
+										className="button-shopify"
+									>
+										Save
+									</button>
+								</div>
+							</div>
+						</Card>
+					</Layout.AnnotatedSection>
+					<Layout.AnnotatedSection
+						title="Fourth Follow Up"
+						description="Admin will be notify on this no. by selecting Notify Admin."
+					>
+						<Card sectioned>
+							<TextField label="Template" value={template4} onChange={handleTemplate4} multiline />
+							<br />
+							{/* <div className="a-card">
 						<div className="mr-4 a-card-4">
 							<Checkbox label="Notify Customer" checked={checkedCustomer4} onChange={handleCustomerCheck4} />
 						</div>
@@ -337,29 +356,31 @@ export default function Abandan() {
 							<Checkbox label="Notify Admin" checked={checkedAdmin4} onChange={handleAdminCheck4} />
 						</div>
 					</div> */}
-					<div className="mt-4 a-card-contents">
-						<Select label="Time After" options={option4} onChange={handleSelectChange4} value={selected4} />
+							<div className="mt-4 a-card-contents">
+								<Select label="Time After" options={option4} onChange={handleSelectChange4} value={selected4} />
 
-						<Select label="Status" options={statusOption4} onChange={handleStatus4} value={status4} />
+								<Select label="Status" options={statusOption4} onChange={handleStatus4} value={status4} />
 
-						<div className="mt-5">
-							<button
-								onClick={() => {
-									myFunction4();
-								}}
-								style={{ height: '34px' }}
-								className="button-shopify"
-							>
-								Save
-							</button>
-						</div>
+								<div className="mt-5">
+									<button
+										onClick={() => {
+											myFunction4();
+										}}
+										style={{ height: '34px' }}
+										className="button-shopify"
+									>
+										Save
+									</button>
+								</div>
+							</div>
+						</Card>
+					</Layout.AnnotatedSection>
+
+					<div id="snackbar" style={{ zIndex: '999' }}>
+						Abandan Updated{' '}
 					</div>
-				</Card>
-			</Layout.AnnotatedSection>
-
-			<div id="snackbar" style={{ zIndex: '999' }}>
-				Abandan Updated{' '}
-			</div>
-		</Layout>
+				</Layout>
+			</Frame>{' '}
+		</div>
 	);
 }
