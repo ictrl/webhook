@@ -937,7 +937,7 @@ app.post("/api/template", function(req, res) {
             Store.findOneAndUpdate(
               { name: req.session.shop },
               {
-                $push: { template: data }
+                $push: { template: req.body }
               },
               { new: true, useFindAndModify: false },
               (err, data) => {
@@ -952,9 +952,9 @@ app.post("/api/template", function(req, res) {
         });
       } else {
         Store.findOneAndUpdate(
-          { name: shop },
+          { name: req.session.shop },
           {
-            $push: { abandan: req.body }
+            $push: { template: req.body }
           },
           { new: true, useFindAndModify: false },
           (err, data) => {
