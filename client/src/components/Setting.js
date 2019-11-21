@@ -62,10 +62,7 @@ export default function Settings() {
 
 	const handleSubmit = useCallback(
 		(_event) => {
-			axios
-				.post('https://immense-bastion-25565.herokuapp.com/api/template/', preference)
-				.then((res) => console.log(res))
-				.catch((err) => console.error(err));
+			axios.post('/api/template/', preference).then((res) => console.log(res)).catch((err) => console.error(err));
 
 			console.log(preference);
 		},
