@@ -371,7 +371,6 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                     message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
                   }
                 } else {
-                  
                   message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
                 }
               });
@@ -906,31 +905,68 @@ app.get("/api/history", function(req, res) {
 // save template to db
 app.post("/api/template", function(req, res) {
   let topic = req.body.topic.trim();
-  let data = req.body;
-  // req.session.shop = "mojitolabs.myshopify.com";
+  let customer = req.body.customer;
+  let admin = req.body.admin;
 
   if (req.session.shop) {
-    Store.findOneAndUpdate(
-      {
-        name: req.session.shop
-      },
-      {
-        $push: {
-          template: data
-        }
-      },
-      {
-        new: true,
-        useFindAndModify: true
-      },
-      (err, data) => {
-        if (!err) {
-          //   console.log("data");
-        } else {
-          //   console.log("err", err);
-        }
+    Store.findOne({ name: req.session.shop }, function(err, data) {
+      if (data.template) {
+        data.template.forEach(e => {
+          if (e.topic === topic) {
+            //update
+            Store.update(
+              { "template.topic": topic },
+              {
+                $set: {
+                  "template.$.topic": topic,
+                  "template.$.admin": admin,
+                  "template.$.customer": customer
+                }
+              },
+
+              (err, result) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  console.log(result);
+                }
+              }
+            );
+          } else {
+            //create
+            Store.findOneAndUpdate(
+              { name: req.session.shop },
+              {
+                $push: { template: data }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("data", data);
+                } else {
+                  console.log("err", err);
+                }
+              }
+            );
+          }
+        });
+      } else {
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $push: { abandan: req.body }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data", data);
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
       }
-    );
+    });
   } else {
     // console.log("session timeout");
   }
