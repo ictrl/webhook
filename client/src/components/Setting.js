@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useCallback, useState } from 'react';
-import { Card, Layout, Heading, Button, Checkbox, Form, FormLayout, TextField } from '@shopify/polaris';
+import { Card, Layout, Heading, Button, Checkbox, Form, TextField } from '@shopify/polaris';
 import axios from 'axios';
 
 function myFunction() {
@@ -51,25 +51,21 @@ export default function Settings() {
 
 	let preference = {
 		'admin no': adminPhone,
-
 		'sender id': senderID,
-
 		'orders/create customer': orderCreateCustomer,
-
 		'orders/create admin': orderCreateAdmin,
-
 		'orders/cancelled customer': orderCancelledAdmin,
-
 		'orders/cancelled admin': orderCancelledCustomer,
-
 		'orders/fulfilled customer': orderFulfilledCustomer,
-
 		'orders/fulfilled admin': orderFulfilledAdmin
 	};
 
 	const handleSubmit = useCallback(
 		(_event) => {
-			axios.post('/api/template/', preference).then((res) => console.log(res)).catch((err) => console.error(err));
+			axios
+				.post('https://immense-bastion-25565.herokuapp.com/api/template/', preference)
+				.then((res) => console.log(res))
+				.catch((err) => console.error(err));
 
 			console.log(preference);
 		},
@@ -179,7 +175,7 @@ export default function Settings() {
 
 				<br />
 				<div style={{ textAlign: 'right' }}>
-					<Button submit primary>
+					<Button onClick={myFunction} submit primary>
 						Save
 					</Button>
 				</div>
