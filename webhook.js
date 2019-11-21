@@ -1,255 +1,280 @@
-require('dotenv').config();
-const http = require('https');
-const express = require('express');
-const session = require('express-session');
-const mongoose = require('mongoose');
-const path = require('path');
+require("dotenv").config();
+const http = require("https");
+const express = require("express");
+const session = require("express-session");
+const mongoose = require("mongoose");
+const path = require("path");
 const app = express();
-const parseurl = require('parseurl');
-const crypto = require('crypto');
-const cookie = require('cookie');
-const nonce = require('nonce')();
-const querystring = require('querystring');
-const request = require('request-promise');
-const bodyParser = require('body-parser');
+const parseurl = require("parseurl");
+const crypto = require("crypto");
+const cookie = require("cookie");
+const nonce = require("nonce")();
+const querystring = require("querystring");
+const request = require("request-promise");
+const bodyParser = require("body-parser");
+const arrayUniquePlugin = require("mongoose-unique-array");
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
-const mongoConnect = require('connect-mongo')(session);
-const forwardingAddress = 'https://immense-bastion-25565.herokuapp.com'; // Replace this with your HTTPS Forwarding address
+const mongoConnect = require("connect-mongo")(session);
+const forwardingAddress = "https://immense-bastion-25565.herokuapp.com"; // Replace this with your HTTPS Forwarding address
 // get the url pathname
 let pathname;
 mongoose.connect(process.env.MONGODB_URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useCreateIndex: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true
 });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
-	session({
-		secret: 'mylittleSecrets.',
-		resave: false,
-		saveUninitialized: false,
-		store: new mongoConnect({ mongooseConnection: mongoose.connection })
-	})
+  session({
+    secret: "mylittleSecrets.",
+    resave: false,
+    saveUninitialized: false,
+    store: new mongoConnect({ mongooseConnection: mongoose.connection })
+  })
 );
 
 app.use(function(req, res, next) {
-	res.locals.session = req.session;
-	next();
+  res.locals.session = req.session;
+  next();
 });
 
 app.use(function(req, res, next) {
-	if (!req.session.views) {
-		req.session.views = {};
-	}
-	pathname = parseurl(req).pathname;
-	// count the views
-	req.session.views[pathname] = (req.session.views[pathname] || 0) + 1;
+  if (!req.session.views) {
+    req.session.views = {};
+  }
+  pathname = parseurl(req).pathname;
+  // count the views
+  req.session.views[pathname] = (req.session.views[pathname] || 0) + 1;
 
-	next();
+  next();
 });
 
 const shopSchema = new mongoose.Schema({
-	name: String,
-	data: JSON,
-	abandan: Array,
-	sms: Array,
-	smsCount: Number,
-	template: Array
-});
+  name: String,
+  data: JSON,
 
-const Store = new mongoose.model('Store', shopSchema);
+  abandan: [
+    {
+      id: { type: String, required: true, unique: true },
+      phone: Number,
+      url: String,
+      time: { type: Date, default: Date.now }
+    }
+  ],
+
+  sms: Array,
+  smsCount: Number,
+  template: [
+    {
+      topic: { type: String, required: true, unique: true },
+      customer: String,
+      admin: String
+    }
+  ]
+});
+shopSchema.plugin(arrayUniquePlugin);
+const Store = new mongoose.model("Store", shopSchema);
 
 // install route ==>"/shopify/shop=?shopname.shopify.com
-app.get('/shopify', (req, res) => {
-	req.session.shop = req.query.shop;
-	const shop = req.query.shop;
+app.get("/shopify", (req, res) => {
+  req.session.shop = req.query.shop;
+  const shop = req.query.shop;
 
-	//   console.log("install route call-->", shop);
-	if (shop) {
-		const state = nonce();
-		const redirectUri = forwardingAddress + '/shopify/callback';
-		const installUrl =
-			'https://' +
-			shop +
-			'/admin/oauth/authorize?client_id=' +
-			apiKey +
-			'&scope=' +
-			[
-				'read_products ',
-				'read_customers',
-				'read_fulfillments',
-				'read_checkouts',
-				'read_analytics',
-				'read_orders ',
-				'read_script_tags',
-				'write_script_tags'
-			] +
-			'&state=' +
-			state +
-			'&redirect_uri=' +
-			redirectUri;
+  //   console.log("install route call-->", shop);
+  if (shop) {
+    const state = nonce();
+    const redirectUri = forwardingAddress + "/shopify/callback";
+    const installUrl =
+      "https://" +
+      shop +
+      "/admin/oauth/authorize?client_id=" +
+      apiKey +
+      "&scope=" +
+      [
+        "read_products ",
+        "read_customers",
+        "read_fulfillments",
+        "read_checkouts",
+        "read_analytics",
+        "read_orders ",
+        "read_script_tags",
+        "write_script_tags"
+      ] +
+      "&state=" +
+      state +
+      "&redirect_uri=" +
+      redirectUri;
 
-		res.cookie(req.session.shop, state);
+    res.cookie(req.session.shop, state);
 
-		res.redirect(installUrl);
-	} else {
-		return res
-			.status(400)
-			.send('Missing shop parameter. Please add ?shop=your-development-shop.myshopify.com to your request');
-	}
+    res.redirect(installUrl);
+  } else {
+    return res
+      .status(400)
+      .send(
+        "Missing shop parameter. Please add ?shop=your-development-shop.myshopify.com to your request"
+      );
+  }
 });
 
 //callback route -->
-app.get('/shopify/callback', (req, res) => {
-	let { shop, hmac, code, state } = req.query;
-	//   console.log("callback route call -->", shop);
-	const stateCookie = cookie.parse(req.headers.cookie)[`${shop}`];
+app.get("/shopify/callback", (req, res) => {
+  let { shop, hmac, code, state } = req.query;
+  //   console.log("callback route call -->", shop);
+  const stateCookie = cookie.parse(req.headers.cookie)[`${shop}`];
 
-	//   console.log("Statecookies", stateCookie);
+  //   console.log("Statecookies", stateCookie);
 
-	if (state !== stateCookie) {
-		return res.status(403).send('Request origin cannot be verified');
-	}
+  if (state !== stateCookie) {
+    return res.status(403).send("Request origin cannot be verified");
+  }
 
-	if (shop && hmac && code) {
-		// DONE: Validate request is from Shopify
-		const map = Object.assign({}, req.query);
-		delete map['signature'];
-		delete map['hmac'];
-		const message = querystring.stringify(map);
-		const providedHmac = Buffer.from(hmac, 'utf-8');
-		const generatedHash = Buffer.from(crypto.createHmac('sha256', apiSecret).update(message).digest('hex'), 'utf-8');
-		let hashEquals = false;
+  if (shop && hmac && code) {
+    // DONE: Validate request is from Shopify
+    const map = Object.assign({}, req.query);
+    delete map["signature"];
+    delete map["hmac"];
+    const message = querystring.stringify(map);
+    const providedHmac = Buffer.from(hmac, "utf-8");
+    const generatedHash = Buffer.from(
+      crypto
+        .createHmac("sha256", apiSecret)
+        .update(message)
+        .digest("hex"),
+      "utf-8"
+    );
+    let hashEquals = false;
 
-		try {
-			hashEquals = crypto.timingSafeEqual(generatedHash, providedHmac);
-		} catch (e) {
-			hashEquals = false;
-		}
+    try {
+      hashEquals = crypto.timingSafeEqual(generatedHash, providedHmac);
+    } catch (e) {
+      hashEquals = false;
+    }
 
-		if (!hashEquals) {
-			return res.status(400).send('HMAC validation failed');
-		}
+    if (!hashEquals) {
+      return res.status(400).send("HMAC validation failed");
+    }
 
-		// DONE: Exchange temporary code for a permanent access token
+    // DONE: Exchange temporary code for a permanent access token
 
-		const accessTokenRequestUrl = 'https://' + shop + '/admin/oauth/access_token';
-		const accessTokenPayload = {
-			client_id: apiKey,
-			client_secret: apiSecret,
-			code
-		};
-		request
-			.post(accessTokenRequestUrl, { json: accessTokenPayload })
-			.then((accessTokenResponse) => {
-				Gtoken = accessTokenResponse.access_token;
+    const accessTokenRequestUrl =
+      "https://" + shop + "/admin/oauth/access_token";
+    const accessTokenPayload = {
+      client_id: apiKey,
+      client_secret: apiSecret,
+      code
+    };
+    request
+      .post(accessTokenRequestUrl, { json: accessTokenPayload })
+      .then(accessTokenResponse => {
+        Gtoken = accessTokenResponse.access_token;
 
-				req.session.hmac = hmac;
-				req.session.token = accessTokenResponse.access_token;
+        req.session.hmac = hmac;
+        req.session.token = accessTokenResponse.access_token;
 
-				// console.log("top shop", req.session.shop);
-				res.redirect('/');
-			})
-			.catch((error) => {
-				res.send(error);
-				// console.log("144-->", error);
-			});
-	} else {
-		res.status(400).send('Required parameters missing');
-	}
+        // console.log("top shop", req.session.shop);
+        res.redirect("/");
+      })
+      .catch(error => {
+        res.send(error);
+        // console.log("144-->", error);
+      });
+  } else {
+    res.status(400).send("Required parameters missing");
+  }
 });
 
-app.post('/myaction', function(req, res) {
-	if (req.session.shop) {
-		let shop = req.session.shop;
-		let token = req.session.token;
-		let hmac = req.session.hmac;
-		Store.findOne({ name: shop }, function(err, data) {
-			if (data) {
-				// console.log("store found in DB", data);
-				res.status(200).redirect('back');
+app.post("/myaction", function(req, res) {
+  if (req.session.shop) {
+    let shop = req.session.shop;
+    let token = req.session.token;
+    let hmac = req.session.hmac;
+    Store.findOne({ name: shop }, function(err, data) {
+      if (data) {
+        // console.log("store found in DB", data);
+        res.status(200).redirect("back");
 
-				Store.findOneAndUpdate(
-					{ name: shop },
-					{
-						$set: {
-							data: req.body
-						}
-					},
-					{ new: true, useFindAndModify: false },
-					(err, data) => {
-						if (!err) {
-							//   console.log("datacount + 1");
-						} else {
-							//   console.log("err", err);
-						}
-					}
-				);
-			} else {
-				// console.log("store !found in DB");
-				res.redirect(`https://${shop}/admin/apps/sms_update`);
-				const store = new Store({
-					name: shop,
-					data: req.body,
-					smsCount: 100
-				});
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $set: {
+              data: req.body
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              //   console.log("datacount + 1");
+            } else {
+              //   console.log("err", err);
+            }
+          }
+        );
+      } else {
+        // console.log("store !found in DB");
+        res.redirect(`https://${shop}/admin/apps/sms_update`);
+        const store = new Store({
+          name: shop,
+          data: req.body,
+          smsCount: 100
+        });
 
-				store.save(function(err) {
-					if (!err) {
-						// console.log(`${shop} data store to DB`);
-					}
-				});
+        store.save(function(err) {
+          if (!err) {
+            // console.log(`${shop} data store to DB`);
+          }
+        });
 
-				var topics = [
-					'orders/cancelled',
-					'orders/fulfilled',
-					'orders/create',
-					'checkouts/create',
-					'checkouts/update'
-				];
+        var topics = [
+          "orders/cancelled",
+          "orders/fulfilled",
+          "orders/create",
+          "checkouts/create",
+          "checkouts/update"
+        ];
 
-				topics.forEach((topic) => {
-					makeWebook(topic, token, hmac, shop);
-				});
-			}
-		});
-	} else {
-		// console.log("cant find session key form post /myacion");
-	}
+        topics.forEach(topic => {
+          makeWebook(topic, token, hmac, shop);
+        });
+      }
+    });
+  } else {
+    // console.log("cant find session key form post /myacion");
+  }
 });
 
 const makeWebook = (topic, token, hmac, shop) => {
-	const webhookUrl = 'https://' + shop + '/admin/api/2019-07/webhooks.json';
-	const webhookHeaders = {
-		'Content-Type': 'application/json',
-		'X-Shopify-Access-Token': token,
-		'X-Shopify-Topic': topic,
-		'X-Shopify-Hmac-Sha256': hmac,
-		'X-Shopify-Shop-Domain': shop,
-		'X-Shopify-API-Version': '2019-07'
-	};
+  const webhookUrl = "https://" + shop + "/admin/api/2019-07/webhooks.json";
+  const webhookHeaders = {
+    "Content-Type": "application/json",
+    "X-Shopify-Access-Token": token,
+    "X-Shopify-Topic": topic,
+    "X-Shopify-Hmac-Sha256": hmac,
+    "X-Shopify-Shop-Domain": shop,
+    "X-Shopify-API-Version": "2019-07"
+  };
 
-	const webhookPayload = {
-		webhook: {
-			topic: topic,
-			address: `https://immense-bastion-25565.herokuapp.com/store/${shop}/${topic}`,
-			format: 'json'
-		}
-	};
-	request
-		.post(webhookUrl, {
-			headers: webhookHeaders,
-			json: webhookPayload
-		})
-		.then((shopResponse) => {
-			console.log('webhook topic :', topic);
-		})
-		.catch((error) => {
-			//   console.log("error-->", error);
-		});
+  const webhookPayload = {
+    webhook: {
+      topic: topic,
+      address: `https://immense-bastion-25565.herokuapp.com/store/${shop}/${topic}`,
+      format: "json"
+    }
+  };
+  request
+    .post(webhookUrl, {
+      headers: webhookHeaders,
+      json: webhookPayload
+    })
+    .then(shopResponse => {
+      console.log("webhook topic :", topic);
+    })
+    .catch(error => {
+      //   console.log("error-->", error);
+    });
 };
 
 app.post("/store/:shop/:topic/:subtopic", function(request, response) {
@@ -257,10 +282,35 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
   topic = topic + "/" + subtopic;
-  console.log(`top wala topic:-->${topic}`, request.body);
+  console.log(`top topic:-->${topic}`, request.body);
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       switch (topic) {
+        case "checkouts/create" || "checkouts/update":
+          if (request.body.shipping_address.phone) {
+            let obj = {
+              id: request.body.id,
+              phone: request.body.shipping_address.phone,
+              url: request.body.abandoned_checkout_url
+            };
+
+            Store.findOneAndUpdate(
+              { name: shop },
+              {
+                $push: { abandan: obj }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("data");
+                } else {
+                  console.log("err", err);
+                }
+              }
+            );
+          }
+          break;
+
         case "orders/create":
           console.log(`topic:-->${topic}`, request.body);
 
@@ -274,7 +324,8 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               {
                 $set: {
                   smsCount: data.smsCount - 1
-                }
+                },
+                $pull: { abandan: { id: request.body.id } }
               },
               { new: true, useFindAndModify: false },
               (err, data) => {
@@ -320,6 +371,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                     message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
                   }
                 } else {
+                  
                   message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
                 }
               });
@@ -365,34 +417,6 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             sndSms(admin, vendor, message, senderID, shop);
           }
 
-          break;
-        case "checkouts/create" || "checkouts/update":
-          // console.log(`topic:-->${topic}`, request.body);
-          let obj = {
-            id : request.body.id,
-            phone : request.body.shipping_address.phone,
-            email : request.body.shipping_address.email,
-            token : request.body.token,
-            url : request.body.abandoned_checkout_url,
-          }
-
-          Store.findOneAndUpdate(
-            { name: shop },
-            {
-              $push: { abandan: obj },
-              $set: {
-                smsCount: data.smsCount - 1
-              }
-            },
-            { new: true, useFindAndModify: false },
-            (err, data) => {
-              if (!err) {
-                console.log("data");
-              } else {
-                console.log("err", err);
-              }
-            }
-          );
           break;
         case "orders/fulfilled":
           if (
@@ -726,195 +750,184 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 });
 
 const sndSms = (phone, store, message, senderID, shop) => {
-	message = message.replace(/ /g, '%20');
-	Store.findOne({ name: shop }, function(err, data) {
-		if (!err) {
-			if (data.smsCount > 0) {
-				//send SMS
-				var options = {
-					method: 'GET',
-					hostname: 'api.msg91.com',
-					port: null,
-					path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=${senderID}&message=${message}&country=91`,
-					headers: {}
-				};
-				var req = http.request(options, function(res) {
-					var chunks = [];
+  message = message.replace(/ /g, "%20");
+  Store.findOne({ name: shop }, function(err, data) {
+    if (!err) {
+      if (data.smsCount > 0) {
+        //send SMS
+        var options = {
+          method: "GET",
+          hostname: "api.msg91.com",
+          port: null,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=${senderID}&message=${message}&country=91`,
+          headers: {}
+        };
+        var req = http.request(options, function(res) {
+          var chunks = [];
 
-					res.on('data', function(chunk) {
-						chunks.push(chunk);
-					});
+          res.on("data", function(chunk) {
+            chunks.push(chunk);
+          });
 
-					res.on('end', function() {
-						var body = Buffer.concat(chunks);
-						console.log(body.toString());
-					});
-				});
-				//save sms data to DB
+          res.on("end", function() {
+            var body = Buffer.concat(chunks);
+            console.log(body.toString());
+          });
+        });
+        //save sms data to DB
 
-				var obj = {
-					description: message.replace(/%20/g, ' ').replace(/%0A/g, ' '),
-					term: phone
-					// number: shop
-				};
+        var obj = {
+          description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
+          term: phone
+          // number: shop
+        };
 
-				Store.findOneAndUpdate(
-					{ name: shop },
-					{
-						$push: { sms: obj },
-						$set: {
-							smsCount: data.smsCount - 1
-						}
-					},
-					{ new: true, useFindAndModify: false },
-					(err, data) => {
-						if (!err) {
-							console.log('data');
-						} else {
-							console.log('err', err);
-						}
-					}
-				);
-				req.end();
-			} else if (data.smsCount == 0 || data.smsCount == -1) {
-				// notify admin to recharge
-				//send SMS mgs91ed
-				phone = adminNumber;
-				message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
-				var options = {
-					method: 'GET',
-					hostname: 'api.msg91.com',
-					port: null,
-					path: `/api/sendhttp.php?mobiles=${phone}&authkey=${SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
-					headers: {}
-				};
-				var req = http.request(options, function(res) {
-					var chunks = [];
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $push: { sms: obj },
+            $set: {
+              smsCount: data.smsCount - 1
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data");
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+        req.end();
+      } else if (data.smsCount == 0 || data.smsCount == -1) {
+        // notify admin to recharge
+        //send SMS mgs91ed
+        phone = adminNumber;
+        message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
+        var options = {
+          method: "GET",
+          hostname: "api.msg91.com",
+          port: null,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
+          headers: {}
+        };
+        var req = http.request(options, function(res) {
+          var chunks = [];
 
-					res.on('data', function(chunk) {
-						chunks.push(chunk);
-					});
+          res.on("data", function(chunk) {
+            chunks.push(chunk);
+          });
 
-					res.on('end', function() {
-						var body = Buffer.concat(chunks);
-						console.log(body.toString());
-					});
-				});
-				//save sms data to DB
-				var obj = {
-					message: message,
-					store: store,
-					number: phone
-				};
-				Store.findOneAndUpdate(
-					{ name: shop },
-					{
-						$push: { sms: obj },
-						$set: {
-							smsCount: data.smsCount - 1
-						}
-					},
-					{ new: true, useFindAndModify: false },
-					(err, data) => {
-						if (!err) {
-							console.log('data');
-						} else {
-							console.log('err', err);
-						}
-					}
-				);
-				req.end();
-			} else {
-				console.log('admin still not recharge');
-			}
-		}
-	});
+          res.on("end", function() {
+            var body = Buffer.concat(chunks);
+            console.log(body.toString());
+          });
+        });
+        //save sms data to DB
+        var obj = {
+          message: message,
+          store: store,
+          number: phone
+        };
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $push: { sms: obj },
+            $set: {
+              smsCount: data.smsCount - 1
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data");
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+        req.end();
+      } else {
+        console.log("admin still not recharge");
+      }
+    }
+  });
 };
 
-app.get('/api/option', function(req, res) {
-	if (req.session.shop) {
-		Store.findOne({ name: req.session.shop }, function(err, data) {
-			if (data) {
-				res.send(data.data);
-			} else {
-				res.send('');
-			}
-		});
-	} else {
-		console.log('cant find session key form get /api/smsCount || your session timeout');
-	}
+app.get("/api/option", function(req, res) {
+  if (req.session.shop) {
+    Store.findOne({ name: req.session.shop }, function(err, data) {
+      if (data) {
+        res.send(data.data);
+      } else {
+        res.send("");
+      }
+    });
+  } else {
+    console.log(
+      "cant find session key form get /api/smsCount || your session timeout"
+    );
+  }
 });
-app.get('/api/smsCount', function(req, res) {
-	if (req.session.shop) {
-		Store.findOne({ name: req.session.shop }, function(err, data) {
-			if (data) {
-				var sms = data.smsCount + '';
-				console.log('sms', sms);
-				res.send(sms);
-			} else {
-				res.send('0');
-			}
-			// console.log("278", req.session.shop);
-		});
-	} else {
-		console.log('cant find session key form get /api/smsCount || your session timeout');
-	}
+app.get("/api/smsCount", function(req, res) {
+  if (req.session.shop) {
+    Store.findOne({ name: req.session.shop }, function(err, data) {
+      if (data) {
+        var sms = data.smsCount + "";
+        console.log("sms", sms);
+        res.send(sms);
+      } else {
+        res.send("0");
+      }
+      // console.log("278", req.session.shop);
+    });
+  } else {
+    console.log(
+      "cant find session key form get /api/smsCount || your session timeout"
+    );
+  }
 });
 
-app.get('/api/history', function(req, res) {
-	if (req.session.views[pathname]) {
-		Store.findOne({ name: req.session.shop }, function(err, data) {
-			if (data) {
-				var history = data.sms;
-				res.send(history);
-			}
-		});
-	} else {
-		console.log('cant find session key form get /api/history || your session timeout');
-	}
+app.get("/api/history", function(req, res) {
+  if (req.session.views[pathname]) {
+    Store.findOne({ name: req.session.shop }, function(err, data) {
+      if (data) {
+        var history = data.sms;
+        res.send(history);
+      }
+    });
+  } else {
+    console.log(
+      "cant find session key form get /api/history || your session timeout"
+    );
+  }
 });
 // save template to db
 app.post("/api/template", function(req, res) {
-  // req.session.shop = "mojitolabs.myshopify.com"; //delete this
   let topic = req.body.topic.trim();
-  let customer = req.body.customer;
-  let admin = req.body.admin;
   let data = req.body;
+  // req.session.shop = "mojitolabs.myshopify.com";
 
   if (req.session.shop) {
-    Store.updateOne(
-      { "template.topic": topic },
+    Store.findOneAndUpdate(
       {
-        $set: {
-          "template.$.customer": customer,
-          "template.$.admin": admin
+        name: req.session.shop
+      },
+      {
+        $push: {
+          template: data
         }
       },
-      (err, model) => {
-        if (err) {
-          console.log("err", err);
+      {
+        new: true,
+        useFindAndModify: true
+      },
+      (err, data) => {
+        if (!err) {
+          //   console.log("data");
         } else {
-          Store.findOneAndUpdate(
-            {
-              name: req.session.shop
-            },
-            {
-              $push: {
-                template: data
-              }
-            },
-            {
-              new: true,
-              useFindAndModify: false
-            },
-            (err, data) => {
-              if (!err) {
-                //   console.log("data");
-              } else {
-                //   console.log("err", err);
-              }
-            }
-          );
+          //   console.log("err", err);
         }
       }
     );
@@ -923,27 +936,29 @@ app.post("/api/template", function(req, res) {
   }
 });
 // save abandan template to db
-app.post('/api/abandan', function(req, res) {
-	let data = req.body;
-	console.log(data);
-	if (req.session.shop) {
-		Store.findOneAndUpdate(
-			{ name: req.session.shop },
-			{
-				$push: { abandan: data }
-			},
-			{ new: true, useFindAndModify: false },
-			(err, data) => {
-				if (!err) {
-					console.log('data');
-				} else {
-					console.log('err', err);
-				}
-			}
-		);
-	} else {
-		console.log('session timeout');
-	}
+app.post("/api/abandan", function(req, res) {
+  let data = req.body;
+  console.log(data);
+  req.session.shop = "mojitolabs.myshopify.com"; //delete this
+
+  if (req.session.shop) {
+    Store.findOneAndUpdate(
+      { name: req.session.shop },
+      {
+        $push: { template: data }
+      },
+      { new: true, useFindAndModify: false },
+      (err, data) => {
+        if (!err) {
+          console.log("data");
+        } else {
+          console.log("err", err);
+        }
+      }
+    );
+  } else {
+    console.log("session timeout");
+  }
 });
 
 // http://immense-bastion-25565.herokuapp.com
@@ -953,48 +968,48 @@ app.post('/api/abandan', function(req, res) {
 // https://mojitolabs.myshopify.com/admin/apps/sms_update
 
 // send rechage smscount to db
-app.post('/api/recharge', function(req, res) {
-	let sms = req.body;
+app.post("/api/recharge", function(req, res) {
+  let sms = req.body;
 
-	if (req.session.shop) {
-		Store.findOne({ name: req.session.shop }, function(err, data) {
-			if (data) {
-				var smsLeft = data.smsCount;
-				console.log('smsLeft', smsLeft);
-				Store.findOneAndUpdate(
-					{ name: req.session.shop },
-					{
-						$set: {
-							smsCount: smsLeft + parseInt(sms.smsCount)
-						}
-					},
-					{ new: true, useFindAndModify: false },
-					(err, data) => {
-						if (!err) {
-							console.log('data');
-						} else {
-							console.log('err', err);
-						}
-					}
-				);
-			} else {
-				res.send('100');
-			}
-		});
-	} else {
-		console.log('sesssion timeout');
-	}
+  if (req.session.shop) {
+    Store.findOne({ name: req.session.shop }, function(err, data) {
+      if (data) {
+        var smsLeft = data.smsCount;
+        console.log("smsLeft", smsLeft);
+        Store.findOneAndUpdate(
+          { name: req.session.shop },
+          {
+            $set: {
+              smsCount: smsLeft + parseInt(sms.smsCount)
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data");
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+      } else {
+        res.send("100");
+      }
+    });
+  } else {
+    console.log("sesssion timeout");
+  }
 });
 //////////////
-if (process.env.NODE_ENV === 'production') {
-	app.use(express.static('client/build'));
-	app.get('*', (req, res) => {
-		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-	});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
 }
 
 const port = process.env.PORT || 4000;
 
 app.listen(port, () => {
-	console.log(`app listening on port ${port}!`);
+  console.log(`app listening on port ${port}!`);
 });
