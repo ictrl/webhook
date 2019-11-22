@@ -290,15 +290,33 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
   topic = topic + "/" + subtopic;
-  console.log(`top topic:-->${topic}`, request.body);
+  console.log(`topic:-->${topic}`);
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
+
+      let name;
+      let email;
+      let vendor;
+      let title;
+      let orderId;
+      let price;
+      let phone;
+      let phone1;
+      let phone2;
+      let address1;
+      let address2;
+      let city;
+      let country;
+      let adminNumber;
+      let message;
+      
       switch (topic) {
         case "checkouts/create" || "checkouts/update":
-          if (request.body.shipping_address.phone) {
+          // shipping_address
+          if (request.body.billing_address.phone) {
             let obj = {
               id: request.body.id,
-              phone: request.body.shipping_address.phone,
+              phone: request.body.billing_address.phone,
               url: request.body.abandoned_checkout_url
             };
 
@@ -310,9 +328,9 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               { new: true, useFindAndModify: false },
               (err, data) => {
                 if (!err) {
-                  console.log("data------>", data);
+                  console.log("data------>");
                 } else {
-                  console.log("err", err);
+                  console.log("err");
                 }
               }
             );
