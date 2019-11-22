@@ -11,20 +11,10 @@ const shopSchema = new mongoose.Schema({
   name: String,
   data: JSON,
   smsCount: Number,
-  abandan: [
+  template: [
     {
-      id: { type: String, required: true, unique: true },
-      phone: Number,
-      url: String,
-      dataTime: { type: String, default: Date(Date.now()).toString() }
-    }
-  ],
-  orders: [
-    {
-      id: { type: String, required: true, unique: true },
-      phone: Number,
-      url: String,
-      dataTime: { type: String, default: Date(Date.now()).toString() }
+      _id: false,
+      id: { type: Number, required: true, unique: true, dropDups: true }
     }
   ]
 });
@@ -32,25 +22,22 @@ const shopSchema = new mongoose.Schema({
 const Store = new mongoose.model("Store", shopSchema);
 
 let obj = {
-  id: "FInalBlowBlast",
-  phone: 909090909,
-  ulr: "https://gogo.com"
+  id: 2
 };
 
 Store.findOneAndUpdate(
   { name: shop },
   {
-    $set: {
-      smsCount: 90
-    },
-    $pull: { abandan: { id: "success-1" } }
+    // $push: { template: obj }
+    // $addToSet: { template: obj }
+    $pull: { template: { id: 2 } }
   },
   { new: true, useFindAndModify: false },
   (err, data) => {
     if (!err) {
-      //   console.log("datacount + 1");
+      console.log(data);
     } else {
-      //   console.log("err", err);
+      console.log(err);
     }
   }
 );

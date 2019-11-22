@@ -58,7 +58,7 @@ const shopSchema = new mongoose.Schema({
 
   abandan: [
     {
-      id: { type: String, required: true, unique: true },
+      id: { type: Number, required: true, unique: true, dropDups: true },
       phone: Number,
       url: String,
       dataTime: { type: String, default: Date(Date.now()).toString() }
@@ -66,7 +66,7 @@ const shopSchema = new mongoose.Schema({
   ],
   orders: [
     {
-      id: { type: String, required: true, unique: true },
+      id: { type: Number, required: true, unique: true, dropDups: true },
       phone: Number,
       url: String,
       dataTime: { type: String, default: Date(Date.now()).toString() }
@@ -290,7 +290,6 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
   topic = topic + "/" + subtopic;
-  console.log(`topic:-->${topic}`, request.body);
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       let name;
@@ -312,7 +311,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
       switch (topic) {
         case "checkouts/update":
           if (request.body.shipping_address != undefined) {
-            if (request.body.shipping_address.phone != undefined) {
+            if (request.body.shipping_address.phone != null) {
               let obj = {
                 id: request.body.id,
                 phone: request.body.shipping_address.phone,
@@ -322,7 +321,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               Store.findOneAndUpdate(
                 { name: shop },
                 {
-                  $push: { abandan: obj, orders: obj }
+                  $addToSet: { abandan: obj, orders: obj }
                 },
                 { new: true, useFindAndModify: false },
                 (err, data) => {
@@ -952,7 +951,7 @@ app.post("/api/template", function(req, res) {
             Store.findOneAndUpdate(
               { name: req.session.shop },
               {
-                $push: { template: req.body }
+                $addToSet: { template: req.body }
               },
               { new: true, useFindAndModify: false },
               (err, data) => {
@@ -975,14 +974,14 @@ app.post("/api/template", function(req, res) {
 // save abandan template to db
 app.post("/api/abandan", function(req, res) {
   let data = req.body;
-  console.log(data);
-  req.session.shop = "mojitolabs.myshopify.com"; //delete this
+  // console.log(data);
+  // req.session.shop = "mojitolabs.myshopify.com"; //delete this
 
   if (req.session.shop) {
     Store.findOneAndUpdate(
       { name: req.session.shop },
       {
-        $push: { template: data }
+        $addToSet: { template: data }
       },
       { new: true, useFindAndModify: false },
       (err, data) => {
