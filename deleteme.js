@@ -10,12 +10,21 @@ let shop = "mojitolabs.myshopify.com";
 const shopSchema = new mongoose.Schema({
   name: String,
   data: JSON,
-
+  smsCount: Number,
   abandan: [
     {
       id: { type: String, required: true, unique: true },
       phone: Number,
-      dataTime: { type: Date, default: Date(Date.now()).toString() }
+      url: String,
+      dataTime: { type: String, default: Date(Date.now()).toString() }
+    }
+  ],
+  orders: [
+    {
+      id: { type: String, required: true, unique: true },
+      phone: Number,
+      url: String,
+      dataTime: { type: String, default: Date(Date.now()).toString() }
     }
   ]
 });
@@ -23,9 +32,44 @@ const shopSchema = new mongoose.Schema({
 const Store = new mongoose.model("Store", shopSchema);
 
 let obj = {
-  id: "success",
-  phone: 999999
+  id: "FInalBlowBlast",
+  phone: 909090909,
+  ulr: "https://gogo.com"
 };
+
+Store.findOneAndUpdate(
+  { name: shop },
+  {
+    $set: {
+      smsCount: 90
+    },
+    $pull: { abandan: { id: "success-1" } }
+  },
+  { new: true, useFindAndModify: false },
+  (err, data) => {
+    if (!err) {
+      //   console.log("datacount + 1");
+    } else {
+      //   console.log("err", err);
+    }
+  }
+);
+
+// Store.findOneAndUpdate(
+//   { name: shop },
+//   {
+//     // $push: { abandan: obj}
+//     $push: { orders: obj }
+//   },
+//   { new: true, useFindAndModify: false },
+//   (err, data) => {
+//     if (!err) {
+//       console.log("data", data);
+//     } else {
+//       console.log("err", err);
+//     }
+//   }
+// );
 
 // Store.findOneAndUpdate(
 //   { name: shop },
@@ -40,26 +84,26 @@ let obj = {
 //   (err, data) => {
 //     if (!err) {
 //       console.log("data", data);
-//     } else { 
+//     } else {
 //       console.log("err", err);
 //     }
 //   }
 // );
 
-Store.findOneAndUpdate(
-  { name: shop },
-  {
-    $set: { abandan: obj }
-  },
-  { new: true, useFindAndModify: false },
-  (err, data) => {
-    if (!err) {
-      console.log(data, "data");
-    } else {
-      console.log(err, "err");
-    }
-  }
-);
+// Store.findOneAndUpdate(
+//   { name: shop },
+//   {
+//     $set: { abandan: obj }
+//   },
+//   { new: true, useFindAndModify: false },
+//   (err, data) => {
+//     if (!err) {
+//       console.log(data, "data");
+//     } else {
+//       console.log(err, "err");
+//     }
+//   }
+// );
 
 //manuplate
 // Store.findOneAndUpdate(

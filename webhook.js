@@ -61,7 +61,15 @@ const shopSchema = new mongoose.Schema({
       id: { type: String, required: true, unique: true },
       phone: Number,
       url: String,
-      time: { type: Date, default: Date.now }
+      dataTime: { type: String, default: Date(Date.now()).toString() }
+    }
+  ],
+  orders: [
+    {
+      id: { type: String, required: true, unique: true },
+      phone: Number,
+      url: String,
+      dataTime: { type: String, default: Date(Date.now()).toString() }
     }
   ],
 
@@ -297,12 +305,12 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             Store.findOneAndUpdate(
               { name: shop },
               {
-                $push: { abandan: obj }
+                $push: { abandan: obj, orders: obj }
               },
               { new: true, useFindAndModify: false },
               (err, data) => {
                 if (!err) {
-                  console.log("data");
+                  console.log("data------>", data);
                 } else {
                   console.log("err", err);
                 }
