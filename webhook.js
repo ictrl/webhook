@@ -907,7 +907,7 @@ app.post("/api/template", function(req, res) {
   let topic = req.body.topic.trim();
   let customer = req.body.customer;
   let admin = req.body.admin;
-  req.session.shop = "mojitolabs.myshopify.com"; //detele this
+  // req.session.shop = "mojitolabs.myshopify.com"; //detele this
   if (req.session.shop) {
     Store.findOneAndUpdate(
       { "template.topic": topic },
