@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Card, Tabs, Page, FooterHelp, Link } from '@shopify/polaris';
+import { Card, Tabs, Page, FooterHelp, Button, Frame, Link } from '@shopify/polaris';
 import axios from 'axios';
 
 import './App.css';
@@ -7,7 +7,7 @@ import './App.css';
 import Setting from './components/Setting';
 import Template from './components/Template';
 import History from './components/History';
-import BuyMoreSMS from './components/BuyMoreSMS';
+// import BuyMoreSMS from './components/BuyMoreSMS';
 import Abandan from './components/Abandan';
 
 export default function TabsExample() {
@@ -23,11 +23,6 @@ export default function TabsExample() {
 	};
 	const tabs = [
 		{
-			id: 'abandan-checkout',
-			content: 'Abandan Checkout',
-			panelID: 'abandan-checkout-content'
-		},
-		{
 			id: 'all-customers',
 			content: 'Settings',
 			accessibilityLabel: 'All customers',
@@ -37,6 +32,11 @@ export default function TabsExample() {
 			id: 'accepts-marketing',
 			content: 'Edit Template',
 			panelID: 'accepts-marketing-content'
+		},
+		{
+			id: 'abandan-checkout',
+			content: 'Abandan Checkout',
+			panelID: 'abandan-checkout-content'
 		},
 
 		{
