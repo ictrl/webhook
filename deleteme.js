@@ -1,8 +1,9 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
   useUnifiedTopology: true,
-  useNewUrlParser: true
+  useCreateIndex: true
 });
 let shop = "mojitolabs.myshopify.com";
 
@@ -25,7 +26,7 @@ var d = Date(Date.now());
 d = d.toString();
 
 let obj = {
-  id: "new one",
+  id: "success",
   phone: 999999,
   dataTime: d
 };
@@ -37,7 +38,7 @@ let obj = {
 
 //     // $set: { abandan : { id: 'java' } }
 
-//     $pull: { abandan: { id: "java" } } //delete
+//     // $pull: { abandan: { id: "java" } } //delete
 //   },
 //   { new: true, useFindAndModify: false },
 //   (err, data) => {
@@ -50,8 +51,8 @@ let obj = {
 // );
 
 //manuplate
-Store.update(
-  { "abandan.id": "new " },
+Store.findOneAndUpdate(
+  { "abandan.id": "new1" },
   {
     $set: {
       "abandan.$.dateTime": obj.dataTime,
@@ -59,12 +60,27 @@ Store.update(
       "abandan.$.phone": obj.phone
     }
   },
-
+  { new: true, useFindAndModify: false },
   (err, result) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(result);
+      if (result === null) {
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $push: { abandan: obj }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data", data);
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+      }
     }
   }
 );

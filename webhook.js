@@ -871,10 +871,10 @@ app.get("/api/option", function(req, res) {
 });
 app.get("/api/smsCount", function(req, res) {
   if (req.session.shop) {
+    console.log("ss", req.session.shop);
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
         var sms = data.smsCount + "";
-        console.log("sms", sms);
         res.send(sms);
       } else {
         res.send("0");
@@ -907,33 +907,23 @@ app.post("/api/template", function(req, res) {
   let topic = req.body.topic.trim();
   let customer = req.body.customer;
   let admin = req.body.admin;
-
+  req.session.shop = "mojitolabs.myshopify.com"; //detele this
   if (req.session.shop) {
-    Store.findOne({ name: req.session.shop }, function(err, data) {
-      if (data.template) {
-        data.template.forEach(e => {
-          if (e.topic === topic) {
-            //update
-            Store.update(
-              { "template.topic": topic },
-              {
-                $set: {
-                  "template.$.topic": topic,
-                  "template.$.admin": admin,
-                  "template.$.customer": customer
-                }
-              },
-
-              (err, result) => {
-                if (err) {
-                  console.log(err);
-                } else {
-                  console.log(result);
-                }
-              }
-            );
-          } else {
-            //create
+    Store.findOneAndUpdate(
+      { "template.topic": topic },
+      {
+        $set: {
+          "template.$.topic": topic,
+          "template.$.customer": customer,
+          "template.$.admin": admin
+        }
+      },
+      { new: true, useFindAndModify: false },
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          if (result === null) {
             Store.findOneAndUpdate(
               { name: req.session.shop },
               {
@@ -942,35 +932,21 @@ app.post("/api/template", function(req, res) {
               { new: true, useFindAndModify: false },
               (err, data) => {
                 if (!err) {
-                  console.log("data", data);
+                  console.log("data");
                 } else {
-                  console.log("err", err);
+                  console.log("err");
                 }
               }
             );
           }
-        });
-      } else {
-        Store.findOneAndUpdate(
-          { name: req.session.shop },
-          {
-            $push: { template: req.body }
-          },
-          { new: true, useFindAndModify: false },
-          (err, data) => {
-            if (!err) {
-              console.log("data", data);
-            } else {
-              console.log("err", err);
-            }
-          }
-        );
+        }
       }
-    });
+    );
   } else {
     // console.log("session timeout");
   }
 });
+
 // save abandan template to db
 app.post("/api/abandan", function(req, res) {
   let data = req.body;
