@@ -290,7 +290,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
   topic = topic + "/" + subtopic;
-  console.log(`topic:-->${topic}`);
+  console.log(`topic:-->${topic}`, request.body);
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       let name;
@@ -311,12 +311,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 
       switch (topic) {
         case "checkouts/create" || "checkouts/update":
-          // shipping_address
-          if (request.body.billing_address.phone != null) {
-            console.log("phone=>", request.body.billing_address.phone);
+          if (request.body.shipping_address.phone != null) {
+            console.log("phone=>", request.body.shipping_address.phone);
             let obj = {
               id: request.body.id,
-              phone: request.body.billing_address.phone,
+              phone: request.body.shipping_address.phone,
               url: request.body.abandoned_checkout_url
             };
 
