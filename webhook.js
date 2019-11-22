@@ -293,7 +293,6 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   console.log(`topic:-->${topic}`);
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
-
       let name;
       let email;
       let vendor;
@@ -309,11 +308,12 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
       let country;
       let adminNumber;
       let message;
-      
+
       switch (topic) {
         case "checkouts/create" || "checkouts/update":
           // shipping_address
-          if (request.body.billing_address.phone) {
+          console.log("phone=>", request.body.billing_address.phone);
+          if (request.body.billing_address.phone != null) {
             let obj = {
               id: request.body.id,
               phone: request.body.billing_address.phone,
@@ -897,7 +897,6 @@ app.get("/api/option", function(req, res) {
 });
 app.get("/api/smsCount", function(req, res) {
   if (req.session.shop) {
-    console.log("ss", req.session.shop);
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
         var sms = data.smsCount + "";
