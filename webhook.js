@@ -312,8 +312,8 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
       switch (topic) {
         case "checkouts/create" || "checkouts/update":
           // shipping_address
-          console.log("phone=>", request.body.billing_address.phone);
           if (request.body.billing_address.phone != null) {
+            console.log("phone=>", request.body.billing_address.phone);
             let obj = {
               id: request.body.id,
               phone: request.body.billing_address.phone,
