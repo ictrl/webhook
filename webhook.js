@@ -187,7 +187,7 @@ app.get("/shopify/callback", (req, res) => {
   }
 });
 
-app.post("/myaction", function(req, res) {
+app.post("/api/myaction", function(req, res) {
   if (req.session.shop) {
     let shop = req.session.shop;
     let token = req.session.token;
@@ -242,7 +242,7 @@ app.post("/myaction", function(req, res) {
       }
     });
   } else {
-    // console.log("cant find session key form post /myacion");
+    console.log("cant find session key form post /myacion");
   }
 });
 
@@ -943,7 +943,7 @@ app.post("/api/template", function(req, res) {
       }
     );
   } else {
-    // console.log("session timeout");
+    console.log("session timeout");
   }
 });
 
