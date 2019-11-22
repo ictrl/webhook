@@ -58,6 +58,7 @@ const shopSchema = new mongoose.Schema({
 
   abandan: [
     {
+      _id: false,
       id: { type: Number, required: true, unique: true, dropDups: true },
       phone: Number,
       url: String,
@@ -66,6 +67,7 @@ const shopSchema = new mongoose.Schema({
   ],
   orders: [
     {
+      _id: false,
       id: { type: Number, required: true, unique: true, dropDups: true },
       phone: Number,
       url: String,
@@ -77,7 +79,8 @@ const shopSchema = new mongoose.Schema({
   smsCount: Number,
   template: [
     {
-      topic: { type: String, required: true, unique: true },
+      _id: false,
+      topic: { type: String, required: true, unique: true, dropDups: true },
       customer: String,
       admin: String
     }
@@ -326,7 +329,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                 { new: true, useFindAndModify: false },
                 (err, data) => {
                   if (!err) {
-                    console.log("data------>");
+                    console.log("data add to DB", topic, data);
                   } else {
                     console.log("err");
                   }
@@ -337,7 +340,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
           break;
 
         case "orders/create":
-          console.log(`topic:-->${topic}`, request.body);
+          // console.log(`topic:-->${topic}`, request.body);
 
           if (
             data.data["orders/create customer"] != undefined &&
@@ -355,7 +358,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               { new: true, useFindAndModify: false },
               (err, data) => {
                 if (!err) {
-                  //   console.log("datacount + 1");
+                  console.log("data remove", topic, data);
                 } else {
                   //   console.log("err", err);
                 }
