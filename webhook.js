@@ -310,29 +310,30 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
       let message;
 
       switch (topic) {
-        case "checkouts/create" || "checkouts/update":
-          if (request.body.shipping_address.phone != null) {
-            console.log("phone=>", request.body.shipping_address.phone);
-            let obj = {
-              id: request.body.id,
-              phone: request.body.shipping_address.phone,
-              url: request.body.abandoned_checkout_url
-            };
+        case "checkouts/update":
+          if (request.body.shipping_address != undefined) {
+            if (request.body.shipping_address.phone != undefined) {
+              let obj = {
+                id: request.body.id,
+                phone: request.body.shipping_address.phone,
+                url: request.body.abandoned_checkout_url
+              };
 
-            Store.findOneAndUpdate(
-              { name: shop },
-              {
-                $push: { abandan: obj, orders: obj }
-              },
-              { new: true, useFindAndModify: false },
-              (err, data) => {
-                if (!err) {
-                  console.log("data------>");
-                } else {
-                  console.log("err");
+              Store.findOneAndUpdate(
+                { name: shop },
+                {
+                  $push: { abandan: obj, orders: obj }
+                },
+                { new: true, useFindAndModify: false },
+                (err, data) => {
+                  if (!err) {
+                    console.log("data------>");
+                  } else {
+                    console.log("err");
+                  }
                 }
-              }
-            );
+              );
+            }
           }
           break;
 
