@@ -346,7 +346,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
           // console.log(`topic:-->${topic}`, request.body);
           console.log(request.body.id, "id");
           Store.updateOne(
-            { "orders.id": request.body.id },
+            { "orders.id": request.body.checkout_id },
             {
               $set: {
                 "orders.$.purchase": true
