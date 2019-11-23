@@ -36,12 +36,9 @@ cron.schedule('*/5 * * * * *', () => {
 	let interval = moment().subtract(10, 'minutes');
 	let current = moment();
 
+	//? test should be time extracted from store.orders.followConfig[0].time
 
-  //? test should be time extracted from store.orders.followConfig[0].time
-
-  let test = moment().subtract(5, 'minutes');
-  
-
+	let test = moment().subtract(5, 'minutes');
 
 	console.log(test.isBetween(interval, current));
 
@@ -58,10 +55,11 @@ const objToSend = {
 };
 
 const sendShortenReq = async (params) => {
+	//TODO find followUp template from store.orders.abandan_template
 
-//TODO find followUp template from store.orders.abandan_template
+	//? line no 63 me axios check kar lo sahi jaa raha ya nahi
 
-
+	//?agar axios se post node se nahi jaa raha to wake me up I'll do this through functions by integrating URL Shortner app with it
 
 	try {
 		const res = await axios.post('/api/shorten', objToSend);
@@ -71,3 +69,7 @@ const sendShortenReq = async (params) => {
 		console.log('response nahi aaya');
 	}
 };
+
+// TODO Frontend(abandan template)  se jab req aata hai to usse tum order.abandanTemplate ko modify kar rahe ho DB me, iske saath saath orders.followConfig ko v update karna hai.
+// * for example
+// ? if user selected: followUp : 1, 30 min and status : true then after updating store.abandanTemplate you will check for call me
