@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { TextField, Layout, Select, Card } from '@shopify/polaris';
 import axios from 'axios';
-import { clickFooterButton } from '@shopify/app-bridge/actions/Modal';
+// import { clickFooterButton } from '@shopify/app-bridge/actions/Modal';
 
 export default function Abandan() {
 	const sendTemplate = async (tempObj) => {
@@ -75,13 +75,13 @@ export default function Abandan() {
 
 	//cheboX
 
-	// const [ checkedCustomer1, setCheckedCustomer1 ] = useState(false);
-	// const [ checkedAdmin1, setCheckedAdmin1 ] = useState(false);
+	// const [ checkedCustomer1, setCheckedCustomer1 ] = useState(0);
+	// const [ checkedAdmin1, setCheckedAdmin1 ] = useState(0);
 	// const handleCustomerCheck1 = useCallback((newChecked) => setCheckedCustomer1(newChecked), []);
 	// const handleAdminCheck1 = useCallback((newChecked) => setCheckedAdmin1(newChecked), []);
 	//select enable
 	const [ selected1, setSelected1 ] = useState('30');
-	const [ status1, setStatus1 ] = useState(false);
+	const [ status1, setStatus1 ] = useState(0);
 
 	const handleSelectChange1 = useCallback((value) => setSelected1(value), []);
 	const handleStatus1 = useCallback((value) => setStatus1(value), []);
@@ -92,7 +92,7 @@ export default function Abandan() {
 		{ label: '6 hours later', value: '360' },
 		{ label: '12 hours later', value: '720' }
 	];
-	const statusOption1 = [ { label: 'Enabled', value: true }, { label: 'Disabled', value: false } ];
+	const statusOption1 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 
 	/////////////////////////22
 	function myFunction2() {
@@ -119,13 +119,13 @@ export default function Abandan() {
 	const handleTemplate2 = useCallback((newValue) => setTemplate2(newValue), []);
 
 	//cheboX 2
-	// const [ checkedCustomer2, setCheckedCustomer2 ] = useState(false);
-	// const [ checkedAdmin2, setCheckedAdmin2 ] = useState(false);
+	// const [ checkedCustomer2, setCheckedCustomer2 ] = useState(0);
+	// const [ checkedAdmin2, setCheckedAdmin2 ] = useState(0);
 	// const handleCustomerCheck2 = useCallback((newChecked) => setCheckedCustomer2(newChecked), []);
 	// const handleAdminCheck2 = useCallback((newChecked) => setCheckedAdmin2(newChecked), []);
 	//select enable
 	const [ selected2, setSelected2 ] = useState('60');
-	const [ status2, setStatus2 ] = useState(false);
+	const [ status2, setStatus2 ] = useState(0);
 
 	const handleSelectChange2 = useCallback((value) => setSelected2(value), []);
 	const handleStatus2 = useCallback((value) => setStatus2(value), []);
@@ -136,7 +136,7 @@ export default function Abandan() {
 		{ label: '6 hours later', value: '360' },
 		{ label: '22 hours later', value: '700' }
 	];
-	const statusOption2 = [ { label: 'Enabled', value: true }, { label: 'Disabled', value: false } ];
+	const statusOption2 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 	////////////////////////////////33333333333333333333
 	function myFunction3() {
 		tempObj.topic = 3;
@@ -162,13 +162,13 @@ export default function Abandan() {
 	const handleTemplate3 = useCallback((newValue) => setTemplate3(newValue), []);
 
 	//cheboX 3
-	// const [ checkedCustomer3, setCheckedCustomer3 ] = useState(false);
-	// const [ checkedAdmin3, setCheckedAdmin3 ] = useState(false);
+	// const [ checkedCustomer3, setCheckedCustomer3 ] = useState(0);
+	// const [ checkedAdmin3, setCheckedAdmin3 ] = useState(0);
 	// const handleCustomerCheck3 = useCallback((newChecked) => setCheckedCustomer3(newChecked), []);
 	// const handleAdminCheck3 = useCallback((newChecked) => setCheckedAdmin3(newChecked), []);
 	//select enable
 	const [ selected3, setSelected3 ] = useState('60');
-	const [ status3, setStatus3 ] = useState(false);
+	const [ status3, setStatus3 ] = useState(0);
 
 	const handleSelectChange3 = useCallback((value) => setSelected3(value), []);
 	const handleStatus3 = useCallback((value) => setStatus3(value), []);
@@ -179,7 +179,7 @@ export default function Abandan() {
 		{ label: '6 hours later', value: '360' },
 		{ label: '33 hours later', value: '700' }
 	];
-	const statusOption3 = [ { label: 'Enabled', value: true }, { label: 'Disabled', value: false } ];
+	const statusOption3 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 
 	/////////////////////////////////////444444444444444444
 	function myFunction4() {
@@ -206,13 +206,13 @@ export default function Abandan() {
 	const handleTemplate4 = useCallback((newValue) => setTemplate4(newValue), []);
 
 	//cheboX 4
-	// const [ checkedCustomer4, setCheckedCustomer4 ] = useState(false);
-	// const [ checkedAdmin4, setCheckedAdmin4 ] = useState(false);
+	// const [ checkedCustomer4, setCheckedCustomer4 ] = useState(0);
+	// const [ checkedAdmin4, setCheckedAdmin4 ] = useState(0);
 	// const handleCustomerCheck4 = useCallback((newChecked) => setCheckedCustomer4(newChecked), []);
 	// const handleAdminCheck4 = useCallback((newChecked) => setCheckedAdmin4(newChecked), []);
 	//select enable
 	const [ selected4, setSelected4 ] = useState('60');
-	const [ status4, setStatus4 ] = useState(false);
+	const [ status4, setStatus4 ] = useState(0);
 
 	const handleSelectChange4 = useCallback((value) => setSelected4(value), []);
 	const handleStatus4 = useCallback((value) => setStatus4(value), []);
@@ -223,7 +223,7 @@ export default function Abandan() {
 		{ label: '6 hours later', value: '460' },
 		{ label: '44 hours later', value: '700' }
 	];
-	const statusOption4 = [ { label: 'Enabled', value: true }, { label: 'Disabled', value: false } ];
+	const statusOption4 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 	////////////////////////////end 4/////////////
 	return (
 		<Layout>
