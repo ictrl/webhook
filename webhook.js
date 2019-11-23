@@ -4,6 +4,8 @@ const express = require("express");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const path = require("path");
+const moment = require('moment');
+
 const app = express();
 const parseurl = require("parseurl");
 const crypto = require("crypto");
@@ -61,7 +63,7 @@ const shopSchema = new mongoose.Schema({
       id: { type: Number, required: true, dropDups: true },
       phone: Number,
       url: String,
-      dataTime: { type: String, default: Date(Date.now()).toString() },
+      dataTime: { type: String, default: moment().toString() },
       purchase: { type: Boolean, default: false },
       followUp: { type: Number, default: 0 }
     }
@@ -327,41 +329,43 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                 id: request.body.id,
                 phone: request.body.shipping_address.phone,
                 url: request.body.abandoned_checkout_url,
+              
+              //TODO line no 369 tak check kar lo !!
                 f30: [
                   {
                   followUp: 0,
                   status: false,
-                  time: 30
+                  time: moment().add(30, 'minutes').toString()
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: 60
+                  time: moment().add(60, 'minutes').toString()
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: 360
+                  time: moment().add(360, 'minutes').toString()
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: 600
+                  time: moment().add(600, 'minutes').toString()
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: 1440
+                  time: moment().add(1440, 'minutes').toString()
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: 2880
+                  time: moment().add(2880, 'minutes').toString()
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: 4320
+                  time: moment().add(4320, 'minutes').toString()
                 }]
               };
 
