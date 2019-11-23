@@ -8,13 +8,15 @@ mongoose.connect(process.env.MONGODB_URI, {
 let shop = "mojitolabs.myshopify.com";
 
 const shopSchema = new mongoose.Schema({
-  name: String,
-  data: JSON,
-  smsCount: Number,
-  template: [
+  orders: [
     {
       _id: false,
-      id: { type: Number, required: true, unique: true, dropDups: true }
+      id: { type: Number, required: true, unique: true, dropDups: true },
+      phone: Number,
+      url: String,
+      dataTime: { type: String, default: Date(Date.now()).toString() },
+      purchase: { type: Boolean, default: false },
+      followUp: { type: Number, default: 0 }
     }
   ]
 });
@@ -22,25 +24,43 @@ const shopSchema = new mongoose.Schema({
 const Store = new mongoose.model("Store", shopSchema);
 
 let obj = {
-  id: 2
+  id: 3,
+  phone: 333,
+  url: "adijha.com"
 };
 
-Store.findOneAndUpdate(
-  { name: shop },
-  {
-    // $push: { template: obj }
-    // $addToSet: { template: obj }
-    $pull: { template: { id: 2 } }
-  },
-  { new: true, useFindAndModify: false },
-  (err, data) => {
-    if (!err) {
-      console.log(data);
-    } else {
-      console.log(err);
-    }
-  }
-);
+// Store.findOneAndUpdate(
+//   { name: shop },
+//   {
+//     // $push: { template: obj }
+//     // $pull: { template: { id: 2 } }
+//     $addToSet: { orders: obj }
+//   },
+//   { new: true, useFindAndModify: false },
+//   (err, data) => {
+//     if (!err) {
+//       console.log(data);
+//     } else {
+//       console.log(err);
+//     }
+//   }
+// );
+
+// Store.updateOne(
+//   { "orders.id": 3 },
+//   {
+//     $set: {
+//       "orders.$.purchase": true
+//     }
+//   },
+//   function(err, data) {
+//     if (!err) {
+//       console.log(data);
+//     } else {
+//       console.log(err);
+//     }
+//   }
+// );
 
 // Store.findOneAndUpdate(
 //   { name: shop },

@@ -56,22 +56,24 @@ const shopSchema = new mongoose.Schema({
   name: String,
   data: JSON,
 
-  abandan: [
-    {
-      _id: false,
-      id: { type: Number, required: true, unique: true, dropDups: true },
-      phone: Number,
-      url: String,
-      dataTime: { type: String, default: Date(Date.now()).toString() }
-    }
-  ],
+  // abandan: [
+  //   {
+  //     _id: false,
+  //     id: { type: Number, required: true, unique: true, dropDups: true },
+  //     phone: Number,
+  //     url: String,
+  //     dataTime: { type: String, default: Date(Date.now()).toString() }
+  //   }
+  // ],
   orders: [
     {
       _id: false,
       id: { type: Number, required: true, unique: true, dropDups: true },
       phone: Number,
       url: String,
-      dataTime: { type: String, default: Date(Date.now()).toString() }
+      dataTime: { type: String, default: Date(Date.now()).toString() },
+      purchase: { type: Boolean, default: false },
+      followUp: { type: Number, default: 0 }
     }
   ],
 
@@ -206,7 +208,8 @@ app.post("/api/myaction", function(req, res) {
     Store.findOne({ name: shop }, function(err, data) {
       if (data) {
         // console.log("store found in DB", data);
-        res.status(200).redirect("back");
+        // res.status(200).redirect("back");
+        res.redirect("back");
 
         Store.findOneAndUpdate(
           { name: shop },
@@ -324,7 +327,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               Store.findOneAndUpdate(
                 { name: shop },
                 {
-                  $addToSet: { abandan: obj, orders: obj }
+                  $addToSet: { orders: obj }
                 },
                 { new: true, useFindAndModify: false },
                 (err, data) => {
@@ -341,7 +344,21 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 
         case "orders/create":
           // console.log(`topic:-->${topic}`, request.body);
-
+          Store.updateOne(
+            { "orders.id": request.body.id },
+            {
+              $set: {
+                "orders.$.purchase": true
+              }
+            },
+            function(err, data) {
+              if (!err) {
+                console.log(data);
+              } else {
+                console.log(err);
+              }
+            }
+          );
           if (
             data.data["orders/create customer"] != undefined &&
             data.data["orders/create admin"] != undefined
@@ -352,8 +369,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               {
                 $set: {
                   smsCount: data.smsCount - 1
-                },
-                $pull: { abandan: { id: request.body.id } }
+                }
               },
               { new: true, useFindAndModify: false },
               (err, data) => {
