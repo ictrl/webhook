@@ -210,7 +210,7 @@ app.post("/api/myaction", function(req, res) {
     Store.findOne({ name: shop }, function(err, data) {
       if (data) {
         console.log("store found in DB");
-        res.status(200).redirect("back");
+        res.sendStatus(200).redirect("back");
 
         // res.redirect("back");
 
@@ -257,8 +257,7 @@ app.post("/api/myaction", function(req, res) {
         topics.forEach(topic => {
           makeWebook(topic, token, hmac, shop);
         });
-        res.redirect(`https://${shop}/admin/apps/sms_update`);
-        res.sendStatus(200);
+        res.sendStatus(200).redirect(`https://${shop}/admin/apps/sms_update`);
       }
     });
   } else {
