@@ -211,6 +211,7 @@ app.post("/api/myaction", function(req, res) {
       if (data) {
         console.log("store found in DB");
         res.status(200).redirect("back");
+
         // res.redirect("back");
 
         Store.findOneAndUpdate(
@@ -231,7 +232,8 @@ app.post("/api/myaction", function(req, res) {
         );
       } else {
         console.log("store !found in DB");
-        res.status(200).redirect(`https://${shop}/admin/apps/sms_update`);
+        res.sendStatus(200);
+        // res.redirect(`https://${shop}/admin/apps/sms_update`);
         const store = new Store({
           name: shop,
           data: req.body,
@@ -915,6 +917,7 @@ app.get("/api/option", function(req, res) {
     );
   }
 });
+
 app.get("/api/smsCount", function(req, res) {
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
