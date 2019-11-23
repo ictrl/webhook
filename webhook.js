@@ -55,16 +55,6 @@ app.use(function(req, res, next) {
 const shopSchema = new mongoose.Schema({
   name: String,
   data: JSON,
-
-  // abandan: [
-  //   {
-  //     _id: false,
-  //     id: { type: Number, required: true, unique: true, dropDups: true },
-  //     phone: Number,
-  //     url: String,
-  //     dataTime: { type: String, default: Date(Date.now()).toString() }
-  //   }
-  // ],
   orders: [
     {
       _id: false,
@@ -85,6 +75,14 @@ const shopSchema = new mongoose.Schema({
       topic: { type: String, required: true, dropDups: true },
       customer: String,
       admin: String
+    }
+  ],
+  abandanTemplate: [
+    {
+      _id: false,
+      topic: { type: String, required: true, dropDups: true },
+      template: String,
+      time: String
     }
   ]
 });
@@ -998,7 +996,7 @@ app.post("/api/template", function(req, res) {
 });
 
 // save abandan template to db
-app.post("/api/abandan", function(req, res) {
+app.post("/api/abandanTemplate", function(req, res) {
   let data = req.body;
   // console.log(data);
   // req.session.shop = "mojitolabs.myshopify.com"; //delete this
@@ -1007,7 +1005,7 @@ app.post("/api/abandan", function(req, res) {
     Store.findOneAndUpdate(
       { name: req.session.shop },
       {
-        $addToSet: { template: data }
+        $addToSet: { abandanTemplate: data }
       },
       { new: true, useFindAndModify: false },
       (err, data) => {

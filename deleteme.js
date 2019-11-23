@@ -5,13 +5,13 @@ mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
   useCreateIndex: true
 });
-let shop = "mojitolabs.myshopify.com";
+let shop = "mojitotest.myshopify.com";
 
 const shopSchema = new mongoose.Schema({
-  orders: [
+  test: [
     {
       _id: false,
-      id: { type: Number, required: true, unique: true, dropDups: true },
+      id: { type: Number, required: true, dropDups: true },
       phone: Number,
       url: String,
       dataTime: { type: String, default: Date(Date.now()).toString() },
@@ -24,26 +24,26 @@ const shopSchema = new mongoose.Schema({
 const Store = new mongoose.model("Store", shopSchema);
 
 let obj = {
-  id: 3,
+  id: 1,
   phone: 333,
   url: "adijha.com"
 };
-// Store.findOneAndUpdate(
-//   { name: shop },
-//   {
-//     // $push: { template: obj }
-//     // $pull: { template: { id: 2 } }
-//     $addToSet: { orders: obj }
-//   },
-//   { new: true, useFindAndModify: false },
-//   (err, data) => {
-//     if (!err) {
-//       console.log(data);
-//     } else {
-//       console.log(err);
-//     }
-//   }
-// );
+Store.findOneAndUpdate(
+  { name: shop },
+  {
+    // $push: { template: obj }
+    // $pull: { template: { id: 2 } }
+    $addToSet: { test: obj }
+  },
+  { new: true, useFindAndModify: false },
+  (err, data) => {
+    if (!err) {
+      console.log(data);
+    } else {
+      console.log(err);
+    }
+  }
+);
 
 // Store.updateOne(
 //   { "orders.id": 3 },
@@ -60,8 +60,6 @@ let obj = {
 //     }
 //   }
 // );
-
-
 
 // Store.findOneAndUpdate(
 //   { name: shop },
@@ -101,7 +99,7 @@ let obj = {
 // Store.findOneAndUpdate(
 //   { name: shop },
 //   {
-//     $set: { abandan: obj }
+//     $push: { test: obj }
 //   },
 //   { new: true, useFindAndModify: false },
 //   (err, data) => {

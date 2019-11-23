@@ -17,7 +17,7 @@ export default function Abandan() {
     if (tempObj.topic && tempObj.template && tempObj.time) {
       console.log(tempObj);
       axios
-        .post("/api/abandan", tempObj)
+        .post("/api/abandanTemplate", tempObj)
         .then(res => console.log(res))
         .catch(err => console.error(err));
     } else {
