@@ -63,7 +63,13 @@ const shopSchema = new mongoose.Schema({
       id: { type: Number, required: true, dropDups: true },
       phone: Number,
       url: String,
-      dataTime: { type: String, default: moment().toString() },
+      //!MODIFIED
+      dataTime: {
+        type: String,
+        default: moment()
+      },
+// dataTime: { type: String, default: Date(Date.now()).toString() },
+
       purchase: { type: Boolean, default: false },
       followUp: { type: Number, default: 0 }
     }
@@ -91,6 +97,7 @@ const shopSchema = new mongoose.Schema({
 });
 shopSchema.plugin(arrayUniquePlugin);
 const Store = new mongoose.model("Store", shopSchema);
+module.exports = Store;
 
 // install route ==>"/shopify/shop=?shopname.shopify.com
 app.get("/shopify", (req, res) => {
@@ -331,41 +338,41 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                 url: request.body.abandoned_checkout_url,
               
               //TODO line no 369 tak check kar lo !!
-                f30: [
+                followConfig: [
                   {
                   followUp: 0,
                   status: false,
-                  time: moment().add(30, 'minutes').toString()
+                  time: moment().add(30, 'minutes')
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: moment().add(60, 'minutes').toString()
+                  time: moment().add(60, 'minutes')
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: moment().add(360, 'minutes').toString()
+                  time: moment().add(360, 'minutes')
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: moment().add(600, 'minutes').toString()
+                  time: moment().add(600, 'minutes')
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: moment().add(1440, 'minutes').toString()
+                  time: moment().add(1440, 'minutes')
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: moment().add(2880, 'minutes').toString()
+                  time: moment().add(2880, 'minutes')
                 },
                   {
                   followUp: 0,
                   status: false,
-                  time: moment().add(4320, 'minutes').toString()
+                  time: moment().add(4320, 'minutes')
                 }]
               };
 
