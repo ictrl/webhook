@@ -82,7 +82,8 @@ const shopSchema = new mongoose.Schema({
       _id: false,
       topic: { type: String, required: true, dropDups: true },
       template: String,
-      time: String
+      time: String,
+      Status: Boolean
     }
   ]
 });
@@ -997,22 +998,41 @@ app.post("/api/template", function(req, res) {
 
 // save abandan template to db
 app.post("/api/abandanTemplate", function(req, res) {
-  let data = req.body;
   // console.log(data);
   // req.session.shop = "mojitolabs.myshopify.com"; //delete this
 
   if (req.session.shop) {
     Store.findOneAndUpdate(
-      { name: req.session.shop },
+      { "abandanTemplate.topic": req.body.topic.trim() },
       {
-        $addToSet: { abandanTemplate: data }
+        $set: {
+          "template.$.topic": req.body.topic.trim(),
+          "template.$.template": req.body.template,
+          "template.$.time": req.body.time,
+          "template.$.status": req.body.status
+        }
       },
       { new: true, useFindAndModify: false },
-      (err, data) => {
-        if (!err) {
-          console.log("data");
+      (err, result) => {
+        if (err) {
+          console.log(err);
         } else {
-          console.log("err", err);
+          if (result === null) {
+            Store.findOneAndUpdate(
+              { name: req.session.shop },
+              {
+                $addToSet: { abandanTemplate: req.body }
+              },
+              { new: true, useFindAndModify: false },
+              (err, data) => {
+                if (!err) {
+                  console.log("data");
+                } else {
+                  console.log("err");
+                }
+              }
+            );
+          }
         }
       }
     );

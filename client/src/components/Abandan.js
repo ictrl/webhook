@@ -29,6 +29,7 @@ export default function Abandan() {
     topic: "",
     template: "",
     time: ""
+    //add status to post,,status must be is Boolean type
   };
 
   const convertData = param => {
@@ -425,9 +426,8 @@ export default function Abandan() {
             label="Template"
             value={template4}
             onChange={handleTemplate4}
-			multiline
+            multiline
             helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link"
-			
           />
           <br />
           {/* <div className="a-card">
