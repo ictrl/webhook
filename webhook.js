@@ -68,7 +68,7 @@ const shopSchema = new mongoose.Schema({
   orders: [
     {
       _id: false,
-      id: { type: Number, required: true, unique: true, dropDups: true },
+      id: { type: Number, required: true, dropDups: true },
       phone: Number,
       url: String,
       dataTime: { type: String, default: Date(Date.now()).toString() },
@@ -82,7 +82,7 @@ const shopSchema = new mongoose.Schema({
   template: [
     {
       _id: false,
-      topic: { type: String, required: true, unique: true, dropDups: true },
+      topic: { type: String, required: true, dropDups: true },
       customer: String,
       admin: String
     }
