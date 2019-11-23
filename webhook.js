@@ -326,7 +326,43 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               let obj = {
                 id: request.body.id,
                 phone: request.body.shipping_address.phone,
-                url: request.body.abandoned_checkout_url
+                url: request.body.abandoned_checkout_url,
+                f30: [
+                  {
+                  followUp: 0,
+                  status: false,
+                  time: 30
+                },
+                  {
+                  followUp: 0,
+                  status: false,
+                  time: 60
+                },
+                  {
+                  followUp: 0,
+                  status: false,
+                  time: 360
+                },
+                  {
+                  followUp: 0,
+                  status: false,
+                  time: 600
+                },
+                  {
+                  followUp: 0,
+                  status: false,
+                  time: 1440
+                },
+                  {
+                  followUp: 0,
+                  status: false,
+                  time: 2880
+                },
+                  {
+                  followUp: 0,
+                  status: false,
+                  time: 4320
+                }]
               };
 
               Store.findOneAndUpdate(
@@ -353,7 +389,8 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             { "orders.id": request.body.checkout_id },
             {
               $set: {
-                "orders.$.purchase": true
+                "orders.$.purchase": true,
+                "orders.$f30": true
               }
             },
             function(err, data) {
