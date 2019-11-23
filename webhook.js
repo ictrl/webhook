@@ -201,7 +201,7 @@ app.get("/shopify/callback", (req, res) => {
 });
 
 app.post("/api/myaction", function(req, res) {
-  console.log(req.body);
+  // console.log(req.body);
 
   if (req.session.shop) {
     let shop = req.session.shop;
@@ -232,17 +232,17 @@ app.post("/api/myaction", function(req, res) {
         );
       } else {
         console.log("store !found in DB");
-        res.sendStatus(200);
-        // res.redirect(`https://${shop}/admin/apps/sms_update`);
         const store = new Store({
           name: shop,
           data: req.body,
           smsCount: 100
         });
 
-        store.save(function(err) {
+        store.save(function(err, data) {
           if (!err) {
-            // console.log(`${shop} data store to DB`);
+            console.log(`${shop} data store to DB`, data);
+          } else {
+            console.log(err);
           }
         });
 
@@ -257,6 +257,8 @@ app.post("/api/myaction", function(req, res) {
         topics.forEach(topic => {
           makeWebook(topic, token, hmac, shop);
         });
+        res.redirect(`https://${shop}/admin/apps/sms_update`);
+        res.sendStatus(200);
       }
     });
   } else {
