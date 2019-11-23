@@ -83,7 +83,7 @@ const shopSchema = new mongoose.Schema({
       topic: { type: String, required: true, dropDups: true },
       template: String,
       time: String,
-      Status: Boolean
+      status: Boolean
     }
   ]
 });
@@ -998,18 +998,18 @@ app.post("/api/template", function(req, res) {
 
 // save abandan template to db
 app.post("/api/abandanTemplate", function(req, res) {
-  // console.log(data);
-  // req.session.shop = "mojitolabs.myshopify.com"; //delete this
+  console.log(req.body, "AT body");
+  req.session.shop = "mojitolabs.myshopify.com"; //delete this
 
   if (req.session.shop) {
     Store.findOneAndUpdate(
-      { "abandanTemplate.topic": req.body.topic.trim() },
+      { "abandanTemplate.topic": req.body.topic },
       {
         $set: {
-          "template.$.topic": req.body.topic.trim(),
-          "template.$.template": req.body.template,
-          "template.$.time": req.body.time,
-          "template.$.status": req.body.status
+          "abandanTemplate.$.topic": req.body.topic,
+          "abandanTemplate.$.template": req.body.template,
+          "abandanTemplate.$.time": req.body.time,
+          "abandanTemplate.$.status": req.body.status
         }
       },
       { new: true, useFindAndModify: false },
