@@ -209,7 +209,7 @@ app.post("/api/myaction", function(req, res) {
     let hmac = req.session.hmac;
     Store.findOne({ name: shop }, function(err, data) {
       if (data) {
-        console.log("store found in DB",);
+        console.log("store found in DB");
         res.status(200).redirect("back");
         // res.redirect("back");
 
