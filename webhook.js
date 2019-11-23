@@ -231,7 +231,7 @@ app.post("/api/myaction", function(req, res) {
         );
       } else {
         console.log("store !found in DB");
-        res.redirect(`https://${shop}/admin/apps/sms_update`);
+        res.status(200).res.redirect(`https://${shop}/admin/apps/sms_update`);
         const store = new Store({
           name: shop,
           data: req.body,
