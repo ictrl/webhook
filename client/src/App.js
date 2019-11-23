@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Card, Tabs, Page, FooterHelp, Button, Frame, Link } from '@shopify/polaris';
+import { Card, Tabs, Page, FooterHelp, Link } from '@shopify/polaris';
 import axios from 'axios';
 
 import './App.css';

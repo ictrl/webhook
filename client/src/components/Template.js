@@ -27,7 +27,7 @@ export default function Template() {
 		customer: '',
 		admin: ''
 	};
-	let finObj = {};
+	// let finObj = {};
 
 	const saveTemplete = async () => {
 		convertData({
@@ -54,7 +54,7 @@ export default function Template() {
 		let strLength = 0;
 		let luna = document.getElementById(first).className;
 		var inputData = document.getElementById(first).value;
-		if (inputData != '' && inputData != null) {
+		if (inputData !== '' && inputData !== null) {
 			myFunction();
 			inputData = inputData.replace(/(^\s*)|(\s*$)/gi, '');
 			inputData = inputData.replace(/[ ]{2,}/gi, ' ');
@@ -88,9 +88,9 @@ export default function Template() {
 	const showOutput = (parameter, audience) => {
 		parameter = `\`${parameter}\``;
 
-		if (audience == 'customer') {
+		if (audience === 'customer') {
 			tempObj.customer = parameter;
-		} else if (audience == 'admin') {
+		} else if (audience === 'admin') {
 			tempObj.admin = parameter;
 		} else {
 			console.log('something went wrong ');
