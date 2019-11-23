@@ -28,7 +28,6 @@ let obj = {
   phone: 333,
   url: "adijha.com"
 };
-
 // Store.findOneAndUpdate(
 //   { name: shop },
 //   {

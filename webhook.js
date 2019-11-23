@@ -201,6 +201,8 @@ app.get("/shopify/callback", (req, res) => {
 });
 
 app.post("/api/myaction", function(req, res) {
+  console.log(req.body);
+
   if (req.session.shop) {
     let shop = req.session.shop;
     let token = req.session.token;
@@ -344,7 +346,6 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 
         case "orders/create":
           // console.log(`topic:-->${topic}`, request.body);
-          console.log(request.body.id, "id");
           Store.updateOne(
             { "orders.id": request.body.checkout_id },
             {
