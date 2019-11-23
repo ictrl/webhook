@@ -257,7 +257,8 @@ app.post("/api/myaction", function(req, res) {
         topics.forEach(topic => {
           makeWebook(topic, token, hmac, shop);
         });
-        res.sendStatus(200).redirect(`https://${shop}/admin/apps/sms_update`);
+        res.sendStatus(200);
+        // .redirect(`https://${shop}/admin/apps/sms_update`);
       }
     });
   } else {
