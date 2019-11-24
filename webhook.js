@@ -334,7 +334,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                 id: request.body.id,
                 phone: request.body.shipping_address.phone,
                 url: request.body.abandoned_checkout_url,
-                followUp: [
+                followConfig: [
                   {
                     followUp: 0,
                     status: false,
