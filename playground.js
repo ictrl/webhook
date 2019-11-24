@@ -85,8 +85,8 @@ console.log(moment().add(30, 'minutes').format());
 if userSelected 30 min on followup 1 
 
 if (followConfig.inc === 30) {
-  followConfig.status = true,
-  followConfig.followup: 1;
+  followConfig.status = true;
+  followConfig.followup= 1;
 }
 
 if userSelected 30 min on followup 1 
@@ -95,3 +95,63 @@ if (followConfig.inc === 60) {
   followConfig.status = true,
     followConfig.followup: 1;
 }
+
+
+followConfig: [
+                  {
+                    followUp: 0,
+                    status: false,
+                    inc: 30,
+                    time: moment()
+                      .add(30, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    inc: 60,
+                    time: moment()
+                      .add(60, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    inc: 360,
+                    time: moment()
+                      .add(360, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    inc: 600,
+                    time: moment()
+                      .add(600, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    inc: 1440,
+                    time: moment()
+                      .add(1440, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    inc: 2880,
+                    time: moment()
+                      .add(2880, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    inc: 4320,
+                    time: moment()
+                      .add(4320, "minutes")
+                      .format()
+                  }
+                ]
