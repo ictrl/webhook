@@ -19,9 +19,10 @@ let abandoned_checkout_url = 'https://adijha.com';
 // ! CRON job
 //* runs every 5 seconds For TESTING
 
-// cron.schedule('*/5 * * * * *', () => {
-// 	console.log('running every 5 second');
-// });
+cron.schedule('*/5 * * * * *', () => {
+	console.log('running every 5 second');
+	// console.log(moment());
+});
 
 //* runs every 5 mins for PRODUCTION
 
@@ -44,7 +45,8 @@ cron.schedule('*/5 * * * * *', () => {
 
 	if (test.isBetween(interval, current)) {
 		//TODO post request carring
-		sendShortenReq();
+		// sendShortenReq();
+		console.log(test.format());
 	}
 });
 
