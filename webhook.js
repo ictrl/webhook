@@ -363,7 +363,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							let obj = {
 								id: request.body.id,
 								phone: request.body.shipping_address.phone,
-								url: request.body.abandoned_checkout_url
+                url: request.body.abandoned_checkout_url,
+                followConfig
 							};
 
 							obj.followConfig.push(
