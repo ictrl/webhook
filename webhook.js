@@ -4,7 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const path = require("path");
-const moment = require('moment');
+const moment = require("moment");
 
 const app = express();
 const parseurl = require("parseurl");
@@ -63,12 +63,12 @@ const shopSchema = new mongoose.Schema({
       id: { type: Number, required: true, dropDups: true },
       phone: Number,
       url: String,
-      //!MODIFIED
+      // !MODIFIED
       dataTime: {
         type: String,
-        default: moment()
+        default: moment().format()
       },
-// dataTime: { type: String, default: Date(Date.now()).toString() },
+      // dataTime: { type: String, default: Date(Date.now()).toString() },
 
       purchase: { type: Boolean, default: false },
       followUp: { type: Number, default: 0 }
@@ -336,48 +336,64 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                 id: request.body.id,
                 phone: request.body.shipping_address.phone,
                 url: request.body.abandoned_checkout_url,
-              
-              //TODO line no 369 tak check kar lo !!
+
+                // TODO line no 369 tak check kar lo !!
                 followConfig: [
                   {
-                  followUp: 0,
-                  status: false,
-                  time: moment().add(30, 'minutes')
-                },
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(30, "minutes")
+                      .format()
+                  },
                   {
-                  followUp: 0,
-                  status: false,
-                  time: moment().add(60, 'minutes')
-                },
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(60, "minutes")
+                      .format()
+                  },
                   {
-                  followUp: 0,
-                  status: false,
-                  time: moment().add(360, 'minutes')
-                },
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(360, "minutes")
+                      .format()
+                  },
                   {
-                  followUp: 0,
-                  status: false,
-                  time: moment().add(600, 'minutes')
-                },
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(600, "minutes")
+                      .format()
+                  },
                   {
-                  followUp: 0,
-                  status: false,
-                  time: moment().add(1440, 'minutes')
-                },
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(1440, "minutes")
+                      .format()
+                  },
                   {
-                  followUp: 0,
-                  status: false,
-                  time: moment().add(2880, 'minutes')
-                },
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(2880, "minutes")
+                      .format()
+                  },
                   {
-                  followUp: 0,
-                  status: false,
-                  time: moment().add(4320, 'minutes')
-                }]
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(4320, "minutes")
+                      .format()
+                  }
+                ]
               };
 
               Store.findOneAndUpdate(
                 { name: shop },
+
                 {
                   $addToSet: { orders: obj }
                 },
