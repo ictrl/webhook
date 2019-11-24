@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cron = require("node-cron");
 const http = require("https");
 const express = require("express");
 const session = require("express-session");
@@ -1059,8 +1060,8 @@ app.post("/api/template", function(req, res) {
 
 // save abandan template to db
 app.post("/api/abandanTemplate", function(req, res) {
-  console.log(req.body, "AT body");
-  req.session.shop = "mojitolabs.myshopify.com"; //delete this
+  // console.log(req.body, "AT body");
+  // req.session.shop = "mojitolabs.myshopify.com"; //delete this
 
   if (req.session.shop) {
     Store.findOneAndUpdate(
@@ -1141,6 +1142,39 @@ app.post("/api/recharge", function(req, res) {
     console.log("sesssion timeout");
   }
 });
+
+cron.schedule("*/5 * * * * ", () => {
+  //getting list of all store name
+  var storeName = [];
+  Store.find({}, function(err, stores) {
+    stores.forEach(store => {
+      storeName.push(store.name);
+    });
+  });
+  console.log("All store name->", storeName);
+
+  let interval = moment()
+    .subtract(10, "minutes")
+    .format();
+  let current = moment().format();
+  console.log("current time-->", current);
+  console.log("interval time-->", interval);
+
+  storeName.forEach(store => {
+    console.log("Performing on store-->", store);
+    Store.findOne({ name: store }, (err, data) => {
+      data.orders.forEach(order => {
+        order.followConfig.forEach(element => {
+          console.log("order time->", element.time);
+          if (element.time.isBetween(interval, current)) {
+            console.log("call shortner function for", element.time);
+          } else console.log("time is not in range", element.time);
+        });
+      });
+    });
+  });
+});
+
 //////////////
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
