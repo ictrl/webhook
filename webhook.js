@@ -1143,37 +1143,37 @@ app.post("/api/recharge", function(req, res) {
   }
 });
 
-cron.schedule("*/5 * * * * ", () => {
-  //getting list of all store name
-  var storeName = [];
-  Store.find({}, function(err, stores) {
-    stores.forEach(store => {
-      storeName.push(store.name);
-    });
-    console.log("All store name->", storeName);
+// cron.schedule("*/5 * * * * ", () => {
+//   //getting list of all store name
+//   var storeName = [];
+//   Store.find({}, function(err, stores) {
+//     stores.forEach(store => {
+//       storeName.push(store.name);
+//     });
+//     console.log("All store name->", storeName);
 
-    let interval = moment()
-      .subtract(10, "minutes")
-      .format();
-    let current = moment().format();
-    console.log("current time-->", current);
-    console.log("interval time-->", interval);
+//     let interval = moment()
+//       .subtract(5, "minutes")
+//       .format();
+//     let current = moment().format();
+//     console.log("current time-->", current);
+//     console.log("interval time-->", interval);
 
-    storeName.forEach(store => {
-      console.log("Performing on store-->", store);
-      Store.findOne({ name: store }, (err, data) => {
-        data.orders.forEach(order => {
-          order.followConfig.forEach(element => {
-            console.log("order time->", element.time);
-            if (moment(element.time).isBetween(interval, current)) {
-              console.log("call shortner function for", element.time);
-            } else console.log("time is not in range", element.time);
-          });
-        });
-      });
-    });
-  });
-});
+//     storeName.forEach(store => {
+//       console.log("Performing on store-->", store);
+//       Store.findOne({ name: store }, (err, data) => {
+//         data.orders.forEach(order => {
+//           order.followConfig.forEach(element => {
+//             console.log("order time->", element.time);
+//             if (moment(element.time).isBetween(interval, current)) {
+//               console.log("call shortner function for", element.time);
+//             } else console.log("time is not in range", element.time);
+//           });
+//         });
+//       });
+//     });
+//   });
+// });
 
 //////////////
 if (process.env.NODE_ENV === "production") {
