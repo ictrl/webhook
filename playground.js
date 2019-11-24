@@ -77,3 +77,21 @@ console.log(moment().add(30, 'minutes').format());
 // // TODO Frontend(abandan template)  se jab req aata hai to usse tum order.abandanTemplate ko modify kar rahe ho DB me, iske saath saath orders.followConfig ko v update karna hai.
 // // * for example
 // // ? if user selected: followUp : 1, 30 min and status : true then after updating store.abandanTemplate you will check for call me
+
+
+
+
+
+if userSelected 30 min on followup 1 
+
+if (followConfig.inc === 30) {
+  followConfig.status = true,
+  followConfig.followup: 1;
+}
+
+if userSelected 30 min on followup 1 
+
+if (followConfig.inc === 60) {
+  followConfig.status = true,
+    followConfig.followup: 1;
+}

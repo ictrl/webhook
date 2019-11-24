@@ -338,6 +338,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                   {
                     followUp: 0,
                     status: false,
+                    inc: 30,
                     time: moment()
                       .add(30, "minutes")
                       .format()
@@ -345,6 +346,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                   {
                     followUp: 0,
                     status: false,
+                    inc: 60,
                     time: moment()
                       .add(60, "minutes")
                       .format()
@@ -352,6 +354,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                   {
                     followUp: 0,
                     status: false,
+                    inc: 360,
                     time: moment()
                       .add(360, "minutes")
                       .format()
@@ -359,6 +362,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                   {
                     followUp: 0,
                     status: false,
+                    inc: 600,
                     time: moment()
                       .add(600, "minutes")
                       .format()
@@ -366,6 +370,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                   {
                     followUp: 0,
                     status: false,
+                    inc: 1440,
                     time: moment()
                       .add(1440, "minutes")
                       .format()
@@ -373,6 +378,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                   {
                     followUp: 0,
                     status: false,
+                    inc: 2880,
                     time: moment()
                       .add(2880, "minutes")
                       .format()
@@ -380,6 +386,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                   {
                     followUp: 0,
                     status: false,
+                    inc: 4320,
                     time: moment()
                       .add(4320, "minutes")
                       .format()
