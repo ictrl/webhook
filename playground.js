@@ -45,7 +45,7 @@ console.log(moment().add(30, 'minutes').format());
 
 // 	console.log(test.isBetween(interval, current));
 
-// 	if (tes t.isBetween(interval, current)) {
+// 	if (test.isBetween(interval, current)) {
 // 		//TODO post request carring
 // 		// sendShortenReq();
 // 		console.log(test.format());

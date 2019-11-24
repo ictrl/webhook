@@ -103,48 +103,48 @@ const shopSchema = new mongoose.Schema({
 
 const Store = new mongoose.model("Store", shopSchema);
 
-const storeName = [];
-storeName.push("gogo");
+// const storeName = [];
+// storeName.push("gogo");
 
-Store.find({}, function(err, stores) {
-  stores.forEach(store => {
-    storeName.push(store.name);
-  });
-  console.log("All store name-->", storeName);
-});
-console.log("All store name->", storeName);
-
-// cron.schedule("*/5 * * * * ", () => {
-//   //getting list of all store name
-//   var storeName = [];
-//   Store.find({}, function(err, stores) {
-//     stores.forEach(store => {
-//       storeName.push(store.name);
-//     });
+// Store.find({}, function(err, stores) {
+//   stores.forEach(store => {
+//     storeName.push(store.name);
 //   });
-//   console.log("All store name->", storeName);
-
-//   let interval = moment()
-//     .subtract(10, "minutes")
-//     .format();
-//   let current = moment().format();
-//   console.log("current time-->", current);
-//   console.log("interval time-->", interval);
-
-//   storeName.forEach(store => {
-//     console.log("Performing on store-->", store);
-//     Store.findOne({ name: store }, (err, data) => {
-//       data.orders.forEach(order => {
-//         order.followConfig.forEach(element => {
-//           console.log("order time->", element.time);
-//           if (element.time.isBetween(interval, current)) {
-//             console.log("call shortner function for", element.time);
-//           } else console.log("time is not in range", element.time);
-//         });
-//       });
-//     });
-//   });
+//   console.log("All store name-->", storeName);
 // });
+// console.log("All store name->", storeName);
+
+cron.schedule("*/5 * * * * ", () => {
+  //getting list of all store name
+  var storeName = [];
+  Store.find({}, function(err, stores) {
+    stores.forEach(store => {
+      storeName.push(store.name);
+    });
+    console.log("All store name->", storeName);
+
+    let interval = moment()
+      .subtract(10, "minutes")
+      .format();
+    let current = moment().format();
+    console.log("current time-->", current);
+    console.log("interval time-->", interval);
+
+    storeName.forEach(store => {
+      console.log("Performing on store-->", store);
+      Store.findOne({ name: store }, (err, data) => {
+        data.orders.forEach(order => {
+          order.followConfig.forEach(element => {
+            console.log("order time->", element.time);
+            if (moment(element.time).isBetween(interval, current)) {
+              console.log("call shortner function for", element.time);
+            } else console.log("time is not in range", element.time);
+          });
+        });
+      });
+    });
+  });
+});
 
 //get list of all store name
 // Store.find({}, function(err, stores) {

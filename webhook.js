@@ -3,12 +3,6 @@ const cron = require("node-cron");
 const http = require("https");
 const express = require("express");
 const session = require("express-session");
-const router = express.Router();
-
-const shortid = require('shortid');
-const validUrl = require('valid-url');
-
-
 const mongoose = require("mongoose");
 const path = require("path");
 const moment = require("moment");
@@ -25,9 +19,6 @@ const arrayUniquePlugin = require("mongoose-unique-array");
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require("connect-mongo")(session);
-
-const Url = require('./models/Url');
-
 const forwardingAddress = "https://immense-bastion-25565.herokuapp.com"; // Replace this with your HTTPS Forwarding address
 // get the url pathname
 let pathname;
@@ -63,8 +54,6 @@ app.use(function(req, res, next) {
 
   next();
 });
-app.use('/s', require('./routes/index'));
-
 
 const shopSchema = new mongoose.Schema({
   name: String,
@@ -1161,25 +1150,25 @@ cron.schedule("*/5 * * * * ", () => {
     stores.forEach(store => {
       storeName.push(store.name);
     });
-  });
-  console.log("All store name->", storeName);
+    console.log("All store name->", storeName);
 
-  let interval = moment()
-    .subtract(10, "minutes")
-    .format();
-  let current = moment().format();
-  console.log("current time-->", current);
-  console.log("interval time-->", interval);
+    let interval = moment()
+      .subtract(10, "minutes")
+      .format();
+    let current = moment().format();
+    console.log("current time-->", current);
+    console.log("interval time-->", interval);
 
-  storeName.forEach(store => {
-    console.log("Performing on store-->", store);
-    Store.findOne({ name: store }, (err, data) => {
-      data.orders.forEach(order => {
-        order.followConfig.forEach(element => {
-          console.log("order time->", element.time);
-          if (element.time.isBetween(interval, current)) {
-            console.log("call shortner function for", element.time);
-          } else console.log("time is not in range", element.time);
+    storeName.forEach(store => {
+      console.log("Performing on store-->", store);
+      Store.findOne({ name: store }, (err, data) => {
+        data.orders.forEach(order => {
+          order.followConfig.forEach(element => {
+            console.log("order time->", element.time);
+            if (moment(element.time).isBetween(interval, current)) {
+              console.log("call shortner function for", element.time);
+            } else console.log("time is not in range", element.time);
+          });
         });
       });
     });
@@ -1193,83 +1182,6 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
-////////////////////? shortner
-const hola = {
-	longUrl: 'https://iaditya.com',
-	followUp: 1,
-	id: '45678988'
-};
-
-
-
-
-const shorten = async (params) => {
-	const { longUrl } = params;
-	const { followUp } = params;
-	const { id } = params;
-	const shop = 'mojitotest.myshopify.com';
-
-	// console.log(followUp);
-
-  const baseUrl = process.env.BASEURL;
-  console.log(baseUrl)
-
-	// Check base url
-	if (!validUrl.isUri(baseUrl)) {
-		return 'Invalid base url';
-	}
-
-	// Create url code
-	const urlCode = shortid.generate();
-
-	// Check long url /
-	if (validUrl.isUri(longUrl)) {
-		try {
-			let url = await Url.findOne({ longUrl });
-
-			if (url) {
-				return url;
-			} else {
-				const shortUrl = baseUrl + '/' + 's' + '/' + urlCode;
-
-				url = new Url({
-					longUrl,
-					shortUrl,
-					urlCode,
-					followUp,
-					id,
-					shop
-				});
-
-				await url.save();
-
-				console.log('url 137', url);
-				return url;
-			}
-		} catch (err) {
-			console.error(err);
-			return 'Server error';
-		}
-	} else {
-		return 'Invalid long url';
-	}
-};
-
-//////////////////////////////////////
-
-const short = async (params) => {
-	let res = '';
-	res = await shorten(hola);
-
-	console.log('hola shorten 150', res);
-};
-short();
-
-//////////////////////////?end
-
-
-
-
 
 const port = process.env.PORT || 4000;
 
