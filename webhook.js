@@ -63,15 +63,65 @@ const shopSchema = new mongoose.Schema({
       id: { type: Number, required: true, dropDups: true },
       phone: Number,
       url: String,
-      // !MODIFIED
       dataTime: {
         type: String,
         default: moment().format()
       },
-      // dataTime: { type: String, default: Date(Date.now()).toString() },
-
       purchase: { type: Boolean, default: false },
-      followUp: { type: Number, default: 0 }
+      followConfig: {
+        type: Array,
+        default: [
+          {
+            followUp: 0,
+            status: false,
+            time: moment()
+              .add(30, "minutes")
+              .format()
+          },
+          {
+            followUp: 0,
+            status: false,
+            time: moment()
+              .add(60, "minutes")
+              .format()
+          },
+          {
+            followUp: 0,
+            status: false,
+            time: moment()
+              .add(360, "minutes")
+              .format()
+          },
+          {
+            followUp: 0,
+            status: false,
+            time: moment()
+              .add(600, "minutes")
+              .format()
+          },
+          {
+            followUp: 0,
+            status: false,
+            time: moment()
+              .add(1440, "minutes")
+              .format()
+          },
+          {
+            followUp: 0,
+            status: false,
+            time: moment()
+              .add(2880, "minutes")
+              .format()
+          },
+          {
+            followUp: 0,
+            status: false,
+            time: moment()
+              .add(4320, "minutes")
+              .format()
+          }
+        ]
+      }
     }
   ],
 
@@ -335,60 +385,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               let obj = {
                 id: request.body.id,
                 phone: request.body.shipping_address.phone,
-                url: request.body.abandoned_checkout_url,
-
-                // TODO line no 369 tak check kar lo !!
-                followConfig: [
-                  {
-                    followUp: 0,
-                    status: false,
-                    time: moment()
-                      .add(30, "minutes")
-                      .format()
-                  },
-                  {
-                    followUp: 0,
-                    status: false,
-                    time: moment()
-                      .add(60, "minutes")
-                      .format()
-                  },
-                  {
-                    followUp: 0,
-                    status: false,
-                    time: moment()
-                      .add(360, "minutes")
-                      .format()
-                  },
-                  {
-                    followUp: 0,
-                    status: false,
-                    time: moment()
-                      .add(600, "minutes")
-                      .format()
-                  },
-                  {
-                    followUp: 0,
-                    status: false,
-                    time: moment()
-                      .add(1440, "minutes")
-                      .format()
-                  },
-                  {
-                    followUp: 0,
-                    status: false,
-                    time: moment()
-                      .add(2880, "minutes")
-                      .format()
-                  },
-                  {
-                    followUp: 0,
-                    status: false,
-                    time: moment()
-                      .add(4320, "minutes")
-                      .format()
-                  }
-                ]
+                url: request.body.abandoned_checkout_url
               };
 
               Store.findOneAndUpdate(
