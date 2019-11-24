@@ -29,6 +29,8 @@
     "nonce": "^1.0.4",
     "parseurl": "^1.3.3",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "request-promise": "^4.2.4",
+    "shortid": "^2.2.15",
+    "valid-url": "^1.0.9"
   }
 }

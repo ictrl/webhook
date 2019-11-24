@@ -1,77 +1,79 @@
-const cron = require('node-cron');
+// const cron = require('node-cron');
 const moment = require('moment');
-const axios = require('axios');
+// const axios = require('axios');
 
-const Store = require('./webhook');
+console.log(moment().add(30, 'minutes').format());
 
-let abandoned_checkout_url = 'https://adijha.com';
+// const Store = require('./webhook');
 
-//! Time manipulation
+// let abandoned_checkout_url = 'https://adijha.com';
 
-// let currentTime = moment().add(60, 'minutes').toString();
+// //! Time manipulation
 
-// console.log(currentTime);
+// // let currentTime = moment().add(60, 'minutes').toString();
 
-// let executionTime = moment().add(60, 'minutes');
+// // console.log(currentTime);
 
-// console.log(executionTime.toString());
+// // let executionTime = moment().add(60, 'minutes');
 
-// ! CRON job
-//* runs every 5 seconds For TESTING
+// // console.log(executionTime.toString());
 
-cron.schedule('*/5 * * * * *', () => {
-	console.log('running every 5 second');
-	// console.log(moment());
-});
+// // ! CRON job
+// //* runs every 5 seconds For TESTING
 
-//* runs every 5 mins for PRODUCTION
-
-// cron.schedule('*/5 * * * *', () => {
-// 	console.log('running every 5min');
+// cron.schedule('*/5 * * * * *', () => {
+// 	console.log('running every 5 second');
+// 	// console.log(moment());
 // });
 
-//TODO implement this on webhook.js
+// //* runs every 5 mins for PRODUCTION
 
-cron.schedule('*/5 * * * * *', () => {
-	console.log('cron started  every 5 sec');
-	let interval = moment().subtract(10, 'minutes');
-	let current = moment();
+// // cron.schedule('*/5 * * * *', () => {
+// // 	console.log('running every 5min');
+// // });
 
-	//? test should be time extracted from store.orders.followConfig[0].time
+// //TODO implement this on webhook.js
 
-	let test = moment().subtract(5, 'minutes');
+// cron.schedule('*/5 * * * * *', () => {
+// 	console.log('cron started  every 5 sec');
+// 	let interval = moment().subtract(10, 'minutes');
+// 	let current = moment();
 
-	console.log(test.isBetween(interval, current));
+// 	//? test should be time extracted from store.orders.followConfig[0].time
 
-	if (test.isBetween(interval, current)) {
-		//TODO post request carring
-		// sendShortenReq();
-		console.log(test.format());
-	}
-});
+// 	let test = moment().subtract(5, 'minutes');
 
-const objToSend = {
-	longUrl: abandoned_checkout_url,
-	followUp: '2',
-	id: '222'
-};
+// 	console.log(test.isBetween(interval, current));
 
-const sendShortenReq = async (params) => {
-	//TODO find followUp template from store.orders.abandan_template
+// 	if (tes t.isBetween(interval, current)) {
+// 		//TODO post request carring
+// 		// sendShortenReq();
+// 		console.log(test.format());
+// 	}
+// });
 
-	//? line no 63 me axios check kar lo sahi jaa raha ya nahi
+// const objToSend = {
+// 	longUrl: abandoned_checkout_url,
+// 	followUp: '2',
+// 	id: '222'
+// };
 
-	//?agar axios se post node se nahi jaa raha to wake me up I'll do this through functions by integrating URL Shortner app with it
+// const sendShortenReq = async (params) => {
+// 	//TODO find followUp template from store.orders.abandan_template
 
-	try {
-		const res = await axios.post('/api/shorten', objToSend);
-		console.log(res);
-	} catch (err) {
-		console.error(err);
-		console.log('response nahi aaya');
-	}
-};
+// 	//? line no 63 me axios check kar lo sahi jaa raha ya nahi
 
-// TODO Frontend(abandan template)  se jab req aata hai to usse tum order.abandanTemplate ko modify kar rahe ho DB me, iske saath saath orders.followConfig ko v update karna hai.
-// * for example
-// ? if user selected: followUp : 1, 30 min and status : true then after updating store.abandanTemplate you will check for call me
+// 	//?agar axios se post node se nahi jaa raha to wake me up I'll do this through functions by integrating URL Shortner app with it
+
+// 	try {
+// 		const res = await axios.post('/api/shorten', objToSend);
+// 		console.log(res);
+// 	} catch (err) {
+// 		console.error(err);
+// 		console.log('response nahi aaya');
+// 	}
+// };
+
+// // TODO Frontend(abandan template)  se jab req aata hai to usse tum order.abandanTemplate ko modify kar rahe ho DB me, iske saath saath orders.followConfig ko v update karna hai.
+// // * for example
+// // ? if user selected: followUp : 1, 30 min and status : true then after updating store.abandanTemplate you will check for call me
