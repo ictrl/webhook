@@ -69,60 +69,7 @@ const shopSchema = new mongoose.Schema({
         default: moment().format()
       },
       purchase: { type: Boolean, default: false },
-      followConfig: {
-        type: Array,
-        default: [
-          {
-            followUp: 0,
-            status: false,
-            time: moment()
-              .add(30, "minutes")
-              .format()
-          },
-          {
-            followUp: 0,
-            status: false,
-            time: moment()
-              .add(60, "minutes")
-              .format()
-          },
-          {
-            followUp: 0,
-            status: false,
-            time: moment()
-              .add(360, "minutes")
-              .format()
-          },
-          {
-            followUp: 0,
-            status: false,
-            time: moment()
-              .add(600, "minutes")
-              .format()
-          },
-          {
-            followUp: 0,
-            status: false,
-            time: moment()
-              .add(1440, "minutes")
-              .format()
-          },
-          {
-            followUp: 0,
-            status: false,
-            time: moment()
-              .add(2880, "minutes")
-              .format()
-          },
-          {
-            followUp: 0,
-            status: false,
-            time: moment()
-              .add(4320, "minutes")
-              .format()
-          }
-        ]
-      }
+      followConfig: Array
     }
   ],
 
@@ -386,7 +333,58 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               let obj = {
                 id: request.body.id,
                 phone: request.body.shipping_address.phone,
-                url: request.body.abandoned_checkout_url
+                url: request.body.abandoned_checkout_url,
+                followUp: [
+                  {
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(30, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(60, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(360, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(600, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(1440, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(2880, "minutes")
+                      .format()
+                  },
+                  {
+                    followUp: 0,
+                    status: false,
+                    time: moment()
+                      .add(4320, "minutes")
+                      .format()
+                  }
+                ]
               };
 
               Store.findOneAndUpdate(
@@ -1143,37 +1141,37 @@ app.post("/api/recharge", function(req, res) {
   }
 });
 
-// cron.schedule("*/5 * * * * ", () => {
-//   //getting list of all store name
-//   var storeName = [];
-//   Store.find({}, function(err, stores) {
-//     stores.forEach(store => {
-//       storeName.push(store.name);
-//     });
-//     console.log("All store name->", storeName);
+cron.schedule("*/5 * * * * ", () => {
+  //getting list of all store name
+  var storeName = [];
+  Store.find({}, function(err, stores) {
+    stores.forEach(store => {
+      storeName.push(store.name);
+    });
+    console.log("All store name->", storeName);
 
-//     let interval = moment()
-//       .subtract(5, "minutes")
-//       .format();
-//     let current = moment().format();
-//     console.log("current time-->", current);
-//     console.log("interval time-->", interval);
+    let interval = moment()
+      .subtract(5, "minutes")
+      .format();
+    let current = moment().format();
+    console.log("current time-->", current);
+    console.log("interval time-->", interval);
 
-//     storeName.forEach(store => {
-//       console.log("Performing on store-->", store);
-//       Store.findOne({ name: store }, (err, data) => {
-//         data.orders.forEach(order => {
-//           order.followConfig.forEach(element => {
-//             console.log("order time->", element.time);
-//             if (moment(element.time).isBetween(interval, current)) {
-//               console.log("call shortner function for", element.time);
-//             } else console.log("time is not in range", element.time);
-//           });
-//         });
-//       });
-//     });
-//   });
-// });
+    storeName.forEach(store => {
+      console.log("Performing on store-->", store);
+      Store.findOne({ name: store }, (err, data) => {
+        data.orders.forEach(order => {
+          order.followConfig.forEach(element => {
+            console.log("order time->", element.time);
+            if (moment(element.time).isBetween(interval, current)) {
+              console.log("call shortner function for", element.time);
+            } else console.log("time is not in range", element.time);
+          });
+        });
+      });
+    });
+  });
+});
 
 //////////////
 if (process.env.NODE_ENV === "production") {
