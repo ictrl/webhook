@@ -1201,14 +1201,13 @@ cron.schedule('*/5 * * * * ', () => {
 			console.log('Performing on store-->', store);
 			Store.findOne({ name: store }, (err, data) => {
 				data.orders.forEach((order) => {
-					order.followConfig.forEach((element) => {
+					if (orders.f1) {
 						console.log('order time->', element.time);
-						console.log('order status->', element.status);
 
-						if (moment(element.time).isBetween(interval, current) && element.status) {
+						if (orders.f1.isBetween(interval, current)) {
 							console.log('call shortner function for', element.time);
 						} else console.log('time is not in range', element.time);
-					});
+					}
 				});
 			});
 		});
