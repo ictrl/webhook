@@ -304,7 +304,8 @@ app.post('/api/myaction', function(req, res) {
 		Store.findOne({ name: shop }, function(err, data) {
 			if (data) {
 				console.log('store found in DB');
-				res.sendStatus(200).redirect('back');
+        // res.sendStatus(200).redirect('back');
+        res.sendStatus(200);
 
 				// res.redirect("back");
 
@@ -1207,6 +1208,7 @@ cron.schedule('*/5 * * * * ', () => {
               moment(order.f1).isBetween(interval, current) 
             ) {
               console.log("call shortner function for", order.f1);
+              
             } else console.log("time is not in range", order.f1);
           }if(order.f2){
 						if (
