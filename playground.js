@@ -82,19 +82,19 @@ console.log(moment().add(30, 'minutes').format());
 
 
 
-if userSelected 30 min on followup 1 
+// if userSelected 30 min on followup 1 
 
-if (followConfig.inc === 30) {
-  followConfig.status = true;
-  followConfig.followup= 1;
-}
+// if (followConfig.inc === 30) {
+//   followConfig.status = true;
+//   followConfig.followup= 1;
+// }
 
-if userSelected 30 min on followup 1 
+// if userSelected 30 min on followup 1 
 
-if (followConfig.inc === 60) {
-  followConfig.status = true,
-    followConfig.followup: 1;
-}
+// if (followConfig.inc === 60) {
+//   followConfig.status = true,
+//     followConfig.followup: 1;
+// }
 
 
 followConfig: [

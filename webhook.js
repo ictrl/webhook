@@ -1146,6 +1146,34 @@ app.post('/api/abandanTemplate', function(req, res) {
 	// req.session.shop = "mojitolabs.myshopify.com"; //delete this
 
 	if (req.session.shop) {
+
+    
+Store.findOneAndUpdate({ name: req.session.shop }, (err, data) => {
+  // console.log(data.orders[0].followConfig[0].time);
+
+  data.orders.forEach((order, i) => {
+    order.followConfig.forEach((e, ii) => {
+      if(e.inc === req.body.time){
+                                   Store.updateOne(
+                                     { orders[i].followConfig[ii] : 69 },
+                                     {
+                                       $set: {
+                                         "test.$.F30.FollowUp": 69
+                                       }
+                                     },
+                                     function(err, data) {
+                                       if (!err) {
+                                         console.log(data);
+                                       } else {
+                                         console.log(err);
+                                       }
+                                     }
+                                   );
+                                 }else console.log("inc != to req.body.time")
+    });
+  });
+});
+
 		Store.findOneAndUpdate(
 			{ 'abandanTemplate.topic': req.body.topic },
 			{
