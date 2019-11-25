@@ -76,46 +76,11 @@ const shopSchema = new mongoose.Schema({
 				type: String,
 				default: moment().format()
 			},
+			email: { type: String, default: null },
 			purchase: { type: Boolean, default: false },
-			followConfig: {
-				type: Array,
-				default: [
-					{
-						followUp: 0,
-						status: false,
-						inc: 30
-					},
-					{
-						followUp: 0,
-						status: false,
-						inc: 60
-					},
-					{
-						followUp: 0,
-						status: false,
-						inc: 360
-					},
-					{
-						followUp: 0,
-						status: false,
-						inc: 600
-					},
-					{
-						followUp: 0,
-						status: false,
-						inc: 1440
-					},
-					{
-						followUp: 0,
-						status: false,
-						inc: 2880
-					},
-					{
-						followUp: 0,
-						status: false,
-						inc: 4320
-					}
-				]
+			storeTime: {
+				type: String,
+				default: moment().format()
 			}
 		}
 	],
@@ -454,59 +419,11 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								phone: request.body.shipping_address.phone,
 								price: request.body.line_items.price,
 								url: request.body.abandoned_checkout_url,
-								followConfig: []
+								f1: moment().add(30, 'minutes').format(),
+								f2: moment().add(30, 'minutes').format(),
+								f3: moment().add(30, 'minutes').format(),
+								f4: moment().add(30, 'minutes').format()
 							};
-
-							obj.followConfig.push(
-								{
-									followUp: 0,
-									status: false,
-									inc: 30,
-									time: moment().add(30, 'minutes').format()
-								},
-								{
-									followUp: 0,
-									status: false,
-									inc: 60,
-
-									time: moment().add(60, 'minutes').format()
-								},
-								{
-									followUp: 0,
-									status: false,
-									inc: 360,
-
-									time: moment().add(360, 'minutes').format()
-								},
-								{
-									followUp: 0,
-									status: false,
-									inc: 600,
-
-									time: moment().add(600, 'minutes').format()
-								},
-								{
-									followUp: 0,
-									status: false,
-									inc: 1440,
-
-									time: moment().add(1440, 'minutes').format()
-								},
-								{
-									followUp: 0,
-									status: false,
-									inc: 2880,
-
-									time: moment().add(2880, 'minutes').format()
-								},
-								{
-									followUp: 0,
-									status: false,
-									inc: 4320,
-
-									time: moment().add(4320, 'minutes').format()
-								}
-							);
 
 							Store.findOneAndUpdate(
 								{ name: shop },
@@ -1146,33 +1063,31 @@ app.post('/api/abandanTemplate', function(req, res) {
 	// req.session.shop = "mojitolabs.myshopify.com"; //delete this
 
 	if (req.session.shop) {
+		// Store.findOneAndUpdate({ name: req.session.shop }, (err, data) => {
+		//   // console.log(data.orders[0].followConfig[0].time);
 
-    
-Store.findOneAndUpdate({ name: req.session.shop }, (err, data) => {
-  // console.log(data.orders[0].followConfig[0].time);
-
-  data.orders.forEach((order, i) => {
-    order.followConfig.forEach((e, ii) => {
-      if(e.inc === req.body.time){
-                                   Store.updateOne(
-                                     { orders[i].followConfig[ii] : 69 },
-                                     {
-                                       $set: {
-                                         "test.$.F30.FollowUp": 69
-                                       }
-                                     },
-                                     function(err, data) {
-                                       if (!err) {
-                                         console.log(data);
-                                       } else {
-                                         console.log(err);
-                                       }
-                                     }
-                                   );
-                                 }else console.log("inc != to req.body.time")
-    });
-  });
-});
+		//   data.orders.forEach((order, i) => {
+		//     order.followConfig.forEach((e, ii) => {
+		//       if(e.inc === req.body.time){
+		//                                    Store.updateOne(
+		//                                      { orders[i].followConfig[ii] : 69 },
+		//                                      {
+		//                                        $set: {
+		//                                          "test.$.F30.FollowUp": 69
+		//                                        }
+		//                                      },
+		//                                      function(err, data) {
+		//                                        if (!err) {
+		//                                          console.log(data);
+		//                                        } else {
+		//                                          console.log(err);
+		//                                        }
+		//                                      }
+		//                                    );
+		//                                  }else console.log("inc != to req.body.time")
+		//     });
+		//   });
+		// });
 
 		Store.findOneAndUpdate(
 			{ 'abandanTemplate.topic': req.body.topic },
