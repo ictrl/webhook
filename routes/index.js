@@ -12,20 +12,20 @@ router.get('/:code', async (req, res) => {
 		const url = await Url.findOne({ urlCode: req.params.code });
 
 		if (url) {
-			// Store.updateOne(
-			//   { "test.id": 1 },
-			//   {
-			//     $set: {
-			//       "test.$.followUp": 9
-			//     }
-			//   },
-			//   function(err, data) {
-			//     if (!err) {
-			//       console.log(data);
-			//     } else {
-			//       console.log(err);
-			//     }
-			//   }
+			// await Store.updateOne(
+			// 	{ 'test.id': 1 },
+			// 	{
+			// 		$set: {
+			// 			'test.$.followUp': 9
+			// 		}
+			// 	},
+			// 	function(err, data) {
+			// 		if (!err) {
+			// 			console.log(data);
+			// 		} else {
+			// 			console.log(err);
+			// 		}
+			// 	}
 			// );
 
 			return res.redirect(url.longUrl);

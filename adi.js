@@ -7,7 +7,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 	useUnifiedTopology: true,
 	useCreateIndex: true
 });
-let shop = 'mojitotest.myshopify.com';
+let shop = 'mojitolabs.myshopify.com';
 
 const shopSchema = new mongoose.Schema({
 	name: String,
@@ -129,24 +129,110 @@ const Store = new mongoose.model('Store', shopSchema);
 //   });
 // });
 
+console.log('--------------------------');
 
 ///////////////////////////////
-Store.findOneAndUpdate(
-			{ 'orders.inc': req.body.time },
-			{
-				$set: {
-					'orders.$.followUp': req.body.topic,
-					'orders.$.status': req.body.status
-				}
-			},
-			{ new: true, useFindAndModify: false },
-			(err, result) => {
-				if (err) {
-					console.log(err);
-				} else {
-					if (result === null) {
-					console.log('result == null')
-					}
-				}
-			}
-		)
+
+// Store.findOneAndUpdate(
+// 	{ 'orders.$.inc': 30 },
+// 	{
+// 		$set: {
+// 			'orders.$.followUp': 1,
+// 			'orders.$.status': true
+// 		}
+// 	},
+// 	{ new: true, useFindAndModify: false },
+// 	(err, result) => {
+// 		if (err) {
+// 			console.log(err);
+// 		} else {
+// 			if (result === null) {
+// 				console.log('result == null');
+// 				console.log('Store', Store.orders);
+// 				Store.findOneAndUpdate(
+// 					{ name: shop },
+// 					{
+// 						$set: {
+// 							'orders.$.followUp': 1,
+// 							'orders.$.status': true
+// 						}
+// 					},
+// 					{ new: true, useFindAndModify: false },
+// 					(err, data) => {
+// 						if (!err) {
+// 							console.log('Store', Store.orders);
+// 							console.log(data);
+// 						} else {
+// 							console.log('Store', Store);
+// 							console.log(err);
+// 						}
+// 					}
+// 				);
+// 			}
+// 		}
+// 	}
+// );
+
+// const Character = mongoose.model(
+// 	'Character',
+// 	new mongoose.Schema({
+// 		name: String,
+// 		age: Number
+// 	})
+// );
+
+// await Character.create({ name: 'Jean-Luc Picard' });
+
+// let filter = { name: 'Jean-Luc Picard' };
+// let update = { age: 59 };
+
+// // `doc` is the document _before_ `update` was applied
+// let doc = await Character.findOneAndUpdate(filter, update, {
+//   new: true
+// });
+// console.log(doc.name); // 'Jean-Luc Picard'
+// console.log(doc.age);
+// // undefined
+// const name = async () => {
+// let doc = await Store.findOne(filter);
+// console.log(doc);
+
+// 	let filter = { name: 'mojitolabs.myshopify.com' };
+// 	let update = {
+// 		'orders.$.purchase': true
+// 	};
+// 	let objectt;
+// 	try {
+// 		objectt = await Store.findOneAndUpdate(filter, update);
+// 		console.log('object');
+// 		console.log('object');
+// 		console.log('object');
+// 		console.log('object');
+// 		console.log('object');
+// 		console.log('object');
+// 		console.log('object');
+// 	} catch (err) {
+// 		console.error(err);
+// 	}
+
+// 	console.log('hhhhhhhhhhhhhhhhhhhhhhhh', objectt, '209 hhhhhhhhhhhhhhhhhhhhhhhh');
+// };
+
+// await Store.countDocuments(filter); // 0
+// 	try {
+// 		doc = await Store.findOneAndUpdate(
+// 			filter,
+// 			update,
+// 			{
+// 				// new: true
+// 				// upsert: true // Make this update into an upsert
+// 			}
+// 		);
+// 	} catch (error) {
+// 		console.error(error);
+// 	}
+
+// 	console.log(doc); // Will Riker
+// 	// console.log(doc.age);
+// };
+// name();
