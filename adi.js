@@ -89,33 +89,33 @@ const shopSchema = new mongoose.Schema({
 
 const Store = new mongoose.model('Store', shopSchema);
 
-let obj = {
-	id: 33,
-	phone: 11,
-	url: 'request.body.abandoned_checkout_url',
-	followConfig: [
-		{
-			dhrbqau: 'ad',
-			dhrbqu: 'awd',
-			dhrbqa: 'add'
-		}
-	]
-};
+// let obj = {
+// 	id: 33,
+// 	phone: 11,
+// 	url: 'request.body.abandoned_checkout_url',
+// 	followConfig: [
+// 		{
+// 			dhrbqau: 'ad',
+// 			dhrbqu: 'awd',
+// 			dhrbqa: 'add'
+// 		}
+// 	]
+// };
 
-Store.findOneAndUpdate(
-	{ name: shop },
-	{
-		$addToSet: { orders: obj }
-	},
-	{ new: true, useFindAndModify: false },
-	(err, data) => {
-		if (!err) {
-			console.log('data add to DB', data);
-		} else {
-			console.log(err);
-		}
-	}
-);
+// Store.findOneAndUpdate(
+// 	{ name: shop },
+// 	{
+// 		$addToSet: { orders: obj }
+// 	},
+// 	{ new: true, useFindAndModify: false },
+// 	(err, data) => {
+// 		if (!err) {
+// 			console.log('data add to DB', data);
+// 		} else {
+// 			console.log(err);
+// 		}
+// 	}
+// );
 
 // console.log(obj);
 
@@ -128,3 +128,25 @@ Store.findOneAndUpdate(
 //     });
 //   });
 // });
+
+
+///////////////////////////////
+Store.findOneAndUpdate(
+			{ 'orders.inc': req.body.time },
+			{
+				$set: {
+					'orders.$.followUp': req.body.topic,
+					'orders.$.status': req.body.status
+				}
+			},
+			{ new: true, useFindAndModify: false },
+			(err, result) => {
+				if (err) {
+					console.log(err);
+				} else {
+					if (result === null) {
+					console.log('result == null')
+					}
+				}
+			}
+		)

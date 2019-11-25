@@ -363,8 +363,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							let obj = {
 								id: request.body.id,
 								phone: request.body.shipping_address.phone,
-                url: request.body.abandoned_checkout_url,
-                followConfig:[]
+								url: request.body.abandoned_checkout_url,
+								followConfig: []
 							};
 
 							obj.followConfig.push(
@@ -1086,6 +1086,25 @@ app.post('/api/abandanTemplate', function(req, res) {
 								}
 							}
 						);
+					}
+				}
+			}
+		);
+		Store.findOneAndUpdate(
+			{ 'orders.inc': req.body.time },
+			{
+				$set: {
+					'orders.$.followUp': req.body.topic,
+					'orders.$.status': req.body.status
+				}
+			},
+			{ new: true, useFindAndModify: false },
+			(err, result) => {
+				if (err) {
+					console.log(err);
+				} else {
+					if (result === null) {
+						console.log('result == null');
 					}
 				}
 			}
