@@ -417,6 +417,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 				case 'checkouts/update':
 					if (request.body.shipping_address != undefined) {
 						if (request.body.shipping_address.phone != null) {
+<<<<<<< HEAD
 							let obj = {
 								id: request.body.id,
 								phone: request.body.shipping_address.phone,
@@ -427,6 +428,135 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								// f3: moment().add(30, 'minutes').format(),
 								// f4: moment().add(30, 'minutes').format()
 							};
+||||||| merged common ancestors
+<<<<<<< HEAD
+							let obj = {
+								id: request.body.id,
+								phone: request.body.shipping_address.phone,
+								price: request.body.line_items.price,
+								url: request.body.abandoned_checkout_url,
+								f1: moment().add(30, 'minutes').format()
+							};
+							Store.findOne({
+								name: shop
+							});
+||||||| merged common ancestors
+							let obj = {
+								id: request.body.id,
+								phone: request.body.shipping_address.phone,
+								price: request.body.line_items.price,
+								url: request.body.abandoned_checkout_url,
+								f1: moment().add(30, 'minutes').format(),
+								f2: moment().add(30, 'minutes').format(),
+								f3: moment().add(30, 'minutes').format(),
+								f4: moment().add(30, 'minutes').format()
+							};
+=======
+>>>>>>> c04b8648ce5c89b9875b346cef9cbc28be9a11f7
+
+							let obj = {
+                id: request.body.id,
+                phone: request.body.shipping_address.phone,
+                price: request.body.line_items.price,
+                url: request.body.abandoned_checkout_url
+                // f1: moment().add(30, 'minutes').format(),
+                // f2: moment().add(30, 'minutes').format(),
+                // f3: moment().add(30, 'minutes').format(),
+                // f4: moment().add(30, 'minutes').format()
+              };
+
+Store.findOne({ name: shop }, function(err, data) {
+  if (data.abandanTemplate) {
+    data.abandanTemplate.forEach(e => {
+      if (e.topic === "1") {
+        obj.f1 = moment()
+          .add(e.time, "minutes")
+          .format();
+      } else if (e.topic === "2") {
+        obj.f2 = moment()
+          .add(e.time, "minutes")
+          .format();
+      } else if (e.topic === "3") {
+        obj.f3 = moment()
+          .add(e.time, "minutes")
+          .format();
+      } else if (e.topic === "4") {
+        obj.f4 = moment()
+          .add(e.time, "minutes")
+          .format();
+      }
+    });
+  }
+  
+							Store.findOneAndUpdate(
+                { name: shop },
+                {
+                  $addToSet: { orders: obj }
+                },
+                { new: true, useFindAndModify: false },
+                (err, data) => {
+                  if (!err) {
+                    console.log("data add to DB", topic, data);
+                  } else {
+                    console.log("err");
+                  }
+                }
+              );
+});
+
+=======
+
+							let obj = {
+                id: request.body.id,
+                phone: request.body.shipping_address.phone,
+                price: request.body.line_items.price,
+                url: request.body.abandoned_checkout_url
+                // f1: moment().add(30, 'minutes').format(),
+                // f2: moment().add(30, 'minutes').format(),
+                // f3: moment().add(30, 'minutes').format(),
+                // f4: moment().add(30, 'minutes').format()
+              };
+
+Store.findOne({ name: shop }, function(err, data) {
+  if (data.abandanTemplate) {
+    data.abandanTemplate.forEach(e => {
+      if (e.topic === "1") {
+        obj.f1 = moment()
+          .add(e.time, "minutes")
+          .format();
+      } else if (e.topic === "2") {
+        obj.f2 = moment()
+          .add(e.time, "minutes")
+          .format();
+      } else if (e.topic === "3") {
+        obj.f3 = moment()
+          .add(e.time, "minutes")
+          .format();
+      } else if (e.topic === "4") {
+        obj.f4 = moment()
+          .add(e.time, "minutes")
+          .format();
+      }
+    });
+  }
+  
+							Store.findOneAndUpdate(
+                { name: shop },
+                {
+                  $addToSet: { orders: obj }
+                },
+                { new: true, useFindAndModify: false },
+                (err, data) => {
+                  if (!err) {
+                    console.log("data add to DB", topic, data);
+                  } else {
+                    console.log("err");
+                  }
+                }
+              );
+});
+
+>>>>>>> a537250f7c5bcab237ab9d7d691c2e6752b826c1
 
 							Store.findOne({ name: shop }, function(err, data) {
 								if (data.abandanTemplate) {
