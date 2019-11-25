@@ -430,13 +430,21 @@ Store.findOne({ name: shop }, function(err, data) {
   if (data.abandanTemplate) {
     data.abandanTemplate.forEach(e => {
       if (e.topic === "1") {
-        obj.f1 = e.time;
+        obj.f1 = moment()
+          .add(e.time, "minutes")
+          .format();
       } else if (e.topic === "2") {
-        obj.f2 = e.time;
+        obj.f2 = moment()
+          .add(e.time, "minutes")
+          .format();
       } else if (e.topic === "3") {
-        obj.f3 = e.time;
+        obj.f3 = moment()
+          .add(e.time, "minutes")
+          .format();
       } else if (e.topic === "4") {
-        obj.f4 = e.time;
+        obj.f4 = moment()
+          .add(e.time, "minutes")
+          .format();
       }
     });
   }

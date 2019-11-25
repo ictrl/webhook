@@ -78,22 +78,30 @@ let obj = {
   // f4: moment().add(30, 'minutes').format()
 };
 
-// Store.findOne({ name: shop }, function(err, data) {
-//   if (data.abandanTemplate) {
-//     data.abandanTemplate.forEach(e => {
-//       if (e.topic === "1") {
-//         obj.f1 = e.time;
-//       } else if (e.topic === "2") {
-//         obj.f2 = e.time;
-//       } else if (e.topic === "3") {
-//         obj.f3 = e.time;
-//       } else if (e.topic === "4") {
-//         obj.f4 = e.time;
-//       }
-//     });
-//   }
-//   console.log(obj);
-// });
+Store.findOne({ name: shop }, function(err, data) {
+  if (data.abandanTemplate) {
+    data.abandanTemplate.forEach(e => {
+      if (e.topic === "1") {
+        obj.f1 = moment()
+          .add(e.time, "minutes")
+          .format();
+      } else if (e.topic === "2") {
+        obj.f2 = moment()
+          .add(e.time, "minutes")
+          .format();
+      } else if (e.topic === "3") {
+        obj.f3 = moment()
+          .add(e.time, "minutes")
+          .format();
+      } else if (e.topic === "4") {
+        obj.f4 = moment()
+          .add(e.time, "minutes")
+          .format();
+      }
+    });
+  }
+  console.log(obj);
+});
 
 // const storeName = [];
 // storeName.push("gogo");
