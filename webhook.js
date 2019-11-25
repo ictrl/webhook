@@ -81,7 +81,11 @@ const shopSchema = new mongoose.Schema({
 			storeTime: {
 				type: String,
 				default: moment().format()
-			}
+			},
+			f1: String,
+			f2: String,
+			f3: String,
+			f4: String
 		}
 	],
 
@@ -405,8 +409,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 			let phone2;
 			let address1;
 			let address2;
-			let city;
-			let country;
+
 			let adminNumber;
 			let message;
 
@@ -419,11 +422,11 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								phone: request.body.shipping_address.phone,
 								price: request.body.line_items.price,
 								url: request.body.abandoned_checkout_url,
-								f1: moment().add(30, 'minutes').format(),
-								f2: moment().add(30, 'minutes').format(),
-								f3: moment().add(30, 'minutes').format(),
-								f4: moment().add(30, 'minutes').format()
+								f1: moment().add(30, 'minutes').format()
 							};
+							Store.findOne({
+								name: shop
+							});
 
 							Store.findOneAndUpdate(
 								{ name: shop },
