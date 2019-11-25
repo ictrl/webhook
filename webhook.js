@@ -417,30 +417,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 				case 'checkouts/update':
 					if (request.body.shipping_address != undefined) {
 						if (request.body.shipping_address.phone != null) {
-<<<<<<< HEAD
-							let obj = {
-								id: request.body.id,
-								phone: request.body.shipping_address.phone,
-								price: request.body.line_items.price,
-								url: request.body.abandoned_checkout_url,
-								f1: moment().add(30, 'minutes').format()
-							};
-							Store.findOne({
-								name: shop
-							});
-||||||| merged common ancestors
-							let obj = {
-								id: request.body.id,
-								phone: request.body.shipping_address.phone,
-								price: request.body.line_items.price,
-								url: request.body.abandoned_checkout_url,
-								f1: moment().add(30, 'minutes').format(),
-								f2: moment().add(30, 'minutes').format(),
-								f3: moment().add(30, 'minutes').format(),
-								f4: moment().add(30, 'minutes').format()
-							};
-=======
->>>>>>> c04b8648ce5c89b9875b346cef9cbc28be9a11f7
 
 							let obj = {
                 id: request.body.id,
