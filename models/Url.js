@@ -4,9 +4,11 @@ const urlSchema = new mongoose.Schema({
 	urlCode: String,
 	longUrl: String,
 	shortUrl: String,
-	followUp: String,
+	followUp: Number,
 	shop: String,
-	id: String
+	id: Number,
+	price: Number,
+	shop: String
 });
 
 module.exports = mongoose.model('Url', urlSchema);
