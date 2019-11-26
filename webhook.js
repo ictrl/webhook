@@ -1201,12 +1201,25 @@ cron.schedule('*/5 * * * * ', () => {
 			console.log('Performing on store-->', store);
 			Store.findOne({ name: store }, (err, data) => {
 				data.orders.forEach((order) => {
-					if (orders.f1) {
-						console.log('order time->', element.time);
-
-						if (orders.f1.isBetween(interval, current)) {
-							console.log('call shortner function for', element.time);
-						} else console.log('time is not in range', element.time);
+					if (order.f1) {
+						if (moment(order.f1).isBetween(interval, current)) {
+							console.log('call shortner function for', order.f1);
+						} else console.log('time is not in range', order.f1);
+					}
+					if (order.f2) {
+						if (moment(order.f2).isBetween(interval, current)) {
+							console.log('call shortner function for', order.f2);
+						} else console.log('time is not in range', order.f2);
+					}
+					if (order.f3) {
+						if (moment(order.f3).isBetween(interval, current)) {
+							console.log('call shortner function for', order.f3);
+						} else console.log('time is not in range', order.f3);
+					}
+					if (order.f4) {
+						if (moment(order.f4).isBetween(interval, current)) {
+							console.log('call shortner function for', order.f4);
+						} else console.log('time is not in range', order.f4);
 					}
 				});
 			});
