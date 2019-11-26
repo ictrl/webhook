@@ -399,6 +399,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
   topic = topic + "/" + subtopic;
+  console.log("topic ------>", topic);
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       let name;
@@ -423,7 +424,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               let obj = {
                 id: request.body.id,
                 phone: request.body.shipping_address.phone,
-                price: request.body.line_items.price,
+                price: request.body.subtotal_price,
                 url: request.body.abandoned_checkout_url
               };
 
@@ -447,25 +448,26 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                         .add(e.time, "minutes")
                         .format();
                     }
-                    Store.findOneAndUpdate(
-                      { name: shop },
-                      {
-                        $addToSet: { orders: obj }
-                      },
-                      { new: true, useFindAndModify: false },
-                      (err, data) => {
-                        if (!err) {
-                          console.log("data add to DB", topic, data);
-                        } else {
-                          console.log("443 err", err);
-                        }
-                      }
-                    );
                   });
                 }
               });
+              Store.findOneAndUpdate(
+                { name: shop },
+                {
+                  $addToSet: { orders: obj }
+                },
+                { new: true, useFindAndModify: false },
+                (err, data) => {
+                  if (!err) {
+                    console.log("data add to DB", topic, data);
+                  } else {
+                    console.log("443 err", err);
+                  }
+                }
+              );
             }
           }
+
           break;
 
         case "orders/create":
