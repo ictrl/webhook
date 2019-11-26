@@ -427,7 +427,6 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                 price: request.body.subtotal_price,
                 url: request.body.abandoned_checkout_url
               };
-
               Store.findOne({ name: shop }, function(err, data) {
                 if (data.abandanTemplate) {
                   data.abandanTemplate.forEach(e => {
@@ -449,22 +448,22 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                         .format();
                     }
                   });
+                  Store.findOneAndUpdate(
+                    { name: shop },
+                    {
+                      $addToSet: { orders: obj }
+                    },
+                    { new: true, useFindAndModify: false },
+                    (err, data) => {
+                      if (!err) {
+                        console.log("data add to DB", topic, data);
+                      } else {
+                        console.log("443 err", err);
+                      }
+                    }
+                  );
                 }
               });
-              Store.findOneAndUpdate(
-                { name: shop },
-                {
-                  $addToSet: { orders: obj }
-                },
-                { new: true, useFindAndModify: false },
-                (err, data) => {
-                  if (!err) {
-                    console.log("data add to DB", topic, data);
-                  } else {
-                    console.log("443 err", err);
-                  }
-                }
-              );
             }
           }
 
