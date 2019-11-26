@@ -1202,7 +1202,6 @@ app.post("/api/abandanTemplate", function(req, res) {
     console.log("session timeout");
   }
 });
-
 // http://immense-bastion-25565.herokuapp.com
 
 // heroku git:remote -a immense-bastion-25565
@@ -1277,8 +1276,6 @@ cron.schedule("*/5 * * * * ", () => {
 
               let resp = short(obj);
               console.log(resp);
-
-              console.log(res);
             } else console.log("time is not in range", order.f1);
           }
           if (order.f2) {
