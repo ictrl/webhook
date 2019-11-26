@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Url = require('../models/Url');
-// const Store = require('../webhook');
+const Store = require('../webhook');
 
 // @route     GET /:code
 // @desc      Redirect to long/original URL
@@ -23,7 +23,7 @@ router.get('/:code', async (req, res) => {
 			// 		if (!err) {
 			// 			console.log(data);
 			// 		} else {
-			// 			console.log(err);
+			// 			console.log(err); 
 			// 		}
 			// 	}
 			// );
