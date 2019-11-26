@@ -304,7 +304,8 @@ app.post('/api/myaction', function(req, res) {
 		Store.findOne({ name: shop }, function(err, data) {
 			if (data) {
 				console.log('store found in DB');
-				res.sendStatus(200).redirect('back');
+        // res.sendStatus(200).redirect('back');
+        res.sendStatus(200);
 
 				// res.redirect("back");
 
@@ -1201,6 +1202,7 @@ cron.schedule('*/5 * * * * ', () => {
 			console.log('Performing on store-->', store);
 			Store.findOne({ name: store }, (err, data) => {
 				data.orders.forEach((order) => {
+<<<<<<< HEAD
 					if (order.f1) {
 						if (moment(order.f1).isBetween(interval, current)) {
 							console.log('call shortner function for', order.f1);
@@ -1221,6 +1223,62 @@ cron.schedule('*/5 * * * * ', () => {
 							console.log('call shortner function for', order.f4);
 						} else console.log('time is not in range', order.f4);
 					}
+||||||| merged common ancestors
+
+          if(order.f1){
+						if (
+              moment(order.f1).isBetween(interval, current) 
+            ) {
+              console.log("call shortner function for", order.f1);
+            } else console.log("time is not in range", order.f1);
+          }if(order.f2){
+						if (
+              moment(order.f2).isBetween(interval, current) 
+            ) {
+              console.log("call shortner function for", order.f2);
+            } else console.log("time is not in range", order.f2);
+          }if(order.f3){
+						if (
+              moment(order.f3).isBetween(interval, current) 
+            ) {
+              console.log("call shortner function for", order.f3);
+            } else console.log("time is not in range", order.f3);
+          }if(order.f4){
+						if (
+              moment(order.f4).isBetween(interval, current) 
+            ) {
+              console.log("call shortner function for", order.f4);
+            } else console.log("time is not in range", order.f4);
+          }
+=======
+
+          if(order.f1){
+						if (
+              moment(order.f1).isBetween(interval, current) 
+            ) {
+              console.log("call shortner function for", order.f1);
+              
+            } else console.log("time is not in range", order.f1);
+          }if(order.f2){
+						if (
+              moment(order.f2).isBetween(interval, current) 
+            ) {
+              console.log("call shortner function for", order.f2);
+            } else console.log("time is not in range", order.f2);
+          }if(order.f3){
+						if (
+              moment(order.f3).isBetween(interval, current) 
+            ) {
+              console.log("call shortner function for", order.f3);
+            } else console.log("time is not in range", order.f3);
+          }if(order.f4){
+						if (
+              moment(order.f4).isBetween(interval, current) 
+            ) {
+              console.log("call shortner function for", order.f4);
+            } else console.log("time is not in range", order.f4);
+          }
+>>>>>>> 654394a7863737ab08cf2fbf3ef486d6af3ab95a
 				});
 			});
 		});
