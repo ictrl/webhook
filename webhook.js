@@ -126,7 +126,8 @@ const shopSchema = new mongoose.Schema({
 shopSchema.plugin(arrayUniquePlugin);
 const Store = new mongoose.model('Store', shopSchema);
 module.exports = Store;
-////////////////////////////////*URL SHORTNER
+
+//!URL SHORTNER
 
 const shorten = async (params) => {
 	const { longUrl } = params;
