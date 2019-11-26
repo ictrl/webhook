@@ -76,6 +76,7 @@ const shopSchema = new mongoose.Schema({
         type: String,
         default: moment().format()
       },
+      price: Number,
       email: { type: String, default: null },
       purchase: { type: Boolean, default: false },
       storeTime: {
