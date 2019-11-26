@@ -1202,7 +1202,7 @@ cron.schedule('*/2 * * * * ', () => {
 		});
 		console.log('All store name->', storeName);
 
-		let interval = moment().subtract(5, 'minutes').format();
+		let interval = moment().subtract(2, 'minutes').format();
 		let current = moment().format();
 		console.log('current time-->', current);
 		console.log('interval time-->', interval);
