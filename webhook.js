@@ -115,8 +115,7 @@ const shopSchema = new mongoose.Schema({
 			_id: false,
 			checkoutId: { type: Number, required: true, dropDups: true },
 			followUp: {
-				type: Array,
-				default: [ 0 ]
+				type: Array
 			},
 
 			converted: { type: Boolean, default: false },
@@ -466,7 +465,19 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								console.log('485', err);
 							}
 						}
-					);
+          );
+          
+          
+
+
+
+
+
+
+
+
+
+
 					if (data.data['orders/create customer'] != undefined && data.data['orders/create admin'] != undefined) {
 						// data.smsCount + 2
 						Store.findOneAndUpdate(
