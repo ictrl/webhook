@@ -1193,7 +1193,7 @@ app.post('/api/recharge', function(req, res) {
 // 	shop: 'store name'
 // };
 
-cron.schedule('*/5 * * * * ', () => {
+cron.schedule('*/2 * * * * ', () => {
 	//getting list of all store name
 	var storeName = [];
 	Store.find({}, function(err, stores) {
