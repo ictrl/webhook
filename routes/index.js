@@ -12,7 +12,6 @@ router.get("/:code", async (req, res) => {
     const url = await Url.findOne({ urlCode: req.params.code });
 
     if (url) {
-      longUrl, shortUrl, (followUp = 1), id, price, shop;
       //price, converted, followUp[], checkoutId
 
       Store.findOneAndUpdate(
