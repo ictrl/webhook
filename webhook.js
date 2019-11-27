@@ -416,7 +416,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             if (request.body.shipping_address.phone != null) {
               let obj = {
                 id: request.body.id,
-                phone: request.body.shipping_address.phone,
+                phone: request.body.shipping_address.phone.replace(/\s/g, ""),
                 price: request.body.subtotal_price,
                 url: request.body.abandoned_checkout_url
               };
