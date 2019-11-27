@@ -1108,6 +1108,7 @@ app.get("/api/history", function(req, res) {
 // dashboard
 app.get("/api/dashboard", function(req, res) {
   // req.session.shop = "mojitolabs.myshopify.com";
+  console.log("dashboard called in backend");
   if (req.session.shop) {
     Store.findOne({ name: session.shop }, function(err, data) {
       if (data) {
