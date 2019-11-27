@@ -131,17 +131,17 @@ export default function Abandan() {
 		<Fragment>
 			<div className="bog col-md-12 mb-5">
 				<div className="butti " title="first" onClick={topicHandler}>
-					First FollowUp
+					FollowUp 1
 				</div>
 
 				<div className="butt " title="second" onClick={topicHandler}>
-					Second FollowUp
+					FollowUp 2
 				</div>
 				<div className="butt " title="third" onClick={topicHandler}>
-					Third FollowUp
+					FollowUp 3
 				</div>
 				<div className="butt " title="fourth" onClick={topicHandler}>
-					Fourth FollowUp
+					FollowUp 4
 				</div>
 			</div>
 

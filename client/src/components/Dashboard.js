@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { Layout, Card } from '@shopify/polaris';
@@ -58,14 +58,18 @@ const fetch1 = () => {
 			state1.datasets[0].data = res.data.follow;
 			state2.datasets[0].data = res.data.inc;
 			state3.datasets[0].data = res.data.price;
+			console.log(res.data);
 		})
 		.catch((err) => console.error(err));
 };
 
 function Dashboard() {
-	useEffect(() => {
-		fetch1();
-	}, []);
+	useEffect(
+		() => {
+			fetch1();
+		},
+		[ state1, state2, state3 ]
+	);
 	return (
 		<Layout>
 			<Layout.AnnotatedSection
