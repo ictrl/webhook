@@ -465,19 +465,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								console.log('485', err);
 							}
 						}
-          );
-          
-          
-
-
-
-
-
-
-
-
-
-
+					);
+					//TODO -->
 					if (data.data['orders/create customer'] != undefined && data.data['orders/create admin'] != undefined) {
 						// data.smsCount + 2
 						Store.findOneAndUpdate(
