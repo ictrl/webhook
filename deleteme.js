@@ -85,18 +85,87 @@ const Store = new mongoose.model("Store", shopSchema);
 //   }
 // );
 
+// Store.findOne(
+//   { name: shop, clicked: { $elemMatch: { checkoutId: 1998 } } },
+//   (err, data) => {
+//     if (err) {
+//       console.log(err);
+//     } else console.log(data);
+//   }
+// );
+
 // Store.findOne({ name: shop }, function(err, data) {
 //   if (data) {
-//     // if (data.clicked.followUp.lenght != 0) {
-//     // console.log(data.clicked);
-//     data.clicked.forEach(e => {
-//       // if (e.checkoutID === 1998) {
-//       if (e.checkoutId === 1998) {
-//         console.log("chnged converted");
+//     let follow = [];
+//     let price = [];
+//     let inc = [];
+//     let count1 = 0;
+//     let count2 = 0;
+//     let count3 = 0;
+//     let count4 = 0;
+//     let price1 = 0;
+//     let price2 = 0;
+//     let price3 = 0;
+//     let price4 = 0;
+//     let inc1 = 0;
+//     let inc2 = 0;
+//     let inc3 = 0;
+//     let inc4 = 0;
 
-//       } else console.log(2);
+//     data.clicked.forEach(e => {
+//       let idx = e.followUp.length - 1;
+//       let dig = e.followUp[idx];
+//       if (e.followUp.includes(1)) {
+//         inc1++;
+//       }
+//       if (e.followUp.includes(2)) {
+//         inc2++;
+//       }
+//       if (e.followUp.includes(3)) {
+//         inc3++;
+//       }
+//       if (e.followUp.includes(4)) {
+//         inc4++;
+//       }
+
+//       if (dig === 1) {
+//         count1++;
+//         price1 = price1 + e.price;
+//       }
+//       if (dig === 2) {
+//         count2++;
+//         price2 = price2 + e.price;
+//       }
+//       if (dig === 3) {
+//         count3++;
+//         price3 = price3 + e.price;
+//       }
+//       if (dig === 4) {
+//         count4++;
+//         price4 = price4 + e.price;
+//       }
 //     });
-//     // }
+//     follow.push(count1);
+//     follow.push(count2);
+//     follow.push(count3);
+//     follow.push(count4);
+//     price.push(price1);
+//     price.push(price2);
+//     price.push(price3);
+//     price.push(price4);
+//     inc.push(inc1);
+//     inc.push(inc2);
+//     inc.push(inc3);
+//     inc.push(inc4);
+
+//     console.log(follow, "followList");
+//     console.log(price, "priceList");
+//     console.log(inc, "incList");
+//     // e.followUp.forEach(ele => {
+
+//     // });
+
+//     // console.log(price, "B");
 //   } else console.log(1);
 // });
 

@@ -468,7 +468,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             { "orders.id": request.body.checkout_id },
             {
               $set: {
-                "orders.$.purchase": true,
+                "orders.$.purchase": true
                 // "orders.$f30": true
               }
             },
@@ -1104,6 +1104,81 @@ app.get("/api/history", function(req, res) {
     );
   }
 });
+// dashboard
+app.get("/api/dashboard", (req, res) => {
+  if (req.session.shop) {
+    Store.findOne({ name: shop }, function(err, data) {
+      if (data) {
+        let follow = [];
+        let price = [];
+        let inc = [];
+        let count1 = 0;
+        let count2 = 0;
+        let count3 = 0;
+        let count4 = 0;
+        let price1 = 0;
+        let price2 = 0;
+        let price3 = 0;
+        let price4 = 0;
+        let inc1 = 0;
+        let inc2 = 0;
+        let inc3 = 0;
+        let inc4 = 0;
+
+        data.clicked.forEach(e => {
+          let idx = e.followUp.length - 1;
+          let dig = e.followUp[idx];
+          if (e.followUp.includes(1)) {
+            inc1++;
+          }
+          if (e.followUp.includes(2)) {
+            inc2++;
+          }
+          if (e.followUp.includes(3)) {
+            inc3++;
+          }
+          if (e.followUp.includes(4)) {
+            inc4++;
+          }
+
+          if (dig === 1) {
+            count1++;
+            price1 = price1 + e.price;
+          }
+          if (dig === 2) {
+            count2++;
+            price2 = price2 + e.price;
+          }
+          if (dig === 3) {
+            count3++;
+            price3 = price3 + e.price;
+          }
+          if (dig === 4) {
+            count4++;
+            price4 = price4 + e.price;
+          }
+        });
+        follow.push(count1);
+        follow.push(count2);
+        follow.push(count3);
+        follow.push(count4);
+        price.push(price1);
+        price.push(price2);
+        price.push(price3);
+        price.push(price4);
+        inc.push(inc1);
+        inc.push(inc2);
+        inc.push(inc3);
+        inc.push(inc4);
+        res.send(inc);
+      } else console.log(1);
+    });
+  } else {
+    console.log(
+      "cant find session key form get /api/dashboard || your session timeout"
+    );
+  }
+});
 // save template to db
 app.post("/api/template", function(req, res) {
   let topic = req.body.topic.trim();
@@ -1222,6 +1297,7 @@ app.post("/api/abandanTemplate", function(req, res) {
 // https://mojitolabs.myshopify.com/admin/apps/sms_update
 
 // send rechage smscount to db
+
 app.post("/api/recharge", function(req, res) {
   let sms = req.body;
 
