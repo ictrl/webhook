@@ -24,6 +24,11 @@ export default function TabsExample() {
 	};
 	const tabs = [
 		{
+			id: 'repeat-customers',
+			content: 'SMS History',
+			panelID: 'repeat-customers-content'
+		},
+		{
 			id: 'dashboard',
 			content: 'Dashboard',
 			panelID: 'dashboard'
@@ -45,11 +50,6 @@ export default function TabsExample() {
 			panelID: 'abandan-checkout-content'
 		},
 
-		{
-			id: 'repeat-customers',
-			content: 'SMS History',
-			panelID: 'repeat-customers-content'
-		},
 		{
 			id: 'buy-more-sms',
 			content: 'Sms Left: ' + smsLeft,

@@ -100,7 +100,8 @@ export default function Template() {
 
 	const topicHandler = (params) => {
 		const selectedElement = params.target;
-		const selectedValue = selectedElement.innerHTML;
+		const selectedValue = selectedElement.title;
+		console.log(selectedValue);
 		switch (selectedValue) {
 			case 'orders/create':
 				setTopics({
@@ -179,15 +180,15 @@ export default function Template() {
 			<div id="snackbar">Template Updated for {topics.topic} </div>
 
 			<div className="bog col-md-12 mb-5">
-				<div className="butti " onClick={topicHandler}>
-					orders/create
+				<div className="butti " title="orders/create" onClick={topicHandler}>
+					Orders/create
 				</div>
 
-				<div className="butt " onClick={topicHandler}>
-					orders/cancelled
+				<div className="butt " title="orders/cancelled" onClick={topicHandler}>
+					Orders/cancelled
 				</div>
-				<div className="butt " onClick={topicHandler}>
-					orders/fulfilled
+				<div className="butt " title="orders/fulfilled" onClick={topicHandler}>
+					Orders/fulfilled
 				</div>
 			</div>
 			<Layout>
