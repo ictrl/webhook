@@ -15,7 +15,7 @@ router.get("/:code", async (req, res) => {
       //price, converted, followUp[], checkoutId
 
       Store.findOneAndUpdate(
-        { name: shop },
+        { name: url.shop },
         {
           $addToSet: {
             clicked: {

@@ -54,11 +54,7 @@ const shopSchema = new mongoose.Schema({
     {
       _id: false,
       checkoutId: { type: Number, required: true, dropDups: true },
-      followUp: {
-        type: Array,
-        default: [0]
-      },
-
+      followUp: Array,
       converted: { type: Boolean, default: false },
       price: { type: Number, default: null }
     }
@@ -66,6 +62,43 @@ const shopSchema = new mongoose.Schema({
 });
 
 const Store = new mongoose.model("Store", shopSchema);
+
+//A.findOne({ _id: a._id, items: { $elemMatch: {$in: [1,5,9] }}}).exec(function (err, docs) {
+
+// Store.updateOne(
+//   {
+//     clicked: {
+//       $elemMatch: {
+//         // questions: { $elemMatch: { questionId: upQstnObj.questionId } }
+//         // price: 100
+//         checkoutId: 1998
+//       }
+//     }
+//   },
+//   // { $set: { [`${toSet}`]: upQstnObj } },
+//   // $set: {"orders.$.purchase": true}
+//   { $set: { "clicked.$.converted": true } },
+//   (err, data) => {
+//     if (err) {
+//       console.log(err);
+//     } else console.log(data);
+//   }
+// );
+
+// Store.findOne({ name: shop }, function(err, data) {
+//   if (data) {
+//     // if (data.clicked.followUp.lenght != 0) {
+//     // console.log(data.clicked);
+//     data.clicked.forEach(e => {
+//       // if (e.checkoutID === 1998) {
+//       if (e.checkoutId === 1998) {
+//         console.log("chnged converted");
+
+//       } else console.log(2);
+//     });
+//     // }
+//   } else console.log(1);
+// });
 
 // Store.findOneAndUpdate(
 //   { name: shop },
@@ -178,21 +211,6 @@ const Store = new mongoose.model("Store", shopSchema);
 //   });
 // });
 
-// Store.updateOne(
-//   { "test.id": 69 },
-//   {
-//     $set: {
-//       "test.$.F30.FollowUp": 69
-//     }
-//   },
-//   function(err, data) {
-//     if (!err) {
-//       console.log(data);
-//     } else {
-//       console.log(err);
-//     }
-//   }
-// );
 // Store.findOneAndUpdate(
 //   { name: shop },
 //   {
