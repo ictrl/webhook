@@ -9,6 +9,7 @@ import Template from './components/Template';
 import History from './components/History';
 // import BuyMoreSMS from './components/BuyMoreSMS';
 import Abandan from './components/Abandan';
+import Dashboard from './components/Dashboard';
 
 export default function TabsExample() {
 	const [ selected, setSelected ] = useState(0);
@@ -22,6 +23,16 @@ export default function TabsExample() {
 		});
 	};
 	const tabs = [
+		{
+			id: 'repeat-customers',
+			content: 'SMS History',
+			panelID: 'repeat-customers-content'
+		},
+		{
+			id: 'dashboard',
+			content: 'Dashboard',
+			panelID: 'dashboard'
+		},
 		{
 			id: 'all-customers',
 			content: 'Settings',
@@ -39,11 +50,6 @@ export default function TabsExample() {
 			panelID: 'abandan-checkout-content'
 		},
 
-		{
-			id: 'repeat-customers',
-			content: 'SMS History',
-			panelID: 'repeat-customers-content'
-		},
 		{
 			id: 'buy-more-sms',
 			content: 'Sms Left: ' + smsLeft,
@@ -65,6 +71,8 @@ export default function TabsExample() {
 				return <History />;
 			case 'Abandan Checkout':
 				return <Abandan />;
+			case 'Dashboard':
+				return <Dashboard />;
 
 			default:
 				break;
