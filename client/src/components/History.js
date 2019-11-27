@@ -16,10 +16,17 @@ export default function History(props) {
 	}, []);
 
 	return (
-		<Page>
-			<h1>Sms left</h1>
+		<Layout>
+			<Layout.AnnotatedSection
+				title="Total SMS Left"
+				description="Admin will be notify on this no. by selecting Notify Admin."
+			>
+				<Card sectioned>
+					<div style={{ padding: '3rem' }} />
+				</Card>
+			</Layout.AnnotatedSection>
 
 			<DescriptionList items={history} />
-		</Page>
+		</Layout>
 	);
 }
