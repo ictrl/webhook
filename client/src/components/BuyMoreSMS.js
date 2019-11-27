@@ -1,5 +1,4 @@
 import React from "react";
-import { EmptyState } from "@shopify/polaris";
 
 export default class App extends React.Component {
   render() {

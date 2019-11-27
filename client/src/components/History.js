@@ -1,8 +1,8 @@
-import React, { Fragment, useEffect, useCallback, useState } from 'react';
-import { DescriptionList, Page, Card, Layout, Heading, Button, Checkbox, Form, TextField } from '@shopify/polaris';
+import React, { useEffect, useState } from 'react';
+import { DescriptionList, Layout, Card } from '@shopify/polaris';
 import axios from 'axios';
 
-export default function History(props) {
+export default function History() {
 	const [ history, setHistory ] = useState([]);
 
 	const smsHistory = () => {

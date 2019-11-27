@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 
 import { Layout, Card } from '@shopify/polaris';
@@ -63,12 +63,9 @@ const fetch1 = () => {
 };
 
 function Dashboard() {
-	useEffect(
-		() => {
-			fetch1();
-		},
-		[ state1, state2, state3 ]
-	);
+	useEffect(() => {
+		fetch1();
+	}, []);
 	return (
 		<Layout>
 			<Layout.AnnotatedSection
