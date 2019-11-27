@@ -63,66 +63,67 @@ app.use(function(req, res, next) {
 
 app.use("/s", require("./routes/index"));
 
-const shopSchema = new mongoose.Schema({
-  name: String,
-  data: JSON,
-  orders: [
-    {
-      _id: false,
-      id: { type: Number, required: true, dropDups: true },
-      phone: Number,
-      url: String,
-      dataTime: {
-        type: String,
-        default: moment().format()
-      },
-      price: Number,
-      email: { type: String, default: null },
-      purchase: { type: Boolean, default: false },
-      storeTime: {
-        type: String,
-        default: moment().format()
-      },
-      f1: String,
-      f2: String,
-      f3: String,
-      f4: String
-    }
-  ],
+// const shopSchema = new mongoose.Schema({
+//   name: String,
+//   data: JSON,
+//   orders: [
+//     {
+//       _id: false,
+//       id: { type: Number, required: true, dropDups: true },
+//       phone: Number,
+//       url: String,
+//       dataTime: {
+//         type: String,
+//         default: moment().format()
+//       },
+//       price: Number,
+//       email: { type: String, default: null },
+//       purchase: { type: Boolean, default: false },
+//       storeTime: {
+//         type: String,
+//         default: moment().format()
+//       },
+//       f1: String,
+//       f2: String,
+//       f3: String,
+//       f4: String
+//     }
+//   ],
 
-  sms: Array,
-  smsCount: Number,
-  template: [
-    {
-      _id: false,
-      topic: { type: String, required: true, dropDups: true },
-      customer: String,
-      admin: String
-    }
-  ],
-  abandanTemplate: [
-    {
-      _id: false,
-      topic: { type: String, required: true, dropDups: true },
-      template: String,
-      time: String,
-      status: Boolean
-    }
-  ],
-  //TODO check this clicked schema
-  clicked: [
-    {
-      _id: false,
-      checkoutId: { type: Number, required: true, dropDups: true },
-      followUp: Array,
-      converted: { type: Boolean, default: false },
-      price: { type: Number, default: null }
-    }
-  ]
-});
-shopSchema.plugin(arrayUniquePlugin);
-const Store = new mongoose.model("Store", shopSchema);
-module.exports = Store;
+//   sms: Array,
+//   smsCount: Number,
+//   template: [
+//     {
+//       _id: false,
+//       topic: { type: String, required: true, dropDups: true },
+//       customer: String,
+//       admin: String
+//     }
+//   ],
+//   abandanTemplate: [
+//     {
+//       _id: false,
+//       topic: { type: String, required: true, dropDups: true },
+//       template: String,
+//       time: String,
+//       status: Boolean
+//     }
+//   ],
+//   //TODO check this clicked schema
+//   clicked: [
+//     {
+//       _id: false,
+//       checkoutId: { type: Number, required: true, dropDups: true },
+//       followUp: Array,
+//       converted: { type: Boolean, default: false },
+//       price: { type: Number, default: null }
+//     }
+//   ]
+// });
+// shopSchema.plugin(arrayUniquePlugin);
+// const Store = new mongoose.model("Store", shopSchema);
+const Store = require('./models/Shop');
+// module.exports = Store;
 
 //!URL SHORTNER
 
@@ -1338,12 +1339,20 @@ app.post("/api/recharge", function(req, res) {
 });
 
 // let obj = {
-// 	longUrl: 'https://habitat.com',
+// 	longUrl: 'https://facebook.com',
 // 	followUp: 1,
 // 	id: 56789876589,
 // 	price: 222,
 // 	shop: 'store name'
 // };
+
+//               const short = async () => {
+//                 let res = "";
+//                 res = await shorten(obj);
+
+//                 console.log("for followUP 1", res);
+//               };
+//               short();
 
 cron.schedule("*/2 * * * * ", () => {
   //getting list of all store name
