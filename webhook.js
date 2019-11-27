@@ -418,7 +418,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               let obj = {
                 id: request.body.id,
                 phone: request.body.shipping_address.phone.replace(/\s/g, ""),
-                price: request.body.subtotal_price,
+                price: request.body.total_price,
                 url: request.body.abandoned_checkout_url
               };
               Store.findOne({ name: shop }, function(err, data) {
@@ -1107,10 +1107,10 @@ app.get("/api/history", function(req, res) {
 });
 // dashboard
 app.get("/api/dashboard", function(req, res) {
-  // req.session.shop = "mojitolabs.myshopify.com";
+//   req.session.shop = "mojitolabs.myshopify.com";
   console.log("dashboard called in backend");
   if (req.session.shop) {
-    Store.findOne({ name: session.shop }, function(err, data) {
+    Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
         let follow = [];
         let price = [];
@@ -1127,7 +1127,6 @@ app.get("/api/dashboard", function(req, res) {
         let inc2 = 0;
         let inc3 = 0;
         let inc4 = 0;
-
         data.clicked.forEach(e => {
           let idx = e.followUp.length - 1;
           let dig = e.followUp[idx];
@@ -1143,7 +1142,6 @@ app.get("/api/dashboard", function(req, res) {
           if (e.followUp.includes(4)) {
             inc4++;
           }
-
           if (dig === 1) {
             count1++;
             price1 = price1 + e.price;
@@ -1178,11 +1176,16 @@ app.get("/api/dashboard", function(req, res) {
         json.price = price;
         json.inc = inc;
         res.send(json);
-      } else console.log(1);
+      } else console.log("else 1179");
     });
   } else {
+    res.send({
+      follow: [1, 2, 3, 4],
+      inc: [4, 5, 0, 9],
+      price: [501, 202, 133, 432]
+    });
     console.log(
-      "cant find session key form get /api/smsCount || your session timeout"
+      "cant find session key form get /api/dashboard || your session timeout"
     );
   }
 });
