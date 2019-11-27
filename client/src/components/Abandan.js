@@ -69,7 +69,9 @@ export default function Abandan() {
 			x.className = x.className.replace('show', '');
 		}, 2000);
 	}
-	const [ template1, setTemplate1 ] = useState('');
+	const [ template1, setTemplate1 ] = useState(
+		'Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link		Available Variables customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link'
+	);
 
 	const handleTemplate1 = useCallback((newValue) => setTemplate1(newValue), []);
 
@@ -114,7 +116,9 @@ export default function Abandan() {
 		}, 2000);
 	}
 
-	const [ template2, setTemplate2 ] = useState('');
+	const [ template2, setTemplate2 ] = useState(
+		'Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link		Available Variables customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link'
+	);
 
 	const handleTemplate2 = useCallback((newValue) => setTemplate2(newValue), []);
 
@@ -151,7 +155,9 @@ export default function Abandan() {
 		}, 3000);
 	}
 
-	const [ template3, setTemplate3 ] = useState('');
+	const [ template3, setTemplate3 ] = useState(
+		'Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link		Available Variables customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link'
+	);
 
 	const handleTemplate3 = useCallback((newValue) => setTemplate3(newValue), []);
 
@@ -189,7 +195,9 @@ export default function Abandan() {
 		}, 4000);
 	}
 
-	const [ template4, setTemplate4 ] = useState('');
+	const [ template4, setTemplate4 ] = useState(
+		'Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link		Available Variables customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link'
+	);
 
 	const handleTemplate4 = useCallback((newValue) => setTemplate4(newValue), []);
 
