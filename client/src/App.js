@@ -24,14 +24,14 @@ export default function TabsExample() {
 	};
 	const tabs = [
 		{
-			id: 'repeat-customers',
-			content: 'SMS History',
-			panelID: 'repeat-customers-content'
-		},
-		{
 			id: 'dashboard',
 			content: 'Dashboard',
 			panelID: 'dashboard'
+		},
+		{
+			id: 'repeat-customers',
+			content: 'SMS History',
+			panelID: 'repeat-customers-content'
 		},
 		{
 			id: 'all-customers',

@@ -1106,9 +1106,9 @@ app.get("/api/history", function(req, res) {
 });
 // dashboard
 app.get("/api/dashboard", function(req, res) {
-  req.session.shop = "mojitolabs.myshopify.com";
+  // req.session.shop = "mojitolabs.myshopify.com";
   if (req.session.shop) {
-    Store.findOne({ name: req.session.shop }, function(err, data) {
+    Store.findOne({ name: session.shop }, function(err, data) {
       if (data) {
         let follow = [];
         let price = [];

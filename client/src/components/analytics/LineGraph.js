@@ -1,23 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
+import axios from 'axios';
 
 const state = {
-	labels: [ 'Follow Up 1', 'Follow Up 2', 'Follow Up 3', 'Follow Up 4' ],
+	labels: [ 'First', 'Second', 'Third', 'Fourth' ],
 	datasets: [
 		{
-			label: 'Click',
+			label: 'Click Through',
+			data: '',
 			fill: true,
 			lineTension: 0.5,
-			// lineColor: '#3A5BD6',
+			lineColor: '#3A5BD6',
 			backgroundColor: '#5C6AC4',
-			// borderColor: '#3A5BD6',
-			// borderWidth: 1,
-			data: [ 65, 59, 80, 81, 56 ]
+			borderColor: '#3A5BD6',
+			borderWidth: 1
 		}
 	]
 };
 
+const fetchh = (params) => {
+	axios
+		.get('/api/dashboard/')
+		.then((res) => {
+			state.datasets[0].data = res.data.inc;
+			console.log(res.data.inc);
+			console.log(state.datasets[0].data);
+		})
+		.catch((err) => console.error(err));
+};
+
 export default function LineGraph() {
+	useEffect(() => {
+		fetchh();
+	}, []);
 	return (
 		<div>
 			<Line
@@ -31,6 +46,22 @@ export default function LineGraph() {
 					legend: {
 						display: true,
 						position: 'right'
+					},
+					scales: {
+						yAxes: [
+							{
+								ticks: {
+									beginAtZero: true
+								}
+							}
+						],
+						xAxes: [
+							{
+								gridLines: {
+									display: false
+								}
+							}
+						]
 					}
 				}}
 			/>

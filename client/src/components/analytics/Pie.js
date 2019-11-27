@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pie, Doughnut } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 
 const state = {
 	labels: [ 'Followup 1', 'Followup 2', 'Followup 3', 'Followup 4', 'Not Converted' ],
