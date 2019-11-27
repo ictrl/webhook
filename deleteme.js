@@ -397,14 +397,3 @@ const Store = new mongoose.model("Store", shopSchema);
 //     }
 //   }
 // );
-
-let a = [1, 2, 3];
-let b = [11, 22, 3];
-let c = [4, 233, 3];
-let j = {};
-
-j.a = a;
-j.b = b;
-j.c = c;
-
-console.log(j);
