@@ -1105,7 +1105,7 @@ app.get("/api/history", function(req, res) {
   }
 });
 // dashboard
-app.get("/api/dashboard", (req, res) => {
+app.get("/api/dashboard", function(req, res) {
   if (req.session.shop) {
     Store.findOne({ name: shop }, function(err, data) {
       if (data) {
@@ -1170,12 +1170,16 @@ app.get("/api/dashboard", (req, res) => {
         inc.push(inc2);
         inc.push(inc3);
         inc.push(inc4);
-        res.send(inc);
+        let json = {};
+        json.follow = follow;
+        json.price = price;
+        json.inc = inc;
+        res.send(json);
       } else console.log(1);
     });
   } else {
     console.log(
-      "cant find session key form get /api/dashboard || your session timeout"
+      "cant find session key form get /api/smsCount || your session timeout"
     );
   }
 });
