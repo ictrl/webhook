@@ -21,7 +21,9 @@ const state = {
 
 const fetch = params => {
   axios.get("/api/dashboard/").then(res => {
-    console.log("dashboard", res.data);
+    console.log("followUp", res.data.follow);
+    console.log("inc", res.data.inc);
+    console.log("price", res.data.price);
   });
 };
 
@@ -31,7 +33,7 @@ export default function Design() {
   }, []);
   return (
     <div>
-      {console.log(state.datasets[0].data)}
+      {/* {console.log(state.datasets[0].data)} */}
 
       <Bar
         data={state}
