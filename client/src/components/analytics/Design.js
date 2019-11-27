@@ -29,7 +29,7 @@ export default function Design() {
 					title: {
 						display: true,
 						text: 'Average Rainfall per month',
-						fontSize: 16
+						fontSize: 15
 					},
 					legend: {
 						display: true,

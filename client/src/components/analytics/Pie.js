@@ -7,11 +7,11 @@ const state = {
 		{
 			label: 'Rainfall',
 			backgroundColor: [ '#5C6AC4', '#47C1BF', '#F49342', '#50B83C', '#9C6ADE' ],
-			hoverBackgroundColor: [ '#47C1BF', '#F49342', '#50B83C', '#9C6ADE', '#5C6AC4' ],
+			hoverBackgroundColor: [ '#50B83C', '#9C6ADE', '#47C1BF', '#5C6AC4', '#F49342' ],
 			data: [ 65, 78, 30, 70, 12 ],
 			// borderColor: [ '#5C6AC4', '#47C1BF', '#F49342', '#50B83C', '#9C6ADE' ],
 			borderAlign: 'inner',
-			borderWidth: 0
+			borderWidth: 0.1
 		}
 	]
 };
@@ -25,7 +25,7 @@ export default function Piee() {
 					title: {
 						display: true,
 						text: 'Average Rainfall per month',
-						fontSize: 20
+						fontSize: 15
 					},
 					legend: {
 						display: true,

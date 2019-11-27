@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { TextField, Layout, Select, Card } from '@shopify/polaris';
+import React, { useCallback, useState, useEffect } from 'react';
+import { Layout, Card } from '@shopify/polaris';
 
 import Design from './analytics/Design';
 import LineGraph from './analytics/LineGraph';
@@ -9,8 +9,8 @@ function Dashboard() {
 	return (
 		<Layout>
 			<Layout.AnnotatedSection
-				title="First Follow Up"
-				description="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link."
+				title="Converted Through FollowUp message"
+				description="We sent them followUp message Until they purchased product. Here we categorized number of converted converted as followup message."
 			>
 				<Card sectioned>
 					<div>
@@ -39,16 +39,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-// <div style={{ width: 500 }}>
-// 	<div style={{ width: 500 }}>
-// 		<Pie />
-// 	</div>
-// 	<div style={{ width: 500 }}>
-// 		<Design />
-
-// 		<div style={{ width: 500 }}>
-// 			<LineGraph />
-// 		</div>
-// 	</div>
-// </div>

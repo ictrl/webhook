@@ -26,7 +26,7 @@ export default function LineGraph() {
 					title: {
 						display: true,
 						text: 'Average Click per month',
-						fontSize: 20
+						fontSize: 15
 					},
 					legend: {
 						display: true,
