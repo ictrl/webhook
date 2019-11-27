@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useState } from 'react';
-import { TextField, Layout, Select, Card } from '@shopify/polaris';
+import { TextField, Layout, Select, Card, FormLayout, InlineError, Stack } from '@shopify/polaris';
 import axios from 'axios';
 
 export default function Abandan() {
@@ -61,10 +61,8 @@ export default function Abandan() {
 		time: 30,
 		status: 0
 	};
-
+	const [ followUpTitle, setFollowUpTitle ] = useState('First FollowUp');
 	const [ abandanData, setabandanData ] = useState(initialState);
-
-	const handleTemplate1 = (newValue) => setabandanData({ ...abandanData, template: newValue });
 
 	const handleSelectChange1 = (newValue) => setabandanData({ ...abandanData, time: newValue });
 	const handleStatus1 = (newValue) => setabandanData({ ...abandanData, status: newValue });
@@ -81,10 +79,6 @@ export default function Abandan() {
 	const statusOption1 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 
 	////////////////////////////end 4/////////////
-	let defaultTopic = {
-		topic: 'first',
-		topicVariables: 'name  price order_id title'
-	};
 
 	const topicHandler = (params) => {
 		const selectedElement = params.target;
@@ -93,15 +87,19 @@ export default function Abandan() {
 		switch (selectedValue) {
 			case 'first':
 				setabandanData({ ...abandanData, topic: 1 });
+				setFollowUpTitle('First Follow Up');
 				break;
 			case 'second':
 				setabandanData({ ...abandanData, topic: 2 });
+				setFollowUpTitle('Second Follow Up');
 				break;
 			case 'third':
 				setabandanData({ ...abandanData, topic: 3 });
+				setFollowUpTitle('Third Follow Up');
 				break;
 			case 'fourth':
 				setabandanData({ ...abandanData, topic: 4 });
+				setFollowUpTitle('Fourth Follow Up');
 				break;
 
 			default:
@@ -126,6 +124,35 @@ export default function Abandan() {
 		}
 	};
 
+	const [ textFieldValue, setTextFieldValue ] = useState('Enter Custom Template Message Here . . .');
+
+	const handleTextFieldValueChange = (value) => {
+		setTextFieldValue(value);
+		setabandanData({ ...abandanData, template: value });
+	};
+	const textFieldID = 'ruleContent';
+	const isInvalid = isValueInvalid(textFieldValue);
+	const errorMessage = isInvalid ? 'Enter 30 or more characters for product type is equal to' : '';
+
+	const formGroupMarkup = (
+		<Stack wrap={false} alignment="leading" spacing="loose">
+			<Stack.Item fill>
+				<TextField
+					labelHidden
+					multiline
+					label="Collection rule content"
+					error={isInvalid}
+					id={textFieldID}
+					value={textFieldValue}
+					onChange={handleTextFieldValueChange}
+				/>
+				<div style={{ marginTop: '4px' }}>
+					<InlineError message={errorMessage} fieldID={textFieldID} />
+				</div>
+			</Stack.Item>
+		</Stack>
+	);
+
 	////////////////////////////end 4/////////////
 	return (
 		<Fragment>
@@ -147,17 +174,12 @@ export default function Abandan() {
 
 			<Layout>
 				<Layout.AnnotatedSection
-					title="First Follow Up"
+					title={followUpTitle}
 					description="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link."
 				>
 					<Card sectioned>
-						<TextField
-							label="Template"
-							value={'Enter Template Here Here'}
-							onChange={handleTemplate1}
-							multiline
-							helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link"
-						/>
+						<FormLayout>{formGroupMarkup}</FormLayout>
+
 						<br />
 
 						<div className="mt-2 a-card-contents">
@@ -186,4 +208,11 @@ export default function Abandan() {
 			</Layout>
 		</Fragment>
 	);
+	function isValueInvalid(content) {
+		if (!content) {
+			return true;
+		}
+
+		return content.length < 30;
+	}
 }

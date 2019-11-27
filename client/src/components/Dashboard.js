@@ -9,7 +9,7 @@ const state1 = {
 	labels: [ 'First', 'Second', 'Third', 'Fourth' ],
 	datasets: [
 		{
-			label: 'No. of Sales of Votes',
+			label: 'Sales in Number',
 			data: '',
 			backgroundColor: '#5462C1',
 			barPercentage: 1,
@@ -25,7 +25,7 @@ const state2 = {
 	labels: [ 'First', 'Second', 'Third', 'Fourth' ],
 	datasets: [
 		{
-			label: 'Click Through',
+			label: 'CTR',
 			data: '',
 			fill: true,
 			lineTension: 0.5,
@@ -40,11 +40,11 @@ const state3 = {
 	labels: [ 'First', 'Second', 'Third', 'Fourth' ],
 	datasets: [
 		{
-			label: 'Rainfall',
+			label: 'Amount of Sales',
 			data: '',
-			backgroundColor: [ '#5C6AC4', '#47C1BF', '#F49342', '#9C6ADE' ],
-			hoverBackgroundColor: [ '#50B83C', '#9C6ADE', '#5C6AC4', '#F49342' ],
-			// borderColor: [ '#5C6AC4', '#47C1BF', '#F49342', '#50B83C', '#9C6ADE' ],
+			backgroundColor: [ '#5C6AC4', '#50B83C', '#006FBB', '#F49342' ],
+			hoverBackgroundColor: [ '#5C3AC4', '#24930e', '#005289', '#e07721' ],
+
 			borderAlign: 'inner',
 			borderWidth: 0.1
 		}
@@ -73,8 +73,8 @@ function Dashboard() {
 	return (
 		<Layout>
 			<Layout.AnnotatedSection
-				title="First Follow Up"
-				description="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link."
+				title="Converted FollowUp"
+				description="All the converted sales from followUp message will appear here, according to their order."
 			>
 				<Card sectioned>
 					<Bar
@@ -82,7 +82,7 @@ function Dashboard() {
 						options={{
 							title: {
 								display: true,
-								text: 'Average Rainfall per month',
+								text: 'Number Of Sales',
 								fontSize: 15
 							},
 							legend: {
@@ -110,8 +110,8 @@ function Dashboard() {
 				</Card>
 			</Layout.AnnotatedSection>
 			<Layout.AnnotatedSection
-				title="First Follow Up"
-				description="Available Variables:- customer_name store_name abandoned_checkout_url amount first_name last_name unsubscribe_link."
+				title="Click Through Rate"
+				description="Number of clicked abandan links from followUp message will appear here, according to their order."
 			>
 				<Card sectioned>
 					{' '}
@@ -120,7 +120,7 @@ function Dashboard() {
 						options={{
 							title: {
 								display: true,
-								text: 'Average Click per month',
+								text: 'Number of Click on followUp message',
 								fontSize: 15
 							},
 							legend: {
@@ -148,8 +148,8 @@ function Dashboard() {
 				</Card>
 			</Layout.AnnotatedSection>
 			<Layout.AnnotatedSection
-				title="Converted Through FollowUp message"
-				description="We sent them followUp message Until they purchased product. Here we categorized number of converted converted as followup message."
+				title="Converted Sales"
+				description="Total amount of converted sales from followUp message will appear here, according to their order. Price in Rupees."
 			>
 				<Card sectioned>
 					<Pie
@@ -157,7 +157,7 @@ function Dashboard() {
 						options={{
 							title: {
 								display: true,
-								text: 'Average Rainfall per month',
+								text: 'Converted Earnings',
 								fontSize: 15
 							},
 							legend: {

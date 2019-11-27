@@ -19,6 +19,9 @@ input[type="number"]::-webkit-outer-spin-button {
 		display: inline;
 	}
 }
+.center {
+	text-align: center;
+}
 .butt {
 	margin: 0;
 	color: #5c6ac4;
