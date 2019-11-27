@@ -122,7 +122,7 @@ app.use("/s", require("./routes/index"));
 // });
 // shopSchema.plugin(arrayUniquePlugin);
 // const Store = new mongoose.model("Store", shopSchema);
-const Store = require('./models/Shop');
+const Store = require("./models/Shop");
 // module.exports = Store;
 
 //!URL SHORTNER
@@ -952,109 +952,109 @@ const sndSms = (phone, store, message, senderID, shop) => {
   if (shop != undefined) {
     console.log(shop, "shop");
   }
-  //   message = message.replace(/ /g, "%20");
-  //   Store.findOne({ name: shop }, function(err, data) {
-  //     if (!err) {
-  //       if (data.smsCount > 0) {
-  //         //send SMS
-  //         var options = {
-  //           method: "GET",
-  //           hostname: "api.msg91.com",
-  //           port: null,
-  //           path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=${senderID}&message=${message}&country=91`,
-  //           headers: {}
-  //         };
-  //         var req = http.request(options, function(res) {
-  //           var chunks = [];
+  message = message.replace(/ /g, "%20");
+  Store.findOne({ name: shop }, function(err, data) {
+    if (!err) {
+      if (data.smsCount > 0) {
+        //send SMS
+        var options = {
+          method: "GET",
+          hostname: "api.msg91.com",
+          port: null,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=300328AHqrb8dPQZ35daf0fb0&route=4&sender=${senderID}&message=${message}&country=91`,
+          headers: {}
+        };
+        var req = http.request(options, function(res) {
+          var chunks = [];
 
-  //           res.on("data", function(chunk) {
-  //             chunks.push(chunk);
-  //           });
+          res.on("data", function(chunk) {
+            chunks.push(chunk);
+          });
 
-  //           res.on("end", function() {
-  //             var body = Buffer.concat(chunks);
-  //             console.log(body.toString());
-  //           });
-  //         });
-  //         //save sms data to DB
+          res.on("end", function() {
+            var body = Buffer.concat(chunks);
+            console.log(body.toString());
+          });
+        });
+        //save sms data to DB
 
-  //         var obj = {
-  //           description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
-  //           term: phone
-  //           // number: shop
-  //         };
+        var obj = {
+          description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
+          term: phone
+          // number: shop
+        };
 
-  //         Store.findOneAndUpdate(
-  //           { name: shop },
-  //           {
-  //             $push: { sms: obj },
-  //             $set: {
-  //               smsCount: data.smsCount - 1
-  //             }
-  //           },
-  //           { new: true, useFindAndModify: false },
-  //           (err, data) => {
-  //             if (!err) {
-  //               console.log("data");
-  //             } else {
-  //               console.log("err", err);
-  //             }
-  //           }
-  //         );
-  //         req.end();
-  //       } else if (data.smsCount == 0 || data.smsCount == -1) {
-  //         // notify admin to recharge
-  //         //send SMS mgs91ed
-  //         phone = adminNumber;
-  //         message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
-  //         var options = {
-  //           method: "GET",
-  //           hostname: "api.msg91.com",
-  //           port: null,
-  //           path: `/api/sendhttp.php?mobiles=${phone}&authkey=${SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
-  //           headers: {}
-  //         };
-  //         var req = http.request(options, function(res) {
-  //           var chunks = [];
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $push: { sms: obj },
+            $set: {
+              smsCount: data.smsCount - 1
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data");
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+        req.end();
+      } else if (data.smsCount == 0 || data.smsCount == -1) {
+        // notify admin to recharge
+        //send SMS mgs91ed
+        phone = adminNumber;
+        message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
+        var options = {
+          method: "GET",
+          hostname: "api.msg91.com",
+          port: null,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
+          headers: {}
+        };
+        var req = http.request(options, function(res) {
+          var chunks = [];
 
-  //           res.on("data", function(chunk) {
-  //             chunks.push(chunk);
-  //           });
+          res.on("data", function(chunk) {
+            chunks.push(chunk);
+          });
 
-  //           res.on("end", function() {
-  //             var body = Buffer.concat(chunks);
-  //             console.log(body.toString());
-  //           });
-  //         });
-  //         //save sms data to DB
-  //         var obj = {
-  //           message: message,
-  //           store: store,
-  //           number: phone
-  //         };
-  //         Store.findOneAndUpdate(
-  //           { name: shop },
-  //           {
-  //             $push: { sms: obj },
-  //             $set: {
-  //               smsCount: data.smsCount - 1
-  //             }
-  //           },
-  //           { new: true, useFindAndModify: false },
-  //           (err, data) => {
-  //             if (!err) {
-  //               console.log("data");
-  //             } else {
-  //               console.log("err", err);
-  //             }
-  //           }
-  //         );
-  //         req.end();
-  //       } else {
-  //         console.log("admin still not recharge");
-  //       }
-  //     }
-  //   });
+          res.on("end", function() {
+            var body = Buffer.concat(chunks);
+            console.log(body.toString());
+          });
+        });
+        //save sms data to DB
+        var obj = {
+          message: message,
+          store: store,
+          number: phone
+        };
+        Store.findOneAndUpdate(
+          { name: shop },
+          {
+            $push: { sms: obj },
+            $set: {
+              smsCount: data.smsCount - 1
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, data) => {
+            if (!err) {
+              console.log("data");
+            } else {
+              console.log("err", err);
+            }
+          }
+        );
+        req.end();
+      } else {
+        console.log("admin still not recharge");
+      }
+    }
+  });
 };
 
 app.get("/api/option", function(req, res) {
