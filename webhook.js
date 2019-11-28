@@ -3,7 +3,6 @@ const cron = require("node-cron");
 const http = require("https");
 const express = require("express");
 const session = require("express-session");
-const router = express.Router();
 
 const shortid = require("shortid");
 const validUrl = require("valid-url");
@@ -20,7 +19,6 @@ const nonce = require("nonce")();
 const querystring = require("querystring");
 const request = require("request-promise");
 const bodyParser = require("body-parser");
-const arrayUniquePlugin = require("mongoose-unique-array");
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require("connect-mongo")(session);
@@ -63,67 +61,7 @@ app.use(function(req, res, next) {
 
 app.use("/s", require("./routes/index"));
 
-// const shopSchema = new mongoose.Schema({
-//   name: String,
-//   data: JSON,
-//   orders: [
-//     {
-//       _id: false,
-//       id: { type: Number, required: true, dropDups: true },
-//       phone: Number,
-//       url: String,
-//       dataTime: {
-//         type: String,
-//         default: moment().format()
-//       },
-//       price: Number,
-//       email: { type: String, default: null },
-//       purchase: { type: Boolean, default: false },
-//       storeTime: {
-//         type: String,
-//         default: moment().format()
-//       },
-//       f1: String,
-//       f2: String,
-//       f3: String,
-//       f4: String
-//     }
-//   ],
-
-//   sms: Array,
-//   smsCount: Number,
-//   template: [
-//     {
-//       _id: false,
-//       topic: { type: String, required: true, dropDups: true },
-//       customer: String,
-//       admin: String
-//     }
-//   ],
-//   abandanTemplate: [
-//     {
-//       _id: false,
-//       topic: { type: String, required: true, dropDups: true },
-//       template: String,
-//       time: String,
-//       status: Boolean
-//     }
-//   ],
-//   //TODO check this clicked schema
-//   clicked: [
-//     {
-//       _id: false,
-//       checkoutId: { type: Number, required: true, dropDups: true },
-//       followUp: Array,
-//       converted: { type: Boolean, default: false },
-//       price: { type: Number, default: null }
-//     }
-//   ]
-// });
-// shopSchema.plugin(arrayUniquePlugin);
-// const Store = new mongoose.model("Store", shopSchema);
 const Store = require("./models/Shop");
-// module.exports = Store;
 
 //!URL SHORTNER
 
@@ -179,14 +117,9 @@ const shorten = async params => {
   }
 };
 
-//////////////////////////////////////////////////
-
-// install route ==>"/shopify/shop=?shopname.shopify.com
 app.get("/shopify", (req, res) => {
   req.session.shop = req.query.shop;
   const shop = req.query.shop;
-
-  //   console.log("install route call-->", shop);
   if (shop) {
     const state = nonce();
     const redirectUri = forwardingAddress + "/shopify/callback";
@@ -223,20 +156,15 @@ app.get("/shopify", (req, res) => {
   }
 });
 
-//callback route -->
 app.get("/shopify/callback", (req, res) => {
   let { shop, hmac, code, state } = req.query;
-  //   console.log("callback route call -->", shop);
   const stateCookie = cookie.parse(req.headers.cookie)[`${shop}`];
-
-  //   console.log("Statecookies", stateCookie);
 
   if (state !== stateCookie) {
     return res.status(403).send("Request origin cannot be verified");
   }
 
   if (shop && hmac && code) {
-    // DONE: Validate request is from Shopify
     const map = Object.assign({}, req.query);
     delete map["signature"];
     delete map["hmac"];
@@ -261,8 +189,6 @@ app.get("/shopify/callback", (req, res) => {
       return res.status(400).send("HMAC validation failed");
     }
 
-    // DONE: Exchange temporary code for a permanent access token
-
     const accessTokenRequestUrl =
       "https://" + shop + "/admin/oauth/access_token";
     const accessTokenPayload = {
@@ -278,12 +204,10 @@ app.get("/shopify/callback", (req, res) => {
         req.session.hmac = hmac;
         req.session.token = accessTokenResponse.access_token;
 
-        // console.log("top shop", req.session.shop);
         res.redirect("/");
       })
       .catch(error => {
         res.send(error);
-        // console.log("144-->", error);
       });
   } else {
     res.status(400).send("Required parameters missing");
@@ -291,8 +215,6 @@ app.get("/shopify/callback", (req, res) => {
 });
 
 app.post("/api/myaction", function(req, res) {
-  // console.log(req.body);
-
   if (req.session.shop) {
     let shop = req.session.shop;
     let token = req.session.token;
@@ -317,7 +239,7 @@ app.post("/api/myaction", function(req, res) {
             if (!err) {
               //   console.log("datacount + 1");
             } else {
-              //   console.log("err", err);
+              console.log("242 err-->", err);
             }
           }
         );
@@ -384,7 +306,7 @@ const makeWebook = (topic, token, hmac, shop) => {
       console.log("webhook topic :", topic);
     })
     .catch(error => {
-      //   console.log("error-->", error);
+      console.log("309 error-->", error);
     });
 };
 
@@ -393,7 +315,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
   topic = topic + "/" + subtopic;
-  console.log("topic ------>", topic);
+  console.log("topic -->", topic);
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       let name;
@@ -464,26 +386,20 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
           break;
 
         case "orders/create":
-          // console.log(`topic:-->${topic}`, request.body);
           Store.updateOne(
             { "orders.id": request.body.checkout_id },
             {
               $set: {
                 "orders.$.purchase": true
-                // "orders.$f30": true
               }
             },
             function(err, data) {
               if (!err) {
                 console.log(data);
-                // Store.clicked.followUp != 0 ? change converted : dont touch
-
                 Store.updateOne(
                   {
                     clicked: {
                       $elemMatch: {
-                        // questions: { $elemMatch: { questionId: upQstnObj.questionId } }
-                        // price: 100
                         checkoutId: request.body.checkout_id
                       }
                     }
@@ -498,7 +414,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                   }
                 );
               } else {
-                console.log("485", err);
+                console.log("417-->", err);
               }
             }
           );
@@ -519,7 +435,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                 if (!err) {
                   console.log("data remove", topic, data);
                 } else {
-                  console.log("err 506", err);
+                  console.log("err 438", err);
                 }
               }
             );
@@ -1107,7 +1023,7 @@ app.get("/api/history", function(req, res) {
 });
 // dashboard
 app.get("/api/dashboard", function(req, res) {
-//   req.session.shop = "mojitolabs.myshopify.com";
+  //   req.session.shop = "mojitolabs.myshopify.com";
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
