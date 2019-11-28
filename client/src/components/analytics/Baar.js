@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Bar } from 'react-chartjs-2';
 export default function Baar({ dataa }) {
-	const initialState1 = {
+	const state = {
 		labels: [ 'First', 'Second', 'Third', 'Fourth' ],
 		datasets: [
 			{
@@ -19,12 +19,11 @@ export default function Baar({ dataa }) {
 			}
 		]
 	};
-	console.log(initialState1);
 
 	return (
 		<div>
 			<Bar
-				data={initialState1}
+				data={state}
 				options={{
 					title: {
 						display: true,
