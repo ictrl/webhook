@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React from 'react';
 
 import { Bar } from 'react-chartjs-2';
 export default function Baar({ dataa }) {
