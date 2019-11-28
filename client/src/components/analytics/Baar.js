@@ -6,12 +6,13 @@ export default function Baar({ dataa }) {
 		labels: [ 'First', 'Second', 'Third', 'Fourth' ],
 		datasets: [
 			{
-				label: 'Sales in Number',
+				label: 'Sales',
 				data: dataa,
 				backgroundColor: '#5462C1',
 				barPercentage: 1,
 				barThickness: 35,
 				maxBarThickness: 38,
+
 				minBarLength: 2,
 				borderWidth: 0,
 				hoverBackgroundColor: '#5C3AC4'
