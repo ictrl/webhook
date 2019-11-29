@@ -11,18 +11,16 @@ function Dashboard() {
 	const [ bar, setBar ] = useState('');
 	const [ line, setLine ] = useState('');
 	const [ pie, setPie ] = useState('');
-	const fetch1 = () => {
-		axios
-			.get('/api/dashboard/')
-			.then((res) => {
-				let follow = res.data.follow;
-				let inc = res.data.inc;
-				let price = res.data.price;
-				setBar(follow);
-				setLine(inc);
-				setPie(price);
-			})
-			.catch((err) => console.error(err));
+	const fetch1 = async () => {
+		try {
+			let res = await axios.get('/api/dashboard/');
+			let { follow, inc, price } = res.data;
+			setBar(follow);
+			setLine(inc);
+			setPie(price);
+		} catch (err) {
+			console.error(err);
+		}
 	};
 	useEffect(() => {
 		fetch1();

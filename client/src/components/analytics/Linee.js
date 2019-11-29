@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Line } from 'react-chartjs-2';
 export default function Linee({ ldata }) {
-	const initialState2 = {
+	const state = {
 		labels: [ 'First', 'Second', 'Third', 'Fourth' ],
 		datasets: [
 			{
@@ -21,7 +21,7 @@ export default function Linee({ ldata }) {
 	return (
 		<div>
 			<Line
-				data={initialState2}
+				data={state}
 				options={{
 					title: {
 						display: true,
