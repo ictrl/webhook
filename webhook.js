@@ -3,14 +3,11 @@ const cron = require("node-cron");
 const http = require("https");
 const express = require("express");
 const session = require("express-session");
-
 const shortid = require("shortid");
 const validUrl = require("valid-url");
-
 const mongoose = require("mongoose");
 const path = require("path");
 const moment = require("moment");
-
 const app = express();
 const parseurl = require("parseurl");
 const crypto = require("crypto");
@@ -73,7 +70,7 @@ const shorten = async params => {
   const { shop } = params;
 
   const baseUrl = process.env.BASEURL;
-  console.log(baseUrl);
+  console.log("baseUrl", baseUrl);
 
   // Check base url
   if (!validUrl.isUri(baseUrl)) {
@@ -105,18 +102,18 @@ const shorten = async params => {
 
         await url.save();
 
-        console.log("url 137", url);
+        console.log("url 105", url);
         return url;
       }
     } catch (err) {
-      console.error(err);
+      console.error("err 109 -->", err);
       return "Server error";
     }
   } else {
     return "Invalid long url";
   }
 };
-
+//install route
 app.get("/shopify", (req, res) => {
   req.session.shop = req.query.shop;
   const shop = req.query.shop;
@@ -155,7 +152,7 @@ app.get("/shopify", (req, res) => {
       );
   }
 });
-
+//callback route
 app.get("/shopify/callback", (req, res) => {
   let { shop, hmac, code, state } = req.query;
   const stateCookie = cookie.parse(req.headers.cookie)[`${shop}`];
@@ -226,7 +223,6 @@ app.post("/api/myaction", function(req, res) {
         res.sendStatus(200);
 
         // res.redirect("back");
-
         Store.findOneAndUpdate(
           { name: shop },
           {
@@ -239,7 +235,7 @@ app.post("/api/myaction", function(req, res) {
             if (!err) {
               //   console.log("datacount + 1");
             } else {
-              console.log("242 err-->", err);
+              console.log("238 err-->", err);
             }
           }
         );
@@ -335,6 +331,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 
       switch (topic) {
         case "checkouts/update":
+          //check th purcahse statue in db to find whreate it will entrnatin for abandan
           if (request.body.shipping_address != undefined) {
             if (request.body.shipping_address.phone != null) {
               let obj = {
@@ -346,19 +343,19 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               Store.findOne({ name: shop }, function(err, data) {
                 if (data.abandanTemplate) {
                   data.abandanTemplate.forEach(e => {
-                    if (e.topic === "1") {
+                    if (e.topic === "1" && e.status === true) {
                       obj.f1 = moment()
                         .add(e.time, "minutes")
                         .format();
-                    } else if (e.topic === "2") {
+                    } else if (e.topic === "2" && e.status === true) {
                       obj.f2 = moment()
                         .add(e.time, "minutes")
                         .format();
-                    } else if (e.topic === "3") {
+                    } else if (e.topic === "3" && e.status === true) {
                       obj.f3 = moment()
                         .add(e.time, "minutes")
                         .format();
-                    } else if (e.topic === "4") {
+                    } else if (e.topic === "4" && e.status === true) {
                       obj.f4 = moment()
                         .add(e.time, "minutes")
                         .format();
@@ -374,7 +371,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                       if (!err) {
                         console.log("data add to DB", topic, data);
                       } else {
-                        console.log("443 err", err);
+                        console.log("374 err", err);
                       }
                     }
                   );
@@ -395,7 +392,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             },
             function(err, data) {
               if (!err) {
-                console.log(data);
+                console.log("395 data -->", data);
                 Store.updateOne(
                   {
                     clicked: {
@@ -404,17 +401,15 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                       }
                     }
                   },
-                  // { $set: { [`${toSet}`]: upQstnObj } },
-                  // $set: {"orders.$.purchase": true}
                   { $set: { "clicked.$.converted": true } },
                   (err, data) => {
                     if (err) {
-                      console.log(err);
-                    } else console.log(data);
+                      console.log("err 407", err);
+                    } else console.log("data 408 -->", data);
                   }
                 );
               } else {
-                console.log("417-->", err);
+                console.log("412 err-->", err);
               }
             }
           );
@@ -1257,22 +1252,6 @@ app.post("/api/recharge", function(req, res) {
   }
 });
 
-// let obj = {
-// 	longUrl: 'https://facebook.com',
-// 	followUp: 1,
-// 	id: 56789876589,
-// 	price: 222,
-// 	shop: 'store name'
-// };
-
-//               const short = async () => {
-//                 let res = "";
-//                 res = await shorten(obj);
-
-//                 console.log("for followUP 1", res);
-//               };
-//               short();
-
 cron.schedule("*/2 * * * * ", () => {
   //getting list of all store name
   var storeName = [];
@@ -1293,7 +1272,7 @@ cron.schedule("*/2 * * * * ", () => {
       console.log("Performing on store-->", store);
       Store.findOne({ name: store }, (err, data) => {
         data.orders.forEach(order => {
-          if (order.f1) {
+          if (order.f1 && order.purchase === false) {
             if (moment(order.f1).isBetween(interval, current)) {
               console.log("call shortner function for", order.f1);
               //long url , followup, id, price
@@ -1314,7 +1293,7 @@ cron.schedule("*/2 * * * * ", () => {
               short();
             } else console.log("time is not in range", order.f1);
           }
-          if (order.f2) {
+          if (order.f2 && order.purchase === false) {
             if (moment(order.f2).isBetween(interval, current)) {
               console.log("call shortner function for", order.f2);
               let obj = {
@@ -1333,7 +1312,7 @@ cron.schedule("*/2 * * * * ", () => {
               short();
             } else console.log("time is not in range", order.f2);
           }
-          if (order.f3) {
+          if (order.f3 && order.purchase === false) {
             if (moment(order.f3).isBetween(interval, current)) {
               console.log("call shortner function for", order.f3);
               let obj = {
@@ -1352,7 +1331,7 @@ cron.schedule("*/2 * * * * ", () => {
               short();
             } else console.log("time is not in range", order.f3);
           }
-          if (order.f4) {
+          if (order.f4 && order.purchase === false) {
             if (moment(order.f4).isBetween(interval, current)) {
               console.log("call shortner function for", order.f4);
               let obj = {
