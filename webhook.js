@@ -65,7 +65,6 @@ const Store = require("./models/Shop");
 const shorten = async params => {
   const { longUrl } = params;
   const { followUp } = params;
-  console.log("68", followUp);
   const { id } = params;
   const { price } = params;
   const { phone } = params;
@@ -157,6 +156,25 @@ const shorten = async params => {
         await url.save();
 
         console.log("url 139 -->", url);
+
+        let shopDetail = await Store.findOne({ name: shop });
+        let senderId = shopDetail.data["sender id"];
+        let message = await Store.findOne(
+          { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
+          (err, data) => {
+            if (err) {
+              console.log(err);
+            } else {
+              data.abandanTemplate.forEach(e => {
+                if (e.topic === followUp) {
+                  return e.template;
+                }
+              });
+            }
+          }
+        );
+
+        sndSms(phone, message, senderId, shop);
         return url;
       }
     } catch (err) {
@@ -406,15 +424,19 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                   data.abandanTemplate.forEach(e => {
                     if (e.topic === "1" && e.status === true) {
                       obj.f1 = moment()
-                        .add(5, "minutes")
+                        .add(3, "minutes")
                         .format();
                       // obj.f1 = moment()
                       //   .add(e.time, "minutes")
                       //   .format();
                     } else if (e.topic === "2" && e.status === true) {
                       obj.f2 = moment()
-                        .add(e.time, "minutes")
+                        .add(5, "minutes")
                         .format();
+                      // } else if (e.topic === "2" && e.status === true) {
+                      //   obj.f2 = moment()
+                      //     .add(e.time, "minutes")
+                      //     .format();
                     } else if (e.topic === "3" && e.status === true) {
                       obj.f3 = moment()
                         .add(e.time, "minutes")
