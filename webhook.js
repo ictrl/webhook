@@ -965,6 +965,7 @@ const sndSms = (phone, message, senderID, shop) => {
   console.log(shop, "<-- shop");
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
+      console.log(data, "<-- data");
       if (data.smsCount > 0) {
         //send SMS
         var options = {
@@ -987,7 +988,6 @@ const sndSms = (phone, message, senderID, shop) => {
           });
         });
         //save sms data to DB
-
         var obj = {
           description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
           term: phone
