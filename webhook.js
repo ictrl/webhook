@@ -123,15 +123,16 @@ const shorten = async params => {
 
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
-        let message = await Store.findOne(
+        let message;
+        await Store.findOne(
           { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
           (err, data) => {
             if (err) {
               console.log(err);
             } else {
               data.abandanTemplate.forEach(e => {
-                if (e.topic === followUp) {
-                  return e.template;
+                if (e.topic === followUp + "") {
+                  message = e.template;
                 }
               });
             }
@@ -159,15 +160,16 @@ const shorten = async params => {
 
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
-        let message = await Store.findOne(
+        let message;
+        await Store.findOne(
           { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
           (err, data) => {
             if (err) {
               console.log(err);
             } else {
               data.abandanTemplate.forEach(e => {
-                if (e.topic === followUp) {
-                  return e.template;
+                if (e.topic === followUp + "") {
+                  message = e.template;
                 }
               });
             }

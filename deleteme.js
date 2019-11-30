@@ -1,5 +1,4 @@
 require("dotenv").config();
-const cron = require("node-cron");
 const moment = require("moment");
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URI, {
@@ -7,7 +6,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
   useCreateIndex: true
 });
-let shop = "mojitolabs.myshopify.com";
+let shop = "demo-mojito.myshopify.com";
 
 const shopSchema = new mongoose.Schema({
   name: String,
@@ -22,12 +21,17 @@ const shopSchema = new mongoose.Schema({
         type: String,
         default: moment().format()
       },
+      price: Number,
       email: { type: String, default: null },
       purchase: { type: Boolean, default: false },
       storeTime: {
         type: String,
         default: moment().format()
-      }
+      },
+      f1: String,
+      f2: String,
+      f3: String,
+      f4: String
     }
   ],
 
@@ -50,6 +54,7 @@ const shopSchema = new mongoose.Schema({
       status: Boolean
     }
   ],
+  //TODO check this clicked schema
   clicked: [
     {
       _id: false,
@@ -60,8 +65,27 @@ const shopSchema = new mongoose.Schema({
     }
   ]
 });
-
 const Store = new mongoose.model("Store", shopSchema);
+let message;
+let followUp = "1";
+
+Store.findOne(
+  { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
+  (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      data.abandanTemplate.forEach(e => {
+        if (e.topic === followUp + "") {
+          message = e.template;
+        }
+      });
+    }
+    console.log(message);
+  }
+);
+
+// console.log(message);
 
 //A.findOne({ _id: a._id, items: { $elemMatch: {$in: [1,5,9] }}}).exec(function (err, docs) {
 
