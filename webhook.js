@@ -406,8 +406,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                   data.abandanTemplate.forEach(e => {
                     if (e.topic === "1" && e.status === true) {
                       obj.f1 = moment()
-                        .add(e.time, "minutes")
+                        .add(5, "minutes")
                         .format();
+                      // obj.f1 = moment()
+                      //   .add(e.time, "minutes")
+                      //   .format();
                     } else if (e.topic === "2" && e.status === true) {
                       obj.f2 = moment()
                         .add(e.time, "minutes")
