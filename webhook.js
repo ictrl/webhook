@@ -162,7 +162,7 @@ const shorten = async params => {
 
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
-        let message;
+        let message = "letMessage";
         await Store.findOne(
           { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
           (err, data) => {
@@ -172,13 +172,14 @@ const shorten = async params => {
               data.abandanTemplate.forEach(e => {
                 if (e.topic === followUp + "") {
                   message = e.template;
+                  sndSms(phone, message, senderId, shop);
+                } else {
+                  message = "elseMessage";
                 }
               });
             }
           }
         );
-
-        sndSms(phone, message, senderId, shop);
         return url;
       }
     } catch (err) {
