@@ -65,14 +65,12 @@ const Store = require("./models/Shop");
 const shorten = async params => {
   const { longUrl } = params;
   const { followUp } = params;
-  console.log(followUp, "<-- followUp");
   const { id } = params;
   const { price } = params;
   const { phone } = params;
   const { shop } = params;
 
   const baseUrl = process.env.BASEURL;
-  console.log("param followUp-->", followUp);
 
   // Check base url
   if (!validUrl.isUri(baseUrl)) {
@@ -87,6 +85,7 @@ const shorten = async params => {
     try {
       let url = await Url.findOne({ longUrl });
       if (url) {
+        console.log("url found , update followUp ->", followUp);
         //TODO update followUp to Number
         Url.findOneAndUpdate(
           { id: url.id },
@@ -100,6 +99,7 @@ const shorten = async params => {
             if (err) {
               console.log(err);
             } else {
+              console.log("102 result-->", result);
               if (result === null) {
                 Store.findOneAndUpdate(
                   { name: shop },
@@ -109,7 +109,7 @@ const shorten = async params => {
                   { new: true, useFindAndModify: false },
                   (err, data) => {
                     if (!err) {
-                      console.log("data", data);
+                      console.log("data--> 112", data);
                     } else {
                       console.log("err", err);
                     }
@@ -134,6 +134,17 @@ const shorten = async params => {
               data.abandanTemplate.forEach(e => {
                 if (e.topic === followUp + "") {
                   message = e.template;
+
+                  for (let i = 0; i < message.length; i++) {
+                    message = message.replace("${customer_name}", url.name);
+                    message = message.replace("${store_name}", url.vendor);
+                    message = message.replace(
+                      "${abandoned_checkout_url}",
+                      url.shortUrl
+                    );
+                    message = message.replace("${amount}", url.price);
+                  }
+
                   sndSms(phone, message, senderId, shop);
                 } else {
                   message = "elseMessage";
@@ -145,6 +156,8 @@ const shorten = async params => {
 
         return url;
       } else {
+        console.log("url !found, save new URL");
+
         const shortUrl = baseUrl + "/" + "s" + "/" + urlCode;
 
         url = new Url({
@@ -159,13 +172,16 @@ const shorten = async params => {
 
         await url.save();
 
-        console.log("url 139 -->", url);
+        // console.log("url 139 -->", url);
 
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
         let message = "letMessage";
         await Store.findOne(
-          { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
+          {
+            name: shop,
+            abandanTemplate: { $elemMatch: { topic: followUp } }
+          },
           (err, data) => {
             if (err) {
               console.log(err);
@@ -437,7 +453,8 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                           /\s/g,
                           ""
                         ),
-                        // price: request.body.total_price,
+                        name: request.body.shipping_address.name,
+                        vendor: request.body.line_items[0].vendor,
                         price: request.body.subtotal_price,
                         url: request.body.abandoned_checkout_url
                       };
@@ -590,11 +607,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             //end
             let senderID = data.data["sender id"];
             if (phone) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             }
           }
           if (data.data["orders/create admin"] != undefined) {
@@ -704,11 +721,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 
             let senderID = data.data["sender id"];
             if (phone) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             }
           }
           if (data.data["orders/fulfilled admin"] != undefined) {
@@ -803,11 +820,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             let senderID = data.data["sender id"];
 
             if (phone) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             }
           }
           if (data.data["refunds/create admin"] != undefined) {
@@ -912,11 +929,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             //end
             let senderID = data.data["sender id"];
             if (phone) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, vendor, message, senderID, shop);
+              sndSms(phone, message, senderID, shop);
             }
           }
           if (data.data["orders/cancelled admin"] != undefined) {
@@ -962,7 +979,6 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 
 const sndSms = (phone, message, senderID, shop) => {
   message = message.replace(/ /g, "%20");
-  console.log(shop, "<-- shop");
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       console.log(data, "<-- data");
@@ -1356,6 +1372,8 @@ cron.schedule("*/2 * * * * ", () => {
                 followUp: 1,
                 id: order.id,
                 price: order.price,
+                vendor: order.vendor,
+                name: order.name,
                 shop: store
               };
 
