@@ -65,6 +65,7 @@ const Store = require("./models/Shop");
 const shorten = async params => {
   const { longUrl } = params;
   const { followUp } = params;
+  console.log(followUp, "<-- followUp");
   const { id } = params;
   const { price } = params;
   const { phone } = params;
@@ -91,7 +92,7 @@ const shorten = async params => {
           { id: url.id },
           {
             $set: {
-              "url.$.followUp": id
+              "url.$.followUp": followUp
             }
           },
           { new: true, useFindAndModify: false },
@@ -119,7 +120,7 @@ const shorten = async params => {
           }
         );
 
-        // TODO send sms (grab msg frm abandanTeamplate acc to folowUp, senderID)
+        // TODO send sms (replace variable to acutial value)
 
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
@@ -960,20 +961,8 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 });
 
 const sndSms = (phone, message, senderID, shop) => {
-  console.log("Send msg call 4 params clg");
-  if (phone != undefined) {
-    console.log(phone, "phone");
-  }
-  if (message != undefined) {
-    console.log(message, "message");
-  }
-  if (senderID != undefined) {
-    console.log(senderID, "senderID");
-  }
-  if (shop != undefined) {
-    console.log(shop, "shop");
-  }
   message = message.replace(/ /g, "%20");
+  console.log(shop, "<-- shop");
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       if (data.smsCount > 0) {
@@ -1394,7 +1383,7 @@ cron.schedule("*/2 * * * * ", () => {
                 let res = "";
                 res = await shorten(obj);
 
-                console.log("for followUP 1", res);
+                console.log("for followUP 2", res);
               };
               short();
             } else console.log("time is not in range", order.f2);
@@ -1414,7 +1403,7 @@ cron.schedule("*/2 * * * * ", () => {
                 let res = "";
                 res = await shorten(obj);
 
-                console.log("for followUP 1", res);
+                console.log("for followUP 3", res);
               };
               short();
             } else console.log("time is not in range", order.f3);
@@ -1434,7 +1423,7 @@ cron.schedule("*/2 * * * * ", () => {
                 let res = "";
                 res = await shorten(obj);
 
-                console.log("for followUP 1", res);
+                console.log("for followUP 4", res);
               };
               short();
             } else console.log("time is not in range", order.f4);
