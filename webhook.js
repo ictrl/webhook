@@ -414,7 +414,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               Store.findOne(
                 {
                   name: shop,
-                  orders: { $elemMatch: { id: 11986548392015 } }
+                  orders: { $elemMatch: { id: request.body.id } }
                 },
                 (err, data) => {
                   if (err) {
