@@ -123,7 +123,7 @@ const shorten = async params => {
 
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
-        let message;
+        let message = "letMessage";
         await Store.findOne(
           { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
           (err, data) => {
@@ -133,13 +133,15 @@ const shorten = async params => {
               data.abandanTemplate.forEach(e => {
                 if (e.topic === followUp + "") {
                   message = e.template;
+                  sndSms(phone, message, senderId, shop);
+                } else {
+                  message = "elseMessage";
                 }
               });
             }
           }
         );
 
-        sndSms(phone, message, senderId, shop);
         return url;
       } else {
         const shortUrl = baseUrl + "/" + "s" + "/" + urlCode;
@@ -406,65 +408,87 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
       switch (topic) {
         case "checkouts/update":
           // TODO handle multiple orders save in DB, price differ or time change
+
           if (request.body.shipping_address != undefined) {
             if (request.body.shipping_address.phone != null) {
-              let a = request.body.subtotal_price;
-              let b = request.body.total_price;
-              let c = request.body.total_line_items_price;
-              console.log(a, "subtotal");
-              console.log(b, "total");
-              console.log(c, "total_line_price");
-              let obj = {
-                id: request.body.id,
-                phone: request.body.shipping_address.phone.replace(/\s/g, ""),
-                // price: request.body.total_price,
-                price: request.body.subtotal_price,
-                url: request.body.abandoned_checkout_url
-              };
-              Store.findOne({ name: shop }, function(err, data) {
-                if (data.abandanTemplate) {
-                  data.abandanTemplate.forEach(e => {
-                    if (e.topic === "1" && e.status === true) {
-                      obj.f1 = moment()
-                        .add(3, "minutes")
-                        .format();
-                      // obj.f1 = moment()
-                      //   .add(e.time, "minutes")
-                      //   .format();
-                    } else if (e.topic === "2" && e.status === true) {
-                      obj.f2 = moment()
-                        .add(5, "minutes")
-                        .format();
-                      // } else if (e.topic === "2" && e.status === true) {
-                      //   obj.f2 = moment()
-                      //     .add(e.time, "minutes")
-                      //     .format();
-                    } else if (e.topic === "3" && e.status === true) {
-                      obj.f3 = moment()
-                        .add(e.time, "minutes")
-                        .format();
-                    } else if (e.topic === "4" && e.status === true) {
-                      obj.f4 = moment()
-                        .add(e.time, "minutes")
-                        .format();
+              Store.findOne(
+                {
+                  name: shop,
+                  orders: { $elemMatch: { id: 11986548392015 } }
+                },
+                (err, data) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    if (data === null) {
+                      console.log("save new order");
+
+                      let a = request.body.subtotal_price;
+                      let b = request.body.total_price;
+                      let c = request.body.total_line_items_price;
+                      console.log(a, "subtotal");
+                      console.log(b, "total");
+                      console.log(c, "total_line_price");
+                      let obj = {
+                        id: request.body.id,
+                        phone: request.body.shipping_address.phone.replace(
+                          /\s/g,
+                          ""
+                        ),
+                        // price: request.body.total_price,
+                        price: request.body.subtotal_price,
+                        url: request.body.abandoned_checkout_url
+                      };
+                      Store.findOne({ name: shop }, function(err, data) {
+                        if (data.abandanTemplate) {
+                          data.abandanTemplate.forEach(e => {
+                            if (e.topic === "1" && e.status === true) {
+                              obj.f1 = moment()
+                                .add(3, "minutes")
+                                .format();
+                              // obj.f1 = moment()
+                              //   .add(e.time, "minutes")
+                              //   .format();
+                            } else if (e.topic === "2" && e.status === true) {
+                              obj.f2 = moment()
+                                .add(e.time, "minutes")
+                                .format();
+                            } else if (e.topic === "3" && e.status === true) {
+                              obj.f3 = moment()
+                                .add(e.time, "minutes")
+                                .format();
+                            } else if (e.topic === "4" && e.status === true) {
+                              obj.f4 = moment()
+                                .add(5, "minutes")
+                                .format();
+                              // } else if (e.topic === "4" && e.status === true) {
+                              //   obj.f4 = moment()
+                              //     .add(e.time, "minutes")
+                              //     .format();
+                            }
+                          });
+                          Store.findOneAndUpdate(
+                            { name: shop },
+                            {
+                              $addToSet: { orders: obj }
+                            },
+                            { new: true, useFindAndModify: false },
+                            (err, data) => {
+                              if (!err) {
+                                console.log("data add to DB", topic, data);
+                              } else {
+                                console.log("374 err", err);
+                              }
+                            }
+                          );
+                        }
+                      });
+                    } else {
+                      console.log("bypass");
                     }
-                  });
-                  Store.findOneAndUpdate(
-                    { name: shop },
-                    {
-                      $addToSet: { orders: obj }
-                    },
-                    { new: true, useFindAndModify: false },
-                    (err, data) => {
-                      if (!err) {
-                        console.log("data add to DB", topic, data);
-                      } else {
-                        console.log("374 err", err);
-                      }
-                    }
-                  );
+                  }
                 }
-              });
+              );
             }
           }
 

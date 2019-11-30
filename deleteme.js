@@ -66,24 +66,26 @@ const shopSchema = new mongoose.Schema({
   ]
 });
 const Store = new mongoose.model("Store", shopSchema);
-let message;
-let followUp = "1";
 
-Store.findOne(
-  { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
-  (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      data.abandanTemplate.forEach(e => {
-        if (e.topic === followUp + "") {
-          message = e.template;
-        }
-      });
-    }
-    console.log(message);
-  }
-);
+// Store.findOne({ name: shop, orders : {$elemMatch} }, function(err, data) {
+//   if (data.smsCount > 0) {
+//     console.log("passs");
+//   }
+// });
+// Store.findOne(
+//   { name: shop, orders: { $elemMatch: { id: 11986548392015 } } },
+//   (err, data) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       if (data === null) {
+//         console.log("save new order");
+//       } else {
+//         console.log("buy pass");
+//       }
+//     }
+//   }
+// );
 
 // console.log(message);
 
@@ -110,20 +112,13 @@ Store.findOne(
 // );
 
 // Store.findOne(
-//   { name: shop, abandanTemplate: { $elemMatch: { topic: 3 } } },
+//   { name: shop, orders: { $elemMatch: { id: 11986548392015 } } },
 //   (err, data) => {
 //     if (err) {
 //       console.log(err);
 //     } else {
-//       // console.log(data.abandanTemplate);
-//       data.abandanTemplate.forEach(e => {
-//         if (e.topic === "1") {
-//           console.log(e.template);
-//         }
+//    console.log(data)
 //       });
-//     }
-//   }
-// );
 
 // Store.findOne({ name: shop }, function(err, data) {
 //   if (data) {
