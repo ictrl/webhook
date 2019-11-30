@@ -65,12 +65,14 @@ const Store = require("./models/Shop");
 const shorten = async params => {
   const { longUrl } = params;
   const { followUp } = params;
+  console.log("68", followUp);
   const { id } = params;
   const { price } = params;
+  const { phone } = params;
   const { shop } = params;
 
   const baseUrl = process.env.BASEURL;
-  console.log("baseUrl", baseUrl);
+  console.log("param followUp-->", followUp);
 
   // Check base url
   if (!validUrl.isUri(baseUrl)) {
@@ -84,8 +86,60 @@ const shorten = async params => {
   if (validUrl.isUri(longUrl)) {
     try {
       let url = await Url.findOne({ longUrl });
-
       if (url) {
+        //TODO update followUp to Number
+        Url.findOneAndUpdate(
+          { id: url.id },
+          {
+            $set: {
+              "url.$.followUp": id
+            }
+          },
+          { new: true, useFindAndModify: false },
+          (err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              if (result === null) {
+                Store.findOneAndUpdate(
+                  { name: shop },
+                  {
+                    $push: { abandan: obj }
+                  },
+                  { new: true, useFindAndModify: false },
+                  (err, data) => {
+                    if (!err) {
+                      console.log("data", data);
+                    } else {
+                      console.log("err", err);
+                    }
+                  }
+                );
+              }
+            }
+          }
+        );
+
+        // TODO send sms (grab msg frm abandanTeamplate acc to folowUp, senderID)
+
+        let shopDetail = await Store.findOne({ name: shop });
+        let senderId = shopDetail.data["sender id"];
+        let message = await Store.findOne(
+          { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
+          (err, data) => {
+            if (err) {
+              console.log(err);
+            } else {
+              data.abandanTemplate.forEach(e => {
+                if (e.topic === followUp) {
+                  return e.template;
+                }
+              });
+            }
+          }
+        );
+
+        sndSms(phone, message, senderId, shop);
         return url;
       } else {
         const shortUrl = baseUrl + "/" + "s" + "/" + urlCode;
@@ -102,7 +156,7 @@ const shorten = async params => {
 
         await url.save();
 
-        console.log("url 105", url);
+        console.log("url 139 -->", url);
         return url;
       }
     } catch (err) {
@@ -331,13 +385,20 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 
       switch (topic) {
         case "checkouts/update":
-          //check th purcahse statue in db to find whreate it will entrnatin for abandan
+          // TODO handle multiple orders save in DB, price differ or time change
           if (request.body.shipping_address != undefined) {
             if (request.body.shipping_address.phone != null) {
+              let a = request.body.subtotal_price;
+              let b = request.body.total_price;
+              let c = request.body.total_line_items_price;
+              console.log(a, "subtotal");
+              console.log(b, "total");
+              console.log(c, "total_line_price");
               let obj = {
                 id: request.body.id,
                 phone: request.body.shipping_address.phone.replace(/\s/g, ""),
-                price: request.body.total_price,
+                // price: request.body.total_price,
+                price: request.body.subtotal_price,
                 url: request.body.abandoned_checkout_url
               };
               Store.findOne({ name: shop }, function(err, data) {
@@ -846,13 +907,10 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   response.sendStatus(200);
 });
 
-const sndSms = (phone, store, message, senderID, shop) => {
-  console.log("Send msg call 5 params clg");
+const sndSms = (phone, message, senderID, shop) => {
+  console.log("Send msg call 4 params clg");
   if (phone != undefined) {
     console.log(phone, "phone");
-  }
-  if (store != undefined) {
-    console.log(store, "store");
   }
   if (message != undefined) {
     console.log(message, "message");
@@ -892,7 +950,6 @@ const sndSms = (phone, store, message, senderID, shop) => {
         var obj = {
           description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
           term: phone
-          // number: shop
         };
 
         Store.findOneAndUpdate(
@@ -939,9 +996,8 @@ const sndSms = (phone, store, message, senderID, shop) => {
         });
         //save sms data to DB
         var obj = {
-          message: message,
-          store: store,
-          number: phone
+          description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
+          term: phone
         };
         Store.findOneAndUpdate(
           { name: shop },
@@ -1185,28 +1241,6 @@ app.post("/api/abandanTemplate", function(req, res) {
         }
       }
     );
-
-    //TODO for all orders and each followConfig ==> if(req.body.time === orders.inc) {update orders[].followConfig.status and orders[].followConfig.followUp also}
-
-    // Store.findOneAndUpdate(
-    // 	{ 'orders.inc': req.body.time },
-    // 	{
-    // 		$set: {
-    // 			'orders.$.followUp': req.body.topic,
-    // 			'orders.$.status': req.body.status
-    // 		}
-    // 	},
-    // 	{ new: true, useFindAndModify: false },
-    // 	(err, result) => {
-    // 		if (err) {
-    // 			console.log(err);
-    // 		} else {
-    // 			if (result === null) {
-    // 				console.log('result == null');
-    // 			}
-    // 		}
-    // 	}
-    // );
   } else {
     console.log("session timeout");
   }
@@ -1259,8 +1293,6 @@ cron.schedule("*/2 * * * * ", () => {
     stores.forEach(store => {
       storeName.push(store.name);
     });
-    console.log("All store name->", storeName);
-
     let interval = moment()
       .subtract(2, "minutes")
       .format();
@@ -1272,12 +1304,14 @@ cron.schedule("*/2 * * * * ", () => {
       console.log("Performing on store-->", store);
       Store.findOne({ name: store }, (err, data) => {
         data.orders.forEach(order => {
+          // TODO dont send send followUp if converted is true
           if (order.f1 && order.purchase === false) {
             if (moment(order.f1).isBetween(interval, current)) {
               console.log("call shortner function for", order.f1);
               //long url , followup, id, price
               let obj = {
                 longUrl: order.url,
+                phone: order.phone,
                 followUp: 1,
                 id: order.id,
                 price: order.price,
@@ -1301,6 +1335,7 @@ cron.schedule("*/2 * * * * ", () => {
                 followUp: 2,
                 id: order.id,
                 price: order.price,
+                phone: order.phone,
                 shop: store
               };
               const short = async () => {
@@ -1320,6 +1355,7 @@ cron.schedule("*/2 * * * * ", () => {
                 followUp: 3,
                 id: order.id,
                 price: order.price,
+                phone: order.phone,
                 shop: store
               };
               const short = async () => {
@@ -1337,6 +1373,7 @@ cron.schedule("*/2 * * * * ", () => {
               let obj = {
                 longUrl: order.url,
                 followUp: 4,
+                phone: order.phone,
                 id: order.id,
                 price: order.price,
                 shop: store

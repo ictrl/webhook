@@ -86,11 +86,18 @@ const Store = new mongoose.model("Store", shopSchema);
 // );
 
 // Store.findOne(
-//   { name: shop, clicked: { $elemMatch: { checkoutId: 1998 } } },
+//   { name: shop, abandanTemplate: { $elemMatch: { topic: 3 } } },
 //   (err, data) => {
 //     if (err) {
 //       console.log(err);
-//     } else console.log(data);
+//     } else {
+//       // console.log(data.abandanTemplate);
+//       data.abandanTemplate.forEach(e => {
+//         if (e.topic === "1") {
+//           console.log(e.template);
+//         }
+//       });
+//     }
 //   }
 // );
 
