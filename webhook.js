@@ -91,32 +91,14 @@ const shorten = async params => {
           { id: url.id },
           {
             $set: {
-              "url.$.followUp": followUp
+              followUp: followUp
             }
           },
           { new: true, useFindAndModify: false },
           (err, result) => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("102 result-->", result);
-              if (result === null) {
-                Store.findOneAndUpdate(
-                  { name: shop },
-                  {
-                    $push: { abandan: obj }
-                  },
-                  { new: true, useFindAndModify: false },
-                  (err, data) => {
-                    if (!err) {
-                      console.log("data--> 112", data);
-                    } else {
-                      console.log("err", err);
-                    }
-                  }
-                );
-              }
-            }
+            if (!err) {
+              console.log(result);
+            } 
           }
         );
 
@@ -978,6 +960,8 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 });
 
 const sndSms = (phone, message, senderID, shop) => {
+  console.log(shop, "<-- shop sndSmS");
+
   message = message.replace(/ /g, "%20");
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
