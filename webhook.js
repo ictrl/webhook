@@ -100,9 +100,6 @@ const shorten = async params => {
             }
           }
         );
-
-        // TODO send sms (replace variable to acutial value)
-
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
         let message = "letMessage";
@@ -152,15 +149,11 @@ const shorten = async params => {
         });
 
         await url.save();
-
-        // console.log("url 139 -->", url);
-
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
         let message = "Message";
         let name = "Name";
         let vendor = "Vendor";
-        // let price = 000;
         await Store.findOne(
           {
             name: shop,
@@ -174,7 +167,6 @@ const shorten = async params => {
                 if (e.id === id) {
                   name = e.name;
                   vendor = e.vendor;
-                  // price = e.price;
                 }
               });
             }
@@ -650,7 +642,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
             //end
-            sndSms(admin, vendor, message, senderID, shop);
+            sndSms(phone, message, senderID, shop);
           }
 
           break;
@@ -771,7 +763,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
 
-            sndSms(admin, vendor, message, senderID, shop);
+            sndSms(admin, message, senderID, shop);
           }
           break;
 
@@ -865,7 +857,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
 
-            sndSms(admin, vendor, message, senderID, shop);
+            sndSms(admin, message, senderID, shop);
           }
           break;
         case "orders/cancelled":
@@ -971,7 +963,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
 
-            sndSms(admin, vendor, message, senderID, shop);
+            sndSms(admin, message, senderID, shop);
           }
           break;
         default:
@@ -991,7 +983,7 @@ const sndSms = (phone, message, senderID, shop) => {
   message = message.replace(/ /g, "%20");
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
-      console.log(data, "<-- data");
+      // console.log(data, "<-- data");
       if (data.smsCount > 0) {
         //send SMS
         var options = {
