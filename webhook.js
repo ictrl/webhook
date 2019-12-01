@@ -79,7 +79,6 @@ const shorten = async params => {
 
   // Create url code
   const urlCode = shortid.generate();
-  // console.log(ulr);
 
   // Check long url /
   if (validUrl.isUri(longUrl)) {
@@ -464,11 +463,9 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                         if (data.abandanTemplate) {
                           data.abandanTemplate.forEach(e => {
                             if (e.topic === "1" && e.status === true) {
-                              // obj.f1 = moment()
-                              //   .add(3, "minutes")
-                              //   .format();
                               obj.f1 = moment()
-                                .add(e.time, "minutes")
+                                // .add(e.time, "minutes")
+                                .add(2, "minutes")
                                 .format();
                             } else if (e.topic === "2" && e.status === true) {
                               obj.f2 = moment()
@@ -478,13 +475,10 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                               obj.f3 = moment()
                                 .add(e.time, "minutes")
                                 .format();
-                              // } else if (e.topic === "4" && e.status === true) {
-                              //   obj.f4 = moment()
-                              //     .add(5, "minutes")
-                              //     .format();
                             } else if (e.topic === "4" && e.status === true) {
                               obj.f4 = moment()
-                                .add(e.time, "minutes")
+                                .add(3, "minutes")
+                                // .add(e.time, "minutes")
                                 .format();
                             }
                           });
