@@ -58,7 +58,6 @@ app.use(function(req, res, next) {
 
 app.use("/s", require("./routes/index"));
 
-
 const Store = require("./models/Shop");
 
 //!URL SHORTNER
@@ -87,7 +86,6 @@ const shorten = async params => {
       let url = await Url.findOne({ longUrl });
       if (url) {
         console.log("url found , update followUp ->", followUp);
-        //TODO update followUp to Number
         Url.findOneAndUpdate(
           { id: url.id },
           {
@@ -99,12 +97,9 @@ const shorten = async params => {
           (err, result) => {
             if (!err) {
               console.log(result);
-            } 
+            }
           }
         );
-
-        // TODO send sms (replace variable to acutial value)
-
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
         let message = "letMessage";
@@ -154,12 +149,29 @@ const shorten = async params => {
         });
 
         await url.save();
-
-        // console.log("url 139 -->", url);
-
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
-        let message = "letMessage";
+        let message = "Message";
+        let name = "Name";
+        let vendor = "Vendor";
+        await Store.findOne(
+          {
+            name: shop,
+            orders: { $elemMatch: { id: id } }
+          },
+          (err, data) => {
+            if (err) {
+              console.log(err);
+            } else {
+              data.orders.forEach(e => {
+                if (e.id === id) {
+                  name = e.name;
+                  vendor = e.vendor;
+                }
+              });
+            }
+          }
+        );
         await Store.findOne(
           {
             name: shop,
@@ -172,9 +184,16 @@ const shorten = async params => {
               data.abandanTemplate.forEach(e => {
                 if (e.topic === followUp + "") {
                   message = e.template;
+                  for (let i = 0; i < message.length; i++) {
+                    message = message.replace("${customer_name}", name);
+                    message = message.replace("${store_name}", vendor);
+                    message = message.replace(
+                      "${abandoned_checkout_url}",
+                      shortUrl
+                    );
+                    message = message.replace("${amount}", price);
+                  }
                   sndSms(phone, message, senderId, shop);
-                } else {
-                  message = "elseMessage";
                 }
               });
             }
@@ -402,14 +421,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
       let phone2;
       let address1;
       let address2;
-
       let adminNumber;
       let message;
 
       switch (topic) {
         case "checkouts/update":
-          // TODO handle multiple orders save in DB, price differ or time change
-
           if (request.body.shipping_address != undefined) {
             if (request.body.shipping_address.phone != null) {
               Store.findOne(
@@ -437,6 +453,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                           ""
                         ),
                         name: request.body.shipping_address.name,
+                        email: request.body.email,
                         vendor: request.body.line_items[0].vendor,
                         price: request.body.subtotal_price,
                         url: request.body.abandoned_checkout_url
@@ -625,7 +642,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
             //end
-            sndSms(admin, vendor, message, senderID, shop);
+            sndSms(phone, message, senderID, shop);
           }
 
           break;
@@ -746,7 +763,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
 
-            sndSms(admin, vendor, message, senderID, shop);
+            sndSms(admin, message, senderID, shop);
           }
           break;
 
@@ -840,7 +857,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
 
-            sndSms(admin, vendor, message, senderID, shop);
+            sndSms(admin, message, senderID, shop);
           }
           break;
         case "orders/cancelled":
@@ -946,7 +963,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
 
-            sndSms(admin, vendor, message, senderID, shop);
+            sndSms(admin, message, senderID, shop);
           }
           break;
         default:
@@ -966,7 +983,7 @@ const sndSms = (phone, message, senderID, shop) => {
   message = message.replace(/ /g, "%20");
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
-      console.log(data, "<-- data");
+      // console.log(data, "<-- data");
       if (data.smsCount > 0) {
         //send SMS
         var options = {
@@ -1346,7 +1363,6 @@ cron.schedule("*/2 * * * * ", () => {
       console.log("Performing on store-->", store);
       Store.findOne({ name: store }, (err, data) => {
         data.orders.forEach(order => {
-          // TODO dont send send followUp if converted is true
           if (order.f1 && order.purchase === false) {
             if (moment(order.f1).isBetween(interval, current)) {
               console.log("call shortner function for", order.f1);
