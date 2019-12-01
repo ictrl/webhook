@@ -160,8 +160,8 @@ const shorten = async params => {
         let message = "Message";
         let name = "Name";
         let vendor = "Vendor";
-        let price = 000;
-          await Store.findOne(
+        // let price = 000;
+        await Store.findOne(
           {
             name: shop,
             orders: { $elemMatch: { id: id } }
@@ -174,7 +174,7 @@ const shorten = async params => {
                 if (e.id === id) {
                   name = e.name;
                   vendor = e.vendor;
-                  price = e.price;
+                  // price = e.price;
                 }
               });
             }
@@ -191,7 +191,7 @@ const shorten = async params => {
             } else {
               data.abandanTemplate.forEach(e => {
                 if (e.topic === followUp + "") {
-                  message = e.template; 
+                  message = e.template;
                   for (let i = 0; i < message.length; i++) {
                     message = message.replace("${customer_name}", name);
                     message = message.replace("${store_name}", vendor);
