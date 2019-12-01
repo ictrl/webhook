@@ -157,7 +157,29 @@ const shorten = async params => {
 
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
-        let message = "letMessage";
+        let message = "Message";
+        let name = "Name";
+        let vendor = "Vendor";
+        let price = 000;
+          await Store.findOne(
+          {
+            name: shop,
+            orders: { $elemMatch: { id: id } }
+          },
+          (err, data) => {
+            if (err) {
+              console.log(err);
+            } else {
+              data.orders.forEach(e => {
+                if (e.id === id) {
+                  name = e.name;
+                  vendor = e.vendor;
+                  price = e.price;
+                }
+              });
+            }
+          }
+        );
         await Store.findOne(
           {
             name: shop,
@@ -169,10 +191,17 @@ const shorten = async params => {
             } else {
               data.abandanTemplate.forEach(e => {
                 if (e.topic === followUp + "") {
-                  message = e.template;
+                  message = e.template; 
+                  for (let i = 0; i < message.length; i++) {
+                    message = message.replace("${customer_name}", name);
+                    message = message.replace("${store_name}", vendor);
+                    message = message.replace(
+                      "${abandoned_checkout_url}",
+                      shortUrl
+                    );
+                    message = message.replace("${amount}", price);
+                  }
                   sndSms(phone, message, senderId, shop);
-                } else {
-                  message = "elseMessage";
                 }
               });
             }
@@ -432,6 +461,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                           ""
                         ),
                         name: request.body.shipping_address.name,
+                        email: request.body.email,
                         vendor: request.body.line_items[0].vendor,
                         price: request.body.subtotal_price,
                         url: request.body.abandoned_checkout_url
