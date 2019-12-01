@@ -79,6 +79,7 @@ const shorten = async params => {
 
   // Create url code
   const urlCode = shortid.generate();
+  console.log(ulr);
 
   // Check long url /
   if (validUrl.isUri(longUrl)) {
@@ -89,9 +90,10 @@ const shorten = async params => {
         Url.findOneAndUpdate(
           { id: url.id },
           {
-            $set: {
-              followUp: followUp
-            }
+            //   $set: {
+            //     followUp: followUp
+            //   }
+            $push: { followUp: followUp }
           },
           { new: true, useFindAndModify: false },
           (err, result) => {
