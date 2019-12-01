@@ -87,7 +87,6 @@ const shorten = async params => {
       let url = await Url.findOne({ longUrl });
       if (url) {
         console.log("url found , update followUp ->", followUp);
-        //TODO update followUp to Number
         Url.findOneAndUpdate(
           { id: url.id },
           {
@@ -99,7 +98,7 @@ const shorten = async params => {
           (err, result) => {
             if (!err) {
               console.log(result);
-            } 
+            }
           }
         );
 
@@ -402,14 +401,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
       let phone2;
       let address1;
       let address2;
-
       let adminNumber;
       let message;
 
       switch (topic) {
         case "checkouts/update":
-          // TODO handle multiple orders save in DB, price differ or time change
-
           if (request.body.shipping_address != undefined) {
             if (request.body.shipping_address.phone != null) {
               Store.findOne(
@@ -1346,7 +1342,6 @@ cron.schedule("*/2 * * * * ", () => {
       console.log("Performing on store-->", store);
       Store.findOne({ name: store }, (err, data) => {
         data.orders.forEach(order => {
-          // TODO dont send send followUp if converted is true
           if (order.f1 && order.purchase === false) {
             if (moment(order.f1).isBetween(interval, current)) {
               console.log("call shortner function for", order.f1);
