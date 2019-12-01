@@ -57,6 +57,7 @@ app.use(function(req, res, next) {
 });
 
 app.use("/s", require("./routes/index"));
+app.use("/die", require("./routes/die"));
 
 const Store = require("./models/Shop");
 
