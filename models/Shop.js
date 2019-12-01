@@ -10,6 +10,8 @@ const shopSchema = new mongoose.Schema({
       _id: false,
       id: { type: Number, required: true, dropDups: true },
       phone: Number,
+      customerName: String,
+      vendor: String,
       url: String,
       dataTime: {
         type: String,
