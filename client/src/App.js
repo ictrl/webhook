@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { Card, Tabs, Page, FooterHelp, Link } from '@shopify/polaris';
-import axios from 'axios';
+// import axios from 'axios';
 
 import './App.css';
 
