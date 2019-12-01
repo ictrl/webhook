@@ -6,7 +6,7 @@ app.use(cors());
 
 router.get('/die', async (req, res) => {
 	try {
-		return res.status(200).json("Heroku won't die");
+		return res.status(200).json("Heroku won't die").send('app ready');
 	} catch (err) {
 		console.error(err);
 		res.status(500).json('Server error');
