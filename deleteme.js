@@ -70,39 +70,38 @@ const Url = require("./models/Url");
 
 const Store = new mongoose.model("Store", shopSchema);
 
-// Url.findOneAndUpdate(
-//   { id: 11998799921231 },
-//   {
-//     $push: { followUp: 7 }
-//   },
-//   { new: true, useFindAndModify: false },
-//   (err, result) => {
-//     if (!err) {
-//       console.log(result);
-//     } else console.log(err);
-//   }
-// );
-
-Store.findOneAndUpdate(
-  { name: "demo-mojito.myshopify.com" },
+Url.findOneAndUpdate(
+  { id: 11999085264975 },
   {
-    $addToSet: {
-      clicked: {
-        checkoutId: 69,
-        followUp: [1, 2, 3],
-        price: 99
-      }
-    }
+    $push: { followUp: 22 }
   },
   { new: true, useFindAndModify: false },
-  (err, data) => {
+  (err, result) => {
     if (!err) {
-      console.log(data);
-    } else {
-      console.log(err);
-    }
+      console.log(result);
+    } else console.log("naah");
   }
 );
+// Store.findOneAndUpdate(
+//   { name: "demo-mojito.myshopify.com" },
+//   {
+//     $addToSet: {
+//       clicked: {
+//         checkoutId: 69,
+//         followUp: [1, 2, 3],
+//         price: 99
+//       }
+//     }
+//   },
+//   { new: true, useFindAndModify: false },
+//   (err, data) => {
+//     if (!err) {
+//       console.log(data);
+//     } else {
+//       console.log(err);
+//     }
+//   }
+// );
 
 // Url.findOneAndUpdate(
 //   { id: 11988933345359 },
