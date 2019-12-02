@@ -1339,7 +1339,7 @@ app.post("/api/recharge", function(req, res) {
   }
 });
 
-cron.schedule("*/2 * * * * ", () => {
+cron.schedule("*/5 * * * * ", () => {
   //getting list of all store name
   var storeName = [];
   Store.find({}, function(err, stores) {
@@ -1347,7 +1347,7 @@ cron.schedule("*/2 * * * * ", () => {
       storeName.push(store.name);
     });
     let interval = moment()
-      .subtract(2, "minutes")
+      .subtract(5, "minutes")
       .format();
     let current = moment().format();
     console.log("current time-->", current);
