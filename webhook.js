@@ -1100,7 +1100,7 @@ app.get("/api/option", function(req, res) {
 
 //abandan template
 app.get("/api/abandanTemplate", function (req, res) {
-  req.session.shop= 'demo-mojito.myshopify.com'
+  
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
@@ -1117,7 +1117,7 @@ app.get("/api/abandanTemplate", function (req, res) {
 });
 //template
 app.get("/api/template", function (req, res) {
-  req.session.shop= 'demo-mojito.myshopify.com'
+
   
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
