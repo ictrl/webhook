@@ -18,6 +18,11 @@ export default function TabsExample() {
 
 	const tabs = [
 		{
+			id: 'repeat-customers',
+			content: 'SMS History',
+			panelID: 'repeat-customers-content'
+		},
+		{
 			id: 'all-customers',
 			content: 'Settings',
 			accessibilityLabel: 'All customers',
@@ -37,11 +42,6 @@ export default function TabsExample() {
 			id: 'abandan-checkout',
 			content: 'Abandan Checkout',
 			panelID: 'abandan-checkout-content'
-		},
-		{
-			id: 'repeat-customers',
-			content: 'SMS History',
-			panelID: 'repeat-customers-content'
 		}
 
 		// {
