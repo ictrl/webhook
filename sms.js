@@ -9,9 +9,7 @@
 
 // let phone = 8340238800;
 
-
 //  Customer%20name:%20Mittalee,from%20shop:amydus2.myshopify.com%20order%20ID:%202693,%20Order%20Status%20fulfilled
-
 
 // let message =
 //   "Customer%20name:%20Ananya,from%20shop:amydus2.myshopify.com%20order%20ID:%202693,%20Order%20Status%20fulfilled";
@@ -41,3 +39,8 @@
 // };
 
 // sms();
+
+var p = "94267 10963";
+
+p = p.replace(/ /g, "");
+console.log(p);

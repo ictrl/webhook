@@ -973,6 +973,9 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 const sndSms = (i, phone, message, senderID, shop) => {
   console.log(i, "--------->");
   message = message.replace(/ /g, "%20");
+
+  phone = phone.replace(/ /g, "");
+  console.log(p);
   console.log(phone, "<-- phone sndSmS");
   console.log(message, "<-- messge sndSmS");
   console.log(senderID, "<-- senderID sndSmS");
