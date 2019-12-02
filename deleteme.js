@@ -70,6 +70,22 @@ const Url = require("./models/Url");
 
 const Store = new mongoose.model("Store", shopSchema);
 
+Url.findOneAndUpdate(
+  { id: 11998799921231 },
+  {
+    //   $set: {
+    //     followUp: followUp
+    //   }
+    $push: { followUp: 9 }
+  },
+  { new: true, useFindAndModify: false },
+  (err, result) => {
+    if (!err) {
+      console.log(result);
+    } else console.log(err);
+  }
+);
+
 // Url.findOneAndUpdate(
 //   { id: 11988933345359 },
 //   {
