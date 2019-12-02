@@ -121,7 +121,7 @@ const shorten = async params => {
                     message = message.replace("${amount}", url.price);
                   }
 
-                  sndSms(phone, message, senderId, shop);
+                  sndSms(1, phone, message, senderId, shop);
                 } else {
                   message = "elseMessage";
                 }
@@ -191,7 +191,7 @@ const shorten = async params => {
                     );
                     message = message.replace("${amount}", price);
                   }
-                  sndSms(phone, message, senderId, shop);
+                  sndSms(2, phone, message, senderId, shop);
                 }
               });
             }
@@ -600,11 +600,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             //end
             let senderID = data.data["sender id"];
             if (phone) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(3, phone, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(4, phone, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(5, phone, message, senderID, shop);
             }
           }
           if (data.data["orders/create admin"] != undefined) {
@@ -635,7 +635,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
             //end
-            sndSms(phone, message, senderID, shop);
+            sndSms(6, phone, message, senderID, shop);
           }
 
           break;
@@ -714,11 +714,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 
             let senderID = data.data["sender id"];
             if (phone) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(7, phone, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(8, phone, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(9, phone, message, senderID, shop);
             }
           }
           if (data.data["orders/fulfilled admin"] != undefined) {
@@ -756,7 +756,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
 
-            sndSms(admin, message, senderID, shop);
+            sndSms(10, admin, message, senderID, shop);
           }
           break;
 
@@ -813,11 +813,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             let senderID = data.data["sender id"];
 
             if (phone) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(11, phone, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(12, phone, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(13, phone, message, senderID, shop);
             }
           }
           if (data.data["refunds/create admin"] != undefined) {
@@ -850,7 +850,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
 
-            sndSms(admin, message, senderID, shop);
+            sndSms(14, admin, message, senderID, shop);
           }
           break;
         case "orders/cancelled":
@@ -922,11 +922,11 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             //end
             let senderID = data.data["sender id"];
             if (phone) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(15, phone, message, senderID, shop);
             } else if (phone1) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(16, phone, message, senderID, shop);
             } else if (phone2) {
-              sndSms(phone, message, senderID, shop);
+              sndSms(17, phone, message, senderID, shop);
             }
           }
           if (data.data["orders/cancelled admin"] != undefined) {
@@ -956,7 +956,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
               });
             }
 
-            sndSms(admin, message, senderID, shop);
+            sndSms(18, admin, message, senderID, shop);
           }
           break;
         default:
@@ -970,10 +970,16 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   response.sendStatus(200);
 });
 
-const sndSms = (phone, message, senderID, shop) => {
+const sndSms = (i, phone, message, senderID, shop) => {
+  console.log(i, "--------->");
+  message = message.replace(/ /g, "%20");
+
+  phone = phone.replace(/ /g, "");
+  console.log(phone, "<-- phone sndSmS");
+  console.log(message, "<-- messge sndSmS");
+  console.log(senderID, "<-- senderID sndSmS");
   console.log(shop, "<-- shop sndSmS");
 
-  message = message.replace(/ /g, "%20");
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       // console.log(data, "<-- data");
@@ -1111,7 +1117,6 @@ app.get("/api/smsCount", function(req, res) {
 });
 
 app.get("/api/history", function(req, res) {
-  
   if (req.session.views[pathname]) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
