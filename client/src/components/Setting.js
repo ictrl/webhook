@@ -53,8 +53,8 @@ export default function Settings() {
 		'sender id': senderID,
 		'orders/create customer': orderCreateCustomer,
 		'orders/create admin': orderCreateAdmin,
-		'orders/cancelled customer': orderCancelledAdmin,
-		'orders/cancelled admin': orderCancelledCustomer,
+		'orders/cancelled customer': orderCancelledCustomer,
+		'orders/cancelled admin': orderCancelledAdmin,
 		'orders/fulfilled customer': orderFulfilledCustomer,
 		'orders/fulfilled admin': orderFulfilledAdmin
 	};
