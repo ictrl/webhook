@@ -1,66 +1,32 @@
-import React, { useState, Fragment, useEffect, useCallback } from 'react';
-import { Layout, Card, Button } from '@shopify/polaris';
-
+import React, { useCallback, useState, useEffect } from 'react';
+import { TextField, Layout, Card } from '@shopify/polaris';
 import axios from 'axios';
 
 export default function Template() {
-	const [ template1, setTemplate1 ] = useState('');
+	const sendTemplate = async (tempObj) => {
+		console.log(tempObj, 'before send post');
 
-	const handleTemplate1 = useCallback((newValue) => setTemplate1(newValue), []);
-	const [ template2, setTemplate2 ] = useState('');
-
-	const handleTemplate2 = useCallback((newValue) => setTemplate2(newValue), []);
-	let defaultTopic = {
-		topic: 'orders/create',
-		topicVariables: 'name  price order_id title'
-	};
-
-	const [ topics, setTopics ] = useState(defaultTopic);
-
-	const sendTemplate = (tempObj) => {
-		console.log(tempObj.customer, tempObj.admin, tempObj.topic);
-
-		if (tempObj.customer !== '``' && tempObj.admin !== '``' && tempObj.topic) {
+		if (tempObj.topic && tempObj.template) {
 			console.log(tempObj);
-			axios.post('/api/template/', tempObj).then((res) => console.log(res)).catch((err) => console.error(err));
+			try {
+				const res = await axios.post('/api/template', tempObj);
+				console.log(res);
+			} catch (error) {
+				console.log('nahi hua post');
+			}
 		} else {
 			console.log(" couldn't know what happened");
 		}
 	};
 
 	let tempObj = {
-		topic: topics.topic,
-		customer: template1,
-		admin: template2
-	};
-
-	const saveTemplete = async () => {
-		convertData({
-			textareaId: 'inputTextArea-customer',
-			audience: 'customer'
-		});
-		convertData({
-			textareaId: 'inputTextArea-admin',
-			audience: 'admin'
-		});
-
-		dummy();
-	};
-
-	const dummy = () => {
-		sendTemplate(tempObj);
+		topic: '',
+		template: ''
 	};
 
 	const convertData = (param) => {
-		let first = param.textareaId;
-
-		let inputTextArea = document.getElementById(first);
-
-		let strLength = 0;
-		let luna = document.getElementById(first).className;
-		var inputData = document.getElementById(first).value;
+		var inputData = param.text;
 		if (inputData !== '' && inputData !== null) {
-			myFunction();
 			inputData = inputData.replace(/(^\s*)|(\s*$)/gi, '');
 			inputData = inputData.replace(/[ ]{2,}/gi, ' ');
 			inputData = inputData.replace(/\n /, '\n');
@@ -71,168 +37,44 @@ export default function Template() {
 				inputData = inputData.replace(')', '}');
 				inputData = inputData.replace('\n', '%0A');
 			}
-
-			if (luna.indexOf('is-invalid') > -1) {
-				strLength = luna.split(' ').length;
-				for (let i = 0; i < strLength; i++) {
-					luna = luna.replace('is-invalid', '');
-				}
-
-				inputTextArea.className = luna;
-				return;
-			}
-		} else {
-			luna = document.getElementById(first).className;
-			luna = luna.concat(' ');
-			luna = luna.concat('is-invalid');
-			document.getElementById(first).className = luna;
 		}
-		showOutput(inputData, param.audience);
+		showOutput(inputData);
 	};
 
-	const showOutput = (parameter, audience) => {
+	const showOutput = (parameter) => {
 		parameter = `\`${parameter}\``;
-
-		if (audience === 'customer') {
-			tempObj.customer = parameter;
-		} else if (audience === 'admin') {
-			tempObj.admin = parameter;
-		} else {
-			console.log('something went wrong ');
-		}
-		// sendTemplate(tempObj);
+		tempObj.template = parameter;
+		sendTemplate(tempObj);
 	};
 
-	const topicHandler = (params) => {
-		const selectedElement = params.target;
-		const selectedValue = selectedElement.title;
-		console.log(selectedValue);
-		switch (selectedValue) {
-			case 'orders/create':
-				axios.get('/api/template').then((res) => {
-					let inputData = res.data[0].customer;
-					for (let i = 0; i < inputData.length; i++) {
-						inputData = inputData.replace('%20', ' ');
-						inputData = inputData.replace('${', '(');
-						inputData = inputData.replace('}', ')');
-						inputData = inputData.replace('`', '');
-					}
-					let inputAdmin = res.data[0].admin;
-					for (let i = 0; i < inputAdmin.length; i++) {
-						inputAdmin = inputAdmin.replace('%20', ' ');
-						inputAdmin = inputAdmin.replace('${', '(');
-						inputAdmin = inputAdmin.replace('}', ')');
-						inputAdmin = inputAdmin.replace('`', '');
-					}
+	/////////////////////////////////
+	function myFunction1() {
+		tempObj.topic = 1;
 
-					setTemplate1(inputData);
-					setTemplate2(inputAdmin);
-				});
-				setTopics({
-					...topics,
-					topic: selectedValue,
-					topicVariables: 'name price order_id title '
-				});
-				break;
-			case 'orders/cancelled':
-				axios.get('/api/template').then((res) => {
-					let inputData = res.data[1].customer;
-					for (let i = 0; i < inputData.length; i++) {
-						inputData = inputData.replace('%20', ' ');
-						inputData = inputData.replace('${', '(');
-						inputData = inputData.replace('}', ')');
-						inputData = inputData.replace('`', '');
-					}
-					let inputAdmin = res.data[1].admin;
-					for (let i = 0; i < inputAdmin.length; i++) {
-						inputAdmin = inputAdmin.replace('%20', ' ');
-						inputAdmin = inputAdmin.replace('${', '(');
-						inputAdmin = inputAdmin.replace('}', ')');
-						inputAdmin = inputAdmin.replace('`', '');
-					}
-
-					setTemplate1(inputData);
-					setTemplate2(inputAdmin);
-				});
-				setTopics({
-					...topics,
-					topic: selectedValue,
-					topicVariables: 'name price order_id title cancel_reason'
-				});
-				break;
-			case 'orders/fulfilled':
-				axios.get('/api/template').then((res) => {
-					let inputData = res.data[2].customer;
-					for (let i = 0; i < inputData.length; i++) {
-						inputData = inputData.replace('%20', ' ');
-						inputData = inputData.replace('${', '(');
-						inputData = inputData.replace('}', ')');
-						inputData = inputData.replace('`', '');
-					}
-					let inputAdmin = res.data[2].admin;
-					for (let i = 0; i < inputAdmin.length; i++) {
-						inputAdmin = inputAdmin.replace('%20', ' ');
-						inputAdmin = inputAdmin.replace('${', '(');
-						inputAdmin = inputAdmin.replace('}', ')');
-						inputAdmin = inputAdmin.replace('`', '');
-					}
-
-					setTemplate1(inputData);
-					setTemplate2(inputAdmin);
-				});
-				setTopics({
-					...topics,
-					topic: selectedValue,
-					topicVariables: 'name price order_id title fulfillment_status order_status_url'
-				});
-				break;
-			case 'orders/partially_fulfilled':
-				setTopics({
-					...topics,
-					topic: selectedValue,
-					topicVariables: 'name price order_id title fulfillment_status order_status_url'
-				});
-				getOption();
-				break;
-			case 'customers/create':
-				setTopics({
-					...topics,
-					topic: selectedValue,
-					topicVariables: 'name email phone'
-				});
-				getOption();
-				break;
-			case 'refunds/create':
-				setTopics({
-					...topics,
-					topic: selectedValue,
-					topicVariables: 'price order_id title'
-				});
-				getOption();
-				break;
-
-			default:
-				break;
+		if (tempObj.topic) {
+			convertData({
+				text: template1
+			});
 		}
+		var x = document.getElementById('snackbar');
+		x.className = 'show';
+		setTimeout(function() {
+			x.className = x.className.replace('show', '');
+		}, 2000);
+	}
+	const [ template1, setTemplate1 ] = useState('');
 
-		let selectedElementClass = selectedElement.className;
+	const handleTemplate1 = useCallback((newValue) => setTemplate1(newValue), []);
 
-		if (selectedElementClass.includes('butti')) {
-			return;
-		} else {
-			let firstElement = document.getElementsByClassName('butti');
-			if (firstElement) {
-				let first = firstElement[0];
-				first.className = 'butt ';
-			}
+	/////////////////////////22
+	function myFunction2() {
+		tempObj.topic = 2;
 
-			if (selectedElementClass.includes('butt ')) {
-				selectedElementClass = selectedElementClass.replace('butt', 'butti ');
-				params.target.className = selectedElementClass;
-			}
+		if (tempObj.time && tempObj.status) {
+			convertData({
+				text: template2
+			});
 		}
-	};
-	function myFunction() {
 		var x = document.getElementById('snackbar');
 		x.className = 'show';
 		setTimeout(function() {
@@ -240,117 +82,80 @@ export default function Template() {
 		}, 2000);
 	}
 
+	const [ template2, setTemplate2 ] = useState('');
+
+	const handleTemplate2 = useCallback((newValue) => setTemplate2(newValue), []);
+
 	const getOption = () => {
-		axios.get('/api/template').then((res) => {
-			console.log('optn', res.data);
-			console.log('11111', res.data[1]);
-
-			// try {
-			if (topics.topic == 'orders/create') {
-				console.log('creaye to aaya');
-				let inputData = res.data[0].customer;
-				for (let i = 0; i < inputData.length; i++) {
-					inputData = inputData.replace('%20', ' ');
-					inputData = inputData.replace('${', '(');
-					inputData = inputData.replace('}', ')');
-					inputData = inputData.replace('`', '');
-				}
-				let inputAdmin = res.data[0].admin;
-				for (let i = 0; i < inputAdmin.length; i++) {
-					inputAdmin = inputAdmin.replace('%20', ' ');
-					inputAdmin = inputAdmin.replace('${', '(');
-					inputAdmin = inputAdmin.replace('}', ')');
-					inputAdmin = inputAdmin.replace('`', '');
-				}
-
-				setTemplate1(inputData);
-				setTemplate2(inputAdmin);
-			} else {
-				console.log('gjkbsubdfudbduws');
-			}
+		axios.get('/api/template/').then((res) => {
+			console.log(res.data);
 		});
 	};
-
 	useEffect(() => {
 		getOption();
 	}, []);
 
 	return (
-		<Fragment>
-			<div id="snackbar">Template Updated for {topics.topic} </div>
+		<Layout>
+			<Layout.AnnotatedSection
+				title="Customer Template"
+				description="Available Variables:- customer_name store_name abandoned_checkout_url amount."
+			>
+				<Card>
+					<div style={{ padding: '1.311rem' }}>
+						<TextField
+							label="Template"
+							value={template1}
+							onChange={handleTemplate1}
+							multiline
+							helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
+						/>
+						<br />
 
-			<div className="bog col-md-12 mb-5">
-				<div className="butti " title="orders/create" onClick={topicHandler}>
-					Orders/create
-				</div>
+						<button
+							onClick={() => {
+								myFunction1();
+							}}
+							style={{ height: '34px' }}
+							className="button-shopify"
+						>
+							Save
+						</button>
+					</div>
+				</Card>
+			</Layout.AnnotatedSection>
 
-				<div className="butt " title="orders/cancelled" onClick={topicHandler}>
-					Orders/cancelled
-				</div>
-				<div className="butt " title="orders/fulfilled" onClick={topicHandler}>
-					Orders/fulfilled
-				</div>
+			<Layout.AnnotatedSection
+				title="Admin Template"
+				description="Admin will be notify on this no. by selecting Notify Admin."
+			>
+				<Card>
+					<div style={{ padding: '1.311rem' }}>
+						<TextField
+							label="Template"
+							value={template2}
+							onChange={handleTemplate2}
+							multiline
+							helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
+						/>
+						<br />
+
+						<button
+							onClick={() => {
+								myFunction2();
+							}}
+							style={{ height: '34px' }}
+							className="button-shopify"
+						>
+							Save
+						</button>
+					</div>
+				</Card>
+			</Layout.AnnotatedSection>
+
+			<div id="snackbar" style={{ zIndex: '999' }}>
+				Abandan Updated{' '}
 			</div>
-			<Layout>
-				{/* <div className="mt-3 mb-2 " style={{ textAlign: 'left' }}>
-				<h2>Select Topic</h2>
-			</div> */}
-
-				<Layout.AnnotatedSection
-					title="SMS Template Rules"
-					description={`All the variables enclosed in "( )" 
-					will be replaced by actual values.
-				SMS length limit is 70 characters.  
-				Enclose every variables with "( )".  
-				Available Variables for ${topics.topic} are :- 
-				 ${topics.topicVariables}`}
-				>
-					<Card sectioned>
-						<div style={{ padding: '2rem' }}>
-							<h5 className="card-title">Customer Message templete</h5>
-
-							<textarea
-								className="form-control"
-								id="inputTextArea-customer"
-								placeholder="Enter customer message here"
-								rows={5}
-								required
-								value={template1}
-								onChange={handleTemplate1}
-								autoFocus
-								defaultValue={''}
-								style={{ fontSize: '14px' }}
-							/>
-
-							<br />
-							<h5 className="card-title">Admin Message Templete</h5>
-
-							<textarea
-								className="form-control"
-								id="inputTextArea-admin"
-								placeholder="Enter admin message here"
-								rows={5}
-								value={template2}
-								onChange={handleTemplate2}
-								required
-								autoFocus
-								defaultValue={''}
-								style={{ fontSize: '14px' }}
-							/>
-							<div className="invalid-feedback">Please enter Data in the textarea.</div>
-
-							<br />
-
-							<div style={{ textAlign: 'center' }} onClick={saveTemplete}>
-								<Button primary>Save Template</Button>
-							</div>
-						</div>
-					</Card>
-				</Layout.AnnotatedSection>
-				<div id="snackbar" style={{ zIndex: '999' }}>
-					Abandan Updated{' '}
-				</div>
-			</Layout>
-		</Fragment>
+		</Layout>
 	);
 }

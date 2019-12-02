@@ -202,65 +202,143 @@ export default function Abandan() {
 
 	const getOption = () => {
 		axios.get('/api/abandanTemplate/').then((res) => {
-			try {
-				let inputData = res.data[0].template;
-				for (let i = 0; i < inputData.length; i++) {
-					inputData = inputData.replace('%20', ' ');
-					inputData = inputData.replace('${', '(');
-					inputData = inputData.replace('}', ')');
-					inputData = inputData.replace('`', '');
-				}
+			console.log(res.data[0]);
+			console.log(res.data[1]);
+			console.log(res.data[2]);
+			console.log(res.data[3]);
 
-				setTemplate1(inputData);
+			let zo;
+			if (res.data[0]) {
+				zo = res.data[0].template;
+				if (zo) {
+					for (let i = 0; i < zo.length + 1; i++) {
+						zo = zo.replace('%20', ' ');
+						zo = zo.replace('%0A', ' ');
+
+						zo = zo.replace('${', '(');
+						zo = zo.replace('}', ')');
+						zo = zo.replace('`', '');
+					}
+				}
+			}
+			let zo1;
+			if (res.data[1]) {
+				zo1 = res.data[1].template;
+				if (zo1) {
+					for (let i = 0; i < zo1.length + 1; i++) {
+						zo1 = zo1.replace('%20', ' ');
+						zo1 = zo1.replace('%0A', ' ');
+						zo1 = zo1.replace('${', '(');
+						zo1 = zo1.replace('}', ')');
+						zo1 = zo1.replace('`', '');
+					}
+				}
+			}
+			let zo2;
+			if (res.data[2]) {
+				zo2 = res.data[2].template;
+				if (zo2) {
+					for (let i = 0; i < zo2.length + 1; i++) {
+						zo2 = zo2.replace('%20', ' ');
+
+						zo2 = zo2.replace('%0A', ' ');
+						zo2 = zo2.replace('${', '(');
+						zo2 = zo2.replace('}', ')');
+						zo2 = zo2.replace('`', '');
+					}
+				}
+			}
+			let zo3;
+			if (res.data[3]) {
+				zo3 = res.data[3].template;
+				if (zo3) {
+					for (let i = 0; i < zo3.length + 1; i++) {
+						zo3 = zo3.replace('%20', ' ');
+						zo3 = zo3.replace('${', '(');
+
+						zo3 = zo3.replace('%0A', ' ');
+						zo3 = zo3.replace('}', ')');
+						zo3 = zo3.replace('`', '');
+					}
+				}
+			}
+
+			try {
+				setTemplate1(zo);
 				setStatus1(res.data[0].status);
 				setSelected1(res.data[0].time);
 			} catch (error) {
 				console.error(error);
 			}
-
 			try {
-				let inputData = res.data[1].customer;
-				for (let i = 0; i < inputData.length; i++) {
-					inputData = inputData.replace('%20', ' ');
-					inputData = inputData.replace('${', '(');
-					inputData = inputData.replace('}', ')');
-					inputData = inputData.replace('`', '');
-				}
-
-				setTemplate2(inputData);
+				setTemplate2(zo1);
 				setStatus2(res.data[1].status);
 				setSelected2(res.data[1].time);
 			} catch (error) {
 				console.error(error);
 			}
 			try {
-				let inputData = res.data[2].customer;
-				for (let i = 0; i < inputData.length; i++) {
-					inputData = inputData.replace('%20', ' ');
-					inputData = inputData.replace('${', '(');
-					inputData = inputData.replace('}', ')');
-					inputData = inputData.replace('`', '');
-				}
-				setTemplate3(inputData);
+				setTemplate3(zo2);
 				setStatus3(res.data[2].status);
 				setSelected3(res.data[2].time);
 			} catch (error) {
 				console.error(error);
 			}
 			try {
-				let inputData = res.data[3].customer;
-				for (let i = 0; i < inputData.length; i++) {
-					inputData = inputData.replace('%20', ' ');
-					inputData = inputData.replace('${', '(');
-					inputData = inputData.replace('}', ')');
-					inputData = inputData.replace('`', '');
-				}
-				setTemplate4(inputData);
+				setTemplate4(zo3);
 				setStatus4(res.data[3].status);
 				setSelected4(res.data[3].time);
 			} catch (error) {
 				console.error(error);
 			}
+
+			// } catch (error) {
+			// 	console.error(error);
+			// }
+
+			// try {
+			// 	let inputData1 = res.data[1].customer;
+			// 	for (let i = 0; i < inputData1.length; i++) {
+			// 		inputData1 = inputData1.replace('%20', ' ');
+			// 		inputData1 = inputData1.replace('${', '(');
+			// 		inputData1 = inputData1.replace('}', ')');
+			// 		inputData1 = inputData1.replace('`', '');
+			// 	}
+
+			// 	setTemplate2(inputData1);
+			// 	setStatus2(res.data[1].status);
+			// 	setSelected2(res.data[1].time);
+			// } catch (error) {
+			// 	console.error(error);
+			// }
+			// try {
+			// 	let inputData2 = res.data[2].customer;
+			// 	for (let i = 0; i < inputData2.length; i++) {
+			// 		inputData2 = inputData2.replace('%20', ' ');
+			// 		inputData2 = inputData2.replace('${', '(');
+			// 		inputData2 = inputData2.replace('}', ')');
+			// 		inputData2 = inputData2.replace('`', '');
+			// 	}
+			// 	setTemplate3(inputData2);
+			// 	setStatus3(res.data[2].status);
+			// 	setSelected3(res.data[2].time);
+			// } catch (error) {
+			// 	console.error(error);
+			// }
+			// try {
+			// 	let inputData3 = res.data[3].customer;
+			// 	for (let i = 0; i < inputData3.length; i++) {
+			// 		inputData3 = inputData3.replace('%20', ' ');
+			// 		inputData3 = inputData3.replace('${', '(');
+			// 		inputData3 = inputData3.replace('}', ')');
+			// 		inputData3 = inputData3.replace('`', '');
+			// 	}
+			// 	setTemplate4(inputData3);
+			// 	setStatus4(res.data[3].status);
+			// 	setSelected4(res.data[3].time);
+			// } catch (error) {
+			// 	console.error(error);
+			// }
 		});
 	};
 
@@ -274,31 +352,33 @@ export default function Abandan() {
 				title="First Follow Up"
 				description="Available Variables:- customer_name store_name abandoned_checkout_url amount."
 			>
-				<Card sectioned>
-					<TextField
-						label="Template"
-						value={template1}
-						onChange={handleTemplate1}
-						multiline
-						helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
-					/>
-					<br />
+				<Card>
+					<div style={{ padding: '1.311rem' }}>
+						<TextField
+							label="Template"
+							value={template1}
+							onChange={handleTemplate1}
+							multiline
+							helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
+						/>
+						<br />
 
-					<div className="mt-2 a-card-contents">
-						<Select label="Time After" options={option1} onChange={handleSelectChange1} value={selected1} />
+						<div className="mt-2 a-card-contents">
+							<Select label="Time After" options={option1} onChange={handleSelectChange1} value={selected1} />
 
-						<Select label="Status" options={statusOption1} onChange={handleStatus1} value={status1} />
+							<Select label="Status" options={statusOption1} onChange={handleStatus1} value={status1} />
 
-						<div className="mt-5">
-							<button
-								onClick={() => {
-									myFunction1();
-								}}
-								style={{ height: '34px' }}
-								className="button-shopify"
-							>
-								Save
-							</button>
+							<div className="mt-5">
+								<button
+									onClick={() => {
+										myFunction1();
+									}}
+									style={{ height: '34px' }}
+									className="button-shopify"
+								>
+									Save
+								</button>
+							</div>
 						</div>
 					</div>
 				</Card>
@@ -308,31 +388,33 @@ export default function Abandan() {
 				title="Second Follow Up"
 				description="Admin will be notify on this no. by selecting Notify Admin."
 			>
-				<Card sectioned>
-					<TextField
-						label="Template"
-						value={template2}
-						onChange={handleTemplate2}
-						multiline
-						helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
-					/>
-					<br />
+				<Card>
+					<div style={{ padding: '1.311rem' }}>
+						<TextField
+							label="Template"
+							value={template2}
+							onChange={handleTemplate2}
+							multiline
+							helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
+						/>
+						<br />
 
-					<div className="mt-2 a-card-contents">
-						<Select label="Time After" options={option2} onChange={handleSelectChange2} value={selected2} />
+						<div className="mt-2 a-card-contents">
+							<Select label="Time After" options={option2} onChange={handleSelectChange2} value={selected2} />
 
-						<Select label="Status" options={statusOption2} onChange={handleStatus2} value={status2} />
+							<Select label="Status" options={statusOption2} onChange={handleStatus2} value={status2} />
 
-						<div className="mt-5">
-							<button
-								onClick={() => {
-									myFunction2();
-								}}
-								style={{ height: '34px' }}
-								className="button-shopify"
-							>
-								Save
-							</button>
+							<div className="mt-5">
+								<button
+									onClick={() => {
+										myFunction2();
+									}}
+									style={{ height: '34px' }}
+									className="button-shopify"
+								>
+									Save
+								</button>
+							</div>
 						</div>
 					</div>
 				</Card>
@@ -341,31 +423,33 @@ export default function Abandan() {
 				title="Third Follow Up"
 				description="Admin will be notify on this no. by selecting Notify Admin."
 			>
-				<Card sectioned>
-					<TextField
-						label="Template"
-						value={template3}
-						onChange={handleTemplate3}
-						multiline
-						helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
-					/>
-					<br />
+				<Card>
+					<div style={{ padding: '1.311rem' }}>
+						<TextField
+							label="Template"
+							value={template3}
+							onChange={handleTemplate3}
+							multiline
+							helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
+						/>
+						<br />
 
-					<div className="mt-3 a-card-contents">
-						<Select label="Time After" options={option3} onChange={handleSelectChange3} value={selected3} />
+						<div className="mt-3 a-card-contents">
+							<Select label="Time After" options={option3} onChange={handleSelectChange3} value={selected3} />
 
-						<Select label="Status" options={statusOption3} onChange={handleStatus3} value={status3} />
+							<Select label="Status" options={statusOption3} onChange={handleStatus3} value={status3} />
 
-						<div className="mt-5">
-							<button
-								onClick={() => {
-									myFunction3();
-								}}
-								style={{ height: '34px' }}
-								className="button-shopify"
-							>
-								Save
-							</button>
+							<div className="mt-5">
+								<button
+									onClick={() => {
+										myFunction3();
+									}}
+									style={{ height: '34px' }}
+									className="button-shopify"
+								>
+									Save
+								</button>
+							</div>
 						</div>
 					</div>
 				</Card>
@@ -374,31 +458,33 @@ export default function Abandan() {
 				title="Fourth Follow Up"
 				description="Admin will be notify on this no. by selecting Notify Admin."
 			>
-				<Card sectioned>
-					<TextField
-						label="Template"
-						value={template4}
-						onChange={handleTemplate4}
-						multiline
-						helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
-					/>
-					<br />
+				<Card>
+					<div style={{ padding: '1.311rem' }}>
+						{' '}
+						<TextField
+							label="Template"
+							value={template4}
+							onChange={handleTemplate4}
+							multiline
+							helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
+						/>
+						<br />
+						<div className="mt-4 a-card-contents">
+							<Select label="Time After" options={option4} onChange={handleSelectChange4} value={selected4} />
 
-					<div className="mt-4 a-card-contents">
-						<Select label="Time After" options={option4} onChange={handleSelectChange4} value={selected4} />
+							<Select label="Status" options={statusOption4} onChange={handleStatus4} value={status4} />
 
-						<Select label="Status" options={statusOption4} onChange={handleStatus4} value={status4} />
-
-						<div className="mt-5">
-							<button
-								onClick={() => {
-									myFunction4();
-								}}
-								style={{ height: '34px' }}
-								className="button-shopify"
-							>
-								Save
-							</button>
+							<div className="mt-5">
+								<button
+									onClick={() => {
+										myFunction4();
+									}}
+									style={{ height: '34px' }}
+									className="button-shopify"
+								>
+									Save
+								</button>
+							</div>
 						</div>
 					</div>
 				</Card>
