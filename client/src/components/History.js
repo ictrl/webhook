@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DescriptionList, Stack, Layout, Card, Page, Button, ButtonGroup } from '@shopify/polaris';
+import { DescriptionList, Stack, Layout, Card, Button } from '@shopify/polaris';
 import axios from 'axios';
 
 export default function History() {

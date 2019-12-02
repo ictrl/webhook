@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { TextField, Layout, Select, Card } from '@shopify/polaris';
 import axios from 'axios';
 
@@ -199,6 +199,75 @@ export default function Abandan() {
 	];
 	const statusOption4 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 	////////////////////////////end 4/////////////
+
+	const getOption = () => {
+		axios.get('/api/abandanTemplate/').then((res) => {
+			try {
+				let inputData = res.data[0].template;
+				for (let i = 0; i < inputData.length; i++) {
+					inputData = inputData.replace('%20', ' ');
+					inputData = inputData.replace('${', '(');
+					inputData = inputData.replace('}', ')');
+					inputData = inputData.replace('`', '');
+				}
+
+				setTemplate1(inputData);
+				setStatus1(res.data[0].status);
+				setSelected1(res.data[0].time);
+			} catch (error) {
+				console.error(error);
+			}
+
+			try {
+				let inputData = res.data[1].customer;
+				for (let i = 0; i < inputData.length; i++) {
+					inputData = inputData.replace('%20', ' ');
+					inputData = inputData.replace('${', '(');
+					inputData = inputData.replace('}', ')');
+					inputData = inputData.replace('`', '');
+				}
+
+				setTemplate2(inputData);
+				setStatus2(res.data[1].status);
+				setSelected2(res.data[1].time);
+			} catch (error) {
+				console.error(error);
+			}
+			try {
+				let inputData = res.data[2].customer;
+				for (let i = 0; i < inputData.length; i++) {
+					inputData = inputData.replace('%20', ' ');
+					inputData = inputData.replace('${', '(');
+					inputData = inputData.replace('}', ')');
+					inputData = inputData.replace('`', '');
+				}
+				setTemplate3(inputData);
+				setStatus3(res.data[2].status);
+				setSelected3(res.data[2].time);
+			} catch (error) {
+				console.error(error);
+			}
+			try {
+				let inputData = res.data[3].customer;
+				for (let i = 0; i < inputData.length; i++) {
+					inputData = inputData.replace('%20', ' ');
+					inputData = inputData.replace('${', '(');
+					inputData = inputData.replace('}', ')');
+					inputData = inputData.replace('`', '');
+				}
+				setTemplate4(inputData);
+				setStatus4(res.data[3].status);
+				setSelected4(res.data[3].time);
+			} catch (error) {
+				console.error(error);
+			}
+		});
+	};
+
+	useEffect(() => {
+		getOption();
+	}, []);
+
 	return (
 		<Layout>
 			<Layout.AnnotatedSection

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Card, Tabs, Page, FooterHelp, Link } from '@shopify/polaris';
 // import axios from 'axios';
 
@@ -18,6 +18,16 @@ export default function TabsExample() {
 
 	const tabs = [
 		{
+			id: 'accepts-marketing',
+			content: 'Edit Template',
+			panelID: 'accepts-marketing-content'
+		},
+		{
+			id: 'abandan-checkout',
+			content: 'Abandan Checkout',
+			panelID: 'abandan-checkout-content'
+		},
+		{
 			id: 'all-customers',
 			content: 'Settings',
 			accessibilityLabel: 'All customers',
@@ -27,16 +37,6 @@ export default function TabsExample() {
 			id: 'dashboard',
 			content: 'Dashboard',
 			panelID: 'dashboard'
-		},
-		{
-			id: 'accepts-marketing',
-			content: 'Edit Template',
-			panelID: 'accepts-marketing-content'
-		},
-		{
-			id: 'abandan-checkout',
-			content: 'Abandan Checkout',
-			panelID: 'abandan-checkout-content'
 		},
 		{
 			id: 'repeat-customers',
