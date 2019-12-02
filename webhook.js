@@ -1111,6 +1111,7 @@ app.get("/api/smsCount", function(req, res) {
 });
 
 app.get("/api/history", function(req, res) {
+  
   if (req.session.views[pathname]) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
