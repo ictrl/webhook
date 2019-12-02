@@ -4,7 +4,7 @@ const urlSchema = new mongoose.Schema({
   urlCode: String,
   longUrl: String,
   shortUrl: String,
-  followUp: Number,
+  followUp: Array,
   shop: String,
   id: Number,
   price: Number,

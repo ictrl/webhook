@@ -89,9 +89,7 @@ const shorten = async params => {
         Url.findOneAndUpdate(
           { id: url.id },
           {
-            $set: {
-              followUp: followUp
-            }
+            $push: { followUp: followUp }
           },
           { new: true, useFindAndModify: false },
           (err, result) => {
@@ -100,6 +98,7 @@ const shorten = async params => {
             }
           }
         );
+
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
         let message = "letMessage";
@@ -463,11 +462,9 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                           data.abandanTemplate.forEach(e => {
                             if (e.topic === "1" && e.status === true) {
                               obj.f1 = moment()
-                                .add(3, "minutes")
+                                // .add(e.time, "minutes")
+                                .add(2, "minutes")
                                 .format();
-                              // obj.f1 = moment()
-                              //   .add(e.time, "minutes")
-                              //   .format();
                             } else if (e.topic === "2" && e.status === true) {
                               obj.f2 = moment()
                                 .add(e.time, "minutes")
@@ -478,12 +475,9 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                                 .format();
                             } else if (e.topic === "4" && e.status === true) {
                               obj.f4 = moment()
-                                .add(5, "minutes")
+                                .add(4, "minutes")
+                                // .add(e.time, "minutes")
                                 .format();
-                              // } else if (e.topic === "4" && e.status === true) {
-                              //   obj.f4 = moment()
-                              //     .add(e.time, "minutes")
-                              //     .format();
                             }
                           });
                           Store.findOneAndUpdate(
