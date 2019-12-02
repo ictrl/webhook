@@ -971,6 +971,9 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 });
 
 const sndSms = (phone, message, senderID, shop) => {
+  console.log(phone, "<-- phone sndSmS");
+  console.log(message, "<-- messge sndSmS");
+  console.log(senderID, "<-- senderID sndSmS");
   console.log(shop, "<-- shop sndSmS");
 
   message = message.replace(/ /g, "%20");
@@ -1111,7 +1114,6 @@ app.get("/api/smsCount", function(req, res) {
 });
 
 app.get("/api/history", function(req, res) {
-  
   if (req.session.views[pathname]) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
