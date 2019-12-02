@@ -59,21 +59,6 @@ export default function Settings() {
 		'orders/fulfilled admin': orderFulfilledAdmin
 	};
 
-	// const handleSubmit = useCallback(
-	// 	(_event) => {
-	// 		axios.post('/api/myaction/', preference).then((res) => console.log(res)).catch((err) => console.error(err));
-
-	// 	},
-	// 	[
-	// 		orderCreateCustomer,
-	// 		orderCreateAdmin,
-	// 		orderCancelledAdmin,
-	// 		orderCancelledCustomer,
-	// 		orderFulfilledAdmin,
-	// 		orderFulfilledCustomer
-	// 	]
-	// );
-
 	const handleSubmit = async () => {
 		console.log(preference);
 
@@ -85,9 +70,6 @@ export default function Settings() {
 			console.log('error aa raha hai');
 		}
 	};
-
-	// 	axios.post('/api/myaction/', preference).then((res) => console.log(res)).catch((err) => console.error(err));
-	// };
 
 	useEffect(() => {
 		getOption();
