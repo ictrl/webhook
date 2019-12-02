@@ -1098,6 +1098,39 @@ app.get("/api/option", function(req, res) {
   }
 });
 
+//abandan template
+app.get("/api/abandanTemplate", function(req, res) {
+  if (req.session.shop) {
+    Store.findOne({ name: req.session.shop }, function(err, data) {
+      if (data) {
+        res.send(data.abandanTemplate);
+      } else {
+        res.send("!found");
+      }
+    });
+  } else {
+    console.log(
+      "cant find session key form get /api/abandanTemplate || your session timeout"
+    );
+  }
+});
+//template
+app.get("/api/template", function(req, res) {
+  if (req.session.shop) {
+    Store.findOne({ name: req.session.shop }, function(err, data) {
+      if (data) {
+        res.send(data.template);
+      } else {
+        res.send("!found");
+      }
+    });
+  } else {
+    console.log(
+      "cant find session key form get /api/abandanTemplate || your session timeout"
+    );
+  }
+});
+
 app.get("/api/smsCount", function(req, res) {
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
