@@ -152,18 +152,46 @@ export default function Template() {
 	};
 
 	const sendTemplate = async (tempObj) => {
-		console.log(tempObj, 'before send post');
+		// console.log(tempObj, 'before send post');
 
-		if (tempObj.topic && tempObj.template) {
-			console.log(tempObj);
+		let customerToSend = {
+			topic: tempObj.topic,
+			customerTemplate: ''
+		};
+		let adminToSend = {
+			topic: tempObj.topic,
+			adminTemplate: ''
+		};
+		tempObj.audience === 'customer'
+			? (customerToSend.customerTemplate = tempObj.template)
+			: (adminToSend.adminTemplate = tempObj.template);
+
+		// console.log('customer', customerToSend, 'admin', adminToSend);
+
+		if (customerToSend.topic && customerToSend.customerTemplate !== '``' && customerToSend.customerTemplate !== '') {
+			console.log(customerToSend);
 			try {
-				const res = await axios.post('/api/template', tempObj);
+				const res = await axios.post('/api/template', customerToSend);
+				console.log('customer', customerToSend);
+
 				console.log(res);
 			} catch (error) {
-				console.log('nahi hua post');
+				console.log('nahi hua post customer');
 			}
 		} else {
-			console.log(" couldn't know what happened");
+			console.log('customer nahi gaya');
+		}
+		if (adminToSend.topic && adminToSend.adminTemplate !== '``' && adminToSend.adminTemplate !== '') {
+			console.log(adminToSend);
+			try {
+				const res = await axios.post('/api/template', adminToSend);
+				console.log('admin', adminToSend);
+				console.log(res);
+			} catch (error) {
+				console.log('nahi hua post admin');
+			}
+		} else {
+			console.log('admin nahi gaya');
 		}
 	};
 
