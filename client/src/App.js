@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { Card, Tabs, Page, FooterHelp, Link } from '@shopify/polaris';
-// import axios from 'axios';
+
 
 import './App.css';
 
 import Setting from './components/Setting';
 import Template from './components/Template';
 import History from './components/History';
-// import BuyMoreSMS from './components/BuyMoreSMS';
+
 import Abandan from './components/Abandan';
 import Dashboard from './components/Dashboard';
 
@@ -23,9 +23,9 @@ export default function TabsExample() {
 			panelID: 'accepts-marketing-content'
 		},
 		{
-			id: 'abandan-checkout',
-			content: 'Abandan Checkout',
-			panelID: 'abandan-checkout-content'
+			id: 'abandon-checkout',
+			content: 'Abandon Checkout',
+			panelID: 'abandon-checkout-content'
 		},
 		{
 			id: 'all-customers',
@@ -44,11 +44,7 @@ export default function TabsExample() {
 			panelID: 'repeat-customers-content'
 		}
 
-		// {
-		// 	id: 'buy-more-sms',
-		// 	content: 'Sms Left ',
-		// 	panelID: 'buy-more-sms-content'
-		// }
+
 	];
 
 	const tabChangeHandler = (params) => {
@@ -59,11 +55,9 @@ export default function TabsExample() {
 			case 'Edit Template':
 				return <Template />;
 
-			// case 'Buy More SMS':
-			// 	return <BuyMoreSMS />;
 			case 'SMS History':
 				return <History />;
-			case 'Abandan Checkout':
+			case 'Abandon Checkout':
 				return <Abandan />;
 			case 'Dashboard':
 				return <Dashboard />;

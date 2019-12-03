@@ -291,54 +291,6 @@ export default function Abandan() {
 			} catch (error) {
 				console.error(error);
 			}
-
-			// } catch (error) {
-			// 	console.error(error);
-			// }
-
-			// try {
-			// 	let inputData1 = res.data[1].customer;
-			// 	for (let i = 0; i < inputData1.length; i++) {
-			// 		inputData1 = inputData1.replace('%20', ' ');
-			// 		inputData1 = inputData1.replace('${', '(');
-			// 		inputData1 = inputData1.replace('}', ')');
-			// 		inputData1 = inputData1.replace('`', '');
-			// 	}
-
-			// 	setTemplate2(inputData1);
-			// 	setStatus2(res.data[1].status);
-			// 	setSelected2(res.data[1].time);
-			// } catch (error) {
-			// 	console.error(error);
-			// }
-			// try {
-			// 	let inputData2 = res.data[2].customer;
-			// 	for (let i = 0; i < inputData2.length; i++) {
-			// 		inputData2 = inputData2.replace('%20', ' ');
-			// 		inputData2 = inputData2.replace('${', '(');
-			// 		inputData2 = inputData2.replace('}', ')');
-			// 		inputData2 = inputData2.replace('`', '');
-			// 	}
-			// 	setTemplate3(inputData2);
-			// 	setStatus3(res.data[2].status);
-			// 	setSelected3(res.data[2].time);
-			// } catch (error) {
-			// 	console.error(error);
-			// }
-			// try {
-			// 	let inputData3 = res.data[3].customer;
-			// 	for (let i = 0; i < inputData3.length; i++) {
-			// 		inputData3 = inputData3.replace('%20', ' ');
-			// 		inputData3 = inputData3.replace('${', '(');
-			// 		inputData3 = inputData3.replace('}', ')');
-			// 		inputData3 = inputData3.replace('`', '');
-			// 	}
-			// 	setTemplate4(inputData3);
-			// 	setStatus4(res.data[3].status);
-			// 	setSelected4(res.data[3].time);
-			// } catch (error) {
-			// 	console.error(error);
-			// }
 		});
 	};
 

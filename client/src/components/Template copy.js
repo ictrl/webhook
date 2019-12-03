@@ -309,9 +309,7 @@ export default function Template() {
 				</div>
 			</div>
 			<Layout>
-				{/* <div className="mt-3 mb-2 " style={{ textAlign: 'left' }}>
-				<h2>Select Topic</h2>
-			</div> */}
+			
 
 				<Layout.AnnotatedSection
 					title="SMS Template Rules"
