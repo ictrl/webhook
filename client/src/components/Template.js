@@ -271,7 +271,7 @@ export default function Template() {
 								value={template1}
 								onChange={handleTemplate1}
 								multiline
-								helpText={'Available VAriables :-' + ' ' + topics.topicVariables}
+								helpText={'Available Variables :-' + ' ' + topics.topicVariables}
 							/>
 							<br />
 
