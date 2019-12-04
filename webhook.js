@@ -399,6 +399,7 @@ const makeWebook = (topic, token, hmac, shop) => {
       console.log("309 error-->", error);
     });
 };
+console.log("------>", req.session.shop);
 
 app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   const shop = request.params.shop;
