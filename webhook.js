@@ -393,7 +393,7 @@ const makeWebook = (topic, token, hmac, shop) => {
       json: webhookPayload
     })
     .then(shopResponse => {
-      console.log("webhook topic :", topic);
+      console.log("webhook created :", shopResponse);
     })
     .catch(error => {
       console.log("309 error-->", error);
