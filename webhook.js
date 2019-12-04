@@ -210,7 +210,6 @@ const shorten = async params => {
 //install route
 app.get("/shopify", (req, res) => {
   req.session.shop = req.query.shop;
-  console.log("------>", req.session.shop);
   const shop = req.query.shop;
   if (shop) {
     const state = nonce();
@@ -249,8 +248,6 @@ app.get("/shopify", (req, res) => {
 });
 //callback route
 app.get("/shopify/callback", (req, res) => {
-  console.log("------>", req.session.shop);
-
   let { shop, hmac, code, state } = req.query;
   const stateCookie = cookie.parse(req.headers.cookie)[`${shop}`];
 
@@ -373,8 +370,6 @@ app.post("/api/myaction", function(req, res) {
 });
 
 const makeWebook = (topic, token, hmac, shop) => {
-  console.log("------>", req.session.shop);
-
   const webhookUrl = "https://" + shop + "/admin/api/2019-07/webhooks.json";
   const webhookHeaders = {
     "Content-Type": "application/json",
@@ -398,8 +393,7 @@ const makeWebook = (topic, token, hmac, shop) => {
       json: webhookPayload
     })
     .then(shopResponse => {
-      console.log("webhook created :", shopResponse);
-      console.log("------>", req.session.shop);
+      console.log("webhook topic :", topic);
     })
     .catch(error => {
       console.log("309 error-->", error);
@@ -411,7 +405,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
   topic = topic + "/" + subtopic;
-  console.log("topic -->", topic, " and ", shop, " <-- shop");
+  console.log("topic -->", topic);
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       let name;
