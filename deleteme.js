@@ -6,7 +6,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
   useCreateIndex: true
 });
-let shop = "demo-mojito.myshopify.com";
+// let shop = "demo-mojito.myshopify.com";
 
 const shopSchema = new mongoose.Schema({
   name: String,

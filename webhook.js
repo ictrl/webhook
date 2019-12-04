@@ -576,7 +576,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             country = request.body.shipping_address.country;
             //check in data base if there is exist any template for  orders/create
             message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
-//TODO template customer
+            //TODO template customer
             if (data.template !== undefined) {
               data.template.forEach(element => {
                 if (element.topic === topic) {
@@ -612,11 +612,9 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             adminNumber = admin;
             let senderID = data.data["sender id"];
 
-
             //check in data base if there is exist any template for  orders/create for admin
             message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-//TODO template admin
-
+            //TODO template admin
 
             if (data.template !== undefined) {
               data.template.forEach(element => {
@@ -686,7 +684,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             order_status_url = request.body.order_status_url;
             message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
             //end
-//TODO template customer
+            //TODO template customer
 
             if (data.template !== undefined) {
               data.template.forEach(element => {
@@ -731,7 +729,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             adminNumber = admin;
             let senderID = data.data["sender id"];
             message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
-//TODO template admin
+            //TODO template admin
 
             if (data.template !== undefined) {
               data.template.forEach(element => {
@@ -796,7 +794,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
 
             message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
             //end
-//TODO template customer
+            //TODO template customer
 
             if (data.template !== undefined) {
               data.template.forEach(element => {
@@ -832,7 +830,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             adminNumber = admin;
             let senderID = data.data["sender id"];
             message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
-//TODO template admin
+            //TODO template admin
 
             if (data.template !== undefined) {
               data.template.forEach(element => {
@@ -901,7 +899,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             cancelled_at = request.body.cancelled_at;
             cancel_reason = request.body.cancel_reason;
             message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
-//TODO template customer
+            //TODO template customer
 
             if (data.template !== undefined) {
               data.template.forEach(element => {
@@ -943,7 +941,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
             adminNumber = admin;
             let senderID = data.data["sender id"];
             message = `Customer%20name:%20${name},cancel%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
-//TODO template admin
+            //TODO template admin
 
             if (data.template !== undefined) {
               data.template.forEach(element => {
@@ -1109,8 +1107,8 @@ app.get("/api/option", function(req, res) {
 });
 
 //abandan template
-app.get("/api/abandanTemplate", function (req, res) {
-  req.session.shop= 'demo-mojito.myshopify.com'
+app.get("/api/abandanTemplate", function(req, res) {
+  // req.session.shop = "demo-mojito.myshopify.com";
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
@@ -1126,9 +1124,9 @@ app.get("/api/abandanTemplate", function (req, res) {
   }
 });
 //template
-app.get("/api/template", function (req, res) {
-  req.session.shop= 'demo-mojito.myshopify.com'
-  
+app.get("/api/template", function(req, res) {
+  // req.session.shop = "demo-mojito.myshopify.com";
+
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
@@ -1153,7 +1151,6 @@ app.get("/api/smsCount", function(req, res) {
       } else {
         res.send("0");
       }
-      // console.log("278", req.session.shop);
     });
   } else {
     console.log(
@@ -1262,14 +1259,17 @@ app.get("/api/dashboard", function(req, res) {
 // save template to db
 
 app.post("/api/template", function(req, res) {
+  console.log(req.body);
   let topic = req.body.topic.trim();
+
+  if (req.body["customerTemplate"] != null) {
+    console.log("pass");
+  } else console.log("!pass");
+
   let customer = req.body.customer;
   let admin = req.body.admin;
-//TODO template customer and admin save
+  //TODO template customer and admin save
 
-
-
-  // req.session.shop = "mojitolabs.myshopify.com"; //detele this
   if (req.session.shop) {
     Store.findOneAndUpdate(
       { "template.topic": topic },
@@ -1502,15 +1502,12 @@ cron.schedule("*/2 * * * * ", () => {
   });
 });
 
-//////////////
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
-
-//////////////////////////////////////
 
 const port = process.env.PORT || 4000;
 
