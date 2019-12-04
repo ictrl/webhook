@@ -405,7 +405,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
   topic = topic + "/" + subtopic;
-  console.log("topic -->", topic);
+  console.log("topic -->", topic, " and ", shop, " <-- shop");
   Store.findOne({ name: shop }, function(err, data) {
     if (!err) {
       let name;
