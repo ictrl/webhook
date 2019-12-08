@@ -1115,9 +1115,10 @@ app.get("/api/abandanTemplate", function(req, res) {
     );
   }
 });
+
 //template
 app.get("/api/template", function(req, res) {
-  // req.session.shop = "demo-mojito.myshopify.com";
+  req.session.shop = "demo-mojito.myshopify.com";
   console.log("API called");
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
@@ -1253,7 +1254,7 @@ app.get("/api/dashboard", function(req, res) {
 app.post("/api/template", function(req, res) {
   console.log(req.body);
 
-  // req.session.shop = "demo-mojito.myshopify.com";
+  req.session.shop = "demo-mojito.myshopify.com";
 
   let topic = req.body.topic.trim();
   let customer = "";

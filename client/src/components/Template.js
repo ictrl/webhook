@@ -16,24 +16,31 @@ export default function Template() {
 		switch (selectedValue) {
 			case 'orders/create':
 				axios.get('/api/template').then((res) => {
-					try {
-						let inputData = res.data[0].customer;
-						for (let i = 0; i < inputData.length; i++) {
-							inputData = inputData.replace('%20', ' ');
-							inputData = inputData.replace('${', '(');
-							inputData = inputData.replace('}', ')');
-							inputData = inputData.replace('`', '');
-						}
-						let inputAdmin = res.data[0].admin;
-						for (let i = 0; i < inputAdmin.length; i++) {
-							inputAdmin = inputAdmin.replace('%20', ' ');
-							inputAdmin = inputAdmin.replace('${', '(');
-							inputAdmin = inputAdmin.replace('}', ')');
-							inputAdmin = inputAdmin.replace('`', '');
-						}
+					console.log(res.data);
 
-						setTemplate1(inputData);
-						setTemplate2(inputAdmin);
+					try {
+						res.data.forEach((element) => {
+							if (element.topic == 'orders/create') {
+								let inputData = element.customer;
+
+								for (let i = 0; i < inputData.length; i++) {
+									inputData = inputData.replace('%20', ' ');
+									inputData = inputData.replace('${', '(');
+									inputData = inputData.replace('}', ')');
+									inputData = inputData.replace('`', '');
+								}
+								let inputAdmin = element.admin;
+								for (let i = 0; i < inputAdmin.length; i++) {
+									inputAdmin = inputAdmin.replace('%20', ' ');
+									inputAdmin = inputAdmin.replace('${', '(');
+									inputAdmin = inputAdmin.replace('}', ')');
+									inputAdmin = inputAdmin.replace('`', '');
+								}
+
+								setTemplate1(inputData);
+								setTemplate2(inputAdmin);
+							}
+						});
 					} catch (error) {
 						setTemplate1('');
 						setTemplate2('');
@@ -49,23 +56,27 @@ export default function Template() {
 			case 'orders/cancelled':
 				axios.get('/api/template').then((res) => {
 					try {
-						let inputData = res.data[1].customer;
-						for (let i = 0; i < inputData.length; i++) {
-							inputData = inputData.replace('%20', ' ');
-							inputData = inputData.replace('${', '(');
-							inputData = inputData.replace('}', ')');
-							inputData = inputData.replace('`', '');
-						}
-						let inputAdmin = res.data[1].admin;
-						for (let i = 0; i < inputAdmin.length; i++) {
-							inputAdmin = inputAdmin.replace('%20', ' ');
-							inputAdmin = inputAdmin.replace('${', '(');
-							inputAdmin = inputAdmin.replace('}', ')');
-							inputAdmin = inputAdmin.replace('`', '');
-						}
+						res.data.forEach((element) => {
+							if (element.topic == 'orders/cancelled') {
+								let inputData = element.customer;
+								for (let i = 0; i < inputData.length; i++) {
+									inputData = inputData.replace('%20', ' ');
+									inputData = inputData.replace('${', '(');
+									inputData = inputData.replace('}', ')');
+									inputData = inputData.replace('`', '');
+								}
+								let inputAdmin = element.admin;
+								for (let i = 0; i < inputAdmin.length; i++) {
+									inputAdmin = inputAdmin.replace('%20', ' ');
+									inputAdmin = inputAdmin.replace('${', '(');
+									inputAdmin = inputAdmin.replace('}', ')');
+									inputAdmin = inputAdmin.replace('`', '');
+								}
 
-						setTemplate1(inputData);
-						setTemplate2(inputAdmin);
+								setTemplate1(inputData);
+								setTemplate2(inputAdmin);
+							}
+						});
 					} catch (error) {
 						setTemplate1('');
 						setTemplate2('');
@@ -81,23 +92,28 @@ export default function Template() {
 			case 'orders/fulfilled':
 				axios.get('/api/template').then((res) => {
 					try {
-						let inputData = res.data[2].customer;
-						for (let i = 0; i < inputData.length; i++) {
-							inputData = inputData.replace('%20', ' ');
-							inputData = inputData.replace('${', '(');
-							inputData = inputData.replace('}', ')');
-							inputData = inputData.replace('`', '');
-						}
-						let inputAdmin = res.data[2].admin;
-						for (let i = 0; i < inputAdmin.length; i++) {
-							inputAdmin = inputAdmin.replace('%20', ' ');
-							inputAdmin = inputAdmin.replace('${', '(');
-							inputAdmin = inputAdmin.replace('}', ')');
-							inputAdmin = inputAdmin.replace('`', '');
-						}
+						res.data.forEach((element) => {
+							if (element.topic == 'orders/fulfilled') {
+								let inputData = element.customer;
 
-						setTemplate1(inputData);
-						setTemplate2(inputAdmin);
+								for (let i = 0; i < inputData.length; i++) {
+									inputData = inputData.replace('%20', ' ');
+									inputData = inputData.replace('${', '(');
+									inputData = inputData.replace('}', ')');
+									inputData = inputData.replace('`', '');
+								}
+								let inputAdmin = element.admin;
+								for (let i = 0; i < inputAdmin.length; i++) {
+									inputAdmin = inputAdmin.replace('%20', ' ');
+									inputAdmin = inputAdmin.replace('${', '(');
+									inputAdmin = inputAdmin.replace('}', ')');
+									inputAdmin = inputAdmin.replace('`', '');
+								}
+
+								setTemplate1(inputData);
+								setTemplate2(inputAdmin);
+							}
+						});
 					} catch (error) {
 						setTemplate1('');
 						setTemplate2('');
@@ -249,24 +265,31 @@ export default function Template() {
 
 	const getOption = () => {
 		axios.get('/api/template').then((res) => {
-			try {
-				let inputData = res.data[0].customer;
-				for (let i = 0; i < inputData.length; i++) {
-					inputData = inputData.replace('%20', ' ');
-					inputData = inputData.replace('${', '(');
-					inputData = inputData.replace('}', ')');
-					inputData = inputData.replace('`', '');
-				}
-				let inputAdmin = res.data[0].admin;
-				for (let i = 0; i < inputAdmin.length; i++) {
-					inputAdmin = inputAdmin.replace('%20', ' ');
-					inputAdmin = inputAdmin.replace('${', '(');
-					inputAdmin = inputAdmin.replace('}', ')');
-					inputAdmin = inputAdmin.replace('`', '');
-				}
+			console.log(res.data);
 
-				setTemplate1(inputData);
-				setTemplate2(inputAdmin);
+			try {
+				res.data.forEach((element) => {
+					if (element.topic == 'orders/create') {
+						let inputData = element.customer;
+
+						for (let i = 0; i < inputData.length; i++) {
+							inputData = inputData.replace('%20', ' ');
+							inputData = inputData.replace('${', '(');
+							inputData = inputData.replace('}', ')');
+							inputData = inputData.replace('`', '');
+						}
+						let inputAdmin = element.admin;
+						for (let i = 0; i < inputAdmin.length; i++) {
+							inputAdmin = inputAdmin.replace('%20', ' ');
+							inputAdmin = inputAdmin.replace('${', '(');
+							inputAdmin = inputAdmin.replace('}', ')');
+							inputAdmin = inputAdmin.replace('`', '');
+						}
+
+						setTemplate1(inputData);
+						setTemplate2(inputAdmin);
+					}
+				});
 			} catch (error) {
 				setTemplate1('');
 				setTemplate2('');
