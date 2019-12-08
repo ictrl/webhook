@@ -82,7 +82,7 @@ export default function Abandan() {
 		{ label: '30 minutes later', value: '30' },
 		{ label: '60 minutes later', value: '60' },
 		{ label: '6 hours later', value: '360' },
-		{ label: '12 hours later', value: '720' }
+		{ label: '10 hours later', value: '600' }
 	];
 	const statusOption1 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 
@@ -117,10 +117,10 @@ export default function Abandan() {
 	const handleStatus2 = useCallback((value) => setStatus2(value), []);
 
 	const option2 = [
-		{ label: '30 minutes later', value: '30' },
 		{ label: '60 minutes later', value: '60' },
 		{ label: '6 hours later', value: '360' },
-		{ label: '22 hours later', value: '700' }
+		{ label: '10 hours later', value: '600' },
+		{ label: '12 hours later', value: '720' }
 	];
 	const statusOption2 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 	////////////////////////////////33333333333333333333
@@ -154,10 +154,10 @@ export default function Abandan() {
 	const handleStatus3 = useCallback((value) => setStatus3(value), []);
 
 	const option3 = [
-		{ label: '30 minutes later', value: '30' },
-		{ label: '60 minutes later', value: '60' },
 		{ label: '6 hours later', value: '360' },
-		{ label: '33 hours later', value: '700' }
+		{ label: '10 hours later', value: '600' },
+		{ label: '12 hours later', value: '720' },
+		{ label: '24 hours later', value: '1440' }
 	];
 	const statusOption3 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 
@@ -192,25 +192,26 @@ export default function Abandan() {
 	const handleStatus4 = useCallback((value) => setStatus4(value), []);
 
 	const option4 = [
-		{ label: '40 minutes later', value: '40' },
-		{ label: '60 minutes later', value: '60' },
-		{ label: '6 hours later', value: '460' },
-		{ label: '44 hours later', value: '700' }
+		{ label: '10 hours later', value: '600' },
+		{ label: '12 hours later', value: '720' },
+		{ label: '24 hours later', value: '1440' },
+		{ label: '48 hours later', value: '2880' }
 	];
 	const statusOption4 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 	////////////////////////////end 4/////////////
 
 	const getOption = () => {
 		axios.get('/api/abandanTemplate/').then((res) => {
-			console.log(res.data[0]);
-			console.log(res.data[1]);
-			console.log(res.data[2]);
-			console.log(res.data[3]);
+			console.log(res.data);
 
 			let zo;
-			if (res.data[0]) {
-				zo = res.data[0].template;
-				if (zo) {
+			let zo1;
+			let zo2;
+			let zo3;
+
+			res.data.forEach((element) => {
+				if (element.topic === '1') {
+					zo = element.template;
 					for (let i = 0; i < zo.length + 1; i++) {
 						zo = zo.replace('%20', ' ');
 						zo = zo.replace('%0A', ' ');
@@ -220,11 +221,8 @@ export default function Abandan() {
 						zo = zo.replace('`', '');
 					}
 				}
-			}
-			let zo1;
-			if (res.data[1]) {
-				zo1 = res.data[1].template;
-				if (zo1) {
+				if (element.topic === '2') {
+					zo1 = element.template;
 					for (let i = 0; i < zo1.length + 1; i++) {
 						zo1 = zo1.replace('%20', ' ');
 						zo1 = zo1.replace('%0A', ' ');
@@ -233,11 +231,8 @@ export default function Abandan() {
 						zo1 = zo1.replace('`', '');
 					}
 				}
-			}
-			let zo2;
-			if (res.data[2]) {
-				zo2 = res.data[2].template;
-				if (zo2) {
+				if (element.topic === '3') {
+					zo2 = element.template;
 					for (let i = 0; i < zo2.length + 1; i++) {
 						zo2 = zo2.replace('%20', ' ');
 
@@ -247,11 +242,8 @@ export default function Abandan() {
 						zo2 = zo2.replace('`', '');
 					}
 				}
-			}
-			let zo3;
-			if (res.data[3]) {
-				zo3 = res.data[3].template;
-				if (zo3) {
+				if (element.topic === '4') {
+					zo3 = element.template;
 					for (let i = 0; i < zo3.length + 1; i++) {
 						zo3 = zo3.replace('%20', ' ');
 						zo3 = zo3.replace('${', '(');
@@ -261,7 +253,7 @@ export default function Abandan() {
 						zo3 = zo3.replace('`', '');
 					}
 				}
-			}
+			});
 
 			try {
 				setTemplate1(zo);

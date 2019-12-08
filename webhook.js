@@ -1100,7 +1100,7 @@ app.get("/api/option", function(req, res) {
 
 //abandan template
 app.get("/api/abandanTemplate", function(req, res) {
-  // req.session.shop = "demo-mojito.myshopify.com";
+  req.session.shop = "demo-mojito.myshopify.com";
   if (req.session.shop) {
     Store.findOne({ name: req.session.shop }, function(err, data) {
       if (data) {
@@ -1362,7 +1362,7 @@ app.post("/api/template", function(req, res) {
 // save abandan template to db
 app.post("/api/abandanTemplate", function(req, res) {
   // console.log(req.body, "AT body");
-  // req.session.shop = "mojitolabs.myshopify.com"; //delete this
+  req.session.shop = "demo-mojito.myshopify.com"; //delete this
 
   if (req.session.shop) {
     Store.findOneAndUpdate(

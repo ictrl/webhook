@@ -20,7 +20,7 @@ export default function Template() {
 
 					try {
 						res.data.forEach((element) => {
-							if (element.topic == 'orders/create') {
+							if (element.topic === 'orders/create') {
 								let inputData = element.customer;
 
 								for (let i = 0; i < inputData.length; i++) {
@@ -57,7 +57,7 @@ export default function Template() {
 				axios.get('/api/template').then((res) => {
 					try {
 						res.data.forEach((element) => {
-							if (element.topic == 'orders/cancelled') {
+							if (element.topic === 'orders/cancelled') {
 								let inputData = element.customer;
 								for (let i = 0; i < inputData.length; i++) {
 									inputData = inputData.replace('%20', ' ');
@@ -93,7 +93,7 @@ export default function Template() {
 				axios.get('/api/template').then((res) => {
 					try {
 						res.data.forEach((element) => {
-							if (element.topic == 'orders/fulfilled') {
+							if (element.topic === 'orders/fulfilled') {
 								let inputData = element.customer;
 
 								for (let i = 0; i < inputData.length; i++) {
@@ -269,7 +269,7 @@ export default function Template() {
 
 			try {
 				res.data.forEach((element) => {
-					if (element.topic == 'orders/create') {
+					if (element.topic === 'orders/create') {
 						let inputData = element.customer;
 
 						for (let i = 0; i < inputData.length; i++) {

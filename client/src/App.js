@@ -17,6 +17,11 @@ export default function TabsExample() {
 
 	const tabs = [
 		{
+			id: 'abandon-checkout',
+			content: 'Abandon Checkout',
+			panelID: 'abandon-checkout-content'
+		},
+		{
 			id: 'accepts-marketing',
 			content: 'Edit Template',
 			panelID: 'accepts-marketing-content'
@@ -31,11 +36,6 @@ export default function TabsExample() {
 			id: 'dashboard',
 			content: 'Dashboard',
 			panelID: 'dashboard'
-		},
-		{
-			id: 'abandon-checkout',
-			content: 'Abandon Checkout',
-			panelID: 'abandon-checkout-content'
 		},
 		{
 			id: 'repeat-customers',
