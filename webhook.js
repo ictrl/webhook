@@ -1260,6 +1260,8 @@ app.post('/api/template', function(req, res) {
 	console.log('not enetered ');
 
 	if (req.body['customerTemplate'] != null) {
+res.sendStatus(200);
+
 		customer = req.body['customerTemplate'];
 
 		if (req.session.shop) {
@@ -1362,7 +1364,8 @@ app.post('/api/abandanTemplate', function(req, res) {
 	// req.session.shop = 'amydus2.myshopify.com'; //delete this
 
 	if (req.session.shop) {
-		Store.findOneAndUpdate(
+res.sendStatus(200);
+    Store.findOneAndUpdate(
 			{ 'abandanTemplate.topic': req.body.topic },
 			{
 				$set: {
