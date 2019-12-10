@@ -661,6 +661,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 
 						message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
 						//end
+						//end
 
 						if (data.template !== undefined) {
 							data.template.forEach((element) => {
