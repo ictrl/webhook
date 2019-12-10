@@ -1105,7 +1105,7 @@ app.get('/api/option', function(req, res) {
 app.get('/api/abandanTemplate', function(req, res) {
 	// req.session.shop = "demo-mojito.myshopify.com";
 	// req.session.shop = 'amydus2.myshopify.com';
-	res.sendStatus(200);
+	// res.sendStatus(200);
 	if (req.session.shop) {
 		Store.findOne({ name: req.session.shop }, function(err, data) {
 			if (data) {
@@ -1123,7 +1123,7 @@ app.get('/api/abandanTemplate', function(req, res) {
 app.get('/api/template', function(req, res) {
 	// req.session.shop = "demo-mojito.myshopify.com";
 	// req.session.shop = 'amydus2.myshopify.com';
-	res.sendStatus(200);
+	// res.sendStatus(200);
 	console.log('API called');
 	if (req.session.shop) {
 		Store.findOne({ name: req.session.shop }, function(err, data) {
@@ -1251,7 +1251,7 @@ app.get('/api/dashboard', function(req, res) {
 app.post('/api/template', function(req, res) {
 	// res.sendStatus(200);
 	console.log(req.body);
-	res.sendStatus(200);
+	// res.sendStatus(200);
 
 	// req.session.shop = 'amydus2.myshopify.com';
 
@@ -1363,7 +1363,7 @@ app.post('/api/template', function(req, res) {
 app.post('/api/abandanTemplate', function(req, res) {
 	// console.log(req.body, "AT body");
 	// req.session.shop = 'amydus2.myshopify.com'; //delete this
-	res.sendStatus(200);
+	// res.sendStatus(200);
 	if (req.session.shop) {
 		Store.findOneAndUpdate(
 			{ 'abandanTemplate.topic': req.body.topic },
