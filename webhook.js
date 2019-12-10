@@ -1059,6 +1059,7 @@ app.get('/api/option', function(req, res) {
 //abandan template
 app.get('/api/abandanTemplate', function(req, res) {
 	// req.session.shop = "demo-mojito.myshopify.com";
+	// req.session.shop = 'amydus2.myshopify.com';
 	if (req.session.shop) {
 		Store.findOne({ name: req.session.shop }, function(err, data) {
 			if (data) {
@@ -1075,6 +1076,7 @@ app.get('/api/abandanTemplate', function(req, res) {
 //template
 app.get('/api/template', function(req, res) {
 	// req.session.shop = "demo-mojito.myshopify.com";
+	// req.session.shop = 'amydus2.myshopify.com';
 	console.log('API called');
 	if (req.session.shop) {
 		Store.findOne({ name: req.session.shop }, function(err, data) {
@@ -1085,7 +1087,7 @@ app.get('/api/template', function(req, res) {
 			}
 		});
 	} else {
-		console.log('cant find session key form get /api/abandanTemplate || your session timeout');
+		console.log("can't find session key form get /api/abandanTemplate || your session timeout");
 	}
 });
 
@@ -1203,7 +1205,7 @@ app.post('/api/template', function(req, res) {
 	// res.sendStatus(200);
 	console.log(req.body);
 
-	req.session.shop = 'amydus2.myshopify.com';
+	// req.session.shop = 'amydus2.myshopify.com';
 
 	let topic = req.body.topic.trim();
 	let customer = '';
@@ -1312,7 +1314,7 @@ app.post('/api/template', function(req, res) {
 // save abandan template to db
 app.post('/api/abandanTemplate', function(req, res) {
 	// console.log(req.body, "AT body");
-	req.session.shop = 'amydus2.myshopify.com'; //delete this
+	// req.session.shop = 'amydus2.myshopify.com'; //delete this
 
 	if (req.session.shop) {
 		Store.findOneAndUpdate(
