@@ -1200,10 +1200,10 @@ app.get('/api/dashboard', function(req, res) {
 // save template to db
 
 app.post('/api/template', function(req, res) {
-	res.sendStatus(200);
+	// res.sendStatus(200);
 	console.log(req.body);
 
-	// req.session.shop = "demo-mojito.myshopify.com";
+	req.session.shop = 'amydus2.myshopify.com';
 
 	let topic = req.body.topic.trim();
 	let customer = '';
@@ -1312,7 +1312,7 @@ app.post('/api/template', function(req, res) {
 // save abandan template to db
 app.post('/api/abandanTemplate', function(req, res) {
 	// console.log(req.body, "AT body");
-	// req.session.shop = "demo-mojito.myshopify.com"; //delete this
+	req.session.shop = 'amydus2.myshopify.com'; //delete this
 
 	if (req.session.shop) {
 		Store.findOneAndUpdate(
