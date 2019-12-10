@@ -1251,7 +1251,8 @@ app.get("/api/dashboard", function(req, res) {
 });
 // save template to db
 
-app.post("/api/template", function(req, res) {
+app.post("/api/template", function (req, res) {
+  res.sendStatus(200)
   console.log(req.body);
 
   // req.session.shop = "demo-mojito.myshopify.com";
@@ -1261,6 +1262,7 @@ app.post("/api/template", function(req, res) {
   let admin = "";
 
   //check in db if there is any template is present then switch it to value
+console.log('not enetered ');
 
   if (req.body["customerTemplate"] != null) {
     customer = req.body["customerTemplate"];

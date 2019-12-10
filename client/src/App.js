@@ -17,9 +17,10 @@ export default function TabsExample() {
 
 	const tabs = [
 		{
-			id: 'abandon-checkout',
-			content: 'Abandon Checkout',
-			panelID: 'abandon-checkout-content'
+			id: 'all-customers',
+			content: 'Settings',
+			accessibilityLabel: 'All customers',
+			panelID: 'all-customers-content'
 		},
 		{
 			id: 'accepts-marketing',
@@ -27,10 +28,9 @@ export default function TabsExample() {
 			panelID: 'accepts-marketing-content'
 		},
 		{
-			id: 'all-customers',
-			content: 'Settings',
-			accessibilityLabel: 'All customers',
-			panelID: 'all-customers-content'
+			id: 'abandon-checkout',
+			content: 'Abandon Checkout',
+			panelID: 'abandon-checkout-content'
 		},
 		{
 			id: 'dashboard',
@@ -71,7 +71,7 @@ export default function TabsExample() {
 			</Tabs>
 			<FooterHelp>
 				Learn more about
-				<Link url="https://mojitolabs.com" external>
+				<Link url='https://mojitolabs.com' external>
 					{' '}
 					Mojitolabs
 				</Link>
