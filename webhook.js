@@ -835,7 +835,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					}
 					if (data.data['orders/cancelled customer'] != undefined) {
 						try {
-							name = request.body.shipping_address.first_name;
+							// name = request.body.shipping_address.first_name;
 							email = request.body.email;
 							vendor = request.body.line_items[0].vendor;
 							title = request.body.line_items[0].title;
@@ -854,7 +854,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						} catch (error) {
 							console.error(error);
 						}
-						message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
+						message = `Hi%20Customer,%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
 
 						if (data.template !== undefined) {
 							data.template.forEach((element) => {
