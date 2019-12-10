@@ -320,7 +320,51 @@ app.post('/api/myaction', function(req, res) {
 				const store = new Store({
 					name: shop,
 					data: req.body,
-					smsCount: 100
+					smsCount: 100,
+					template: [
+						{
+							topic: 'orders/create',
+							customer: '`hello%20${name}%20${price}%20${order_id}%20${title}%20orders/create%2...',
+							admin: '`hello%20${name}%20orders/%20create%20admin`'
+						},
+						{
+							topic: 'orders/cancelled',
+							customer: '`hello%20${name}%20${price}%20${order_id}%20${title}%20orders/cancelled%2...',
+							admin: '`hello%20${name}%20orders/clc%20admin`'
+						},
+						{
+							topic: 'orders/fulfilled',
+							customer: '`hello%20${name}%20${price}%20${order_id}%20${title}%20orders/fulfilled%2...',
+							admin: '`hello%20${name}%20orders/ful%20admin`'
+						}
+					],
+					abandanTemplate: [
+						{
+							topic: '4',
+							template: '`hello%20${customer_name}%20please%204%0Ahello%20${customer_name}%20pl...',
+							time: '60',
+							status: false
+						},
+						{
+							topic: '3',
+							template: '`hello%20${customer_name}%20please%203`',
+							time: '60',
+							status: false
+						},
+						{
+							topic: '1',
+							template: '`hello%20${customer_name}%20please%201`',
+							time: '30',
+							status: false
+						},
+
+						{
+							topic: '2',
+							template: '`1`',
+							time: '60',
+							status: false
+						}
+					]
 				});
 
 				store.save(function(err, data) {
