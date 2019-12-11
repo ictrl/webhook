@@ -11,7 +11,7 @@ function Dashboard() {
 	const [ bar, setBar ] = useState('');
 	const [ line, setLine ] = useState('');
 	const [ pie, setPie ] = useState('');
-	const fetch1 = async () => {
+	const getDash = async () => {
 		try {
 			let res = await axios.get('/api/dashboard/');
 			console.log(res);
@@ -24,7 +24,7 @@ function Dashboard() {
 		}
 	};
 	useEffect(() => {
-		fetch1();
+		getDash();
 	}, []);
 	return (
 		<Layout>
