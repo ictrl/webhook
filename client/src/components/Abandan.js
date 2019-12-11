@@ -200,15 +200,21 @@ export default function Abandan() {
 	];
 	const statusOption4 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 	////////////////////////////end 4/////////////
-
+	let zo;
+	let zo1;
+	let zo2;
+	let zo3;
+	let s;
+	let s1;
+	let s2;
+	let s3;
+	let t;
+	let t1;
+	let t2;
+	let t3;
 	const getOption = () => {
 		axios.get('/api/abandanTemplate/').then((res) => {
 			console.log(res.data);
-
-			let zo;
-			let zo1;
-			let zo2;
-			let zo3;
 
 			res.data.forEach((element) => {
 				if (element.topic === '1') {
@@ -221,6 +227,8 @@ export default function Abandan() {
 						zo = zo.replace('}', ')');
 						zo = zo.replace('`', '');
 					}
+					s = element.status;
+					t = element.time;
 				}
 				if (element.topic === '2') {
 					zo1 = element.template;
@@ -231,6 +239,8 @@ export default function Abandan() {
 						zo1 = zo1.replace('}', ')');
 						zo1 = zo1.replace('`', '');
 					}
+					s1 = element.status;
+					t1 = element.time;
 				}
 				if (element.topic === '3') {
 					zo2 = element.template;
@@ -242,6 +252,8 @@ export default function Abandan() {
 						zo2 = zo2.replace('}', ')');
 						zo2 = zo2.replace('`', '');
 					}
+					s2 = element.status;
+					t2 = element.time;
 				}
 				if (element.topic === '4') {
 					zo3 = element.template;
@@ -253,34 +265,36 @@ export default function Abandan() {
 						zo3 = zo3.replace('}', ')');
 						zo3 = zo3.replace('`', '');
 					}
+					s3 = element.status;
+					t3 = element.time;
 				}
 			});
 
 			try {
 				setTemplate1(zo);
-				setStatus1(res.data[0].status);
-				setSelected1(res.data[0].time);
+				setStatus1(s);
+				setSelected1(t);
 			} catch (error) {
 				console.error(error);
 			}
 			try {
 				setTemplate2(zo1);
-				setStatus2(res.data[1].status);
-				setSelected2(res.data[1].time);
+				setStatus2(s1);
+				setSelected2(t1);
 			} catch (error) {
 				console.error(error);
 			}
 			try {
 				setTemplate3(zo2);
-				setStatus3(res.data[2].status);
-				setSelected3(res.data[2].time);
+				setStatus3(s2);
+				setSelected3(t2);
 			} catch (error) {
 				console.error(error);
 			}
 			try {
 				setTemplate4(zo3);
-				setStatus4(res.data[3].status);
-				setSelected4(res.data[3].time);
+				setStatus4(s3);
+				setSelected4(t3);
 			} catch (error) {
 				console.error(error);
 			}
