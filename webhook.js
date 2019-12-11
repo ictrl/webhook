@@ -1318,9 +1318,9 @@ app.post("/api/template", function(req, res) {
   if (req.body["customerTemplate"] != null) {
     console.log("customer value 1 ");
     customer = req.body["customerTemplate"];
-
-console.log(topic);
-console.log(customer);
+res.sendStatus(200);
+		console.log(topic);
+		console.log(customer);
 
     if (req.session.shop) {
       Store.findOneAndUpdate(
