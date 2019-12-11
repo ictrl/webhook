@@ -989,7 +989,7 @@ const sndSms = (i, phone, message, senderID, shop) => {
           method: "GET",
           hostname: "api.msg91.com",
           port: null,
-          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=${senderID}&message=${message}&country=91`,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.process.env.SMS_API}&route=4&sender=${senderID}&message=${message}&country=91`,
           headers: {}
         };
         var req = http.request(options, function(res) {
@@ -1044,7 +1044,7 @@ const sndSms = (i, phone, message, senderID, shop) => {
           method: "GET",
           hostname: "api.msg91.com",
           port: null,
-          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
+          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
           headers: {}
         };
         var req = http.request(options, function(res) {
@@ -1258,8 +1258,8 @@ app.get("/api/dashboard", function(req, res) {
 // save template to db
 
 app.post("/api/template", function(req, res) {
-  console.log("template req-->", req.body);
-  console.log("template req shop-->", req.session.shop);
+  console.log("template change request-->", req.body);
+  console.log("template change request shop-->", req.session.shop);
   res.sendStatus(200);
 
   let topic = req.body.topic.trim();
