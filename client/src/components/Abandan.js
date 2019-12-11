@@ -147,7 +147,7 @@ export default function Abandan() {
 
 	const handleTemplate3 = useCallback((newValue) => setTemplate3(newValue), []);
 
-	const [ selected3, setSelected3 ] = useState('60');
+	const [ selected3, setSelected3 ] = useState('360');
 	const [ status3, setStatus3 ] = useState(0);
 
 	const handleSelectChange3 = useCallback((value) => setSelected3(value), []);
@@ -185,7 +185,7 @@ export default function Abandan() {
 
 	const handleTemplate4 = useCallback((newValue) => setTemplate4(newValue), []);
 
-	const [ selected4, setSelected4 ] = useState('60');
+	const [ selected4, setSelected4 ] = useState('600');
 	const [ status4, setStatus4 ] = useState(0);
 
 	const handleSelectChange4 = useCallback((value) => setSelected4(value), []);
