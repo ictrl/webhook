@@ -54,7 +54,7 @@ export default function Abandan() {
 	/////////////////////////////////
 	const [ template1, setTemplate1 ] = useState('');
 
-	const [ selected1, setSelected1 ] = useState('30');
+	const [ selected1, setSelected1 ] = useState('');
 	const [ status1, setStatus1 ] = useState(0);
 	function myFunction1() {
 		tempObj.topic = 1;
@@ -91,7 +91,7 @@ export default function Abandan() {
 
 	const [ template2, setTemplate2 ] = useState('');
 
-	const [ selected2, setSelected2 ] = useState('60');
+	const [ selected2, setSelected2 ] = useState('');
 	const [ status2, setStatus2 ] = useState(0);
 	function myFunction2() {
 		tempObj.topic = 2;
@@ -148,7 +148,7 @@ export default function Abandan() {
 
 	const handleTemplate3 = useCallback((newValue) => setTemplate3(newValue), []);
 
-	const [ selected3, setSelected3 ] = useState('360');
+	const [ selected3, setSelected3 ] = useState('');
 	const [ status3, setStatus3 ] = useState(0);
 
 	const handleSelectChange3 = useCallback((value) => setSelected3(value), []);
@@ -186,7 +186,7 @@ export default function Abandan() {
 
 	const handleTemplate4 = useCallback((newValue) => setTemplate4(newValue), []);
 
-	const [ selected4, setSelected4 ] = useState('600');
+	const [ selected4, setSelected4 ] = useState('');
 	const [ status4, setStatus4 ] = useState(0);
 
 	const handleSelectChange4 = useCallback((value) => setSelected4(value), []);
