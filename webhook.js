@@ -1036,7 +1036,16 @@ const sndSms = (i, phone, message, senderID, shop) => {
 			} else if (data.smsCount == 0 || data.smsCount == -1) {
 				// notify admin to recharge
 				//send SMS mgs91ed
-				phone = adminNumber;
+				// 				if (!adminNumber) {
+				// 	adminNumber = 7821915962
+				// }
+
+				try {
+					phone = adminNumber;
+				} catch (error) {
+					console.error(error.message);
+					phone = 7821915962;
+				}
 				message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
 				var options = {
 					method: 'GET',
@@ -1260,7 +1269,7 @@ app.post('/api/template', function(req, res) {
 	console.log('not enetered ');
 
 	if (req.body['customerTemplate'] != null) {
-res.sendStatus(200);
+		res.sendStatus(200);
 
 		customer = req.body['customerTemplate'];
 
@@ -1364,8 +1373,8 @@ app.post('/api/abandanTemplate', function(req, res) {
 	// req.session.shop = 'amydus2.myshopify.com'; //delete this
 
 	if (req.session.shop) {
-res.sendStatus(200);
-    Store.findOneAndUpdate(
+		res.sendStatus(200);
+		Store.findOneAndUpdate(
 			{ 'abandanTemplate.topic': req.body.topic },
 			{
 				$set: {
