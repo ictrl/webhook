@@ -338,7 +338,51 @@ app.post("/api/myaction", function(req, res) {
         const store = new Store({
           name: shop,
           data: req.body,
-          smsCount: 100
+					smsCount: 100,
+					template: [
+						{
+							topic: 'orders/create',
+							customer: '`hello%20${name}%20${price}%20create`',
+							admin: '`Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`'
+						},
+						{
+							topic: 'orders/cancelled',
+							customer: ' `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`',
+							admin: '`hello%20${name}%20orders/clc%20admin`'
+						},
+						{
+							topic: 'orders/fulfilled',
+							customer: 'Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`',
+							admin: '`hello%20${name}%20orders/ful%20admin`'
+						}
+					],
+					abandanTemplate: [
+						{
+							topic: '4',
+							template: '`hello%20${customer_name}%20${customer_name}4`',
+							time: '60',
+							status: false
+						},
+						{
+							topic: '3',
+							template: '`hello%20${customer_name}%20please%203`',
+							time: '60',
+							status: false
+						},
+						{
+							topic: '1',
+							template: '`hello%20${customer_name}%20please%201`',
+							time: '30',
+							status: false
+						},
+
+						{
+							topic: '2',
+							template: '`hello%20${customer_name}%20please%202`',
+							time: '60',
+							status: false
+						}
+					]
         });
 
         store.save(function(err, data) {
@@ -400,6 +444,8 @@ const makeWebook = (topic, token, hmac, shop) => {
     });
 };
 
+
+let adminNumber;
 app.post("/store/:shop/:topic/:subtopic", function(request, response) {
   const shop = request.params.shop;
   let topic = request.params.topic;
@@ -1283,7 +1329,6 @@ console.log(customer);
           $set: {
             "template.$.topic": topic,
             "template.$.customer": customer
-            // "template.$.admin": admin
           }
         },
         { new: true, useFindAndModify: false },
