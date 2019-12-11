@@ -36,7 +36,7 @@ export default function Settings() {
 
 	const getOption = () => {
 		axios.get('/api/option/').then((res) => {
-			// console.log('optn', res);
+		
 			setAdminPhone(res.data['admin no']);
 			setSenderID(res.data['sender id']);
 			setOrderCreateCustomer(res.data['orders/create customer']);
