@@ -342,42 +342,42 @@ app.post("/api/myaction", function(req, res) {
 					template: [
 						{
 							topic: 'orders/create',
-							customer: '`Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,.%20Your%20order%20ID:%20${orderId}`',
+							customer: '`Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,.%20Your%20order%20ID:%20${order_id}`',
 							admin: '`Hi%20Admin,%20{name}%20placed%20order`'
 						},
 						{
 							topic: 'orders/cancelled',
-							customer: '`Hi%20Customer%20your%20order%20ID:%20${orderId}%20isCancelled.%20we%20started%20your%20refund%20process.`',
+							customer: '`Hi%20Customer%20your%20order%20ID:%20${order_id}%20is%20cancelled.%20We%20started%20your%20refund%20process.`',
 							admin: '`Hi%20Admin,%20{name}%20cancelled%20order%20`'
 						},
 						{
 							topic: 'orders/fulfilled',
-							customer: '`Hi%20Customer%20your%20order%20ID:%20${orderId}%20isfulfilled.%20We%20started%20your%20delivery%20process.`',
+							customer: '`Hi%20Customer%20your%20order%20ID:%20${order_id}%20is%20fulfilled.%20We%20started%20your%20delivery%20process.`',
 							admin: "`Hi%20Admin,%20{name}'s%20order%20fulfilled`"
 						}
 					],
 					abandanTemplate: [
             {
               topic: '1',
-              template: '`Hi%20${customer_name},your%20product%20is%20waiting%20at%20us.`',
+              template: '`Hi%20${customer_name},%20your%20product%20is%20waiting%20at%20us.`',
               time: '30',
               status: false
             },
             {
               topic: '2',
-              template: '`Hi%20${customer_name},your%20product%20is%20waiting%20at%20us.`',
+              template: '`Hi%20${customer_name},%20your%20product%20is%20waiting%20at%20us.`',
               time: '60',
               status: false
             },
             {
               topic: '3',
-              template: '`Hi%20${customer_name},your%20product%20is%20waiting%20at%20us.`',
+              template: '`Hi%20${customer_name},%20your%20product%20is%20waiting%20at%20us.`',
               time: '60',
               status: false
             },
 						{
 							topic: '4',
-							template: '`Hi%20${customer_name},your%20product%20is%20waiting%20at%20us.`',
+							template: '`Hi%20${customer_name},%20your%20product%20is%20waiting%20at%20us.`',
 							time: '60',
 							status: false
 						}
