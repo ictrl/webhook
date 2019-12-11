@@ -23,7 +23,7 @@ export default function Abandan() {
 		topic: '',
 		template: '',
 		time: '',
-		status: false
+		status: new Boolean()
 
 		//add status to post,,status must be is Boolean type
 	};
