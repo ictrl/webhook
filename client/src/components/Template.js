@@ -303,26 +303,29 @@ export default function Template() {
 
 	return (
 		<Fragment>
-			<div id="snackbar">Template Updated for {topics.topic} </div>
+			<div id='snackbar'>Template Updated for {topics.topic} </div>
 
-			<div className="bog col-md-12 mb-5">
-				<div className="butti " title="orders/create" onClick={topicHandler}>
+			<div className='bog col-md-12 mb-5'>
+				<div className='butti ' title='orders/create' onClick={topicHandler}>
 					Orders/create
 				</div>
 
-				<div className="butt " title="orders/cancelled" onClick={topicHandler}>
+				<div className='butt ' title='orders/cancelled' onClick={topicHandler}>
 					Orders/cancelled
 				</div>
-				<div className="butt " title="orders/fulfilled" onClick={topicHandler}>
+				<div className='butt ' title='orders/fulfilled' onClick={topicHandler}>
 					Orders/fulfilled
 				</div>
 			</div>
 			<Layout>
-				<Layout.AnnotatedSection title="Customer Template" description="some content">
+				<Layout.AnnotatedSection
+					title='Customer Template'
+					description='Customer will be notified through sms by selecting Notify Admin.'
+				>
 					<Card>
 						<div style={{ padding: '1.311rem' }}>
 							<TextField
-								label="Template"
+								label='Template'
 								value={template1}
 								onChange={handleTemplate1}
 								multiline
@@ -335,7 +338,7 @@ export default function Template() {
 									myFunction1();
 								}}
 								style={{ height: '34px' }}
-								className="button-shopify"
+								className='button-shopify'
 							>
 								Save
 							</button>
@@ -344,17 +347,17 @@ export default function Template() {
 				</Layout.AnnotatedSection>
 
 				<Layout.AnnotatedSection
-					title="Admin Template"
-					description="Admin will be notify on this no. by selecting Notify Admin."
+					title='Admin Template'
+					description='Admin will be notified through sms by selecting Notify Admin.'
 				>
 					<Card>
 						<div style={{ padding: '1.311rem' }}>
 							<TextField
-								label="Template"
+								label='Template'
 								value={template2}
 								onChange={handleTemplate2}
 								multiline
-								helpText="Available Variables: name"
+								helpText='Available Variables: name'
 							/>
 							<br />
 
@@ -363,7 +366,7 @@ export default function Template() {
 									myFunction2();
 								}}
 								style={{ height: '34px' }}
-								className="button-shopify"
+								className='button-shopify'
 							>
 								Save
 							</button>
@@ -371,11 +374,10 @@ export default function Template() {
 					</Card>
 				</Layout.AnnotatedSection>
 
-				<div id="snackbar" style={{ zIndex: '999' }}>
+				<div id='snackbar' style={{ zIndex: '999' }}>
 					Abandan Updated{' '}
 				</div>
 			</Layout>
 		</Fragment>
 	);
 }
-

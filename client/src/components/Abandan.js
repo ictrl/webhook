@@ -312,7 +312,7 @@ export default function Abandan() {
 		<Layout>
 			<Layout.AnnotatedSection
 				title='First Follow Up'
-				description='Available Variables:- customer_name store_name abandoned_checkout_url amount.'
+				description='Customer will be notified through sms by sending this template'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>
@@ -348,7 +348,7 @@ export default function Abandan() {
 
 			<Layout.AnnotatedSection
 				title='Second Follow Up'
-				description='Admin will be notify on this no. by selecting Notify Admin.'
+				description='Customer will be notified through sms by sending this template'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>
@@ -383,7 +383,7 @@ export default function Abandan() {
 			</Layout.AnnotatedSection>
 			<Layout.AnnotatedSection
 				title='Third Follow Up'
-				description='Admin will be notify on this no. by selecting Notify Admin.'
+				description='Customer will be notified through sms by sending this template'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>
@@ -418,7 +418,7 @@ export default function Abandan() {
 			</Layout.AnnotatedSection>
 			<Layout.AnnotatedSection
 				title='Fourth Follow Up'
-				description='Admin will be notify on this no. by selecting Notify Admin.'
+				description='Customer will be notified through sms by sending this template'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>

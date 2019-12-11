@@ -108,6 +108,7 @@ export default function Settings() {
 									maxLength="6"
 									value={senderID}
 									showCharacterCount
+									
 								/>
 							</div>
 						</Card>
