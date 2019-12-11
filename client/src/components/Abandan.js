@@ -23,7 +23,7 @@ export default function Abandan() {
 		topic: '',
 		template: '',
 		time: '',
-		status: new Boolean()
+		status: ''
 
 		//add status to post,,status must be is Boolean type
 	};
@@ -55,7 +55,7 @@ export default function Abandan() {
 	const [ template1, setTemplate1 ] = useState('');
 
 	const [ selected1, setSelected1 ] = useState('');
-	const [ status1, setStatus1 ] = useState(0);
+	const [ status1, setStatus1 ] = useState();
 	function myFunction1() {
 		tempObj.topic = 1;
 		console.log(selected1);
@@ -85,14 +85,14 @@ export default function Abandan() {
 		{ label: '6 hours later', value: '360' },
 		{ label: '10 hours later', value: '600' }
 	];
-	const statusOption1 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
+	const statusOption1 = [ { label: 'Enabled', value: '1' }, { label: 'Disabled', value: '0' } ];
 
 	/////////////////////////22
 
 	const [ template2, setTemplate2 ] = useState('');
 
 	const [ selected2, setSelected2 ] = useState('');
-	const [ status2, setStatus2 ] = useState(0);
+	const [ status2, setStatus2 ] = useState();
 	function myFunction2() {
 		tempObj.topic = 2;
 		console.log(selected2);
@@ -123,7 +123,7 @@ export default function Abandan() {
 		{ label: '10 hours later', value: '600' },
 		{ label: '12 hours later', value: '720' }
 	];
-	const statusOption2 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
+	const statusOption2 = [ { label: 'Enabled', value: '1' }, { label: 'Disabled', value: '0' } ];
 	////////////////////////////////33333333333333333333
 	function myFunction3() {
 		tempObj.topic = 3;
@@ -149,7 +149,7 @@ export default function Abandan() {
 	const handleTemplate3 = useCallback((newValue) => setTemplate3(newValue), []);
 
 	const [ selected3, setSelected3 ] = useState('');
-	const [ status3, setStatus3 ] = useState(0);
+	const [ status3, setStatus3 ] = useState();
 
 	const handleSelectChange3 = useCallback((value) => setSelected3(value), []);
 	const handleStatus3 = useCallback((value) => setStatus3(value), []);
@@ -160,7 +160,7 @@ export default function Abandan() {
 		{ label: '12 hours later', value: '720' },
 		{ label: '24 hours later', value: '1440' }
 	];
-	const statusOption3 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
+	const statusOption3 = [ { label: 'Enabled', value: '1' }, { label: 'Disabled', value: '0' } ];
 
 	/////////////////////////////////////444444444444444444
 	function myFunction4() {
@@ -187,7 +187,7 @@ export default function Abandan() {
 	const handleTemplate4 = useCallback((newValue) => setTemplate4(newValue), []);
 
 	const [ selected4, setSelected4 ] = useState('');
-	const [ status4, setStatus4 ] = useState(0);
+	const [ status4, setStatus4 ] = useState();
 
 	const handleSelectChange4 = useCallback((value) => setSelected4(value), []);
 	const handleStatus4 = useCallback((value) => setStatus4(value), []);
@@ -198,7 +198,7 @@ export default function Abandan() {
 		{ label: '24 hours later', value: '1440' },
 		{ label: '48 hours later', value: '2880' }
 	];
-	const statusOption4 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
+	const statusOption4 = [ { label: 'Enabled', value: '1' }, { label: 'Disabled', value: '0' } ];
 	////////////////////////////end 4/////////////
 	let zo;
 	let zo1;
@@ -227,7 +227,10 @@ export default function Abandan() {
 						zo = zo.replace('}', ')');
 						zo = zo.replace('`', '');
 					}
-					s = element.status;
+					// s = element.status;
+
+					element.status == true ? (s = 1) : (s = 0);
+
 					t = element.time;
 				}
 				if (element.topic === '2') {
@@ -239,7 +242,7 @@ export default function Abandan() {
 						zo1 = zo1.replace('}', ')');
 						zo1 = zo1.replace('`', '');
 					}
-					s1 = element.status;
+					element.status == true ? (s1 = 1) : (s1 = 0);
 					t1 = element.time;
 				}
 				if (element.topic === '3') {
@@ -252,7 +255,7 @@ export default function Abandan() {
 						zo2 = zo2.replace('}', ')');
 						zo2 = zo2.replace('`', '');
 					}
-					s2 = element.status;
+					element.status == true ? (s2 = 1) : (s2 = 0);
 					t2 = element.time;
 				}
 				if (element.topic === '4') {
@@ -265,7 +268,7 @@ export default function Abandan() {
 						zo3 = zo3.replace('}', ')');
 						zo3 = zo3.replace('`', '');
 					}
-					s3 = element.status;
+					element.status == true ? (s3 = 1) : (s3 = 0);
 					t3 = element.time;
 				}
 			});
