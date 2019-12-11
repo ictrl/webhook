@@ -58,6 +58,7 @@ export default function Abandan() {
 	const [ status1, setStatus1 ] = useState(0);
 	function myFunction1() {
 		tempObj.topic = 1;
+		console.log(selected1);
 		tempObj.time = selected1;
 		tempObj.status = status1;
 
@@ -94,7 +95,7 @@ export default function Abandan() {
 	const [ status2, setStatus2 ] = useState(0);
 	function myFunction2() {
 		tempObj.topic = 2;
-
+		console.log(selected2);
 		tempObj.time = selected2;
 
 		tempObj.status = status2;
@@ -126,7 +127,7 @@ export default function Abandan() {
 	////////////////////////////////33333333333333333333
 	function myFunction3() {
 		tempObj.topic = 3;
-
+		console.log(selected3);
 		tempObj.time = selected3;
 
 		tempObj.status = status3;
@@ -164,7 +165,7 @@ export default function Abandan() {
 	/////////////////////////////////////444444444444444444
 	function myFunction4() {
 		tempObj.topic = 4;
-
+		console.log(selected4);
 		tempObj.time = selected4;
 
 		tempObj.status = status4;
