@@ -229,7 +229,7 @@ export default function Abandan() {
 					}
 					// s = element.status;
 
-					element.status == true ? (s = 1) : (s = 0);
+					element.status == true ? (s = '1') : (s = '0');
 
 					t = element.time;
 				}
@@ -242,7 +242,7 @@ export default function Abandan() {
 						zo1 = zo1.replace('}', ')');
 						zo1 = zo1.replace('`', '');
 					}
-					element.status == true ? (s1 = 1) : (s1 = 0);
+					element.status == true ? (s1 = '1') : (s1 = '0');
 					t1 = element.time;
 				}
 				if (element.topic === '3') {
@@ -255,7 +255,7 @@ export default function Abandan() {
 						zo2 = zo2.replace('}', ')');
 						zo2 = zo2.replace('`', '');
 					}
-					element.status == true ? (s2 = 1) : (s2 = 0);
+					element.status == true ? (s2 = '1') : (s2 = '0');
 					t2 = element.time;
 				}
 				if (element.topic === '4') {
@@ -268,7 +268,7 @@ export default function Abandan() {
 						zo3 = zo3.replace('}', ')');
 						zo3 = zo3.replace('`', '');
 					}
-					element.status == true ? (s3 = 1) : (s3 = 0);
+					element.status == true ? (s3 = '1') : (s3 = '0');
 					t3 = element.time;
 				}
 			});
