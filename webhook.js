@@ -1262,7 +1262,8 @@ app.post("/api/template", function(req, res) {
   console.log("template change request shop-->", req.session.shop);
   res.sendStatus(200);
 
-  let topic = req.body.topic.trim();
+	let topic = req.body.topic.trim();
+	
   let customer = "";
   let admin = "";
 
@@ -1271,6 +1272,9 @@ app.post("/api/template", function(req, res) {
   if (req.body["customerTemplate"] != null) {
     console.log("customer value 1 ");
     customer = req.body["customerTemplate"];
+
+console.log(topic);
+console.log(customer);
 
     if (req.session.shop) {
       Store.findOneAndUpdate(
