@@ -23,7 +23,7 @@ export default function Abandan() {
 		topic: '',
 		template: '',
 		time: '',
-		status: new Boolean()
+		status: false
 
 		//add status to post,,status must be is Boolean type
 	};
@@ -52,6 +52,10 @@ export default function Abandan() {
 	};
 
 	/////////////////////////////////
+	const [ template1, setTemplate1 ] = useState('');
+
+	const [ selected1, setSelected1 ] = useState('30');
+	const [ status1, setStatus1 ] = useState(0);
 	function myFunction1() {
 		tempObj.topic = 1;
 		tempObj.time = selected1;
@@ -68,12 +72,8 @@ export default function Abandan() {
 			x.className = x.className.replace('show', '');
 		}, 2000);
 	}
-	const [ template1, setTemplate1 ] = useState('');
 
 	const handleTemplate1 = useCallback((newValue) => setTemplate1(newValue), []);
-
-	const [ selected1, setSelected1 ] = useState('30');
-	const [ status1, setStatus1 ] = useState(0);
 
 	const handleSelectChange1 = useCallback((value) => setSelected1(value), []);
 	const handleStatus1 = useCallback((value) => setStatus1(value), []);
@@ -87,14 +87,19 @@ export default function Abandan() {
 	const statusOption1 = [ { label: 'Enabled', value: 1 }, { label: 'Disabled', value: 0 } ];
 
 	/////////////////////////22
+
+	const [ template2, setTemplate2 ] = useState('');
+
+	const [ selected2, setSelected2 ] = useState('60');
+	const [ status2, setStatus2 ] = useState(0);
 	function myFunction2() {
 		tempObj.topic = 2;
 
 		tempObj.time = selected2;
-		console.log(selected2);
+
 		tempObj.status = status2;
 
-		if (tempObj.time && tempObj.status) {
+		if (tempObj.time) {
 			convertData({
 				text: template2
 			});
@@ -106,12 +111,7 @@ export default function Abandan() {
 		}, 2000);
 	}
 
-	const [ template2, setTemplate2 ] = useState('');
-
 	const handleTemplate2 = useCallback((newValue) => setTemplate2(newValue), []);
-
-	const [ selected2, setSelected2 ] = useState('60');
-	const [ status2, setStatus2 ] = useState(0);
 
 	const handleSelectChange2 = useCallback((value) => setSelected2(value), []);
 	const handleStatus2 = useCallback((value) => setStatus2(value), []);
@@ -128,10 +128,10 @@ export default function Abandan() {
 		tempObj.topic = 3;
 
 		tempObj.time = selected3;
-		console.log(selected3);
+
 		tempObj.status = status3;
 
-		if (tempObj.time && tempObj.status) {
+		if (tempObj.time) {
 			convertData({
 				text: template3
 			});
@@ -166,10 +166,10 @@ export default function Abandan() {
 		tempObj.topic = 4;
 
 		tempObj.time = selected4;
-		console.log(selected4);
+
 		tempObj.status = status4;
 
-		if (tempObj.time && tempObj.status) {
+		if (tempObj.time) {
 			convertData({
 				text: template4
 			});
@@ -293,32 +293,32 @@ export default function Abandan() {
 	return (
 		<Layout>
 			<Layout.AnnotatedSection
-				title="First Follow Up"
-				description="Available Variables:- customer_name store_name abandoned_checkout_url amount."
+				title='First Follow Up'
+				description='Available Variables:- customer_name store_name abandoned_checkout_url amount.'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>
 						<TextField
-							label="Template"
+							label='Template'
 							value={template1}
 							onChange={handleTemplate1}
 							multiline
-							helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
+							helpText='Available Variables:- customer_name store_name abandoned_checkout_url amount'
 						/>
 						<br />
 
-						<div className="mt-2 a-card-contents">
-							<Select label="Time After" options={option1} onChange={handleSelectChange1} value={selected1} />
+						<div className='mt-2 a-card-contents'>
+							<Select label='Time After' options={option1} onChange={handleSelectChange1} value={selected1} />
 
-							<Select label="Status" options={statusOption1} onChange={handleStatus1} value={status1} />
+							<Select label='Status' options={statusOption1} onChange={handleStatus1} value={status1} />
 
-							<div className="mt-5">
+							<div className='mt-5'>
 								<button
 									onClick={() => {
 										myFunction1();
 									}}
 									style={{ height: '34px' }}
-									className="button-shopify"
+									className='button-shopify'
 								>
 									Save
 								</button>
@@ -329,32 +329,32 @@ export default function Abandan() {
 			</Layout.AnnotatedSection>
 
 			<Layout.AnnotatedSection
-				title="Second Follow Up"
-				description="Admin will be notify on this no. by selecting Notify Admin."
+				title='Second Follow Up'
+				description='Admin will be notify on this no. by selecting Notify Admin.'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>
 						<TextField
-							label="Template"
+							label='Template'
 							value={template2}
 							onChange={handleTemplate2}
 							multiline
-							helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
+							helpText='Available Variables:- customer_name store_name abandoned_checkout_url amount'
 						/>
 						<br />
 
-						<div className="mt-2 a-card-contents">
-							<Select label="Time After" options={option2} onChange={handleSelectChange2} value={selected2} />
+						<div className='mt-2 a-card-contents'>
+							<Select label='Time After' options={option2} onChange={handleSelectChange2} value={selected2} />
 
-							<Select label="Status" options={statusOption2} onChange={handleStatus2} value={status2} />
+							<Select label='Status' options={statusOption2} onChange={handleStatus2} value={status2} />
 
-							<div className="mt-5">
+							<div className='mt-5'>
 								<button
 									onClick={() => {
 										myFunction2();
 									}}
 									style={{ height: '34px' }}
-									className="button-shopify"
+									className='button-shopify'
 								>
 									Save
 								</button>
@@ -364,32 +364,32 @@ export default function Abandan() {
 				</Card>
 			</Layout.AnnotatedSection>
 			<Layout.AnnotatedSection
-				title="Third Follow Up"
-				description="Admin will be notify on this no. by selecting Notify Admin."
+				title='Third Follow Up'
+				description='Admin will be notify on this no. by selecting Notify Admin.'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>
 						<TextField
-							label="Template"
+							label='Template'
 							value={template3}
 							onChange={handleTemplate3}
 							multiline
-							helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
+							helpText='Available Variables:- customer_name store_name abandoned_checkout_url amount'
 						/>
 						<br />
 
-						<div className="mt-3 a-card-contents">
-							<Select label="Time After" options={option3} onChange={handleSelectChange3} value={selected3} />
+						<div className='mt-3 a-card-contents'>
+							<Select label='Time After' options={option3} onChange={handleSelectChange3} value={selected3} />
 
-							<Select label="Status" options={statusOption3} onChange={handleStatus3} value={status3} />
+							<Select label='Status' options={statusOption3} onChange={handleStatus3} value={status3} />
 
-							<div className="mt-5">
+							<div className='mt-5'>
 								<button
 									onClick={() => {
 										myFunction3();
 									}}
 									style={{ height: '34px' }}
-									className="button-shopify"
+									className='button-shopify'
 								>
 									Save
 								</button>
@@ -399,32 +399,32 @@ export default function Abandan() {
 				</Card>
 			</Layout.AnnotatedSection>
 			<Layout.AnnotatedSection
-				title="Fourth Follow Up"
-				description="Admin will be notify on this no. by selecting Notify Admin."
+				title='Fourth Follow Up'
+				description='Admin will be notify on this no. by selecting Notify Admin.'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>
 						{' '}
 						<TextField
-							label="Template"
+							label='Template'
 							value={template4}
 							onChange={handleTemplate4}
 							multiline
-							helpText="Available Variables:- customer_name store_name abandoned_checkout_url amount"
+							helpText='Available Variables:- customer_name store_name abandoned_checkout_url amount'
 						/>
 						<br />
-						<div className="mt-4 a-card-contents">
-							<Select label="Time After" options={option4} onChange={handleSelectChange4} value={selected4} />
+						<div className='mt-4 a-card-contents'>
+							<Select label='Time After' options={option4} onChange={handleSelectChange4} value={selected4} />
 
-							<Select label="Status" options={statusOption4} onChange={handleStatus4} value={status4} />
+							<Select label='Status' options={statusOption4} onChange={handleStatus4} value={status4} />
 
-							<div className="mt-5">
+							<div className='mt-5'>
 								<button
 									onClick={() => {
 										myFunction4();
 									}}
 									style={{ height: '34px' }}
-									className="button-shopify"
+									className='button-shopify'
 								>
 									Save
 								</button>
@@ -434,7 +434,7 @@ export default function Abandan() {
 				</Card>
 			</Layout.AnnotatedSection>
 
-			<div id="snackbar" style={{ zIndex: '999' }}>
+			<div id='snackbar' style={{ zIndex: '999' }}>
 				Abandan Updated{' '}
 			</div>
 		</Layout>
