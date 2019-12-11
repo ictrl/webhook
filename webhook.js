@@ -1318,7 +1318,7 @@ app.post("/api/template", function(req, res) {
   if (req.body["customerTemplate"] != null) {
     console.log("customer value 1 ");
     customer = req.body["customerTemplate"];
-res.sendStatus(200);
+
 		console.log(topic);
 		console.log(customer);
 
@@ -1420,7 +1420,7 @@ res.sendStatus(200);
 app.post("/api/abandanTemplate", function(req, res) {
   // console.log(req.body, "AT body");
   // req.session.shop = "mojitolabs.myshopify.com"; //delete this
-
+res.sendStatus(200);
   if (req.session.shop) {
     Store.findOneAndUpdate(
       { "abandanTemplate.topic": req.body.topic },
