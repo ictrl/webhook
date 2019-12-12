@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import { Layout, Card } from '@shopify/polaris';
-
 import Baar from './analytics/Baar';
 import Piee from './analytics/piee';
 import Linee from './analytics/Linee';
-
 function Dashboard() {
 	const [ bar, setBar ] = useState('');
 	const [ line, setLine ] = useState('');
@@ -55,5 +52,4 @@ function Dashboard() {
 		</Layout>
 	);
 }
-
 export default Dashboard;

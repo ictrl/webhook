@@ -310,6 +310,9 @@ app.post("/api/myaction", function(req, res) {
     let shop = req.session.shop;
     let token = req.session.token;
     let hmac = req.session.hmac;
+
+console.log('req.body-->314 line details from settings',req.body);
+
     Store.findOne({ name: shop }, function(err, data) {
       if (data) {
         console.log("store found in DB");
@@ -1052,7 +1055,7 @@ const sndSms = (i, phone, message, senderID, shop) => {
           description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
           term: phone
         };
-
+``
         Store.findOneAndUpdate(
           { name: shop },
           {
