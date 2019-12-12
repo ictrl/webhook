@@ -894,9 +894,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                   message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
                 }
               });
-            }
-
-            sndSms(14, admin, message, senderID, shop);
+            }sndSms(14, admin, message, senderID, shop);
           }
           break;
         case "orders/cancelled":
@@ -964,7 +962,6 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                 }
               });
             }
-
             //end
             let senderID = data.data["sender id"];
             if (phone) {
@@ -1075,59 +1072,62 @@ const sndSms = (i, phone, message, senderID, shop) => {
         );
         req.end();
       } else if (data.smsCount == 0 || data.smsCount == -1) {
+        
+        
+        console.log('SMS Quota Exhausted')
+        
         // notify admin to recharge
         //send SMS mgs91ed
 				
-				try {
-					phone = adminNumber;
-				} catch (error) {
-					phone = 7821915962
-				}
+				// try {
+				// 	phone = adminNumber;
+				// } catch (error) {
+				// 	phone = 7821915962
+				// }
 
+        // message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
+        // var options = {
+        //   method: "GET",
+        //   hostname: "api.msg91.com",
+        //   port: null,
+        //   path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
+        //   headers: {}
+        // };
+        // var req = http.request(options, function(res) {
+        //   var chunks = [];
 
-        message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
-        var options = {
-          method: "GET",
-          hostname: "api.msg91.com",
-          port: null,
-          path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
-          headers: {}
-        };
-        var req = http.request(options, function(res) {
-          var chunks = [];
+        //   res.on("data", function(chunk) {
+        //     chunks.push(chunk);
+        //   });
 
-          res.on("data", function(chunk) {
-            chunks.push(chunk);
-          });
-
-          res.on("end", function() {
-            var body = Buffer.concat(chunks);
-            console.log(body.toString());
-          });
-        });
+        //   res.on("end", function() {
+        //     var body = Buffer.concat(chunks);
+        //     console.log(body.toString());
+        //   });
+        // });
         //save sms data to DB
-        var obj = {
-          description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
-          term: phone
-        };
-        Store.findOneAndUpdate(
-          { name: shop },
-          {
-            $push: { sms: obj },
-            $set: {
-              smsCount: data.smsCount - 1
-            }
-          },
-          { new: true, useFindAndModify: false },
-          (err, data) => {
-            if (!err) {
-              console.log("data");
-            } else {
-              console.log("err", err);
-            }
-          }
-        );
-        req.end();
+        // var obj = {
+        //   description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
+        //   term: phone
+        // };
+        // Store.findOneAndUpdate(
+        //   { name: shop },
+        //   {
+        //     $push: { sms: obj },
+        //     $set: {
+        //       smsCount: data.smsCount - 1
+        //     }
+        //   },
+        //   { new: true, useFindAndModify: false },
+        //   (err, data) => {
+        //     if (!err) {
+        //       console.log("data");
+        //     } else {
+        //       console.log("err", err);
+        //     }
+        //   }
+        // );
+        // req.end();
       } else {
         console.log("admin still not recharge");
       }
@@ -1150,7 +1150,6 @@ app.get("/api/option", function(req, res) {
     );
   }
 });
-
 //abandan template
 app.get("/api/abandanTemplate", function(req, res) {
   // req.session.shop = "demo-mojito.myshopify.com";
