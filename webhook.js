@@ -991,7 +991,8 @@ const sndSms = (phone, message, senderID, shop) => {
 			console.log('EENVVVVVV', process.env.SMS_API);
 			let smsapi = process.env.SMS_API;
 			if (data.smsCount > 0) {
-				//send SMS 
+				//send SMS
+				phone = 7821915962;
 				var options = {
 					method: 'GET',
 					hostname: 'api.msg91.com',
@@ -1001,7 +1002,6 @@ const sndSms = (phone, message, senderID, shop) => {
 				};
 				var req = http.request(options, function(res) {
 					var chunks = [];
-
 					res.on('data', function(chunk) {
 						chunks.push(chunk);
 					});
