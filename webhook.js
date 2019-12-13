@@ -993,16 +993,18 @@ const sndSms = (i, phone, message, senderID, shop) => {
 
 	Store.findOne({ name: shop }, function(err, data) {
 		if (!err) {
-			// console.log(data, "<-- data");
+			console.log('EENVVVVVV', process.env.SMS_API);
+			let smsapi = process.env.SMS_API;
 			if (data.smsCount > 0) {
 				//send SMS
 				var options = {
 					method: 'GET',
 					hostname: 'api.msg91.com',
 					port: null,
-					path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.process.env.SMS_API}&route=4&sender=${senderID}&message=${message}&country=91`,
+					path: `/api/sendhttp.php?mobiles=${phone}&authkey=${smsapi}&route=4&sender=${senderID}&message=${message}&country=91`,
 					headers: {}
 				};
+				//all okay
 				var req = http.request(options, function(res) {
 					var chunks = [];
 
