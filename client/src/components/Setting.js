@@ -60,7 +60,7 @@ export default function Settings() {
 	};
 
 	const handleSubmit = async () => {
-		console.log(preference);
+		console.log('preference',preference);
 
 		try {
 			const res = await axios.post('/api/myaction/', preference);
