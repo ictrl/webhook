@@ -69,6 +69,7 @@ const shorten = async params => {
   const { price } = params;
   const { phone } = params;
   const { shop } = params;
+//   const { name } = params;
 
   const baseUrl = process.env.BASEURL;
 
@@ -145,7 +146,7 @@ const shorten = async params => {
           id,
           shop,
           price,
-          name
+        //   name
         });
 
         await url.save();
