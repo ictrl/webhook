@@ -20,7 +20,7 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require("connect-mongo")(session);
 const Url = require("./models/Url");
-const forwardingAddress = "https://immense-bastion-25565.herokuapp.com"; // Replace this with your HTTPS Forwarding address
+const forwardingAddress = "https://bell.ml"; // Replace this with your HTTPS Forwarding address
 // get the url pathname
 let pathname;
 mongoose.connect(process.env.MONGODB_URI, {
@@ -430,7 +430,7 @@ const makeWebook = (topic, token, hmac, shop) => {
   const webhookPayload = {
     webhook: {
       topic: topic,
-      address: `https://immense-bastion-25565.herokuapp.com/store/${shop}/${topic}`,
+      address: `https://bell.ml/store/${shop}/${topic}`,
       format: "json"
     }
   };
@@ -1462,11 +1462,6 @@ res.sendStatus(200);
     console.log("session timeout");
   }
 });
-// http://immense-bastion-25565.herokuapp.com
-
-// heroku git:remote -a immense-bastion-25565
-
-// https://mojitolabs.myshopify.com/admin/apps/sms_update
 
 // send rechage smscount to db
 
