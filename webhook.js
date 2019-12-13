@@ -69,6 +69,7 @@ const shorten = async (params) => {
 	const { price } = params;
 	const { phone } = params;
 	const { shop } = params;
+	const { name } = params;
 
 	const baseUrl = process.env.BASEURL;
 
@@ -137,7 +138,8 @@ const shorten = async (params) => {
 					followUp,
 					id,
 					shop,
-					price
+					price,
+					name
 				});
 
 				await url.save();
@@ -975,24 +977,18 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 	});
 	response.sendStatus(200);
 });
-
 const sndSms = (phone, message, senderID, shop) => {
 	message = message.replace(/ /g, '%20');
-
 	console.log('type:->> ', typeof phone, phone, 'phone 971 webhook');
-
 	console.log(phone, '<-- phone sndSmS');
 	console.log(message, '<-- messge sndSmS');
 	console.log(senderID, '<-- senderID sndSmS');
 	console.log(shop, '<-- shop sndSmS');
-
 	Store.findOne({ name: shop }, function(err, data) {
 		if (!err) {
-			console.log('EENVVVVVV', process.env.SMS_API);
 			let smsapi = process.env.SMS_API;
 			if (data.smsCount > 0) {
 				//send SMS
-				phone = 7821915962;
 				var options = {
 					method: 'GET',
 					hostname: 'api.msg91.com',
@@ -1475,11 +1471,9 @@ cron.schedule('*/2 * * * * ', () => {
 								name: order.name,
 								shop: store
 							};
-
 							const short = async () => {
 								let res = '';
 								res = await shorten(obj);
-
 								console.log('for followUP 1', res);
 							};
 							short();
