@@ -333,7 +333,7 @@ console.log('req.body-->314 line details from settings',req.body);
               //   console.log("datacount + 1");
             } else {
               console.log("238 err-->", err);
-            }
+            } 
           }
         );
       } else {
