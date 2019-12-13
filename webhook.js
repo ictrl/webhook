@@ -967,10 +967,11 @@ const sndSms = (i, phone, message, senderID, shop) => {
 	console.log(i, '--------->');
 	message = message.replace(/ /g, '%20');
 
-	console.log(phone, 'phone 971 webhook');
-	if (phone.includes(' ')) {
-		phone = phone.replace(/ /g, '');
-	}
+	console.log('type:->> ', typeof phone, phone, 'phone 971 webhook');
+
+	// if (phone.includes(' ')) {
+	// 	phone = phone.replace(/ /g, '');
+	// }
 
 	console.log(phone, '<-- phone sndSmS');
 	console.log(message, '<-- messge sndSmS');
