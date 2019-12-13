@@ -1550,11 +1550,21 @@ if (process.env.NODE_ENV === 'production') {
 	});
 }
 
+app.post('/whatsapp', function(req, res) {
+	console.log(req.body, 'whatsapp response');
+
+	res.sendStatus(200);
+});
+app.post('/whatsapp/reply', function(req, res) {
+	console.log(req.body, 'whatsapp reply response');
+
+	res.sendStatus(200);
+});
 const port = process.env.PORT || 4000;
 
 app.listen(port, () => {
 	console.log(`app listening on port ${port}!`);
 });
 
-sndSms(7821915962, 'gogomaster is best', 'GOGOMA', 'demo-mojito.myshopify.com'); i m on hold
- okay:)
+// sndSms(7821915962, 'gogomaster is best', 'GOGOMA', 'demo-mojito.myshopify.com'); i m on hold
+//  okay:)
