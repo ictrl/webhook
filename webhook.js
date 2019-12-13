@@ -470,7 +470,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 									} else {
 										if (data === null) {
 											console.log('save new order');
-
+											console.log(request.body);
 											let a = request.body.subtotal_price;
 											let b = request.body.total_price;
 											let c = request.body.total_line_items_price;
