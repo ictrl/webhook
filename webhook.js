@@ -116,7 +116,7 @@ const shorten = async (params) => {
 									message = message.replace('${amount}', url.price);
 								}
 
-								sndSms(1, phone, message, senderId, shop);
+								sndSms(phone, message, senderId, shop);
 							} else {
 								message = 'elseMessage';
 							}
@@ -182,7 +182,7 @@ const shorten = async (params) => {
 										message = message.replace('${abandoned_checkout_url}', shortUrl);
 										message = message.replace('${amount}', price);
 									}
-									sndSms(2, phone, message, senderId, shop);
+									sndSms(phone, message, senderId, shop);
 								}
 							});
 						}
@@ -634,11 +634,11 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						//end
 						let senderID = data.data['sender id'];
 						if (phone) {
-							sndSms(3, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						} else if (phone1) {
-							sndSms(4, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						} else if (phone2) {
-							sndSms(5, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						}
 					}
 					if (data.data['orders/create admin'] != undefined) {
@@ -670,7 +670,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							});
 						}
 						//end
-						sndSms(6, phone, message, senderID, shop);
+						sndSms(phone, message, senderID, shop);
 					}
 
 					break;
@@ -740,11 +740,11 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 
 						let senderID = data.data['sender id'];
 						if (phone) {
-							sndSms(7, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						} else if (phone1) {
-							sndSms(8, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						} else if (phone2) {
-							sndSms(9, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						}
 					}
 					if (data.data['orders/fulfilled admin'] != undefined) {
@@ -776,7 +776,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							});
 						}
 
-						sndSms(10, admin, message, senderID, shop);
+						sndSms(admin, message, senderID, shop);
 					}
 					break;
 
@@ -830,11 +830,11 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						let senderID = data.data['sender id'];
 
 						if (phone) {
-							sndSms(11, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						} else if (phone1) {
-							sndSms(12, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						} else if (phone2) {
-							sndSms(13, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						}
 					}
 					if (data.data['refunds/create admin'] != undefined) {
@@ -863,7 +863,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								}
 							});
 						}
-						sndSms(14, admin, message, senderID, shop);
+						sndSms(admin, message, senderID, shop);
 					}
 					break;
 				case 'orders/cancelled':
@@ -928,11 +928,11 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						//end
 						let senderID = data.data['sender id'];
 						if (phone) {
-							sndSms(15, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						} else if (phone1) {
-							sndSms(16, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						} else if (phone2) {
-							sndSms(17, phone, message, senderID, shop);
+							sndSms(phone, message, senderID, shop);
 						}
 					}
 					if (data.data['orders/cancelled admin'] != undefined) {
@@ -962,7 +962,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							});
 						}
 
-						sndSms(18, admin, message, senderID, shop);
+						sndSms(admin, message, senderID, shop);
 					}
 					break;
 				default:
@@ -976,15 +976,10 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 	response.sendStatus(200);
 });
 
-const sndSms = (i, phone, message, senderID, shop) => {
-	console.log(i, '--------->');
+const sndSms = (phone, message, senderID, shop) => {
 	message = message.replace(/ /g, '%20');
 
 	console.log('type:->> ', typeof phone, phone, 'phone 971 webhook');
-
-	// if (phone.includes(' ')) {
-	// 	phone = phone.replace(/ /g, '');
-	// }
 
 	console.log(phone, '<-- phone sndSmS');
 	console.log(message, '<-- messge sndSmS');
