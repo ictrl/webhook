@@ -432,6 +432,7 @@ const makeWebook = (topic, token, hmac, shop) => {
 };
 
 let adminNumber;
+let checkoutName = '';
 app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 	const shop = request.params.shop;
 	let topic = request.params.topic;
@@ -476,10 +477,22 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											console.log(a, 'subtotal');
 											console.log(b, 'total');
 											console.log(c, 'total_line_price');
+
+											if (request.body.customer.first_name) {
+												checkoutName = request.body.customer.first_name;
+											} else {
+												if (request.body.shipping_address.name) {
+													checkoutName = request.body.shipping_address.name;
+												} else {
+													checkoutName = request.body.billing_address.name;
+												}
+											}
+
 											let obj = {
 												id: request.body.id,
 												phone: request.body.shipping_address.phone.replace(/\s/g, ''),
-												name: request.body.shipping_address.name,
+
+												name: checkoutName,
 												email: request.body.email,
 												vendor: request.body.line_items[0].vendor,
 												price: request.body.subtotal_price,
