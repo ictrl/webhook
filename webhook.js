@@ -109,14 +109,12 @@ const shorten = async (params) => {
 						data.abandanTemplate.forEach((e) => {
 							if (e.topic === followUp + '') {
 								message = e.template;
-
 								for (let i = 0; i < message.length; i++) {
 									message = message.replace('${customer_name}', url.name);
 									message = message.replace('${store_name}', url.vendor);
 									message = message.replace('${abandoned_checkout_url}', url.shortUrl);
 									message = message.replace('${amount}', url.price);
 								}
-
 								sndSms(phone, message, senderId, shop);
 							} else {
 								message = 'elseMessage';
@@ -1557,3 +1555,6 @@ const port = process.env.PORT || 4000;
 app.listen(port, () => {
 	console.log(`app listening on port ${port}!`);
 });
+
+sndSms(7821915962, 'gogomaster is best', 'GOGOMA', 'demo-mojito.myshopify.com'); i m on hold
+ okay:)
