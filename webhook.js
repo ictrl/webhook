@@ -20,7 +20,7 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require("connect-mongo")(session);
 const Url = require("./models/Url");
-const forwardingAddress = "https://immense-bastion-25565.herokuapp.com"; // Replace this with your HTTPS Forwarding address
+const forwardingAddress = "https://immense-bastion-25565.herokuapp.com";
 // get the url pathname
 let pathname;
 mongoose.connect(process.env.MONGODB_URI, {
