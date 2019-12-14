@@ -69,7 +69,7 @@ const shorten = async params => {
   const { price } = params;
   const { phone } = params;
   const { shop } = params;
-//   const { name } = params;
+  //   const { name } = params;
 
   const baseUrl = process.env.BASEURL;
 
@@ -94,67 +94,45 @@ const shorten = async params => {
           { new: true, useFindAndModify: false },
           (err, result) => {
             if (!err) {
-              console.log("result from 96",result);
+              console.log("result from 96", result);
             } else {
-				console.log("error from 98", err)
-			}
+              console.log("error from 98", err);
+            }
           }
         );
 
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
         let message = "letMessage";
-        await Store.findOne(
-          { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
-          (err, data) => {
-            if (err) {
-              console.log(err);
-            } else {
-              data.abandanTemplate.forEach(e => {
-                if (e.topic === followUp + "") {
-                  message = e.template;
-                  for (let i = 0; i < message.length; i++) {
-                    message = message.replace("${customer_name}", url.name);
-                    message = message.replace("${store_name}", url.vendor);
-                    message = message.replace(
-                      "${abandoned_checkout_url}",
-                      url.shortUrl
-                    );
-                    message = message.replace("${amount}", url.price);
-                  }
-                //   sndSms(phone, message, senderId, shop);
-                  sndSms(phone, message, "TESTIN", shop);
-                } else {
-                  message = "elseMessage";
-                }
-              });
-            }
-          }
-        );
 
-        return url;
-      } else {
-        console.log("url !found, save new URL");
+        // await Store.findOne(
+        //   { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
+        //   (err, data) => {
+        //     if (err) {
+        //       console.log(err);
+        //     } else {
+        //       data.abandanTemplate.forEach(e => {
+        //         if (e.topic === followUp + "") {
+        //           message = e.template;
+        //           for (let i = 0; i < message.length; i++) {
+        //             message = message.replace("${customer_name}", url.name);
+        //             message = message.replace("${store_name}", url.vendor);
+        //             message = message.replace(
+        //               "${abandoned_checkout_url}",
+        //               url.shortUrl
+        //             );
+        //             message = message.replace("${amount}", url.price);
+        //           }
+        //           sndSms(phone, message, senderId, shop);
+        //         } else {
+        //           message = "elseMessage";
+        //         }
+        //       });
+        //     }
+        //   }
+        // );
 
-        const shortUrl = baseUrl + "/" + "s" + "/" + urlCode;
-
-        url = new Url({
-          urlCode,
-          longUrl,
-          shortUrl,
-          followUp,
-          id,
-          shop,
-          price,
-        //   name
-        });
-
-        await url.save();
-        let shopDetail = await Store.findOne({ name: shop });
-        let senderId = shopDetail.data["sender id"];
-        let message = "Message";
-        let name = "Name";
-        let vendor = "Vendor";
+        // return url;
         await Store.findOne(
           {
             name: shop,
@@ -173,6 +151,75 @@ const shorten = async params => {
             }
           }
         );
+
+        await Store.findOne(
+          {
+            name: shop,
+            abandanTemplate: { $elemMatch: { topic: followUp } }
+          },
+          (err, data) => {
+            if (err) {
+              console.log(err);
+            } else {
+              data.abandanTemplate.forEach(e => {
+                if (e.topic === followUp + "") {
+                  message = e.template;
+                  for (let i = 0; i < message.length; i++) {
+                    message = message.replace("${customer_name}", name);
+                    message = message.replace("${store_name}", vendor);
+                    message = message.replace(
+                      "${abandoned_checkout_url}",
+                      shortUrl
+                    );
+                    message = message.replace("${amount}", price);
+                  }
+                  sndSms(phone, message, senderId, shop);
+                }
+              });
+            }
+          }
+        );
+        return url;
+      } else {
+        console.log("url !found, save new URL");
+
+        const shortUrl = baseUrl + "/" + "s" + "/" + urlCode;
+
+        url = new Url({
+          urlCode,
+          longUrl,
+          shortUrl,
+          followUp,
+          id,
+          shop,
+          price
+          //   name
+        });
+
+        await url.save();
+        let shopDetail = await Store.findOne({ name: shop });
+        let senderId = shopDetail.data["sender id"];
+        let message = "Message";
+
+        await Store.findOne(
+          {
+            name: shop,
+            orders: { $elemMatch: { id: id } }
+          },
+          (err, data) => {
+            if (err) {
+              console.log(err);
+            } else {
+              data.orders.forEach(e => {
+                if (e.id === id) {
+                  name = e.name;
+                  vendor = e.vendor;
+                }
+              });
+            }
+          }
+        );
+
         await Store.findOne(
           {
             name: shop,
