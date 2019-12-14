@@ -555,8 +555,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                           data.abandanTemplate.forEach(e => {
                             if (e.topic === "1" && e.status === true) {
                               obj.f1 = moment()
-                                // .add(e.time, 'minutes')
-                                .add(2, "minutes")
+                                .add(e.time, 'minutes')
                                 .format();
                             } else if (e.topic === "2" && e.status === true) {
                               obj.f2 = moment()
@@ -568,8 +567,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                                 .format();
                             } else if (e.topic === "4" && e.status === true) {
                               obj.f4 = moment()
-                                .add(3, "minutes")
-                                // .add(e.time, 'minutes')
+                                .add(e.time, 'minutes')
                                 .format();
                             }
                           });
