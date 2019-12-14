@@ -506,6 +506,7 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
           break;
 
         case "checkouts/update":
+          console.log('checkut aaya :',request.body);
           if (request.body.shipping_address != undefined) {
             if (request.body.shipping_address.phone != null) {
               Store.findOne(
