@@ -1458,7 +1458,7 @@ app.post("/api/template", function(req, res) {
 
 // save abandan template to db
 app.post("/api/abandanTemplate", function(req, res) {
-  // console.log(req.body, "AT body");
+  console.log(req.body, "AT body");
   // req.session.shop = "mojitolabs.myshopify.com"; //delete this
   res.sendStatus(200);
   if (req.session.shop) {
