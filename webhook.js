@@ -586,6 +586,8 @@ app.post("/store/:shop/:topic/:subtopic", function(request, response) {
                               }
                             }
                           );
+                        } else {
+                          console.log('There is no abandanTemplate data')
                         }
                       });
                     } else {
