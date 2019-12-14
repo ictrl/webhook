@@ -104,35 +104,6 @@ const shorten = async params => {
         let shopDetail = await Store.findOne({ name: shop });
         let senderId = shopDetail.data["sender id"];
         let message = "letMessage";
-
-        // await Store.findOne(
-        //   { name: shop, abandanTemplate: { $elemMatch: { topic: followUp } } },
-        //   (err, data) => {
-        //     if (err) {
-        //       console.log(err);
-        //     } else {
-        //       data.abandanTemplate.forEach(e => {
-        //         if (e.topic === followUp + "") {
-        //           message = e.template;
-        //           for (let i = 0; i < message.length; i++) {
-        //             message = message.replace("${customer_name}", url.name);
-        //             message = message.replace("${store_name}", url.vendor);
-        //             message = message.replace(
-        //               "${abandoned_checkout_url}",
-        //               url.shortUrl
-        //             );
-        //             message = message.replace("${amount}", url.price);
-        //           }
-        //           sndSms(phone, message, senderId, shop);
-        //         } else {
-        //           message = "elseMessage";
-        //         }
-        //       });
-        //     }
-        //   }
-        // );
-
-        // return url;
         await Store.findOne(
           {
             name: shop,
@@ -169,9 +140,9 @@ const shorten = async params => {
                     message = message.replace("${store_name}", vendor);
                     message = message.replace(
                       "${abandoned_checkout_url}",
-                      shortUrl
+                      url.shortUrl
                     );
-                    message = message.replace("${amount}", price);
+                    message = message.replace("${amount}", url.price);
                   }
                   sndSms(phone, message, senderId, shop);
                 }
