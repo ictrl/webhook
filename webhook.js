@@ -330,7 +330,8 @@ app.post('/api/myaction', function(req, res) {
 					{ name: shop },
 					{
 						$set: {
-							data: req.body
+							data: req.body,
+							uninstalled: false
 						}
 					},
 					{ new: true, useFindAndModify: false },
@@ -346,6 +347,7 @@ app.post('/api/myaction', function(req, res) {
 				console.log('store !found in DB');
 				const store = new Store({
 					name: shop,
+					uninstalled: false,
 					data: req.body,
 					smsCount: 10,
 					template: [
