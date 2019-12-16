@@ -317,7 +317,7 @@ app.post('/api/myaction', function(req, res) {
 		let token = req.session.token;
 		let hmac = req.session.hmac;
 
-		console.log('req.body-->314 line details from settings', req.body);
+		console.log('req.body-->320 line details from settings', req.body);
 
 		Store.findOne({ name: shop }, function(err, data) {
 			if (data) {
@@ -1493,7 +1493,7 @@ app.post('/api/recharge', function(req, res) {
 cron.schedule('*/2 * * * * ', () => {
 	//getting list of all store name
 	var storeName = [];
-	Store.find({}, function(err, stores) {
+	Store.find({ uninstalled: false }, function(err, stores) {
 		stores.forEach((store) => {
 			storeName.push(store.name);
 		});
