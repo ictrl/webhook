@@ -347,7 +347,7 @@ app.post('/api/myaction', function(req, res) {
 				const store = new Store({
 					name: shop,
 					data: req.body,
-					smsCount: 100,
+					smsCount: 10,
 					template: [
 						{
 							topic: 'orders/create',
