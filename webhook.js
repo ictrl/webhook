@@ -374,28 +374,28 @@ app.post('/api/myaction', function(req, res) {
 						{
 							topic: '1',
 							template:
-								'`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they’re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:${abandoned_checkout_url}.%20–%20${store_name}`',
+								'`Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order%3A(abandoned_checkout_url).%20%E2%80%93%20(store_name)`',
 							time: '30',
 							status: false
 						},
 						{
 							topic: '2',
 							template:
-								'`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they’re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:${abandoned_checkout_url}.%20–%20${store_name}`',
+								'`Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order%3A(abandoned_checkout_url).%20%E2%80%93%20(store_name)`',
 							time: '60',
 							status: false
 						},
 						{
 							topic: '3',
 							template:
-								'`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they’re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:${abandoned_checkout_url}.%20–%20${store_name}`',
+								'`Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order%3A(abandoned_checkout_url).%20%E2%80%93%20(store_name)`',
 							time: '60',
 							status: false
 						},
 						{
 							topic: '4',
 							template:
-								'`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they’re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:${abandoned_checkout_url}.%20–%20${store_name}`',
+								'`Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order%3A(abandoned_checkout_url).%20%E2%80%93%20(store_name)`',
 							time: '60',
 							status: false
 						}
@@ -1028,11 +1028,13 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 });
 const sndSms = (phone, message, senderID, shop) => {
 	message = message.replace(/ /g, '%20');
+
 	console.log('type:->> ', typeof phone, phone, 'phone 971 webhook');
 	console.log(phone, '<-- phone sndSmS');
 	console.log(message, '<-- messge sndSmS');
 	console.log(senderID, '<-- senderID sndSmS');
 	console.log(shop, '<-- shop sndSmS');
+
 	Store.findOne({ name: shop }, function(err, data) {
 		if (!err) {
 			let smsapi = process.env.SMS_API;
@@ -1045,17 +1047,21 @@ const sndSms = (phone, message, senderID, shop) => {
 					path: `/api/sendhttp.php?mobiles=${phone}&authkey=${smsapi}&route=4&sender=${senderID}&message=${message}&country=91`,
 					headers: {}
 				};
-				var req = http.request(options, function(res) {
-					var chunks = [];
-					res.on('data', function(chunk) {
-						chunks.push(chunk);
-					});
+				try {
+					var req = http.request(options, function(res) {
+						var chunks = [];
+						res.on('data', function(chunk) {
+							chunks.push(chunk);
+						});
 
-					res.on('end', function() {
-						var body = Buffer.concat(chunks);
-						console.log(body.toString());
+						res.on('end', function() {
+							var body = Buffer.concat(chunks);
+							console.log(body.toString());
+						});
 					});
-				});
+				} catch (error) {
+					console.error("sms couldn't send because of:", error);
+				}
 				//save sms data to DB
 				var obj = {
 					description: message.replace(/%20/g, ' ').replace(/%0A/g, ' '),

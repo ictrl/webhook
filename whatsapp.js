@@ -23,18 +23,21 @@
 
 //! adityajha526@gmail.com credentials
 
-const accountSid = 'AC704e6ad13244ed977f7bed9f8b063b0f';
-const authToken = '7aaca9144490a290604db687eb451b7e';
-const client = require('twilio')(accountSid, authToken);
+// const accountSid = 'AC704e6ad13244ed977f7bed9f8b063b0f';
+// const authToken = '7aaca9144490a290604db687eb451b7e';
+// const client = require('twilio')(accountSid, authToken);
 
-client.messages
-	.create({
-		body:
-			'Your Yummy Cupcakes Company order of 1 dozen frosted cupcakes has shipped and should be delivered on July 10, 2019. Details: http://www.yummycupcakes.com/',
-		from: 'whatsapp:+14155238886',
-		to: 'whatsapp:+917821915962'
-	})
-	.then((message) => console.log(message.sid))
-	.done();
+// client.messages
+// 	.create({
+// 		body:
+// 			'Your Yummy Cupcakes Company order of 1 dozen frosted cupcakes has shipped and should be delivered on July 10, 2019. Details: http://www.yummycupcakes.com/',
+// 		from: 'whatsapp:+14155238886',
+// 		to: 'whatsapp:+917821915962'
+// 	})
+// 	.then((message) => console.log(message.sid))
+// 	.done();
 
-
+// let hola =
+// 	'Hey (customer_name)! We noticed you left some items in your cart. Get them before they’re gone! Visit this link to complete the order:(abandoned_checkout_url). – (store_name)';
+// console.log(hola);
+// console.log(encodeURIComponent(hola));
