@@ -5,7 +5,7 @@ import axios from 'axios';
 export default function Template() {
 	let defaultTopic = {
 		topic: 'orders/create',
-		topicVariables: 'name  price order_id title'
+		topicVariables: 'name , price , order_id , title'
 	};
 
 	const [ topics, setTopics ] = useState(defaultTopic);
@@ -50,7 +50,7 @@ export default function Template() {
 				setTopics({
 					...topics,
 					topic: selectedValue,
-					topicVariables: 'name price order_id title '
+					topicVariables: 'name , price , order_id , title '
 				});
 				break;
 			case 'orders/cancelled':
@@ -86,7 +86,7 @@ export default function Template() {
 				setTopics({
 					...topics,
 					topic: selectedValue,
-					topicVariables: 'name price order_id title cancel_reason'
+					topicVariables: 'name , price , order_id , title , cancel_reason'
 				});
 				break;
 			case 'orders/fulfilled':
@@ -123,7 +123,7 @@ export default function Template() {
 				setTopics({
 					...topics,
 					topic: selectedValue,
-					topicVariables: 'name price order_id title fulfillment_status order_status_url'
+					topicVariables: 'name , price , order_id , title , fulfillment_status , order_status_url'
 				});
 				break;
 

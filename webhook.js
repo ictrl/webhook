@@ -371,25 +371,29 @@ app.post('/api/myaction', function(req, res) {
 					abandanTemplate: [
 						{
 							topic: '1',
-							template: '`Hi%20${customer_name},%20your%20product%20is%20waiting%20at%20us.`',
+							template:
+								'`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they’re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:${abandoned_checkout_url}.%20–%20${store_name}`',
 							time: '30',
 							status: false
 						},
 						{
 							topic: '2',
-							template: '`Hi%20${customer_name},%20your%20product%20is%20waiting%20at%20us.`',
+							template:
+								'`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they’re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:${abandoned_checkout_url}.%20–%20${store_name}`',
 							time: '60',
 							status: false
 						},
 						{
 							topic: '3',
-							template: '`Hi%20${customer_name},%20your%20product%20is%20waiting%20at%20us.`',
+							template:
+								'`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they’re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:${abandoned_checkout_url}.%20–%20${store_name}`',
 							time: '60',
 							status: false
 						},
 						{
 							topic: '4',
-							template: '`Hi%20${customer_name},%20your%20product%20is%20waiting%20at%20us.`',
+							template:
+								'`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they’re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:${abandoned_checkout_url}.%20–%20${store_name}`',
 							time: '60',
 							status: false
 						}
@@ -482,7 +486,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 			switch (topic) {
 				case 'checkouts/update':
 					console.log('checkut aaya :', request.body);
-					res.sendStatus(200);
+
 					if (request.body.shipping_address != undefined) {
 						if (request.body.shipping_address.phone != null) {
 							Store.findOne(
@@ -567,8 +571,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					break;
 
 				case 'orders/create':
-					res.sendStatus(200);
-
 					Store.updateOne(
 						{ 'orders.id': request.body.checkout_id },
 						{
@@ -699,8 +701,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 
 					break;
 				case 'orders/fulfilled':
-					res.sendStatus(200);
-
 					if (data.data['orders/fulfilled customer'] != undefined && data.data['orders/fulfilled admin'] != undefined) {
 						// data.smsCount + 2
 						Store.findOneAndUpdate(
@@ -807,8 +807,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					break;
 
 				case 'refunds/create':
-					res.sendStatus(200);
-
 					if (data.data['refunds/create customer'] != undefined && data.data['refunds/create admin'] != undefined) {
 						// data.smsCount + 2
 						Store.findOneAndUpdate(
@@ -895,8 +893,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					}
 					break;
 				case 'orders/cancelled':
-					res.sendStatus(200);
-
 					if (data.data['orders/cancelled customer'] != undefined && data.data['orders/cancelled admin'] != undefined) {
 						Store.findOneAndUpdate(
 							{ name: shop },
@@ -997,6 +993,24 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					break;
 				case 'app/uninstalled':
 					//! todo
+					console.log(`app uninstallation request from ${shop}`);
+					Store.findOneAndUpdate(
+						{ name: shop },
+						{
+							$set: {
+								uninstalled: true
+							}
+						},
+						{ new: true, useFindAndModify: false },
+						(err, data) => {
+							if (!err) {
+								console.log(`uninstall registered for ${shop}`);
+							} else {
+								console.log(`uninstall registration failed for ${shop} because of ${err}`);
+							}
+						}
+					);
+
 					console.log('someone uninstalled app');
 					//do task you want to do after admin uninstall the app
 					break;
@@ -1586,14 +1600,12 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.post('/whatsapp', function(req, res) {
-	console.log(req.body, 'whatsapp response');
-
 	res.sendStatus(200);
+	console.log(req.body, 'whatsapp response');
 });
 app.post('/whatsapp/reply', function(req, res) {
-	console.log(req.body, 'whatsapp reply response');
-
 	res.sendStatus(200);
+	console.log(req.body, 'whatsapp reply response');
 });
 const port = process.env.PORT || 4000;
 

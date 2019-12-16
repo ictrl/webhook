@@ -12,10 +12,10 @@ export default function Abandan() {
 				const res = await axios.post('/api/abandanTemplate', tempObj);
 				console.log(res);
 			} catch (error) {
-				console.log('nahi hua post');
+				console.log('post huna sakena');
 			}
 		} else {
-			console.log(" couldn't know what happened");
+			console.log('k bho thaha chhaina');
 		}
 	};
 
@@ -324,7 +324,7 @@ export default function Abandan() {
 							value={template1}
 							onChange={handleTemplate1}
 							multiline
-							helpText='Available Variables:- customer_name store_name abandoned_checkout_url amount'
+							helpText='Available Variables:- customer_name , store_name , abandoned_checkout_url , amount'
 						/>
 						<br />
 
@@ -360,7 +360,7 @@ export default function Abandan() {
 							value={template2}
 							onChange={handleTemplate2}
 							multiline
-							helpText='Available Variables:- customer_name store_name abandoned_checkout_url amount'
+							helpText='Available Variables:- customer_name , store_name , abandoned_checkout_url , amount'
 						/>
 						<br />
 
@@ -395,7 +395,7 @@ export default function Abandan() {
 							value={template3}
 							onChange={handleTemplate3}
 							multiline
-							helpText='Available Variables:- customer_name store_name abandoned_checkout_url amount'
+							helpText='Available Variables:- customer_name , store_name , abandoned_checkout_url , amount'
 						/>
 						<br />
 
@@ -431,7 +431,7 @@ export default function Abandan() {
 							value={template4}
 							onChange={handleTemplate4}
 							multiline
-							helpText='Available Variables:- customer_name store_name abandoned_checkout_url amount'
+							helpText='Available Variables:- customer_name , store_name , abandoned_checkout_url , amount'
 						/>
 						<br />
 						<div className='mt-4 a-card-contents'>
