@@ -1492,6 +1492,7 @@ app.post('/api/recharge', function(req, res) {
 
 cron.schedule('*/2 * * * * ', () => {
 	//getting list of all store name
+	console.log('!production cron started');
 	var storeName = [];
 	Store.find({ uninstalled: false }, function(err, stores) {
 		stores.forEach((store) => {
@@ -1499,7 +1500,9 @@ cron.schedule('*/2 * * * * ', () => {
 		});
 		let interval = moment().subtract(2, 'minutes').format();
 		let current = moment().format();
+
 		console.log('current time-->', current);
+
 		console.log('interval time-->', interval);
 
 		storeName.forEach((store) => {
