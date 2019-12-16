@@ -22,23 +22,27 @@ export default function Template() {
 						res.data.forEach((element) => {
 							if (element.topic === 'orders/create') {
 								let inputData = element.customer;
+								let bigLength = 0;
+								inputData.length > inputAdmin.length ? (bigLength = inputData.length) : (bigLength = inputAdmin.length);
 
 								for (let i = 0; i < inputData.length; i++) {
-									inputData = inputData.replace('%20', ' ');
+									// inputData = inputData.replace('%20', ' ');
 									inputData = inputData.replace('${', '(');
 									inputData = inputData.replace('}', ')');
 									inputData = inputData.replace('`', '');
 								}
+
 								let inputAdmin = element.admin;
 								for (let i = 0; i < inputAdmin.length; i++) {
-									inputAdmin = inputAdmin.replace('%20', ' ');
+									// inputAdmin = inputAdmin.replace('%20', ' ');
+
 									inputAdmin = inputAdmin.replace('${', '(');
 									inputAdmin = inputAdmin.replace('}', ')');
 									inputAdmin = inputAdmin.replace('`', '');
 								}
 
-								setTemplate1(inputData);
-								setTemplate2(inputAdmin);
+								setTemplate1(decodeURIComponent(inputData));
+								setTemplate2(decodeURIComponent(inputAdmin));
 							}
 						});
 					} catch (error) {
@@ -58,16 +62,16 @@ export default function Template() {
 					try {
 						res.data.forEach((element) => {
 							if (element.topic === 'orders/cancelled') {
-								let inputData = element.customer;
+								let inputData = decodeURIComponent(element.customer);
 								for (let i = 0; i < inputData.length; i++) {
-									inputData = inputData.replace('%20', ' ');
+									// inputData = inputData.replace('%20', ' ');
 									inputData = inputData.replace('${', '(');
 									inputData = inputData.replace('}', ')');
 									inputData = inputData.replace('`', '');
 								}
-								let inputAdmin = element.admin;
+								let inputAdmin = decodeURIComponent(element.admin);
 								for (let i = 0; i < inputAdmin.length; i++) {
-									inputAdmin = inputAdmin.replace('%20', ' ');
+									// inputAdmin = inputAdmin.replace('%20', ' ');
 									inputAdmin = inputAdmin.replace('${', '(');
 									inputAdmin = inputAdmin.replace('}', ')');
 									inputAdmin = inputAdmin.replace('`', '');
@@ -94,17 +98,17 @@ export default function Template() {
 					try {
 						res.data.forEach((element) => {
 							if (element.topic === 'orders/fulfilled') {
-								let inputData = element.customer;
+								let inputData = decodeURIComponent(element.customer);
 
 								for (let i = 0; i < inputData.length; i++) {
-									inputData = inputData.replace('%20', ' ');
+									// inputData = inputData.replace('%20', ' ');
 									inputData = inputData.replace('${', '(');
 									inputData = inputData.replace('}', ')');
 									inputData = inputData.replace('`', '');
 								}
-								let inputAdmin = element.admin;
+								let inputAdmin = decodeURIComponent(element.admin);
 								for (let i = 0; i < inputAdmin.length; i++) {
-									inputAdmin = inputAdmin.replace('%20', ' ');
+									// inputAdmin = inputAdmin.replace('%20', ' ');
 									inputAdmin = inputAdmin.replace('${', '(');
 									inputAdmin = inputAdmin.replace('}', ')');
 									inputAdmin = inputAdmin.replace('`', '');
@@ -205,12 +209,13 @@ export default function Template() {
 			inputData = inputData.replace(/(^\s*)|(\s*$)/gi, '');
 			inputData = inputData.replace(/[ ]{2,}/gi, ' ');
 			inputData = inputData.replace(/\n /, '\n');
-
+			inputData = encodeURIComponent(inputData);
+			console.log('encoded');
 			for (let i = 0; i < inputData.length; i++) {
-				inputData = inputData.replace(' ', '%20');
+				// inputData = inputData.replace(' ', '%20');
 				inputData = inputData.replace('(', '${');
 				inputData = inputData.replace(')', '}');
-				inputData = inputData.replace('\n', '%0A');
+				// inputData = inputData.replace('\n', '%0A');
 			}
 		}
 		showOutput(inputData);
@@ -270,17 +275,17 @@ export default function Template() {
 			try {
 				res.data.forEach((element) => {
 					if (element.topic === 'orders/create') {
-						let inputData = element.customer;
+						let inputData = decodeURIComponent(element.customer);
 
 						for (let i = 0; i < inputData.length; i++) {
-							inputData = inputData.replace('%20', ' ');
+							// inputData = inputData.replace('%20', ' ');
 							inputData = inputData.replace('${', '(');
 							inputData = inputData.replace('}', ')');
 							inputData = inputData.replace('`', '');
 						}
-						let inputAdmin = element.admin;
+						let inputAdmin = decodeURIComponent(element.admin);
 						for (let i = 0; i < inputAdmin.length; i++) {
-							inputAdmin = inputAdmin.replace('%20', ' ');
+							// inputAdmin = inputAdmin.replace('%20', ' ');
 							inputAdmin = inputAdmin.replace('${', '(');
 							inputAdmin = inputAdmin.replace('}', ')');
 							inputAdmin = inputAdmin.replace('`', '');

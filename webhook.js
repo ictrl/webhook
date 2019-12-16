@@ -553,7 +553,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 															if (!err) {
 																console.log('data add to DB', topic, data);
 															} else {
-																console.log('374 err', err);
+																console.log('556 err', err);
 															}
 														}
 													);
@@ -1178,7 +1178,8 @@ app.get('/api/abandanTemplate', function(req, res) {
 });
 //template
 app.get('/api/template', function(req, res) {
-	// req.session.shop = "demo-mojito.myshopify.com";
+	req.session.shop = "uadaan.myshopify.com"; //delete this localTesting
+
 	console.log('API called');
 	if (req.session.shop) {
 		Store.findOne({ name: req.session.shop }, function(err, data) {
@@ -1193,7 +1194,9 @@ app.get('/api/template', function(req, res) {
 	}
 });
 
-app.get('/api/smsCount', function(req, res) {
+app.get('/api/smsCount', function (req, res) {
+	req.session.shop = "uadaan.myshopify.com"; //delete this localTesting
+	
 	if (req.session.shop) {
 		Store.findOne({ name: req.session.shop }, function(err, data) {
 			if (data) {
@@ -1208,7 +1211,9 @@ app.get('/api/smsCount', function(req, res) {
 	}
 });
 
-app.get('/api/history', function(req, res) {
+app.get('/api/history', function (req, res) {
+	req.session.shop = "uadaan.myshopify.com"; //delete this localTesting
+	
 	if (req.session.views[pathname]) {
 		Store.findOne({ name: req.session.shop }, function(err, data) {
 			if (data) {
@@ -1303,7 +1308,9 @@ app.get('/api/dashboard', function(req, res) {
 });
 // save template to db
 
-app.post('/api/template', function(req, res) {
+app.post('/api/template', function (req, res) {
+	req.session.shop = "uadaan.myshopify.com"; //delete this localTesting
+	
 	console.log('template change request-->', req.body);
 	console.log('template change request shop-->', req.session.shop);
 	res.sendStatus(200);
@@ -1419,7 +1426,7 @@ app.post('/api/template', function(req, res) {
 // save abandan template to db
 app.post('/api/abandanTemplate', function(req, res) {
 	console.log(req.body, 'AT body');
-	// req.session.shop = "mojitolabs.myshopify.com"; //delete this
+	req.session.shop = "uadaan.myshopify.com"; //delete this localTesting
 	res.sendStatus(200);
 	if (req.session.shop) {
 		Store.findOneAndUpdate(

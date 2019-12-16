@@ -37,7 +37,24 @@
 // 	.then((message) => console.log(message.sid))
 // 	.done();
 
-// let hola =
-// 	'Hey (customer_name)! We noticed you left some items in your cart. Get them before they’re gone! Visit this link to complete the order:(abandoned_checkout_url). – (store_name)';
-// console.log(hola);
-// console.log(encodeURIComponent(hola));
+let hola =
+	'Hey (customer_name)! We noticed you left some items in your cart. Get them before   they’re gone! Visit this link to complete the order:(abandoned_checkout_url). – (store_name)';
+let encodedHola =
+	'Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order%3A(abandoned_checkout_url).%20%E2%80%93%20(store_name)';
+let hardEncodedHola =
+	'Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:(abandoned_checkout_url).%20%E2%80%93%20(store_name)';
+console.log(hola);
+console.log(encodeURIComponent(hola));
+console.log(decodeURIComponent(hola));
+
+// console.log('hard encode', encodeURI(hola));
+
+// let inputData = hola;
+// inputData = inputData.replace(/(^\s*)|(\s*$)/gi, '');
+// inputData = inputData.replace(/[ ]{2,}/gi, ' ');
+// inputData = inputData.replace(/\n /, '\n');
+
+// console.log('inputdata::::::::::::::', inputData);
+// if (inputData == hola) {
+// 	console.log('boom');
+// }
