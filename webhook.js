@@ -1051,11 +1051,13 @@ const sndSms = (phone, message, senderID, shop) => {
 
 	//to ensure message does ont contains backticks
 	if (message.charAt(0) == '`') {
-		message.replace('`', '');
+		console.log('yes there is backtick at first ');
+		message = message.replace('`', '');
 	}
 
 	if (message.charAt(message.length - 1) == '`') {
-		message.replace('`', '');
+		console.log('yes there is backtick at last ');
+		message = message.replace('`', '');
 	}
 
 	// to ensure phone no. is of 10 digits remove first "0" of phone no
