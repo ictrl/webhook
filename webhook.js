@@ -582,7 +582,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						},
 						function(err, data) {
 							if (!err) {
-								console.log('395 data -->', data);
+								console.log('585 data -->', data);
 								Store.updateOne(
 									{
 										clicked: {
@@ -594,12 +594,12 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 									{ $set: { 'clicked.$.converted': true } },
 									(err, data) => {
 										if (err) {
-											console.log('err 407', err);
-										} else console.log('data 408 -->', data);
+											console.log('err 597', err);
+										} else console.log('data 598 -->', data);
 									}
 								);
 							} else {
-								console.log('412 err-->', err);
+								console.log('602 err-->', err);
 							}
 						}
 					);
@@ -630,11 +630,17 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						orderId = request.body.name;
 						orderId = orderId.slice(1);
 						price = request.body.total_price;
-						phone = request.body.shipping_address.phone;
-						phone1 = request.body.billing_address.phone;
-						phone2 = request.body.customer.phone;
-						address1 = request.body.shipping_address.address1;
-						address2 = request.body.shipping_address.address2;
+
+						if (request.body.customer.phone) {
+							phone = request.body.customer.phone;
+						} else if (request.body.billing_address.phone) {
+							phone = request.body.billing_address.phone;
+						} else {
+							phone = request.body.shipping_address.phone;
+						}
+
+						// address1 = request.body.shipping_address.address1;
+						// address2 = request.body.shipping_address.address2;
 						city = request.body.shipping_address.city;
 						country = request.body.shipping_address.country;
 						//check in data base if there is exist any template for  orders/create
@@ -644,6 +650,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								if (element.topic === topic) {
 									if (element.customer) {
 										message = element.customer;
+										console.log('messane before replace');
 										for (let i = 0; i < message.length; i++) {
 											message = message.replace('${name}', name);
 											message = message.replace('${vendor}', vendor);
@@ -651,6 +658,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											message = message.replace('${order_id}', orderId);
 											message = message.replace('${title}', title);
 										}
+
 									} else {
 										message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
 									}
@@ -660,13 +668,20 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							});
 						}
 						//end
-						let senderID = data.data['sender id'];
+
+						//check for senderId
+						let senderID;
+						if (data.data['sender id']) {
+							senderID = data.data['sender id'];
+						} else {
+							senderID = 'shopit';
+							console.log("This shop don't have senderId");
+						}
+
 						if (phone) {
 							sndSms(phone, message, senderID, shop);
-						} else if (phone1) {
-							sndSms(phone, message, senderID, shop);
-						} else if (phone2) {
-							sndSms(phone, message, senderID, shop);
+						} else {
+							console.log("create/order didn't come with phone no");
 						}
 					}
 					if (data.data['orders/create admin'] != undefined) {
@@ -1178,7 +1193,7 @@ app.get('/api/abandanTemplate', function(req, res) {
 });
 //template
 app.get('/api/template', function(req, res) {
-	req.session.shop = "uadaan.myshopify.com"; //delete this localTesting
+	req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
 
 	console.log('API called');
 	if (req.session.shop) {
@@ -1194,9 +1209,9 @@ app.get('/api/template', function(req, res) {
 	}
 });
 
-app.get('/api/smsCount', function (req, res) {
-	req.session.shop = "uadaan.myshopify.com"; //delete this localTesting
-	
+app.get('/api/smsCount', function(req, res) {
+	req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+
 	if (req.session.shop) {
 		Store.findOne({ name: req.session.shop }, function(err, data) {
 			if (data) {
@@ -1211,9 +1226,9 @@ app.get('/api/smsCount', function (req, res) {
 	}
 });
 
-app.get('/api/history', function (req, res) {
-	req.session.shop = "uadaan.myshopify.com"; //delete this localTesting
-	
+app.get('/api/history', function(req, res) {
+	req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+
 	if (req.session.views[pathname]) {
 		Store.findOne({ name: req.session.shop }, function(err, data) {
 			if (data) {
@@ -1308,9 +1323,9 @@ app.get('/api/dashboard', function(req, res) {
 });
 // save template to db
 
-app.post('/api/template', function (req, res) {
-	req.session.shop = "uadaan.myshopify.com"; //delete this localTesting
-	
+app.post('/api/template', function(req, res) {
+	req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+
 	console.log('template change request-->', req.body);
 	console.log('template change request shop-->', req.session.shop);
 	res.sendStatus(200);
@@ -1426,7 +1441,7 @@ app.post('/api/template', function (req, res) {
 // save abandan template to db
 app.post('/api/abandanTemplate', function(req, res) {
 	console.log(req.body, 'AT body');
-	req.session.shop = "uadaan.myshopify.com"; //delete this localTesting
+	req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
 	res.sendStatus(200);
 	if (req.session.shop) {
 		Store.findOneAndUpdate(

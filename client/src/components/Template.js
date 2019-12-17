@@ -22,6 +22,7 @@ export default function Template() {
 						res.data.forEach((element) => {
 							if (element.topic === 'orders/create') {
 								let inputData = element.customer;
+								let inputAdmin = element.admin;
 								let bigLength = 0;
 								inputData.length > inputAdmin.length ? (bigLength = inputData.length) : (bigLength = inputAdmin.length);
 
@@ -32,7 +33,6 @@ export default function Template() {
 									inputData = inputData.replace('`', '');
 								}
 
-								let inputAdmin = element.admin;
 								for (let i = 0; i < inputAdmin.length; i++) {
 									// inputAdmin = inputAdmin.replace('%20', ' ');
 
