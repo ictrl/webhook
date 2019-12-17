@@ -374,28 +374,28 @@ app.post('/api/myaction', function(req, res) {
 						{
 							topic: '1',
 							template:
-								"Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they're%20gone!%20Visit%20this%20link%20to%20complete%20the%20order%3A(abandoned_checkout_url).%20-(store_name)",
+								"`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they're%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:%20${abandoned_checkout_url}.%20-${store_name}`",
 							time: '30',
 							status: false
 						},
 						{
 							topic: '2',
 							template:
-								'Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order%3A(abandoned_checkout_url).%20%E2%80%93%20(store_name)',
+								"`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they're%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:%20${abandoned_checkout_url}.%20-${store_name}`",
 							time: '60',
 							status: false
 						},
 						{
 							topic: '3',
 							template:
-								'Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order%3A(abandoned_checkout_url).%20%E2%80%93%20(store_name)',
+								"`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they're%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:%20${abandoned_checkout_url}.%20-${store_name}`",
 							time: '60',
 							status: false
 						},
 						{
 							topic: '4',
 							template:
-								'Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order%3A(abandoned_checkout_url).%20%E2%80%93%20(store_name)',
+								"`Hey%20${customer_name}!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they're%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:%20${abandoned_checkout_url}.%20-${store_name}`",
 							time: '60',
 							status: false
 						}
@@ -1049,16 +1049,28 @@ const sndSms = (phone, message, senderID, shop) => {
 	console.log(senderID, '<-- senderID sndSmS');
 	console.log(shop, '<-- shop sndSmS');
 
-	//to ensure message does ont contains backticks
-	if (message.charAt(0) == '`') {
-		console.log('yes there is backtick at first ');
+	//to ensure message does not contains backticks
+	if (message.includes('`')) {
+		message = message.replace('`', '');
+	}
+	if (message.includes('`')) {
+		message = message.replace('`', '');
+	}
+	if (message.includes('`')) {
+		message = message.replace('`', '');
+	}
+	if (message.includes('`')) {
 		message = message.replace('`', '');
 	}
 
-	if (message.charAt(message.length - 1) == '`') {
-		console.log('yes there is backtick at last ');
-		message = message.replace('`', '');
-	}
+	// if (message.charAt(0) == '`') {
+	// 	console.log('yes there is backtick at first ');
+	// }
+
+	// if (message.charAt(message.length - 1) == '`') {
+	// 	console.log('yes there is backtick at last ')
+	// 	message = message.replace('`', '');
+	// }
 
 	// to ensure phone no. is of 10 digits remove first "0" of phone no
 	phone = phone.toString();

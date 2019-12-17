@@ -36,7 +36,6 @@ export default function Settings() {
 
 	const getOption = () => {
 		axios.get('/api/option/').then((res) => {
-		
 			setAdminPhone(res.data['admin no']);
 			setSenderID(res.data['sender id']);
 			setOrderCreateCustomer(res.data['orders/create customer']);
@@ -60,7 +59,7 @@ export default function Settings() {
 	};
 
 	const handleSubmit = async () => {
-		console.log('preference',preference);
+		console.log('preference', preference);
 
 		try {
 			const res = await axios.post('/api/myaction/', preference);
@@ -79,15 +78,15 @@ export default function Settings() {
 			<Form onSubmit={handleSubmit}>
 				<Layout>
 					<Layout.AnnotatedSection
-						title="Admin Phone No."
-						description="Admin will be notify on this no. by selecting Notify Admin."
+						title='Admin Phone No.'
+						description='Admin will be notify on this no. by selecting Notify Admin. You can add number only of 10 digits. Please don&#39;t add &#39; 0 &#39; before your phone number. '
 					>
 						<Card sectioned>
 							<div style={{ padding: '3rem' }}>
 								<TextField
-									label="Admin Phone No."
-									type="text"
-									maxLength="10"
+									label='Admin Phone No.'
+									type='text'
+									maxLength='10'
 									onChange={handleChangePhone}
 									value={adminPhone}
 									showCharacterCount
@@ -96,26 +95,25 @@ export default function Settings() {
 						</Card>
 					</Layout.AnnotatedSection>
 					<Layout.AnnotatedSection
-						title="Sender ID"
-						description="Sender ID is the name or number which appears on the mobile phone as the sender of a SMS. Sender ID will be maximum of 6 Characters."
+						title='Sender ID'
+						description='Sender ID is the name or number which appears on the mobile phone as the sender of a SMS. Sender ID will be maximum of 6 Characters. Please avoid using special characters like &#39; @ , # , $ , % , ^ , & , * , _ &#39; '
 					>
 						<Card sectioned>
 							<div style={{ padding: '3rem' }}>
 								<TextField
-									label="Sender ID"
-									type="text"
+									label='Sender ID'
+									type='text'
 									onChange={handleChangeSenderID}
-									maxLength="6"
+									maxLength='6'
 									value={senderID}
 									showCharacterCount
-									
 								/>
 							</div>
 						</Card>
 					</Layout.AnnotatedSection>
 					<Layout.AnnotatedSection
-						title="Notification Prefrence"
-						description="Admin and Customer will be notified according to by selecting Notify Admin."
+						title='Notification Prefrence'
+						description='Admin and Customer will be notified according to by selecting Notify Admin.'
 					>
 						<Card sectioned>
 							<div style={{ padding: '2rem' }}>
@@ -127,12 +125,12 @@ export default function Settings() {
 										<Heading>Create </Heading>
 									</div>
 									<Checkbox
-										label="Notify Customer"
+										label='Notify Customer'
 										checked={orderCreateCustomer}
 										onChange={handleOrderCreateCustomer}
 									/>
 
-									<Checkbox label="Notify Admin" checked={orderCreateAdmin} onChange={handleOrderCreateAdmin} />
+									<Checkbox label='Notify Admin' checked={orderCreateAdmin} onChange={handleOrderCreateAdmin} />
 								</div>
 								<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 									<div style={{ width: '10rem' }}>
@@ -140,12 +138,12 @@ export default function Settings() {
 									</div>
 
 									<Checkbox
-										label="Notify Customer"
+										label='Notify Customer'
 										checked={orderCancelledCustomer}
 										onChange={handleOrderCancelledCustomer}
 									/>
 
-									<Checkbox label="Notify Admin" checked={orderCancelledAdmin} onChange={handleOrderCancelledAdmin} />
+									<Checkbox label='Notify Admin' checked={orderCancelledAdmin} onChange={handleOrderCancelledAdmin} />
 								</div>
 
 								<div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -154,12 +152,12 @@ export default function Settings() {
 									</div>
 
 									<Checkbox
-										label="Notify Customer"
+										label='Notify Customer'
 										checked={orderFulfilledCustomer}
 										onChange={handleOrderFulfilledCustomer}
 									/>
 
-									<Checkbox label="Notify Admin" checked={orderFulfilledAdmin} onChange={handleOrderFulfilledAdmin} />
+									<Checkbox label='Notify Admin' checked={orderFulfilledAdmin} onChange={handleOrderFulfilledAdmin} />
 								</div>
 							</div>
 						</Card>
@@ -172,7 +170,7 @@ export default function Settings() {
 						Save
 					</Button>
 				</div>
-				<div id="snackbar">Settings Updated </div>
+				<div id='snackbar'>Settings Updated </div>
 			</Form>
 		</Fragment>
 	);

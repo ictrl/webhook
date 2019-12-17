@@ -315,7 +315,7 @@ export default function Abandan() {
 		<Layout>
 			<Layout.AnnotatedSection
 				title='First Follow Up'
-				description='Customer will be notified through sms by sending this template'
+				description='Customer will be notified through sms by sending this template. Enclose every variable with &#39; (&nbsp; ) &#39;.'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>
@@ -351,7 +351,7 @@ export default function Abandan() {
 
 			<Layout.AnnotatedSection
 				title='Second Follow Up'
-				description='Customer will be notified through sms by sending this template'
+				description='Customer will be notified through sms by sending this template. Enclose every variable with &#39; (&nbsp; ) &#39;.'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>
@@ -386,7 +386,7 @@ export default function Abandan() {
 			</Layout.AnnotatedSection>
 			<Layout.AnnotatedSection
 				title='Third Follow Up'
-				description='Customer will be notified through sms by sending this template'
+				description='Customer will be notified through sms by sending this template. Enclose every variable with &#39; (&nbsp; ) &#39;.'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>
@@ -421,7 +421,7 @@ export default function Abandan() {
 			</Layout.AnnotatedSection>
 			<Layout.AnnotatedSection
 				title='Fourth Follow Up'
-				description='Customer will be notified through sms by sending this template'
+				description='Customer will be notified through sms by sending this template. Enclose every variable with &#39; (&nbsp; ) &#39;.'
 			>
 				<Card>
 					<div style={{ padding: '1.311rem' }}>

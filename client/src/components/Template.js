@@ -320,7 +320,7 @@ export default function Template() {
 			<Layout>
 				<Layout.AnnotatedSection
 					title='Customer Template'
-					description='Customer will be notified through sms by selecting Notify Admin.'
+					description='Customer will be notified through sms by selecting Notify Admin. Enclose every variable with &#39; (&nbsp; ) &#39;.'
 				>
 					<Card>
 						<div style={{ padding: '1.311rem' }}>
@@ -348,7 +348,7 @@ export default function Template() {
 
 				<Layout.AnnotatedSection
 					title='Admin Template'
-					description='Admin will be notified through sms by selecting Notify Admin.'
+					description='Admin will be notified through sms by selecting Notify Admin. Enclose every variable with &#39; (&nbsp; ) &#39;.'
 				>
 					<Card>
 						<div style={{ padding: '1.311rem' }}>

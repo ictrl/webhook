@@ -17,15 +17,15 @@ export default function TabsExample() {
 
 	const tabs = [
 		{
+			id: 'accepts-marketing',
+			content: 'Edit Template',
+			panelID: 'accepts-marketing-content'
+		},
+		{
 			id: 'all-customers',
 			content: 'Settings',
 			accessibilityLabel: 'All customers',
 			panelID: 'all-customers-content'
-		},
-		{
-			id: 'accepts-marketing',
-			content: 'Edit Template',
-			panelID: 'accepts-marketing-content'
 		},
 		{
 			id: 'abandon-checkout',
