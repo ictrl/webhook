@@ -1049,6 +1049,15 @@ const sndSms = (phone, message, senderID, shop) => {
 	console.log(senderID, '<-- senderID sndSmS');
 	console.log(shop, '<-- shop sndSmS');
 
+	//to ensure message does ont contains backticks
+	if (message.charAt(0) == '`') {
+		message.replace('`', '');
+	}
+
+	if (message.charAt(message.length - 1) == '`') {
+		message.replace('`', '');
+	}
+
 	// to ensure phone no. is of 10 digits remove first "0" of phone no
 	phone = phone.toString();
 
