@@ -658,7 +658,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											message = message.replace('${order_id}', orderId);
 											message = message.replace('${title}', title);
 										}
-
 									} else {
 										message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
 									}
@@ -1050,6 +1049,28 @@ const sndSms = (phone, message, senderID, shop) => {
 	console.log(senderID, '<-- senderID sndSmS');
 	console.log(shop, '<-- shop sndSmS');
 
+	// to ensure phone no. is of 10 digits remove first "0" of phone no
+	phone = phone.toString();
+
+	let fn = phone[0];
+	console.log(fn), 'fn';
+
+	if (fn === '0') {
+		phone = phone.replace('0', '');
+	}
+
+	console.log(typeof phone, phone, 'after removing');
+
+	console.log(phone.length);
+
+	if (phone.length >= 10) {
+		phone = parseInt(phone);
+
+		console.log(typeof phone, phone, 'after converting');
+	} else {
+		console.log(" can't send sms because, phone number is < 10 digits i.e : ", phone);
+	}
+
 	Store.findOne({ name: shop }, function(err, data) {
 		if (!err) {
 			let smsapi = process.env.SMS_API;
@@ -1193,7 +1214,7 @@ app.get('/api/abandanTemplate', function(req, res) {
 });
 //template
 app.get('/api/template', function(req, res) {
-	req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
 
 	console.log('API called');
 	if (req.session.shop) {
@@ -1210,7 +1231,7 @@ app.get('/api/template', function(req, res) {
 });
 
 app.get('/api/smsCount', function(req, res) {
-	req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
 
 	if (req.session.shop) {
 		Store.findOne({ name: req.session.shop }, function(err, data) {
@@ -1227,7 +1248,7 @@ app.get('/api/smsCount', function(req, res) {
 });
 
 app.get('/api/history', function(req, res) {
-	req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
 
 	if (req.session.views[pathname]) {
 		Store.findOne({ name: req.session.shop }, function(err, data) {
@@ -1324,7 +1345,7 @@ app.get('/api/dashboard', function(req, res) {
 // save template to db
 
 app.post('/api/template', function(req, res) {
-	req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
 
 	console.log('template change request-->', req.body);
 	console.log('template change request shop-->', req.session.shop);
@@ -1441,7 +1462,7 @@ app.post('/api/template', function(req, res) {
 // save abandan template to db
 app.post('/api/abandanTemplate', function(req, res) {
 	console.log(req.body, 'AT body');
-	req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
 	res.sendStatus(200);
 	if (req.session.shop) {
 		Store.findOneAndUpdate(
@@ -1522,7 +1543,10 @@ cron.schedule('*/2 * * * * ', () => {
 	//getting list of all store name
 	console.log('!production cron started');
 	var storeName = [];
-	Store.find({ uninstalled: false }, function(err, stores) {
+	Store.find({ uninstalled: false, smsCount: { $gt: 0 } }, (err, stores) => {
+		if (err) {
+			console.log(err);
+		}
 		stores.forEach((store) => {
 			storeName.push(store.name);
 		});
@@ -1613,7 +1637,6 @@ cron.schedule('*/2 * * * * ', () => {
 							const short = async () => {
 								let res = '';
 								res = await shorten(obj);
-
 								console.log('for followUP 4', res);
 							};
 							short();

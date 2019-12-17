@@ -37,15 +37,15 @@
 // 	.then((message) => console.log(message.sid))
 // 	.done();
 
-let hola =
-	'Hey (customer_name)! We noticed you left some items in your cart. Get them before   they’re gone! Visit this link to complete the order:(abandoned_checkout_url). – (store_name)';
-let encodedHola ="hola"
-let hardEncodedHola =
-	'Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:(abandoned_checkout_url).%20%E2%80%93%20(store_name)';
-console.log(hola);
-console.log(encodeURIComponent(hola));
-console.log(decodeURIComponent(hola));
-console.log(encodedHola);
+// let hola =
+// 	'Hey (customer_name)! We noticed you left some items in your cart. Get them before   they’re gone! Visit this link to complete the order:(abandoned_checkout_url). – (store_name)';
+// let encodedHola ="hola"
+// let hardEncodedHola =
+// 	'Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:(abandoned_checkout_url).%20%E2%80%93%20(store_name)';
+// console.log(hola);
+// console.log(encodeURIComponent(hola));
+// console.log(decodeURIComponent(hola));
+// console.log(encodedHola);
 // console.log('hard encode', encodeURI(hola));
 
 // let inputData = hola;
@@ -57,3 +57,37 @@ console.log(encodedHola);
 // if (inputData == hola) {
 // 	console.log('boom');
 // }
+
+// let first = '07821915962';
+// console.log('first', first);
+// let fn = first[0];
+// console.log(fn), 'fn';
+
+// if (fn === '0') {
+// 	first = first.replace('0', '');
+// }
+
+// console.log(typeof first, first, 'after removing');
+
+// console.log(first.length);
+
+// if (first.length >= 10) {
+// 	first = parseInt(first);
+
+// 	console.log(typeof first, first, 'after converting');
+// 	first = first.toString();
+
+// 	console.log(typeof first, first, 'after converting');
+// } else {
+// 	console.log(" can't send sms because, phone number is < 10 digits i.e : ", first);
+// }
+
+// function getDigitCount(number) {
+// 	return Math.max(Math.floor(Math.log10(Math.abs(number))), 0) + 1;
+// }
+
+// function getDigit(number, n, fromLeft) {
+// 	const location = fromLeft ? getDigitCount(number) + 1 - n : n;
+// 	return Math.floor((number / Math.pow(10, location - 1)) % 10);
+// }
+// let fn = getDigit(7821915962, 1, 'fromLeft');
