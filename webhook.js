@@ -573,6 +573,22 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					break;
 
 				case 'orders/create':
+					name = request.body.shipping_address.first_name;
+					email = request.body.email;
+					order_status_url = request.body.order_status_url;
+					vendor = request.body.line_items[0].vendor;
+					title = request.body.line_items[0].title;
+					orderId = request.body.name;
+					orderId = orderId.slice(1);
+					price = request.body.total_price;
+
+					if (request.body.customer.phone) {
+						phone = request.body.customer.phone;
+					} else if (request.body.billing_address.phone) {
+						phone = request.body.billing_address.phone;
+					} else {
+						phone = request.body.shipping_address.phone;
+					}
 					Store.updateOne(
 						{ 'orders.id': request.body.checkout_id },
 						{
@@ -603,7 +619,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							}
 						}
 					);
-					if (data.data['orders/create customer'] != false && data.data['orders/create admin'] != false) {
+					if (data.data['orders/create customer'] != undefined && data.data['orders/create admin'] != undefined) {
 						// data.smsCount + 2
 						Store.findOneAndUpdate(
 							{ name: shop },
@@ -622,29 +638,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							}
 						);
 					}
-					if (data.data['orders/create customer'] != false) {
-						name = request.body.shipping_address.first_name;
-						email = request.body.email;
-						order_status_url = request.body.order_status_url;
-						vendor = request.body.line_items[0].vendor;
-						title = request.body.line_items[0].title;
-						orderId = request.body.name;
-						orderId = orderId.slice(1);
-						price = request.body.total_price;
-
-						if (request.body.customer.phone) {
-							phone = request.body.customer.phone;
-						} else if (request.body.billing_address.phone) {
-							phone = request.body.billing_address.phone;
-						} else {
-							phone = request.body.shipping_address.phone;
-						}
-
-						// address1 = request.body.shipping_address.address1;
-						// address2 = request.body.shipping_address.address2;
-						city = request.body.shipping_address.city;
-						country = request.body.shipping_address.country;
-						//check in data base if there is exist any template for  orders/create
+					if (data.data['orders/create customer'] != undefined) {
 						message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
 						if (data.template !== undefined) {
 							data.template.forEach((element) => {
@@ -701,7 +695,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							console.log("create/order didn't come with phone no");
 						}
 					}
-					if (data.data['orders/create admin'] != false) {
+					if (data.data['orders/create admin'] != undefined) {
 						let admin = data.data['admin no'];
 						adminNumber = admin;
 						let senderID = data.data['sender id'];
@@ -749,6 +743,23 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 
 					break;
 				case 'orders/fulfilled':
+					name = request.body.shipping_address.first_name;
+					email = request.body.email;
+					vendor = request.body.line_items[0].vendor;
+					title = request.body.line_items[0].title;
+					orderId = request.body.name;
+					orderId = orderId.slice(1);
+					price = request.body.total_price;
+					phone = request.body.shipping_address.phone;
+					phone1 = request.body.billing_address.phone;
+					phone2 = request.body.customer.phone;
+					address1 = request.body.shipping_address.address1;
+					address2 = request.body.shipping_address.address2;
+					city = request.body.shipping_address.city;
+					country = request.body.shipping_address.country;
+					fulfillment_status = request.body.fulfillment_status;
+					updated_at = request.body.updated_at;
+					order_status_url = request.body.order_status_url;
 					if (data.data['orders/fulfilled customer'] != undefined && data.data['orders/fulfilled admin'] != undefined) {
 						// data.smsCount + 2
 						Store.findOneAndUpdate(
@@ -769,23 +780,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						);
 					}
 					if (data.data['orders/fulfilled customer'] != undefined) {
-						name = request.body.shipping_address.first_name;
-						email = request.body.email;
-						vendor = request.body.line_items[0].vendor;
-						title = request.body.line_items[0].title;
-						orderId = request.body.name;
-						orderId = orderId.slice(1);
-						price = request.body.total_price;
-						phone = request.body.shipping_address.phone;
-						phone1 = request.body.billing_address.phone;
-						phone2 = request.body.customer.phone;
-						address1 = request.body.shipping_address.address1;
-						address2 = request.body.shipping_address.address2;
-						city = request.body.shipping_address.city;
-						country = request.body.shipping_address.country;
-						fulfillment_status = request.body.fulfillment_status;
-						updated_at = request.body.updated_at;
-						order_status_url = request.body.order_status_url;
 						message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
 						//end
 
@@ -898,6 +892,27 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					break;
 
 				case 'orders/cancelled':
+					name = request.body.shipping_address.first_name;
+					if (name == undefined || name == null) {
+						name = request.body.billing_address.first_name;
+						name = request.body.customer.first_name;
+					}
+
+					email = request.body.email;
+					vendor = request.body.line_items[0].vendor;
+					title = request.body.line_items[0].title;
+					orderId = request.body.name;
+					orderId = orderId.slice(1);
+					price = request.body.total_price;
+					phone = request.body.shipping_address.phone;
+					phone1 = request.body.billing_address.phone;
+					phone2 = request.body.customer.phone;
+					address1 = request.body.shipping_address.address1;
+					address2 = request.body.shipping_address.address2;
+					city = request.body.shipping_address.city;
+					country = request.body.shipping_address.country;
+					cancelled_at = request.body.cancelled_at;
+					cancel_reason = request.body.cancel_reason;
 					if (data.data['orders/cancelled customer'] != undefined && data.data['orders/cancelled admin'] != undefined) {
 						Store.findOneAndUpdate(
 							{ name: shop },
@@ -917,28 +932,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						);
 					}
 					if (data.data['orders/cancelled customer'] != undefined) {
-						name = request.body.shipping_address.first_name;
-						if (name == undefined || name == null) {
-							name = request.body.billing_address.first_name;
-							name = request.body.customer.first_name;
-						}
-
-						email = request.body.email;
-						vendor = request.body.line_items[0].vendor;
-						title = request.body.line_items[0].title;
-						orderId = request.body.name;
-						orderId = orderId.slice(1);
-						price = request.body.total_price;
-						phone = request.body.shipping_address.phone;
-						phone1 = request.body.billing_address.phone;
-						phone2 = request.body.customer.phone;
-						address1 = request.body.shipping_address.address1;
-						address2 = request.body.shipping_address.address2;
-						city = request.body.shipping_address.city;
-						country = request.body.shipping_address.country;
-						cancelled_at = request.body.cancelled_at;
-						cancel_reason = request.body.cancel_reason;
-
 						message = `Hi%20${name}%20your%20order%20ID:%20${orderId}%20is%20cancelled.%20We%20will%20process%20refund%20soon.`;
 
 						if (data.template !== undefined) {
@@ -947,11 +940,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 									if (element.customer) {
 										message = element.customer;
 										for (let i = 0; i < message.length; i++) {
-											// message = message.replace('${name}', name);
-											// message = message.replace('${vendor}', vendor);
-											// message = message.replace('${price}', price);
-											// message = message.replace('${order_id}', orderId);
-											// message = message.replace('${title}', title);
 											if (message.includes('${name}')) {
 												message = message.replace('${name}', name);
 											}
