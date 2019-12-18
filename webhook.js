@@ -673,10 +673,10 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											}
 										}
 									} else {
-										console.log('orders/create message template not found');
+										console.log('orders/create customer message template not found');
 									}
 								} else {
-									console.log('orders/create message template not found');
+									console.log('orders/create customer message template not found');
 								}
 							});
 						}
@@ -732,10 +732,10 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											}
 										}
 									} else {
-										message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+										console.log('orders/create admin message template not found');
 									}
 								} else {
-									message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+									console.log('orders/create admin message template not found');
 								}
 							});
 						}
@@ -827,10 +827,10 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											// message = message.replace('${order_status_url}', order_status_url);
 										}
 									} else {
-										message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
+										console.log('orders/fulfille customer message template not found');
 									}
 								} else {
-									message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
+									console.log('orders/fulfille customer message template not found');
 								}
 							});
 						}
@@ -889,10 +889,10 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											}
 										}
 									} else {
-										message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
+										console.log('orders/fulfillment admin message template not found');
 									}
 								} else {
-									message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
+									console.log('orders/fulfilled admin message template not found');
 								}
 							});
 						}
@@ -980,10 +980,10 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											}
 										}
 									} else {
-										message = `Hi%20${name}%20your%20order%20ID:%20${order_id}%20is%20cancelled.%20We%20started%20your%20refund%20process.`;
+										console.log('orders/cancelled customer message template not found');
 									}
 								} else {
-									message = `Hi%20${name}%20your%20order%20ID:%20${order_id}%20is%20cancelled.%20We%20started%20your%20refund%20process.`;
+									console.log('orders/cancelled customer message template not found');
 								}
 							});
 						}
@@ -1030,10 +1030,10 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											}
 										}
 									} else {
-										message = `Customer%20name:%20${name},cancelled%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
+										console.log('orders/cancelled admin message template not found');
 									}
 								} else {
-									message = `Customer%20name:%20${name},cancelled%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
+									console.log('orders/cancelled admin message template not found');
 								}
 							});
 						}
