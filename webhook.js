@@ -673,10 +673,10 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											}
 										}
 									} else {
-										message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+										console.log('orders/create message template not found');
 									}
 								} else {
-									message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
+									console.log('orders/create message template not found');
 								}
 							});
 						}
