@@ -625,6 +625,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					if (data.data['orders/create customer'] != undefined) {
 						name = request.body.shipping_address.first_name;
 						email = request.body.email;
+						order_status_url = request.body.order_status_url;
 						vendor = request.body.line_items[0].vendor;
 						title = request.body.line_items[0].title;
 						orderId = request.body.name;
@@ -654,6 +655,9 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 										for (let i = 0; i < message.length; i++) {
 											if (message.includes('${name}')) {
 												message = message.replace('${name}', name);
+											}
+											if (message.includes('${order_status_url}')) {
+												message = message.replace('${order_status_url}', order_status_url);
 											}
 
 											if (message.includes('${vendor}')) {
@@ -817,14 +821,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											if (message.includes('${order_status_url}')) {
 												message = message.replace('${order_status_url}', order_status_url);
 											}
-
-											// message = message.replace('${name}', name);
-											// message = message.replace('${vendor}', vendor);
-											// message = message.replace('${price}', price);
-											// message = message.replace('${order_id}', orderId);
-											// message = message.replace('${title}', title);
-											// message = message.replace('${fulfillment_status}', fulfillment_status);
-											// message = message.replace('${order_status_url}', order_status_url);
 										}
 									} else {
 										console.log('orders/fulfille customer message template not found');

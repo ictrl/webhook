@@ -50,7 +50,7 @@ export default function Template() {
 				setTopics({
 					...topics,
 					topic: selectedValue,
-					topicVariables: 'name , price , order_id , title '
+					topicVariables: 'name , price , order_id , title , order_status_url'
 				});
 				break;
 			case 'orders/cancelled':
