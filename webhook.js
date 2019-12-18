@@ -901,110 +901,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					}
 					break;
 
-				// case 'refunds/create':
-				// 	if (data.data['refunds/create customer'] != undefined && data.data['refunds/create admin'] != undefined) {
-				// 		// data.smsCount + 2
-				// 		Store.findOneAndUpdate(
-				// 			{ name: shop },
-				// 			{
-				// 				$set: {
-				// 					smsCount: data.smsCount - 1
-				// 				}
-				// 			},
-				// 			{ new: true, useFindAndModify: false },
-				// 			(err, data) => {
-				// 				if (!err) {
-				// 					console.log('datacount + 1');
-				// 				} else {
-				// 					console.log('err', err);
-				// 				}
-				// 			}
-				// 		);
-				// 	}
-				// 	if (data.data['refunds/create customer'] != undefined) {
-				// 		title = request.body.refund_line_items[0].line_item.title;
-				// 		orderId = request.body.order_id;
-				// 		price = request.body.refund_line_items[0].subtotal;
-
-				// 		message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
-				// 		//end
-
-				// 		if (data.template !== undefined) {
-				// 			data.template.forEach((element) => {
-				// 				if (element.topic === topic) {
-				// 					if (element.customer) {
-				// 						message = element.customer;
-				// 						for (let i = 0; i < message.length; i++) {
-				// 							message = message.replace('${price}', price);
-				// 							message = message.replace('${order_id}', orderId);
-				// 							message = message.replace('${title}', title);
-				// 						}
-				// 					} else {
-				// 						message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
-				// 					}
-				// 				} else {
-				// 					message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
-				// 				}
-				// 			});
-				// 		}
-
-				// 		let senderID = data.data['sender id'];
-
-				// 		if (phone) {
-				// 			sndSms(phone, message, senderID, shop);
-				// 		} else if (phone1) {
-				// 			sndSms(phone, message, senderID, shop);
-				// 		} else if (phone2) {
-				// 			sndSms(phone, message, senderID, shop);
-				// 		}
-				// 	}
-				// 	if (data.data['refunds/create admin'] != undefined) {
-				// 		let admin = data.data['admin no'];
-				// 		adminNumber = admin;
-				// 		let senderID = data.data['sender id'];
-				// 		message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
-
-				// 		if (data.template !== undefined) {
-				// 			data.template.forEach((element) => {
-				// 				if (element.topic === topic) {
-				// 					if (element.admin) {
-				// 						message = element.admin;
-				// 						for (let i = 0; i < message.length; i++) {
-				// 							if (message.includes('${processed_at}')) {
-				// 								message = message.replace('${processed_at}', processed_at);
-				// 							}
-				// 							if (message.includes('${vendor}')) {
-				// 								message = message.replace('${vendor}', vendor);
-				// 							}
-
-				// 							if (message.includes('${price}')) {
-				// 								message = message.replace('${price}', price);
-				// 							}
-
-				// 							if (message.includes('${order_id}')) {
-				// 								message = message.replace('${order_id}', orderId);
-				// 							}
-
-				// 							if (message.includes('${title}')) {
-				// 								message = message.replace('${title}', title);
-				// 							}
-
-				// 							// message = message.replace('${vendor}', vendor);
-				// 							// message = message.replace('${price}', price);
-				// 							// message = message.replace('${order_id}', orderId);
-				// 							// message = message.replace('${title}', title);
-				// 						}
-				// 					} else {
-				// 						message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
-				// 					}
-				// 				} else {
-				// 					message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
-				// 				}
-				// 			});
-				// 		}
-				// 		sndSms(admin, message, senderID, shop);
-				// 	}
-				// 	break;
 				case 'orders/cancelled':
 					if (data.data['orders/cancelled customer'] != undefined && data.data['orders/cancelled admin'] != undefined) {
 						Store.findOneAndUpdate(
@@ -1194,7 +1090,7 @@ const sndSms = (phone, message, senderID, shop) => {
 
 		message = message.replace('$', '');
 
-		message = message.replace('%', '');
+		// message = message.replace('%', '');
 		message = message.replace('@', '');
 		message = message.replace('^', '');
 		message = message.replace('&', '');
