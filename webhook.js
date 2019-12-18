@@ -622,7 +622,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							}
 						);
 					}
-					if (data.data['orders/create customer'] != undefined) {
+					if (data.data['orders/create customer'] != false) {
 						name = request.body.shipping_address.first_name;
 						email = request.body.email;
 						order_status_url = request.body.order_status_url;
@@ -1177,8 +1177,25 @@ const sndSms = (phone, message, senderID, shop) => {
 					}
 				);
 				req.end();
-			} else if (data.smsCount == 0 || data.smsCount == -1) {
+			} else if (data.smsCount < 1) {
 				console.log('SMS Quota Exhausted');
+				Store.findOneAndUpdate(
+					{ name: shop },
+					{
+						$push: { sms: obj },
+						$set: {
+							smsCount: 0
+						}
+					},
+					{ new: true, useFindAndModify: false },
+					(err, data) => {
+						if (!err) {
+							console.log('data');
+						} else {
+							console.log('err', err);
+						}
+					}
+				);
 
 				// notify admin to recharge
 				//send SMS mgs91ed
