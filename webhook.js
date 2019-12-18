@@ -1105,6 +1105,7 @@ const sndSms = (phone, message, senderID, shop) => {
 	if (phone.includes('e') || phone.includes('-')) {
 		console.log("phone no. includes '-' or 'e', that's why we can't send message");
 	}
+	phone.replace(/ /g, '');
 
 	let fn = phone[0];
 	console.log(fn), 'fn';
