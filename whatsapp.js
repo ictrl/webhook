@@ -43,10 +43,14 @@
 // let hardEncodedHola =
 // 	'Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:(abandoned_checkout_url).%20%E2%80%93%20(store_name)';
 let hola = '`hello$';
-console.log('lst', hola.charAt(hola.length - 1));
-console.log('frt', hola.charAt(0));
-console.log(hola);
-console.log(encodeURIComponent(hola));
+// console.log('lst', hola.charAt(hola.length - 1));
+// console.log('frt', hola.charAt(0));
+// console.log(hola);
+// console.log(encodeURIComponent(hola));
+
+// hola = hola.replace('-------------------', 'o');
+// console.log(hola);
+
 // console.log(decodeURIComponent(hola));
 // console.log(encodedHola);
 // console.log('hard encode', encodeURI(hola));

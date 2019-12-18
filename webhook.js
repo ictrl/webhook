@@ -468,7 +468,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 	const subtopic = request.params.subtopic;
 	topic = topic + '/' + subtopic;
 	console.log('topic -->', topic);
-	Store.findOne({ name: shop }, function(err, data) {
+	Store.findOne({ name: shop }, async (err, data) => {
 		if (!err) {
 			let name;
 			let email;
@@ -617,7 +617,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								if (!err) {
 									console.log('data remove', topic, data);
 								} else {
-									console.log('err 438', err);
+									console.log('err 620', err);
 								}
 							}
 						);
@@ -652,11 +652,25 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 										message = element.customer;
 										console.log('messane before replace');
 										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
+											if (message.includes('${name}')) {
+												message = message.replace('${name}', name);
+											}
+
+											if (message.includes('${vendor}')) {
+												message = message.replace('${vendor}', vendor);
+											}
+
+											if (message.includes('${price}')) {
+												message = message.replace('${price}', price);
+											}
+
+											if (message.includes('${order_id}')) {
+												message = message.replace('${order_id}', orderId);
+											}
+
+											if (message.includes('${title}')) {
+												message = message.replace('${title}', title);
+											}
 										}
 									} else {
 										message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
@@ -697,11 +711,25 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 									if (element.admin) {
 										message = element.admin;
 										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
+											if (message.includes('${name}')) {
+												message = message.replace('${name}', name);
+											}
+
+											if (message.includes('${vendor}')) {
+												message = message.replace('${vendor}', vendor);
+											}
+
+											if (message.includes('${price}')) {
+												message = message.replace('${price}', price);
+											}
+
+											if (message.includes('${order_id}')) {
+												message = message.replace('${order_id}', orderId);
+											}
+
+											if (message.includes('${title}')) {
+												message = message.replace('${title}', title);
+											}
 										}
 									} else {
 										message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
@@ -763,13 +791,40 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 									if (element.customer) {
 										message = element.customer;
 										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-											message = message.replace('${fulfillment_status}', fulfillment_status);
-											message = message.replace('${order_status_url}', order_status_url);
+											if (message.includes('${name}')) {
+												message = message.replace('${name}', name);
+											}
+
+											if (message.includes('${vendor}')) {
+												message = message.replace('${vendor}', vendor);
+											}
+
+											if (message.includes('${price}')) {
+												message = message.replace('${price}', price);
+											}
+
+											if (message.includes('${order_id}')) {
+												message = message.replace('${order_id}', orderId);
+											}
+
+											if (message.includes('${title}')) {
+												message = message.replace('${title}', title);
+											}
+											if (message.includes('${fulfillment_status}')) {
+												message = message.replace('${fulfillment_status}', fulfillment_status);
+											}
+
+											if (message.includes('${order_status_url}')) {
+												message = message.replace('${order_status_url}', order_status_url);
+											}
+
+											// message = message.replace('${name}', name);
+											// message = message.replace('${vendor}', vendor);
+											// message = message.replace('${price}', price);
+											// message = message.replace('${order_id}', orderId);
+											// message = message.replace('${title}', title);
+											// message = message.replace('${fulfillment_status}', fulfillment_status);
+											// message = message.replace('${order_status_url}', order_status_url);
 										}
 									} else {
 										message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
@@ -801,13 +856,37 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 									if (element.admin) {
 										message = element.admin;
 										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-											message = message.replace('${fulfillment_status}', fulfillment_status);
-											message = message.replace('${order_status_url}', order_status_url);
+											if (message.includes('${name}')) {
+												message = message.replace('${name}', name);
+											}
+
+											if (message.includes('${vendor}')) {
+												message = message.replace('${vendor}', vendor);
+											}
+
+											if (message.includes('${price}')) {
+												message = message.replace('${price}', price);
+											}
+
+											if (message.includes('${order_id}')) {
+												message = message.replace('${order_id}', orderId);
+											}
+
+											if (message.includes('${title}')) {
+												message = message.replace('${title}', title);
+											}
+
+											if (message.includes('${fulfillment_status}')) {
+												message = message.replace('${fulfillment_status}', fulfillment_status);
+											}
+
+											if (message.includes('${order_status_url}')) {
+												message = message.replace('${order_status_url}', order_status_url);
+											}
+
+											if (message.includes('${updated_at}')) {
+												message = message.replace('${updated_at}', updated_at);
+											}
 										}
 									} else {
 										message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId},%20Order%20Status%20${fulfillment_status}`;
@@ -822,92 +901,110 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					}
 					break;
 
-				case 'refunds/create':
-					if (data.data['refunds/create customer'] != undefined && data.data['refunds/create admin'] != undefined) {
-						// data.smsCount + 2
-						Store.findOneAndUpdate(
-							{ name: shop },
-							{
-								$set: {
-									smsCount: data.smsCount - 1
-								}
-							},
-							{ new: true, useFindAndModify: false },
-							(err, data) => {
-								if (!err) {
-									console.log('datacount + 1');
-								} else {
-									console.log('err', err);
-								}
-							}
-						);
-					}
-					if (data.data['refunds/create customer'] != undefined) {
-						title = request.body.refund_line_items[0].line_item.title;
-						orderId = request.body.order_id;
-						price = request.body.refund_line_items[0].subtotal;
+				// case 'refunds/create':
+				// 	if (data.data['refunds/create customer'] != undefined && data.data['refunds/create admin'] != undefined) {
+				// 		// data.smsCount + 2
+				// 		Store.findOneAndUpdate(
+				// 			{ name: shop },
+				// 			{
+				// 				$set: {
+				// 					smsCount: data.smsCount - 1
+				// 				}
+				// 			},
+				// 			{ new: true, useFindAndModify: false },
+				// 			(err, data) => {
+				// 				if (!err) {
+				// 					console.log('datacount + 1');
+				// 				} else {
+				// 					console.log('err', err);
+				// 				}
+				// 			}
+				// 		);
+				// 	}
+				// 	if (data.data['refunds/create customer'] != undefined) {
+				// 		title = request.body.refund_line_items[0].line_item.title;
+				// 		orderId = request.body.order_id;
+				// 		price = request.body.refund_line_items[0].subtotal;
 
-						message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
-						//end
+				// 		message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
+				// 		//end
 
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.customer) {
-										message = element.customer;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-										}
-									} else {
-										message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
-									}
-								} else {
-									message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
-								}
-							});
-						}
+				// 		if (data.template !== undefined) {
+				// 			data.template.forEach((element) => {
+				// 				if (element.topic === topic) {
+				// 					if (element.customer) {
+				// 						message = element.customer;
+				// 						for (let i = 0; i < message.length; i++) {
+				// 							message = message.replace('${price}', price);
+				// 							message = message.replace('${order_id}', orderId);
+				// 							message = message.replace('${title}', title);
+				// 						}
+				// 					} else {
+				// 						message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
+				// 					}
+				// 				} else {
+				// 					message = `Hi%20customer,%20Thanks%20for%20shopping%20with%20us!%20Your%20refund%20is%20started,price%20money%20is%20${price}.Your%20order%20ID:%20${orderId}`;
+				// 				}
+				// 			});
+				// 		}
 
-						let senderID = data.data['sender id'];
+				// 		let senderID = data.data['sender id'];
 
-						if (phone) {
-							sndSms(phone, message, senderID, shop);
-						} else if (phone1) {
-							sndSms(phone, message, senderID, shop);
-						} else if (phone2) {
-							sndSms(phone, message, senderID, shop);
-						}
-					}
-					if (data.data['refunds/create admin'] != undefined) {
-						let admin = data.data['admin no'];
-						adminNumber = admin;
-						let senderID = data.data['sender id'];
-						message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
+				// 		if (phone) {
+				// 			sndSms(phone, message, senderID, shop);
+				// 		} else if (phone1) {
+				// 			sndSms(phone, message, senderID, shop);
+				// 		} else if (phone2) {
+				// 			sndSms(phone, message, senderID, shop);
+				// 		}
+				// 	}
+				// 	if (data.data['refunds/create admin'] != undefined) {
+				// 		let admin = data.data['admin no'];
+				// 		adminNumber = admin;
+				// 		let senderID = data.data['sender id'];
+				// 		message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
 
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.admin) {
-										message = element.admin;
-										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${processed_at}', processed_at);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-										}
-									} else {
-										message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
-									}
-								} else {
-									message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
-								}
-							});
-						}
-						sndSms(admin, message, senderID, shop);
-					}
-					break;
+				// 		if (data.template !== undefined) {
+				// 			data.template.forEach((element) => {
+				// 				if (element.topic === topic) {
+				// 					if (element.admin) {
+				// 						message = element.admin;
+				// 						for (let i = 0; i < message.length; i++) {
+				// 							if (message.includes('${processed_at}')) {
+				// 								message = message.replace('${processed_at}', processed_at);
+				// 							}
+				// 							if (message.includes('${vendor}')) {
+				// 								message = message.replace('${vendor}', vendor);
+				// 							}
+
+				// 							if (message.includes('${price}')) {
+				// 								message = message.replace('${price}', price);
+				// 							}
+
+				// 							if (message.includes('${order_id}')) {
+				// 								message = message.replace('${order_id}', orderId);
+				// 							}
+
+				// 							if (message.includes('${title}')) {
+				// 								message = message.replace('${title}', title);
+				// 							}
+
+				// 							// message = message.replace('${vendor}', vendor);
+				// 							// message = message.replace('${price}', price);
+				// 							// message = message.replace('${order_id}', orderId);
+				// 							// message = message.replace('${title}', title);
+				// 						}
+				// 					} else {
+				// 						message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
+				// 					}
+				// 				} else {
+				// 					message = `Hi%20Customer%20from%20shop:${shop}%20order%20ID:%20${orderId},we%20start%20your%20refund%20process`;
+				// 				}
+				// 			});
+				// 		}
+				// 		sndSms(admin, message, senderID, shop);
+				// 	}
+				// 	break;
 				case 'orders/cancelled':
 					if (data.data['orders/cancelled customer'] != undefined && data.data['orders/cancelled admin'] != undefined) {
 						Store.findOneAndUpdate(
@@ -929,6 +1026,11 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					}
 					if (data.data['orders/cancelled customer'] != undefined) {
 						name = request.body.shipping_address.first_name;
+						if (name == undefined || name == null) {
+							name = request.body.billing_address.first_name;
+							name = request.body.customer.first_name;
+						}
+
 						email = request.body.email;
 						vendor = request.body.line_items[0].vendor;
 						title = request.body.line_items[0].title;
@@ -944,7 +1046,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						country = request.body.shipping_address.country;
 						cancelled_at = request.body.cancelled_at;
 						cancel_reason = request.body.cancel_reason;
-						message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
+
+						message = `Hi%20${name}%20your%20order%20ID:%20${order_id}%20is%20cancelled.%20We%20started%20your%20refund%20process.`;
 
 						if (data.template !== undefined) {
 							data.template.forEach((element) => {
@@ -952,18 +1055,39 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 									if (element.customer) {
 										message = element.customer;
 										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
-											message = message.replace('${cancel_reason}', cancel_reason);
+											// message = message.replace('${name}', name);
+											// message = message.replace('${vendor}', vendor);
+											// message = message.replace('${price}', price);
+											// message = message.replace('${order_id}', orderId);
+											// message = message.replace('${title}', title);
+											if (message.includes('${name}')) {
+												message = message.replace('${name}', name);
+											}
+
+											if (message.includes('${vendor}')) {
+												message = message.replace('${vendor}', vendor);
+											}
+
+											if (message.includes('${price}')) {
+												message = message.replace('${price}', price);
+											}
+
+											if (message.includes('${order_id}')) {
+												message = message.replace('${order_id}', orderId);
+											}
+
+											if (message.includes('${title}')) {
+												message = message.replace('${title}', title);
+											}
+											if (message.includes('${cancel_reason}')) {
+												message = message.replace('${cancel_reason}', cancel_reason);
+											}
 										}
 									} else {
-										message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
+										message = `Hi%20${name}%20your%20order%20ID:%20${order_id}%20is%20cancelled.%20We%20started%20your%20refund%20process.`;
 									}
 								} else {
-									message = `Hi%20${name},%20Thanks%20for%20trying%20us!%20Your%20order%20is%20cancelled,%20because%20${cancel_reason}%20at%20${cancelled_at}.%20Your%20order%20ID:%20${orderId}`;
+									message = `Hi%20${name}%20your%20order%20ID:%20${order_id}%20is%20cancelled.%20We%20started%20your%20refund%20process.`;
 								}
 							});
 						}
@@ -981,7 +1105,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						let admin = data.data['admin no'];
 						adminNumber = admin;
 						let senderID = data.data['sender id'];
-						message = `Customer%20name:%20${name},cancel%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
+						message = `Customer%20name:%20${name},cancelled%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
 
 						if (data.template !== undefined) {
 							data.template.forEach((element) => {
@@ -989,17 +1113,31 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 									if (element.admin) {
 										message = element.admin;
 										for (let i = 0; i < message.length; i++) {
-											message = message.replace('${name}', name);
-											message = message.replace('${vendor}', vendor);
-											message = message.replace('${price}', price);
-											message = message.replace('${order_id}', orderId);
-											message = message.replace('${title}', title);
+											if (message.includes('${name}')) {
+												message = message.replace('${name}', name);
+											}
+
+											if (message.includes('${vendor}')) {
+												message = message.replace('${vendor}', vendor);
+											}
+
+											if (message.includes('${price}')) {
+												message = message.replace('${price}', price);
+											}
+
+											if (message.includes('${order_id}')) {
+												message = message.replace('${order_id}', orderId);
+											}
+
+											if (message.includes('${title}')) {
+												message = message.replace('${title}', title);
+											}
 										}
 									} else {
-										message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+										message = `Customer%20name:%20${name},cancelled%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
 									}
 								} else {
-									message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+									message = `Customer%20name:%20${name},cancelled%20order%20beacuse%20${cancel_reason},order%20ID:%20${orderId}`;
 								}
 							});
 						}
@@ -1050,30 +1188,28 @@ const sndSms = (phone, message, senderID, shop) => {
 	console.log(shop, '<-- shop sndSmS');
 
 	//to ensure message does not contains backticks
-	if (message.includes('`')) {
-		message = message.replace('`', '');
-	}
-	if (message.includes('`')) {
-		message = message.replace('`', '');
-	}
-	if (message.includes('`')) {
-		message = message.replace('`', '');
-	}
-	if (message.includes('`')) {
-		message = message.replace('`', '');
-	}
 
-	// if (message.charAt(0) == '`') {
-	// 	console.log('yes there is backtick at first ');
-	// }
+	for (let i = 0; i < message.length; i++) {
+		message = message.replace('`', '');
 
-	// if (message.charAt(message.length - 1) == '`') {
-	// 	console.log('yes there is backtick at last ')
-	// 	message = message.replace('`', '');
-	// }
+		message = message.replace('$', '');
+
+		message = message.replace('%', '');
+		message = message.replace('@', '');
+		message = message.replace('^', '');
+		message = message.replace('&', '');
+		message = message.replace('*', '');
+		message = message.replace('<', '');
+		message = message.replace('>', '');
+		message = message.replace('#', '');
+	}
 
 	// to ensure phone no. is of 10 digits remove first "0" of phone no
 	phone = phone.toString();
+
+	if (phone.includes('e') || phone.includes('-')) {
+		console.log("phone no. includes '-' or 'e', that's why we can't send message");
+	}
 
 	let fn = phone[0];
 	console.log(fn), 'fn';
