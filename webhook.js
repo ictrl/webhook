@@ -603,7 +603,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							}
 						}
 					);
-					if (data.data['orders/create customer'] != undefined && data.data['orders/create admin'] != undefined) {
+					if (data.data['orders/create customer'] != false && data.data['orders/create admin'] != false) {
 						// data.smsCount + 2
 						Store.findOneAndUpdate(
 							{ name: shop },
@@ -701,7 +701,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							console.log("create/order didn't come with phone no");
 						}
 					}
-					if (data.data['orders/create admin'] != undefined) {
+					if (data.data['orders/create admin'] != false) {
 						let admin = data.data['admin no'];
 						adminNumber = admin;
 						let senderID = data.data['sender id'];
