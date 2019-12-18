@@ -939,7 +939,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						cancelled_at = request.body.cancelled_at;
 						cancel_reason = request.body.cancel_reason;
 
-						message = `Hi%20${name}%20your%20order%20ID:%20${orderId}%20is%20cancelled.%20We%20started%20your%20refund%20process.`;
+						message = `Hi%20${name}%20your%20order%20ID:%20${orderId}%20is%20cancelled.%20We%20will%20process%20refund%20soon.`;
 
 						if (data.template !== undefined) {
 							data.template.forEach((element) => {
