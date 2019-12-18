@@ -939,7 +939,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						cancelled_at = request.body.cancelled_at;
 						cancel_reason = request.body.cancel_reason;
 
-						message = `Hi%20${name}%20your%20order%20ID:%20${order_id}%20is%20cancelled.%20We%20started%20your%20refund%20process.`;
+						message = `Hi%20${name}%20your%20order%20ID:%20${orderId}%20is%20cancelled.%20We%20started%20your%20refund%20process.`;
 
 						if (data.template !== undefined) {
 							data.template.forEach((element) => {
@@ -964,6 +964,9 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 												message = message.replace('${price}', price);
 											}
 
+											if (message.includes('${orderId}')) {
+												message = message.replace('${orderId}', orderId);
+											}
 											if (message.includes('${order_id}')) {
 												message = message.replace('${order_id}', orderId);
 											}
