@@ -1,6 +1,8 @@
 require('dotenv').config();
 const moment = require('moment');
 const mongoose = require('mongoose');
+const express = require('express');
+
 mongoose.connect(process.env.MONGODB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -10,6 +12,27 @@ let shop = 'uadaan.myshopify.com';
 
 const Store = require('./models/Shop');
 const Url = require('./models/Url');
+
+const app = express();
+app.use(express.json());
+
+app.get('/api/history', function(req, res) {
+	shop = 'uadaan.myshopify.com'; //delete this localTesting
+
+	console.log(req.body.session);
+
+	if (req.body.session.views[pathname]) {
+		Store.findOne({ name: shop }, function(err, data) {
+			if (data) {
+				var history = data.sms;
+				res.send(history);
+			}
+		});
+	} else {
+		console.log("can't  find session key form get /api/history || your session timeout");
+	}
+});
+
 // Url.findOneAndUpdate({
 //         id: 11999085264975
 //     }, {
@@ -66,13 +89,17 @@ const Url = require('./models/Url');
 //   }
 // });
 
-Store.find({ smsCount: { $gt: 0 } }, (err, data) => {
-	if (err) {
-		console.log(err);
-	} else {
-		console.log(data);
-	}
+// Store.find({ smsCount: { $gt: 0 } }, (err, data) => {
+// 	if (err) {
+// 		console.log(err);
+// 	} else {
+// 		console.log(data);
+// 	}
+// });
+app.listen(4000, () => {
+	console.log('App listening on port 4000!');
 });
+
 // console.log(message);
 //A.findOne({ _id: a._id, items: { $elemMatch: {$in: [1,5,9] }}}).exec(function (err, docs) {
 // Store.updateOne(

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { DescriptionList, Stack, Layout, Card, Button } from '@shopify/polaris';
 import axios from 'axios';
-
 export default function History() {
 	const [ history, setHistory ] = useState([]);
-
 	const smsHistory = async () => {
 		try {
 			let response = await axios.get('/api/history');
@@ -14,7 +12,6 @@ export default function History() {
 			setHistory('');
 		}
 	};
-
 	useEffect(() => {
 		smsHistory();
 		smsCount();
@@ -29,44 +26,64 @@ export default function History() {
 			setSmsLeft(0);
 		}
 	};
-
 	const buySms = () => {
 		alert('Please contact Us: +917827537259');
 	};
-
 	return (
 		<Layout>
-			<div style={{ marginTop: '18px' }}>
+			<div
+				style={{
+					marginTop: '18px'
+				}}
+			>
 				<Card title='Remaining SMS'>
 					<Card.Section>
 						<Stack spacing='loose' vertical>
-							<h1 style={{ fontSize: '14px' }}>
+							<h1
+								style={{
+									fontSize: '14px'
+								}}
+							>
 								You have only {' '}
 								{smsLeft > 100 ? (
-									<span style={{ color: 'green', fontWeight: '600' }}> {smsLeft}</span>
+									<span
+										style={{
+											color: 'green',
+											fontWeight: '600'
+										}}
+									>
+										{' '}
+										{smsLeft}{' '}
+									</span>
 								) : (
-									<span style={{ color: 'red', fontWeight: '600' }}> {smsLeft}</span>
+									<span
+										style={{
+											color: 'red',
+											fontWeight: '600'
+										}}
+									>
+										{' '}
+										{smsLeft}{' '}
+									</span>
 								)}{' '}
-								SMS left.
-							</h1>
+								SMS left.{' '}
+							</h1>{' '}
 							<p>
 								Character Counts and SMS units are based on current content and may vary after filling actual variables
-								value. You can recharge your SMS manually also.
+								value.You can recharge your SMS manually also.{' '}
 							</p>
-
 							<Button onClick={buySms} primary>
-								Buy More SMS
-							</Button>
-						</Stack>
-					</Card.Section>
+								Buy More SMS{' '}
+							</Button>{' '}
+						</Stack>{' '}
+					</Card.Section>{' '}
 				</Card>
-
-				<Card title='	SMS HISTORY'>
+				<Card title='  SMS HISTORY'>
 					<Card.Section>
-						<DescriptionList items={history} />
-					</Card.Section>
-				</Card>
-			</div>
+						<DescriptionList items={history} />{' '}
+					</Card.Section>{' '}
+				</Card>{' '}
+			</div>{' '}
 		</Layout>
 	);
 }

@@ -71,59 +71,6 @@
 // 	console.log('boom');
 // }
 
-
-
-	if (data.data['orders/create admin'] != undefined) {
-						message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-
-						if (data.template !== undefined) {
-							data.template.forEach((element) => {
-								if (element.topic === topic) {
-									if (element.admin) {
-										message = element.admin;
-										for (let i = 0; i < message.length; i++) {
-											if (message.includes('${name}')) {
-												message = message.replace('${name}', name);
-											}
-
-											if (message.includes('${vendor}')) {
-												message = message.replace('${vendor}', vendor);
-											}
-
-											if (message.includes('${price}')) {
-												message = message.replace('${price}', price);
-											}
-
-											if (message.includes('${order_id}')) {
-												message = message.replace('${order_id}', orderId);
-											}
-
-											if (message.includes('${title}')) {
-												message = message.replace('${title}', title);
-											}
-										}
-									} else {
-										console.log('orders/create admin message template not found');
-									}
-								} else {
-									console.log('orders/create admin message template not found');
-								}
-							});
-    }
-    let admin;
-    let senderID;
- try {
-      
-       admin = await data.data['admin no'];
-      senderID = await data.data['sender id'];
-    } catch (error) {
-      console.log(error,'does not have senderid or admin no');
-    }
-
-						//end
-						sndSms(admin, message, senderID, shop);
-					}
-
 // let first = '07821915962';
 // console.log('first', first);
 // let fn = first[0];
