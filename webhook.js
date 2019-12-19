@@ -499,7 +499,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 				let checkoutName;
 				switch (topic) {
 					case 'checkouts/update':
-						console.log('checkut aaya :');
+						console.log('checkouts/create response');
+
 						if (request.body.shipping_address != undefined) {
 							if (request.body.shipping_address.phone != null) {
 								Store.findOne(
@@ -595,6 +596,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						}
 						break;
 					case 'orders/create':
+						console.log('orders/create response');
 						name = request.body.shipping_address.first_name;
 						email = request.body.email;
 						order_status_url = request.body.order_status_url;
@@ -851,6 +853,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						}
 						break;
 					case 'orders/fulfilled':
+						console.log('orders/fulfilled response');
+
 						name = request.body.shipping_address.first_name;
 						email = request.body.email;
 						vendor = request.body.line_items[0].vendor;
@@ -991,6 +995,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						}
 						break;
 					case 'orders/cancelled':
+						console.log('orders/cancelled response');
+
 						name = request.body.shipping_address.first_name;
 						if (name == undefined || name == null) {
 							name = request.body.billing_address.first_name;
