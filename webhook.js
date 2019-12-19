@@ -1368,7 +1368,7 @@ app.get('/api/smsCount', function(req, res) {
 
 app.get('/api/history', function(req, res) {
 	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
-
+	res.sendStatus(200);
 	if (req.session.views[pathname]) {
 		Store.findOne({ name: req.session.shop }, async (err, data) => {
 			if (data) {
