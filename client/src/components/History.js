@@ -5,10 +5,14 @@ import axios from 'axios';
 export default function History() {
 	const [ history, setHistory ] = useState([]);
 
-	const smsHistory = () => {
-		axios.get('/api/history').then((res) => {
-			setHistory(res.data);
-		});
+	const smsHistory = async () => {
+		try {
+			let response = await axios.get('/api/history');
+			setHistory(response.data);
+		} catch (error) {
+			console.error(error, 'cannot get response sms history');
+			setHistory('');
+		}
 	};
 
 	useEffect(() => {
@@ -16,10 +20,14 @@ export default function History() {
 		smsCount();
 	}, []);
 	const [ smsLeft, setSmsLeft ] = useState(0);
-	const smsCount = () => {
-		axios.get('/api/smsCount/').then((res) => {
-			setSmsLeft(res.data);
-		});
+	const smsCount = async () => {
+		try {
+			let response = await axios.get('/api/smsCount/');
+			setSmsLeft(response.data);
+		} catch (error) {
+			console.error(error, 'cannot get response smscounnt');
+			setSmsLeft(0);
+		}
 	};
 
 	const buySms = () => {
@@ -29,9 +37,9 @@ export default function History() {
 	return (
 		<Layout>
 			<div style={{ marginTop: '18px' }}>
-				<Card title="Remaining SMS">
+				<Card title='Remaining SMS'>
 					<Card.Section>
-						<Stack spacing="loose" vertical>
+						<Stack spacing='loose' vertical>
 							<h1 style={{ fontSize: '14px' }}>
 								You have only {' '}
 								{smsLeft > 100 ? (
@@ -46,12 +54,14 @@ export default function History() {
 								value. You can recharge your SMS manually also.
 							</p>
 
-							<Button primary>Buy More SMS</Button>
+							<Button onClick={buySms} primary>
+								Buy More SMS
+							</Button>
 						</Stack>
 					</Card.Section>
 				</Card>
 
-				<Card title="	SMS HISTORY">
+				<Card title='	SMS HISTORY'>
 					<Card.Section>
 						<DescriptionList items={history} />
 					</Card.Section>
