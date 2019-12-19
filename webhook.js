@@ -1376,6 +1376,7 @@ app.get('/api/history', function(req, res) {
 				res.send(history);
 			} else {
 				res.send('cannot found any sms history');
+				console.log('cannot found any sms history');
 			}
 			if (err) {
 				console.error(err);
@@ -1383,6 +1384,7 @@ app.get('/api/history', function(req, res) {
 		});
 	} else {
 		res.send('cant find session key form get /api/history || your session timeout');
+		console.log('cant find session key form get /api/history || your session timeout');
 	}
 });
 // dashboard
