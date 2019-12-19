@@ -487,7 +487,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 
 			switch (topic) {
 				case 'checkouts/update':
-					console.log('checkut aaya :');
+					console.log('checkut aaya :', request.body);
 
 					if (request.body.shipping_address != undefined) {
 						if (request.body.shipping_address.phone != null) {
@@ -683,7 +683,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						//check for senderId
 						let senderID;
 						if (data.data['sender id']) {
-							senderID = await data.data['sender id'];
+							senderID = data.data['sender id'];
 						} else {
 							senderID = 'shopit';
 							console.log("This shop don't have senderId");
@@ -695,53 +695,12 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							console.log("create/order didn't come with phone no");
 						}
 					}
-					// if (data.data['orders/create admin'] != undefined) {
-					// 	let admin = data.data['admin no'];
-					// 	adminNumber = admin;
-					// 	let senderID = data.data['sender id'];
-
-					// 	//check in data base if there is exist any template for  orders/create for admin
-					// 	message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-
-					// 	if (data.template !== undefined) {
-					// 		data.template.forEach((element) => {
-					// 			if (element.topic === topic) {
-					// 				if (element.admin) {
-					// 					message = element.admin;
-					// 					for (let i = 0; i < message.length; i++) {
-					// 						if (message.includes('${name}')) {
-					// 							message = message.replace('${name}', name);
-					// 						}
-
-					// 						if (message.includes('${vendor}')) {
-					// 							message = message.replace('${vendor}', vendor);
-					// 						}
-
-					// 						if (message.includes('${price}')) {
-					// 							message = message.replace('${price}', price);
-					// 						}
-
-					// 						if (message.includes('${order_id}')) {
-					// 							message = message.replace('${order_id}', orderId);
-					// 						}
-
-					// 						if (message.includes('${title}')) {
-					// 							message = message.replace('${title}', title);
-					// 						}
-					// 					}
-					// 				} else {
-					// 					console.log('orders/create admin message template not found');
-					// 				}
-					// 			} else {
-					// 				console.log('orders/create admin message template not found');
-					// 			}
-					// 		});
-					// 	}
-					// 	//end
-					// 	sndSms(phone, message, senderID, shop);
-					// }
-
 					if (data.data['orders/create admin'] != undefined) {
+						let admin = data.data['admin no'];
+						adminNumber = admin;
+						let senderID = data.data['sender id'];
+
+						//check in data base if there is exist any template for  orders/create for admin
 						message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
 
 						if (data.template !== undefined) {
@@ -778,26 +737,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								}
 							});
 						}
-						let admin;
-						let senderID;
-						try {
-							admin = await data.data['admin no'];
-							senderID = await data.data['sender id'];
-						} catch (error) {
-							console.log(error, 'does not have senderid or admin no');
-						}
-
 						//end
-
-						if (admin && message && senderID && shop) {
-							try {
-								sndSms(admin, message, senderID, shop);
-							} catch (error) {
-								console.error(error);
-							}
-						} else {
-							console.log('missing admin no or message or senderid or shop');
-						}
+						sndSms(phone, message, senderID, shop);
 					}
 
 					break;
@@ -1368,23 +1309,16 @@ app.get('/api/smsCount', function(req, res) {
 
 app.get('/api/history', function(req, res) {
 	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
-	res.sendStatus(200);
+
 	if (req.session.views[pathname]) {
-		Store.findOne({ name: req.session.shop }, async (err, data) => {
+		Store.findOne({ name: req.session.shop }, function(err, data) {
 			if (data) {
-				let history = await data.sms;
+				var history = data.sms;
 				res.send(history);
-			} else {
-				res.send('cannot found any sms history');
-				console.log('cannot found any sms history');
-			}
-			if (err) {
-				console.error(err);
 			}
 		});
 	} else {
-		res.send('cant find session key form get /api/history || your session timeout');
-		console.log('cant find session key form get /api/history || your session timeout');
+		console.log("can't  find session key form get /api/history || your session timeout");
 	}
 });
 // dashboard
