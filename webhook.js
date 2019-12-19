@@ -1384,33 +1384,16 @@ app.get('/api/smsCount', function(req, res) {
 	}
 });
 app.get('/api/history', function(req, res) {
-	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
-	// if (req.session.views[pathname]) {
-	Store.findOne(
-		{
-			name: req.session.shop
-		},
-		async (err, data) => {
+	if (req.session.views[pathname]) {
+		Store.findOne({ name: req.session.shop }, function(err, data) {
 			if (data) {
-				try {
-					let history = await data.sms;
-					res.send(history);
-				} catch (error) {
-					console.error(error);
-				}
-			} else {
-				res.send('cannot found any sms history');
-				console.log('cannot found any sms history');
+				var history = data.sms;
+				res.send(history);
 			}
-			if (err) {
-				console.error(err);
-			}
-		}
-	);
-	// } else {
-	// 	res.send('cant find session key form get /api/history || your session timeout');
-	// 	console.log('cant find session key form get /api/history || your session timeout');
-	// }
+		});
+	} else {
+		console.log('cant find session key form get /api/history || your session timeout');
+	}
 });
 // dashboard
 app.get('/api/dashboard', function(req, res) {
