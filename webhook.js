@@ -1370,14 +1370,19 @@ app.get('/api/history', function(req, res) {
 	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
 
 	if (req.session.views[pathname]) {
-		Store.findOne({ name: req.session.shop }, function(err, data) {
+		Store.findOne({ name: req.session.shop }, async (err, data) => {
 			if (data) {
-				var history = data.sms;
+				let history = await data.sms;
 				res.send(history);
+			} else {
+				res.send('cannot found any sms history');
+			}
+			if (err) {
+				console.error(err);
 			}
 		});
 	} else {
-		console.log('cant find session key form get /api/history || your session timeout');
+		res.send('cant find session key form get /api/history || your session timeout');
 	}
 });
 // dashboard
