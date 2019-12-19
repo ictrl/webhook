@@ -1384,16 +1384,28 @@ app.get('/api/smsCount', function(req, res) {
 	}
 });
 app.get('/api/history', function(req, res) {
-	if (req.session.views[pathname]) {
-		Store.findOne({ name: req.session.shop }, function(err, data) {
-			if (data) {
-				var history = data.sms;
-				res.send(history);
+	// if (req.session.views[pathname]) {
+	if (req) {
+		console.log(req);
+		if (req.session) {
+			if (req.session.shop) {
+				console.log(req.session.shop);
 			}
-		});
-	} else {
-		console.log('cant find session key form get /api/history || your session timeout');
+		}
 	}
+
+	Store.findOne({ name: req.session.shop }, function(err, data) {
+		if (data) {
+			var history = data.sms;
+			res.send(history);
+		} else {
+			console.log(err);
+			res.send('Sorry');
+		}
+	});
+	// } else {
+	// 	console.log('cant find session key form get /api/history || your session timeout');
+	// }
 });
 // dashboard
 app.get('/api/dashboard', function(req, res) {
