@@ -42,13 +42,13 @@
 // let encodedHola ="hola"
 // let hardEncodedHola =
 // 	'Hey%20(customer_name)!%20We%20noticed%20you%20left%20some%20items%20in%20your%20cart.%20Get%20them%20before%20they%E2%80%99re%20gone!%20Visit%20this%20link%20to%20complete%20the%20order:(abandoned_checkout_url).%20%E2%80%93%20(store_name)';
-let hola = '     ` hello $ ';
-console.log(hola);
-hola = hola.trim();
-console.log(hola);
+// let hola = '     ` hello $ ';
+// console.log(hola);
+// hola = hola.trim();
+// console.log(hola);
 
-hola.replace(/ /g, '');
-console.log(hola);
+// hola.replace(/ /g, '');
+// console.log(hola);
 // console.log('lst', hola.charAt(hola.length - 1));
 // console.log('frt', hola.charAt(0));
 // console.log(hola);
@@ -70,6 +70,59 @@ console.log(hola);
 // if (inputData == hola) {
 // 	console.log('boom');
 // }
+
+
+
+	if (data.data['orders/create admin'] != undefined) {
+						message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
+
+						if (data.template !== undefined) {
+							data.template.forEach((element) => {
+								if (element.topic === topic) {
+									if (element.admin) {
+										message = element.admin;
+										for (let i = 0; i < message.length; i++) {
+											if (message.includes('${name}')) {
+												message = message.replace('${name}', name);
+											}
+
+											if (message.includes('${vendor}')) {
+												message = message.replace('${vendor}', vendor);
+											}
+
+											if (message.includes('${price}')) {
+												message = message.replace('${price}', price);
+											}
+
+											if (message.includes('${order_id}')) {
+												message = message.replace('${order_id}', orderId);
+											}
+
+											if (message.includes('${title}')) {
+												message = message.replace('${title}', title);
+											}
+										}
+									} else {
+										console.log('orders/create admin message template not found');
+									}
+								} else {
+									console.log('orders/create admin message template not found');
+								}
+							});
+    }
+    let admin;
+    let senderID;
+ try {
+      
+       admin = await data.data['admin no'];
+      senderID = await data.data['sender id'];
+    } catch (error) {
+      console.log(error,'does not have senderid or admin no');
+    }
+
+						//end
+						sndSms(admin, message, senderID, shop);
+					}
 
 // let first = '07821915962';
 // console.log('first', first);
