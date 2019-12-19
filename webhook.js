@@ -610,19 +610,29 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						} else {
 							phone = request.body.shipping_address.phone;
 						}
-						Store.updateOne(
-							{
-								'orders.id': request.body.checkout_id
-							},
-							{
-								$set: {
-									'orders.$.purchase': true
+						try {
+							let updated = await Store.updateOne(
+								{
+									'orders.id': request.body.checkout_id
+								},
+								{
+									$set: {
+										'orders.$.purchase': true
+									}
 								}
-							},
-							function(err, data) {
-								if (!err) {
-									console.log('585 data -->', data);
-									Store.updateOne(
+							);
+							if (updated) {
+								console.log(updated, 'updated');
+								if (updated.orders) {
+									console.log(updated.orders, 'updated.orders');
+									if (updated.orders.purchase) {
+										console.log(updated.orders.purchase, 'updated.orders.purchase');
+									}
+								}
+								//check if through our abandan message converted these sales
+
+								try {
+									let ourConverted = await Store.updateOne(
 										{
 											clicked: {
 												$elemMatch: {
@@ -634,18 +644,46 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 											$set: {
 												'clicked.$.converted': true
 											}
-										},
-										(err, data) => {
-											if (err) {
-												console.log('err 597', err);
-											} else console.log('data 598 -->', data);
 										}
 									);
-								} else {
-									console.log('602 err-->', err);
+
+									console.log(ourConverted);
+								} catch (error) {
+									console.error(error);
 								}
 							}
-						);
+						} catch (error) {
+							console.error(error);
+							console.log('unable to mark as purchase true');
+						}
+
+						// async (err, data) => {
+						// 	if (!err) {
+						// 		console.log('625 data -->', data);
+						// 		Store.updateOne(
+						// 			{
+						// 				clicked: {
+						// 					$elemMatch: {
+						// 						checkoutId: request.body.checkout_id
+						// 					}
+						// 				}
+						// 			},
+						// 			{
+						// 				$set:  {
+						// 					'clicked.$.converted': true
+						// 				}
+						// 			},
+						// 			(err, data) => {
+						// 				if (err) {
+						// 					console.log('err 597', err);
+						// 				} else console.log('data 598 -->', data);
+						// 			}
+						// 		);
+						// 	} else {
+						// 		console.log('602 err-->', err);
+						// 	}
+						// }
+
 						if (data.data['orders/create customer'] != undefined && data.data['orders/create admin'] != undefined) {
 							// data.smsCount + 2
 							Store.findOneAndUpdate(
@@ -1383,29 +1421,20 @@ app.get('/api/smsCount', function(req, res) {
 		console.log('cant find session key form get /api/smsCount || your session timeout');
 	}
 });
-app.get('/api/history', function(req, res) {
-	// if (req.session.views[pathname]) {
-	if (req) {
-		console.log(req);
-		if (req.session) {
-			if (req.session.shop) {
-				console.log(req.session.shop);
+app.get('/api/history', async (req, res) => {
+	if (req.session.views[pathname]) {
+		try {
+			let data = await Store.findOne({ name: req.session.shop });
+			if (data) {
+				var history = data.sms;
+				res.send(history);
 			}
+		} catch (error) {
+			console.error(error);
 		}
+	} else {
+		console.log('cant find session key form get /api/history || your session timeout');
 	}
-
-	Store.findOne({ name: req.session.shop }, function(err, data) {
-		if (data) {
-			var history = data.sms;
-			res.send(history);
-		} else {
-			console.log(err);
-			res.send('Sorry');
-		}
-	});
-	// } else {
-	// 	console.log('cant find session key form get /api/history || your session timeout');
-	// }
 });
 // dashboard
 app.get('/api/dashboard', function(req, res) {
