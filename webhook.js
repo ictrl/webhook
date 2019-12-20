@@ -1241,31 +1241,29 @@ const sndSms = async (phone, message, senderID, shop) => {
 						description: message.replace(/%20/g, ' ').replace(/%0A/g, ' '),
 						term: phone
 					};
-					``;
-					Store.findOneAndUpdate(
-						{
-							name: shop
-						},
-						{
-							$push: {
-								sms: obj
+
+					try {
+						const data = Store.findOneAndUpdate(
+							{
+								name: shop
 							},
-							$set: {
-								smsCount: data.smsCount - 1
+							{
+								$push: {
+									sms: obj
+								},
+								$set: {
+									smsCount: data.smsCount - 1
+								}
+							},
+							{
+								new: true,
+								useFindAndModify: false
 							}
-						},
-						{
-							new: true,
-							useFindAndModify: false
-						},
-						(err, data) => {
-							if (!err) {
-								console.log('data');
-							} else {
-								console.log('err', err);
-							}
-						}
-					);
+						);
+						console.log(data);
+					} catch (error) {
+						console.error(error);
+					}
 					req.end();
 				} else if (data.smsCount < 1) {
 					console.log('SMS Quota Exhausted');
@@ -1293,66 +1291,66 @@ const sndSms = async (phone, message, senderID, shop) => {
 							}
 						}
 					);
-					// notify admin to recharge
-					//send SMS mgs91ed
-					// try {
-					//  phone = adminNumber;
-					// } catch (error) {
-					//  phone = 7821915962
-					// }
-					// message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
-					// var options = {
-					//   method: "GET",
-					//   hostname: "api.msg91.com",
-					//   port: null,
-					//   path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
-					//   headers: {}
-					// };
-					// var req = http.request(options, function(res) {
-					//   var chunks = [];
-					//   res.on("data", function(chunk) {
-					//     chunks.push(chunk);
-					//   });
-					//   res.on("end", function() {
-					//     var body = Buffer.concat(chunks);
-					//     console.log(body.toString());
-					//   });
-					// });
-					//save sms data to DB
-					// var obj = {
-					//   description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
-					//   term: phone
-					// };
-					// Store.findOneAndUpdate(
-					//   { name: shop },
-					//   {
-					//     $push: { sms: obj },
-					//     $set: {
-					//       smsCount: data.smsCount - 1
-					//     }
-					//   },
-					//   { new: true, useFindAndModify: false },
-					//   (err, data) => {
-					//     if (!err) {
-					//       console.log("data");
-					//     } else {
-					//       console.log("err", err);
-					//     }
-					//   }
-					// );
-					// req.end();
 				} else {
 					console.log('admin still not recharge');
 				}
 			}
 		}
+		// notify admin to recharge
+		//send SMS mgs91ed
+		// try {
+		//  phone = adminNumber;
+		// } catch (error) {
+		//  phone = 7821915962
+		// }
+		// message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
+		// var options = {
+		//   method: "GET",
+		//   hostname: "api.msg91.com",
+		//   port: null,
+		//   path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
+		//   headers: {}
+		// };
+		// var req = http.request(options, function(res) {
+		//   var chunks = [];
+		//   res.on("data", function(chunk) {
+		//     chunks.push(chunk);
+		//   });
+		//   res.on("end", function() {
+		//     var body = Buffer.concat(chunks);
+		//     console.log(body.toString());
+		//   });
+		// });
+		//save sms data to DB
+		// var obj = {
+		//   description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
+		//   term: phone
+		// };
+		// Store.findOneAndUpdate(
+		//   { name: shop },
+		//   {
+		//     $push: { sms: obj },
+		//     $set: {
+		//       smsCount: data.smsCount - 1
+		//     }
+		//   },
+		//   { new: true, useFindAndModify: false },
+		//   (err, data) => {
+		//     if (!err) {
+		//       console.log("data");
+		//     } else {
+		//       console.log("err", err);
+		//     }
+		//   }
+		// );
+		// req.end();
 	);
 };
 app.get('/api/option', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com';
 	if (req.session.shop) {
 		try {
-			Store.findOne({
+			const data = Store.findOne({
 				name: req.session.shop
 			});
 
