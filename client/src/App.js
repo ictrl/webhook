@@ -23,6 +23,17 @@ export default function TabsExample() {
 		// 	panelID: 'repeat-teste'
 		// },
 		{
+			id: 'all-customers',
+			content: 'Settings',
+			accessibilityLabel: 'All customers',
+			panelID: 'all-customers-content'
+		},
+		{
+			id: 'accepts-marketing',
+			content: 'Edit Template',
+			panelID: 'accepts-marketing-content'
+		},
+		{
 			id: 'abandon-checkout',
 			content: 'Abandon Checkout',
 			panelID: 'abandon-checkout-content'
@@ -31,17 +42,6 @@ export default function TabsExample() {
 			id: 'repeat-customers',
 			content: 'SMS History',
 			panelID: 'repeat-customers-content'
-		},
-		{
-			id: 'accepts-marketing',
-			content: 'Edit Template',
-			panelID: 'accepts-marketing-content'
-		},
-		{
-			id: 'all-customers',
-			content: 'Settings',
-			accessibilityLabel: 'All customers',
-			panelID: 'all-customers-content'
 		},
 		{
 			id: 'dashboard',
