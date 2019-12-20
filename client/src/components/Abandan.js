@@ -229,7 +229,7 @@ export default function Abandan() {
 					}
 					// s = element.status;
 
-					element.status == false || element.status != true ? (s = '0') : (s = '1');
+					element.status === false || element.status !== true ? (s = '0') : (s = '1');
 					console.log('0', element.status, 'status', s);
 					t = element.time;
 				}
@@ -242,7 +242,7 @@ export default function Abandan() {
 						zo1 = zo1.replace('}', ')');
 						zo1 = zo1.replace('`', '');
 					}
-					element.status == false || element.status != true ? (s1 = '0') : (s1 = '1');
+					element.status === false || element.status !== true ? (s1 = '0') : (s1 = '1');
 					console.log('0', element.status, 'status', s);
 					t1 = element.time;
 				}
@@ -256,7 +256,7 @@ export default function Abandan() {
 						zo2 = zo2.replace('}', ')');
 						zo2 = zo2.replace('`', '');
 					}
-					element.status == false || element.status != true ? (s2 = '0') : (s2 = '1');
+					element.status === false || element.status !== true ? (s2 = '0') : (s2 = '1');
 					console.log('0', element.status, 'status', s);
 					t2 = element.time;
 				}
@@ -270,7 +270,7 @@ export default function Abandan() {
 						zo3 = zo3.replace('}', ')');
 						zo3 = zo3.replace('`', '');
 					}
-					element.status == false || element.status != true ? (s3 = '0') : (s3 = '1');
+					element.status === false || element.status !== true ? (s3 = '0') : (s3 = '1');
 					console.log('0', element.status, 'status', s);
 					t3 = element.time;
 				}

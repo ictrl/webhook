@@ -1349,6 +1349,7 @@ const sndSms = (phone, message, senderID, shop) => {
 	);
 };
 app.get('/api/option', function(req, res) {
+	// req.session.shop = 'demo-mojito.myshopify.com';
 	if (req.session.shop) {
 		Store.findOne(
 			{
@@ -1368,7 +1369,7 @@ app.get('/api/option', function(req, res) {
 });
 //abandan template
 app.get('/api/abandanTemplate', function(req, res) {
-	// req.session.shop = "demo-mojito.myshopify.com";
+	// req.session.shop = 'demo-mojito.myshopify.com';
 	if (req.session.shop) {
 		Store.findOne(
 			{
@@ -1388,7 +1389,7 @@ app.get('/api/abandanTemplate', function(req, res) {
 });
 //template
 app.get('/api/template', function(req, res) {
-	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+	// req.session.shop = 'demo-mojito.myshopify.com'; //delete this localTesting
 	console.log('API called');
 	if (req.session.shop) {
 		Store.findOne(
@@ -1408,7 +1409,7 @@ app.get('/api/template', function(req, res) {
 	}
 });
 app.get('/api/smsCount', function(req, res) {
-	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+	// req.session.shop = 'demo-mojito.myshopify.com'; //delete this localTesting
 	if (req.session.shop) {
 		Store.findOne(
 			{
@@ -1428,23 +1429,24 @@ app.get('/api/smsCount', function(req, res) {
 	}
 });
 app.get('/api/history', async (req, res) => {
-	if (req.session.views[pathname]) {
-		try {
-			let data = await Store.findOne({ name: req.session.shop });
-			if (data) {
-				var history = data.sms;
-				res.send(history);
-			}
-		} catch (error) {
-			console.error(error);
+	// req.session.shop = 'demo-mojito.myshopify.com';
+	// if (req.session.views[pathname]) {
+	try {
+		let data = await Store.findOne({ name: req.session.shop });
+		if (data) {
+			var history = data.sms;
+			res.send(history);
 		}
-	} else {
-		console.log('cant find session key form get /api/history || your session timeout');
+	} catch (error) {
+		console.error(error);
 	}
+	// } else {
+	// 	console.log('cant find session key form get /api/history || your session timeout');
+	// }
 });
 // dashboard
 app.get('/api/dashboard', function(req, res) {
-	//   req.session.shop = "mojitolabs.myshopify.com";
+	// req.session.shop = 'demo-mojito.myshopify.com';
 	if (req.session.shop) {
 		Store.findOne(
 			{
@@ -1530,7 +1532,7 @@ app.get('/api/dashboard', function(req, res) {
 });
 // save template to db
 app.post('/api/template', function(req, res) {
-	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+	// req.session.shop = 'demo-mojito.myshopify.com'; //delete this localTesting
 	console.log('template change request-->', req.body);
 	console.log('template change request shop-->', req.session.shop);
 	res.sendStatus(200);
@@ -1742,13 +1744,14 @@ app.post('/api/recharge', function(req, res) {
 						},
 						(err, data) => {
 							if (!err) {
-								console.log('data');
+								console.log(data, 'data');
 							} else {
 								console.log('err', err);
 							}
 						}
 					);
 				} else {
+					console.log(err);
 					res.send('100');
 				}
 			}

@@ -96,7 +96,7 @@ export default function Settings() {
 					</Layout.AnnotatedSection>
 					<Layout.AnnotatedSection
 						title='Sender ID'
-						description='Sender ID is the name or number which appears on the mobile phone as the sender of a SMS. Sender ID will be maximum of 6 Characters. Please avoid using special characters like &#39; @ , # , $ , % , ^ , & , * , _ &#39; '
+						description='Sender ID is the name or number which appears on the mobile phone as the sender of a SMS. Sender ID will be maximum of 6 Characters. Please avoid using special characters like &#39; @ , # , $ , % , ^ , & , * , _ , - , &#39; '
 					>
 						<Card sectioned>
 							<div style={{ padding: '3rem' }}>

@@ -6,7 +6,16 @@ export default function History() {
 	const smsHistory = async () => {
 		try {
 			let response = await axios.get('/api/history');
-			setHistory(response.data);
+			console.log(response.data);
+			const filteredHistory = [];
+			const resp = response.data;
+			resp.forEach((element) => {
+				if (element) {
+					filteredHistory.push(element);
+				}
+			});
+			console.log(filteredHistory);
+			setHistory(filteredHistory);
 		} catch (error) {
 			console.error(error, 'cannot get response sms history');
 			setHistory('');

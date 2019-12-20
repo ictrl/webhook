@@ -9,6 +9,7 @@ import History from './components/History';
 
 import Abandan from './components/Abandan';
 import Dashboard from './components/Dashboard';
+// import Test from './components/test';
 
 export default function TabsExample() {
 	const [ selected, setSelected ] = useState(0);
@@ -16,6 +17,21 @@ export default function TabsExample() {
 	const handleTabChange = useCallback((selectedTabIndex) => setSelected(selectedTabIndex), []);
 
 	const tabs = [
+		// {
+		// 	id: 'repeat-test',
+		// 	content: 'test',
+		// 	panelID: 'repeat-teste'
+		// },
+		{
+			id: 'abandon-checkout',
+			content: 'Abandon Checkout',
+			panelID: 'abandon-checkout-content'
+		},
+		{
+			id: 'repeat-customers',
+			content: 'SMS History',
+			panelID: 'repeat-customers-content'
+		},
 		{
 			id: 'accepts-marketing',
 			content: 'Edit Template',
@@ -28,19 +44,9 @@ export default function TabsExample() {
 			panelID: 'all-customers-content'
 		},
 		{
-			id: 'abandon-checkout',
-			content: 'Abandon Checkout',
-			panelID: 'abandon-checkout-content'
-		},
-		{
 			id: 'dashboard',
 			content: 'Dashboard',
 			panelID: 'dashboard'
-		},
-		{
-			id: 'repeat-customers',
-			content: 'SMS History',
-			panelID: 'repeat-customers-content'
 		}
 	];
 
@@ -48,6 +54,8 @@ export default function TabsExample() {
 		switch (tabs[selected].content) {
 			case 'Settings':
 				return <Setting />;
+			// case 'test':
+			// 	return <Test />;
 
 			case 'Edit Template':
 				return <Template />;
