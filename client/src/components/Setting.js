@@ -113,7 +113,7 @@ export default function Settings() {
 					</Layout.AnnotatedSection>
 					<Layout.AnnotatedSection
 						title='Notification Prefrence'
-						description='Admin and Customer will be notified according to by selecting Notify Admin.'
+						description='Admin and Customer will be notified according to by selecting Notify Admin. Select notification prefernce for orders create, orders fulfilled and orders cancelled.'
 					>
 						<Card sectioned>
 							<div style={{ padding: '2rem' }}>
