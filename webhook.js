@@ -1757,122 +1757,123 @@ app.post('/api/recharge', function(req, res) {
 		console.log('sesssion timeout');
 	}
 });
-// cron.schedule('*/2 * * * * ', () => {
-// 	//getting list of all store name
-// 	console.log('!production cron started');
-// 	var storeName = [];
-// 	Store.find(
-// 		{
-// 			uninstalled: false,
-// 			smsCount: {
-// 				$gt: 0
-// 			}
-// 		},
-// 		(err, stores) => {
-// 			if (err) {
-// 				console.log(err);
-// 			}
-// 			stores.forEach((store) => {
-// 				storeName.push(store.name);
-// 			});
-// 			let interval = moment().subtract(2, 'minutes').format();
-// 			let current = moment().format();
-// 			console.log('current time-->', current);
-// 			console.log('interval time-->', interval);
-// 			storeName.forEach((store) => {
-// 				console.log('Performing on store-->', store);
-// 				Store.findOne(
-// 					{
-// 						name: store
-// 					},
-// 					(err, data) => {
-// 						data.orders.forEach((order) => {
-// 							if (order.f1 && order.purchase === false) {
-// 								if (moment(order.f1).isBetween(interval, current)) {
-// 									console.log('call shortner function for', order.f1);
-// 									//long url , followup, id, price
-// 									let obj = {
-// 										longUrl: order.url,
-// 										phone: order.phone,
-// 										followUp: 1,
-// 										id: order.id,
-// 										price: order.price,
-// 										vendor: order.vendor,
-// 										name: order.name,
-// 										shop: store
-// 									};
-// 									const short = async () => {
-// 										let res = '';
-// 										res = await shorten(obj);
-// 										console.log('for followUP 1', res);
-// 									};
-// 									short();
-// 								} else console.log('time is not in range', order.f1);
-// 							}
-// 							if (order.f2 && order.purchase === false) {
-// 								if (moment(order.f2).isBetween(interval, current)) {
-// 									console.log('call shortner function for', order.f2);
-// 									let obj = {
-// 										longUrl: order.url,
-// 										followUp: 2,
-// 										id: order.id,
-// 										price: order.price,
-// 										phone: order.phone,
-// 										shop: store
-// 									};
-// 									const short = async () => {
-// 										let res = '';
-// 										res = await shorten(obj);
-// 										console.log('for followUP 2', res);
-// 									};
-// 									short();
-// 								} else console.log('time is not in range', order.f2);
-// 							}
-// 							if (order.f3 && order.purchase === false) {
-// 								if (moment(order.f3).isBetween(interval, current)) {
-// 									console.log('call shortner function for', order.f3);
-// 									let obj = {
-// 										longUrl: order.url,
-// 										followUp: 3,
-// 										id: order.id,
-// 										price: order.price,
-// 										phone: order.phone,
-// 										shop: store
-// 									};
-// 									const short = async () => {
-// 										let res = '';
-// 										res = await shorten(obj);
-// 										console.log('for followUP 3', res);
-// 									};
-// 									short();
-// 								} else console.log('time is not in range', order.f3);
-// 							}
-// 							if (order.f4 && order.purchase === false) {
-// 								if (moment(order.f4).isBetween(interval, current)) {
-// 									console.log('call shortner function for', order.f4);
-// 									let obj = {
-// 										longUrl: order.url,
-// 										followUp: 4,
-// 										phone: order.phone,
-// 										id: order.id,
-// 										price: order.price,
-// 										shop: store
-// 									};
-// 									const short = async () => {
-// 										let res = '';
-// 										res = await shorten(obj);
-// 										console.log('for followUP 4', res);
-// 									};
-// 									short();
-// 								} else console.log('time is not in range', order.f4);
-// 							}
-// 						});
-// 					}
-// 				);
-// 			});
-// 		}
-// 	);
-// });
+
+cron.schedule('*/2 * * * * ', () => {
+	//getting list of all store name
+	console.log('!production cron started');
+	var storeName = [];
+	Store.find(
+		{
+			uninstalled: false,
+			smsCount: {
+				$gt: 0
+			}
+		},
+		(err, stores) => {
+			if (err) {
+				console.log(err);
+			}
+			stores.forEach((store) => {
+				storeName.push(store.name);
+			});
+			let interval = moment().subtract(2, 'minutes').format();
+			let current = moment().format();
+			console.log('current time-->', current);
+			console.log('interval time-->', interval);
+			storeName.forEach((store) => {
+				console.log('Performing on store-->', store);
+				Store.findOne(
+					{
+						name: store
+					},
+					(err, data) => {
+						data.orders.forEach((order) => {
+							if (order.f1 && order.purchase === false) {
+								if (moment(order.f1).isBetween(interval, current)) {
+									console.log('call shortner function for', order.f1);
+									//long url , followup, id, price
+									let obj = {
+										longUrl: order.url,
+										phone: order.phone,
+										followUp: 1,
+										id: order.id,
+										price: order.price,
+										vendor: order.vendor,
+										name: order.name,
+										shop: store
+									};
+									const short = async () => {
+										let res = '';
+										res = await shorten(obj);
+										console.log('for followUP 1', res);
+									};
+									short();
+								} else console.log('time is not in range', order.f1);
+							}
+							if (order.f2 && order.purchase === false) {
+								if (moment(order.f2).isBetween(interval, current)) {
+									console.log('call shortner function for', order.f2);
+									let obj = {
+										longUrl: order.url,
+										followUp: 2,
+										id: order.id,
+										price: order.price,
+										phone: order.phone,
+										shop: store
+									};
+									const short = async () => {
+										let res = '';
+										res = await shorten(obj);
+										console.log('for followUP 2', res);
+									};
+									short();
+								} else console.log('time is not in range', order.f2);
+							}
+							if (order.f3 && order.purchase === false) {
+								if (moment(order.f3).isBetween(interval, current)) {
+									console.log('call shortner function for', order.f3);
+									let obj = {
+										longUrl: order.url,
+										followUp: 3,
+										id: order.id,
+										price: order.price,
+										phone: order.phone,
+										shop: store
+									};
+									const short = async () => {
+										let res = '';
+										res = await shorten(obj);
+										console.log('for followUP 3', res);
+									};
+									short();
+								} else console.log('time is not in range', order.f3);
+							}
+							if (order.f4 && order.purchase === false) {
+								if (moment(order.f4).isBetween(interval, current)) {
+									console.log('call shortner function for', order.f4);
+									let obj = {
+										longUrl: order.url,
+										followUp: 4,
+										phone: order.phone,
+										id: order.id,
+										price: order.price,
+										shop: store
+									};
+									const short = async () => {
+										let res = '';
+										res = await shorten(obj);
+										console.log('for followUP 4', res);
+									};
+									short();
+								} else console.log('time is not in range', order.f4);
+							}
+						});
+					}
+				);
+			});
+		}
+	);
+});
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('client/build'));
 	app.get('*', (req, res) => {
