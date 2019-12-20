@@ -1206,145 +1206,145 @@ const sndSms = async (phone, message, senderID, shop) => {
 	} else {
 		console.log(" can't send sms because, phone number is < 10 digits i.e : ", phone);
 	}
-	Store.findOne(
-		{
-			name: shop
-		},
-		function(err, data) {
-			if (!err) {
-				let smsapi = process.env.SMS_API;
-				if (data.smsCount > 0) {
-					//send SMS
-					var options = {
-						method: 'GET',
-						hostname: 'api.msg91.com',
-						port: null,
-						path: `/api/sendhttp.php?mobiles=${phone}&authkey=${smsapi}&route=4&sender=${senderID}&message=${message}&country=91`,
-						headers: {}
-					};
-					try {
-						var req = http.request(options, function(res) {
-							var chunks = [];
-							res.on('data', function(chunk) {
-								chunks.push(chunk);
-							});
-							res.on('end', function() {
-								var body = Buffer.concat(chunks);
-								console.log(body.toString());
-							});
-						});
-					} catch (error) {
-						console.error("sms couldn't send because of:", error);
-					}
-					//save sms data to DB
-					var obj = {
-						description: message.replace(/%20/g, ' ').replace(/%0A/g, ' '),
-						term: phone
-					};
 
-					try {
-						const data = Store.findOneAndUpdate(
-							{
-								name: shop
-							},
-							{
-								$push: {
-									sms: obj
-								},
-								$set: {
-									smsCount: data.smsCount - 1
-								}
-							},
-							{
-								new: true,
-								useFindAndModify: false
-							}
-						);
-						console.log(data);
-					} catch (error) {
-						console.error(error);
-					}
-					req.end();
-				} else if (data.smsCount < 1) {
-					console.log('SMS Quota Exhausted');
-					Store.findOneAndUpdate(
-						{
-							name: shop
-						},
-						{
-							$push: {
-								sms: obj
-							},
-							$set: {
-								smsCount: 0
-							}
-						},
-						{
-							new: true,
-							useFindAndModify: false
-						},
-						(err, data) => {
-							if (!err) {
-								console.log('data');
-							} else {
-								console.log('err', err);
-							}
-						}
-					);
-				} else {
-					console.log('admin still not recharge');
-				}
+	try {
+		const data = await Store.findOne({
+			name: shop
+		});
+		let smsapi = process.env.SMS_API;
+		if (data.smsCount > 0) {
+			//send SMS
+			var options = {
+				method: 'GET',
+				hostname: 'api.msg91.com',
+				port: null,
+				path: `/api/sendhttp.php?mobiles=${phone}&authkey=${smsapi}&route=4&sender=${senderID}&message=${message}&country=91`,
+				headers: {}
+			};
+			try {
+				var req = http.request(options, function(res) {
+					var chunks = [];
+					res.on('data', function(chunk) {
+						chunks.push(chunk);
+					});
+					res.on('end', function() {
+						var body = Buffer.concat(chunks);
+						console.log(body.toString());
+					});
+				});
+			} catch (error) {
+				console.error("sms couldn't send because of:", error);
 			}
+			//save sms data to DB
+			var obj = {
+				description: message.replace(/%20/g, ' ').replace(/%0A/g, ' '),
+				term: phone
+			};
+
+			try {
+				const data = Store.findOneAndUpdate(
+					{
+						name: shop
+					},
+					{
+						$push: {
+							sms: obj
+						},
+						$set: {
+							smsCount: data.smsCount - 1
+						}
+					},
+					{
+						new: true,
+						useFindAndModify: false
+					}
+				);
+				console.log(data);
+			} catch (error) {
+				console.error(error);
+			}
+			req.end();
+		} else if (data.smsCount < 1) {
+			console.log('SMS Quota Exhausted');
+			Store.findOneAndUpdate(
+				{
+					name: shop
+				},
+				{
+					$push: {
+						sms: obj
+					},
+					$set: {
+						smsCount: 0
+					}
+				},
+				{
+					new: true,
+					useFindAndModify: false
+				},
+				(err, data) => {
+					if (!err) {
+						console.log('data');
+					} else {
+						console.log('err', err);
+					}
+				}
+			);
+		} else {
+			console.log('admin still not recharge');
 		}
-		// notify admin to recharge
-		//send SMS mgs91ed
-		// try {
-		//  phone = adminNumber;
-		// } catch (error) {
-		//  phone = 7821915962
-		// }
-		// message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
-		// var options = {
-		//   method: "GET",
-		//   hostname: "api.msg91.com",
-		//   port: null,
-		//   path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
-		//   headers: {}
-		// };
-		// var req = http.request(options, function(res) {
-		//   var chunks = [];
-		//   res.on("data", function(chunk) {
-		//     chunks.push(chunk);
-		//   });
-		//   res.on("end", function() {
-		//     var body = Buffer.concat(chunks);
-		//     console.log(body.toString());
-		//   });
-		// });
-		//save sms data to DB
-		// var obj = {
-		//   description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
-		//   term: phone
-		// };
-		// Store.findOneAndUpdate(
-		//   { name: shop },
-		//   {
-		//     $push: { sms: obj },
-		//     $set: {
-		//       smsCount: data.smsCount - 1
-		//     }
-		//   },
-		//   { new: true, useFindAndModify: false },
-		//   (err, data) => {
-		//     if (!err) {
-		//       console.log("data");
-		//     } else {
-		//       console.log("err", err);
-		//     }
-		//   }
-		// );
-		// req.end();
-	);
+	} catch (error) {
+		console.error(error);
+	}
+
+	// notify admin to recharge
+	//send SMS mgs91ed
+	// try {
+	//  phone = adminNumber;
+	// } catch (error) {
+	//  phone = 7821915962
+	// }
+	// message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
+	// var options = {
+	//   method: "GET",
+	//   hostname: "api.msg91.com",
+	//   port: null,
+	//   path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
+	//   headers: {}
+	// };
+	// var req = http.request(options, function(res) {
+	//   var chunks = [];
+	//   res.on("data", function(chunk) {
+	//     chunks.push(chunk);
+	//   });
+	//   res.on("end", function() {
+	//     var body = Buffer.concat(chunks);
+	//     console.log(body.toString());
+	//   });
+	// });
+	//save sms data to DB
+	// var obj = {
+	//   description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
+	//   term: phone
+	// };
+	// Store.findOneAndUpdate(
+	//   { name: shop },
+	//   {
+	//     $push: { sms: obj },
+	//     $set: {
+	//       smsCount: data.smsCount - 1
+	//     }
+	//   },
+	//   { new: true, useFindAndModify: false },
+	//   (err, data) => {
+	//     if (!err) {
+	//       console.log("data");
+	//     } else {
+	//       console.log("err", err);
+	//     }
+	//   }
+	// );
+	// req.end();
 };
 app.get('/api/option', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com';
@@ -1353,7 +1353,7 @@ app.get('/api/option', async (req, res) => {
 			const data = Store.findOne({
 				name: req.session.shop
 			});
-
+			console.log('data found');
 			res.send(data.data);
 		} catch (error) {
 			res.send('');
