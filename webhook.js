@@ -1167,7 +1167,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 	);
 	response.sendStatus(200);
 });
-const sndSms = (phone, message, senderID, shop) => {
+const sndSms = async (phone, message, senderID, shop) => {
 	message = message.replace(/ /g, '%20');
 	console.log('type:->> ', typeof phone, phone, 'phone 971 webhook');
 	console.log(phone, '<-- phone sndSmS');
@@ -1348,82 +1348,74 @@ const sndSms = (phone, message, senderID, shop) => {
 		}
 	);
 };
-app.get('/api/option', function(req, res) {
+app.get('/api/option', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com';
 	if (req.session.shop) {
-		Store.findOne(
-			{
+		try {
+			Store.findOne({
 				name: req.session.shop
-			},
-			function(err, data) {
-				if (data) {
-					res.send(data.data);
-				} else {
-					res.send('');
-				}
-			}
-		);
+			});
+
+			res.send(data.data);
+		} catch (error) {
+			res.send('');
+			console.error(error);
+		}
 	} else {
 		console.log('cant find session key form get /api/smsCount || your session timeout');
 	}
 });
 //abandan template
-app.get('/api/abandanTemplate', function(req, res) {
+app.get('/api/abandanTemplate', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com';
 	if (req.session.shop) {
-		Store.findOne(
-			{
+		try {
+			const data = await Store.findOne({
 				name: req.session.shop
-			},
-			function(err, data) {
-				if (data) {
-					res.send(data.abandanTemplate);
-				} else {
-					res.send('!found');
-				}
-			}
-		);
+			});
+
+			res.send(data.abandanTemplate);
+		} catch (error) {
+			console.error(error);
+			res.send('!found');
+		}
 	} else {
 		console.log('cant find session key form get /api/abandanTemplate || your session timeout');
 	}
 });
 //template
-app.get('/api/template', function(req, res) {
+app.get('/api/template', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com'; //delete this localTesting
 	console.log('API called');
 	if (req.session.shop) {
-		Store.findOne(
-			{
+		try {
+			const data = await Store.findOne({
 				name: req.session.shop
-			},
-			function(err, data) {
-				if (data) {
-					res.send(data.template);
-				} else {
-					res.send('!found');
-				}
-			}
-		);
+			});
+
+			res.send(data.template);
+		} catch (error) {
+			console.error(error);
+			res.send('!found');
+		}
 	} else {
 		console.log('cant find session key form get /api/abandanTemplate || your session timeout');
 	}
 });
-app.get('/api/smsCount', function(req, res) {
+app.get('/api/smsCount', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com'; //delete this localTesting
 	if (req.session.shop) {
-		Store.findOne(
-			{
+		try {
+			const data = await Store.findOne({
 				name: req.session.shop
-			},
-			function(err, data) {
-				if (data) {
-					var sms = data.smsCount + '';
-					res.send(sms);
-				} else {
-					res.send('0');
-				}
-			}
-		);
+			});
+
+			var sms = data.smsCount + '';
+			res.send(sms);
+		} catch (error) {
+			console.error(error);
+			res.send('0');
+		}
 	} else {
 		console.log('cant find session key form get /api/smsCount || your session timeout');
 	}
@@ -1445,93 +1437,96 @@ app.get('/api/history', async (req, res) => {
 	// }
 });
 // dashboard
-app.get('/api/dashboard', function(req, res) {
+app.get('/api/dashboard', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com';
 	if (req.session.shop) {
-		Store.findOne(
-			{
+		try {
+			const data = await Store.findOne({
 				name: req.session.shop
-			},
-			function(err, data) {
-				if (data) {
-					let follow = [];
-					let price = [];
-					let inc = [];
-					let count1 = 0;
-					let count2 = 0;
-					let count3 = 0;
-					let count4 = 0;
-					let price1 = 0;
-					let price2 = 0;
-					let price3 = 0;
-					let price4 = 0;
-					let inc1 = 0;
-					let inc2 = 0;
-					let inc3 = 0;
-					let inc4 = 0;
-					data.clicked.forEach((e) => {
-						let idx = e.followUp.length - 1;
-						let dig = e.followUp[idx];
-						if (e.followUp.includes(1)) {
-							inc1++;
-						}
-						if (e.followUp.includes(2)) {
-							inc2++;
-						}
-						if (e.followUp.includes(3)) {
-							inc3++;
-						}
-						if (e.followUp.includes(4)) {
-							inc4++;
-						}
-						if (dig === 1) {
-							count1++;
-							price1 = price1 + e.price;
-						}
-						if (dig === 2) {
-							count2++;
-							price2 = price2 + e.price;
-						}
-						if (dig === 3) {
-							count3++;
-							price3 = price3 + e.price;
-						}
-						if (dig === 4) {
-							count4++;
-							price4 = price4 + e.price;
-						}
-					});
-					follow.push(count1);
-					follow.push(count2);
-					follow.push(count3);
-					follow.push(count4);
-					price.push(price1);
-					price.push(price2);
-					price.push(price3);
-					price.push(price4);
-					inc.push(inc1);
-					inc.push(inc2);
-					inc.push(inc3);
-					inc.push(inc4);
-					let json = {};
-					json.follow = follow;
-					json.price = price;
-					json.inc = inc;
-					res.send(json);
-				} else console.log('else 1179');
+			});
+
+			if (data) {
+				let follow = [];
+				let price = [];
+				let inc = [];
+				let count1 = 0;
+				let count2 = 0;
+				let count3 = 0;
+				let count4 = 0;
+				let price1 = 0;
+				let price2 = 0;
+				let price3 = 0;
+				let price4 = 0;
+				let inc1 = 0;
+				let inc2 = 0;
+				let inc3 = 0;
+				let inc4 = 0;
+				data.clicked.forEach((e) => {
+					let idx = e.followUp.length - 1;
+					let dig = e.followUp[idx];
+					if (e.followUp.includes(1)) {
+						inc1++;
+					}
+					if (e.followUp.includes(2)) {
+						inc2++;
+					}
+					if (e.followUp.includes(3)) {
+						inc3++;
+					}
+					if (e.followUp.includes(4)) {
+						inc4++;
+					}
+					if (dig === 1) {
+						count1++;
+						price1 = price1 + e.price;
+					}
+					if (dig === 2) {
+						count2++;
+						price2 = price2 + e.price;
+					}
+					if (dig === 3) {
+						count3++;
+						price3 = price3 + e.price;
+					}
+					if (dig === 4) {
+						count4++;
+						price4 = price4 + e.price;
+					}
+				});
+				follow.push(count1);
+				follow.push(count2);
+				follow.push(count3);
+				follow.push(count4);
+				price.push(price1);
+				price.push(price2);
+				price.push(price3);
+				price.push(price4);
+				inc.push(inc1);
+				inc.push(inc2);
+				inc.push(inc3);
+				inc.push(inc4);
+				let json = {};
+				json.follow = follow;
+				json.price = price;
+				json.inc = inc;
+				res.send(json);
+			} else {
+				console.log('else 1579');
 			}
-		);
-	} else {
-		res.send({
-			follow: [ 1, 2, 3, 4 ],
-			inc: [ 4, 5, 0, 9 ],
-			price: [ 501, 202, 133, 432 ]
-		});
-		console.log('cant find session key form get /api/dashboard || your session timeout');
+		} catch (error) {
+			console.error(error);
+
+			res.send({
+				follow: [ 1, 2, 3, 4 ],
+				inc: [ 4, 5, 0, 9 ],
+				price: [ 501, 202, 133, 432 ]
+			});
+			console.log('cant find session key form get /api/dashboard || your session timeout');
+		}
 	}
 });
 // save template to db
-app.post('/api/template', function(req, res) {
+app.post('/api/template', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com'; //delete this localTesting
 	console.log('template change request-->', req.body);
 	console.log('template change request shop-->', req.session.shop);
@@ -1546,336 +1541,325 @@ app.post('/api/template', function(req, res) {
 		console.log(topic);
 		console.log(customer);
 		if (req.session.shop) {
-			Store.findOneAndUpdate(
-				{
-					'template.topic': topic
-				},
-				{
-					$set: {
-						'template.$.topic': topic,
-						'template.$.customer': customer
-					}
-				},
-				{
-					new: true,
-					useFindAndModify: false
-				},
-				(err, result) => {
-					if (err) {
-						console.log(err);
-					} else {
-						let obj = {
-							topic: topic,
-							customer: customer,
-							admin: admin
-						};
-						if (result === null) {
-							console.log('result === null');
-							Store.findOneAndUpdate(
-								{
-									name: req.session.shop
-								},
-								{
-									// $addToSet: { template: req.body }
-									$addToSet: {
-										template: obj
-									}
-								},
-								{
-									new: true,
-									useFindAndModify: false
-								},
-								(err, data) => {
-									console.log('delte form db');
-									if (!err) {
-										console.log('data-template->', data);
-									} else {
-										console.log('err');
-									}
-								}
-							);
+			try {
+				const result = await Store.findOneAndUpdate(
+					{
+						'template.topic': topic
+					},
+					{
+						$set: {
+							'template.$.topic': topic,
+							'template.$.customer': customer
 						}
+					},
+					{
+						new: true,
+						useFindAndModify: false
+					}
+				);
+
+				let obj = {
+					topic: topic,
+					customer: customer,
+					admin: admin
+				};
+				if (result === null) {
+					console.log('result === null');
+
+					try {
+						const data = await Store.findOneAndUpdate(
+							{
+								name: req.session.shop
+							},
+							{
+								// $addToSet: { template: req.body }
+								$addToSet: {
+									template: obj
+								}
+							},
+							{
+								new: true,
+								useFindAndModify: false
+							}
+						);
+
+						console.log('templete form db');
+						console.log('data-template->', data);
+					} catch (error) {
+						console.error(error);
 					}
 				}
-			);
+			} catch (error) {
+				console.error(error);
+			}
 		} else {
 			console.log('session timeout');
 		}
 	} else {
 		admin = req.body['adminTemplate'];
 		if (req.session.shop) {
-			Store.findOneAndUpdate(
-				{
-					'template.topic': topic
-				},
-				{
-					$set: {
-						'template.$.topic': topic,
-						// "template.$.customer": customer,
-						'template.$.admin': admin
-					}
-				},
-				{
-					new: true,
-					useFindAndModify: false
-				},
-				(err, result) => {
-					if (err) {
-						console.log(err);
-					} else {
-						let obj = {
-							topic: topic,
-							customer: customer,
-							admin: admin
-						};
-						if (result === null) {
-							Store.findOneAndUpdate(
-								{
-									name: req.session.shop
-								},
-								{
-									// $addToSet: { template: req.body }
-									$addToSet: {
-										template: obj
-									}
-								},
-								{
-									new: true,
-									useFindAndModify: false
-								},
-								(err, data) => {
-									console.log('delte form db');
-									if (!err) {
-										console.log('data');
-									} else {
-										console.log('err');
-									}
-								}
-							);
+			try {
+				const result = await Store.findOneAndUpdate(
+					{
+						'template.topic': topic
+					},
+					{
+						$set: {
+							'template.$.topic': topic,
+
+							'template.$.admin': admin
 						}
+					},
+					{
+						new: true,
+						useFindAndModify: false
+					}
+				);
+				let obj = {
+					topic: topic,
+					customer: customer,
+					admin: admin
+				};
+
+				if (result === null) {
+					try {
+						const data = await Store.findOneAndUpdate(
+							{
+								name: req.session.shop
+							},
+							{
+								$addToSet: {
+									template: obj
+								}
+							},
+							{
+								new: true,
+								useFindAndModify: false
+							}
+						);
+
+						console.log('delte form db');
+
+						console.log(data, 'data');
+					} catch (error) {
+						console.error(error);
 					}
 				}
-			);
+			} catch (error) {
+				console.error(error);
+			}
 		} else {
 			console.log('session timeout');
 		}
 	}
 });
 // save abandan template to db
-app.post('/api/abandanTemplate', function(req, res) {
+app.post('/api/abandanTemplate', async (req, res) => {
 	console.log(req.body, 'AT body');
 	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
 	res.sendStatus(200);
 	if (req.session.shop) {
-		Store.findOneAndUpdate(
-			{
-				'abandanTemplate.topic': req.body.topic
-			},
-			{
-				$set: {
-					'abandanTemplate.$.topic': req.body.topic,
-					'abandanTemplate.$.template': req.body.template,
-					'abandanTemplate.$.time': req.body.time,
-					'abandanTemplate.$.status': req.body.status
-				}
-			},
-			{
-				new: true,
-				useFindAndModify: false
-			},
-			(err, result) => {
-				if (err) {
-					console.log(err);
-				} else {
-					if (result === null) {
-						Store.findOneAndUpdate(
-							{
-								name: req.session.shop
-							},
-							{
-								$addToSet: {
-									abandanTemplate: req.body
-								}
-							},
-							{
-								new: true,
-								useFindAndModify: false
-							},
-							(err, data) => {
-								if (!err) {
-									console.log('data');
-								} else {
-									console.log('err');
-								}
-							}
-						);
+		try {
+			const result = await Store.findOneAndUpdate(
+				{
+					'abandanTemplate.topic': req.body.topic
+				},
+				{
+					$set: {
+						'abandanTemplate.$.topic': req.body.topic,
+						'abandanTemplate.$.template': req.body.template,
+						'abandanTemplate.$.time': req.body.time,
+						'abandanTemplate.$.status': req.body.status
 					}
+				},
+				{
+					new: true,
+					useFindAndModify: false
 				}
-			}
-		);
-	} else {
-		console.log('session timeout');
-	}
-});
-// send rechage smscount to db
-app.post('/api/recharge', function(req, res) {
-	let sms = req.body;
-	if (req.session.shop) {
-		Store.findOne(
-			{
-				name: req.session.shop
-			},
-			function(err, data) {
-				if (data) {
-					var smsLeft = data.smsCount;
-					console.log('smsLeft', smsLeft);
-					Store.findOneAndUpdate(
+			);
+			console.log(result);
+
+			if (result === null) {
+				try {
+					const data = await Store.findOneAndUpdate(
 						{
 							name: req.session.shop
 						},
 						{
-							$set: {
-								smsCount: smsLeft + parseInt(sms.smsCount)
+							$addToSet: {
+								abandanTemplate: req.body
 							}
 						},
 						{
 							new: true,
 							useFindAndModify: false
-						},
-						(err, data) => {
-							if (!err) {
-								console.log(data, 'data');
-							} else {
-								console.log('err', err);
-							}
 						}
 					);
-				} else {
-					console.log(err);
-					res.send('100');
+					console.log(data, 'data');
+				} catch (error) {
+					console.error(error);
 				}
 			}
-		);
+		} catch (error) {
+			console.error(error);
+		}
+	} else {
+		console.log('session timeout');
+	}
+});
+// send rechage smscount to db
+app.post('/api/recharge', async (req, res) => {
+	let sms = req.body;
+	if (req.session.shop) {
+		try {
+			const result = await Store.findOne({
+				name: req.session.shop
+			});
+
+			var smsLeft = result.smsCount;
+			console.log('smsLeft', smsLeft);
+
+			try {
+				const data = await Store.findOneAndUpdate(
+					{
+						name: req.session.shop
+					},
+					{
+						$set: {
+							smsCount: smsLeft + parseInt(sms.smsCount)
+						}
+					},
+					{
+						new: true,
+						useFindAndModify: false
+					}
+				);
+				console.log(data, 'data');
+			} catch (error) {
+				console.error(error);
+			}
+		} catch (error) {
+			console.error(error);
+		}
 	} else {
 		console.log('sesssion timeout');
 	}
 });
 
-cron.schedule('*/2 * * * * ', () => {
+cron.schedule('*/2 * * * * ', async () => {
 	//getting list of all store name
 	console.log('!production cron started');
 	var storeName = [];
-	Store.find(
-		{
+	try {
+		const stores = await Store.find({
 			uninstalled: false,
 			smsCount: {
 				$gt: 0
 			}
-		},
-		(err, stores) => {
-			if (err) {
-				console.log(err);
-			}
-			stores.forEach((store) => {
-				storeName.push(store.name);
-			});
-			let interval = moment().subtract(2, 'minutes').format();
-			let current = moment().format();
-			console.log('current time-->', current);
-			console.log('interval time-->', interval);
-			storeName.forEach((store) => {
-				console.log('Performing on store-->', store);
-				Store.findOne(
-					{
-						name: store
-					},
-					(err, data) => {
-						data.orders.forEach((order) => {
-							if (order.f1 && order.purchase === false) {
-								if (moment(order.f1).isBetween(interval, current)) {
-									console.log('call shortner function for', order.f1);
-									//long url , followup, id, price
-									let obj = {
-										longUrl: order.url,
-										phone: order.phone,
-										followUp: 1,
-										id: order.id,
-										price: order.price,
-										vendor: order.vendor,
-										name: order.name,
-										shop: store
-									};
-									const short = async () => {
-										let res = '';
-										res = await shorten(obj);
-										console.log('for followUP 1', res);
-									};
-									short();
-								} else console.log('time is not in range', order.f1);
-							}
-							if (order.f2 && order.purchase === false) {
-								if (moment(order.f2).isBetween(interval, current)) {
-									console.log('call shortner function for', order.f2);
-									let obj = {
-										longUrl: order.url,
-										followUp: 2,
-										id: order.id,
-										price: order.price,
-										phone: order.phone,
-										shop: store
-									};
-									const short = async () => {
-										let res = '';
-										res = await shorten(obj);
-										console.log('for followUP 2', res);
-									};
-									short();
-								} else console.log('time is not in range', order.f2);
-							}
-							if (order.f3 && order.purchase === false) {
-								if (moment(order.f3).isBetween(interval, current)) {
-									console.log('call shortner function for', order.f3);
-									let obj = {
-										longUrl: order.url,
-										followUp: 3,
-										id: order.id,
-										price: order.price,
-										phone: order.phone,
-										shop: store
-									};
-									const short = async () => {
-										let res = '';
-										res = await shorten(obj);
-										console.log('for followUP 3', res);
-									};
-									short();
-								} else console.log('time is not in range', order.f3);
-							}
-							if (order.f4 && order.purchase === false) {
-								if (moment(order.f4).isBetween(interval, current)) {
-									console.log('call shortner function for', order.f4);
-									let obj = {
-										longUrl: order.url,
-										followUp: 4,
-										phone: order.phone,
-										id: order.id,
-										price: order.price,
-										shop: store
-									};
-									const short = async () => {
-										let res = '';
-										res = await shorten(obj);
-										console.log('for followUP 4', res);
-									};
-									short();
-								} else console.log('time is not in range', order.f4);
-							}
-						});
+		});
+
+		stores.forEach((store) => {
+			storeName.push(store.name);
+		});
+
+		let interval = moment().subtract(2, 'minutes').format();
+		let current = moment().format();
+		console.log('current time-->', current);
+		console.log('interval time-->', interval);
+
+		storeName.forEach(async (store) => {
+			console.log('Performing on store-->', store);
+
+			try {
+				const data = await Store.findOne({ name: store });
+
+				data.orders.forEach(async (order) => {
+					if (order.f1 && order.purchase === false) {
+						if (moment(order.f1).isBetween(interval, current)) {
+							console.log('call shortner function for', order.f1);
+							let obj = {
+								longUrl: order.url,
+								phone: order.phone,
+								followUp: 1,
+								id: order.id,
+								price: order.price,
+								vendor: order.vendor,
+								name: order.name,
+								shop: store
+							};
+							const short = async () => {
+								let res = '';
+								res = await shorten(obj);
+								console.log('for followUP 1', res);
+							};
+							short();
+						} else console.log('time is not in range', order.f1);
 					}
-				);
-			});
-		}
-	);
+					if (order.f2 && order.purchase === false) {
+						if (moment(order.f2).isBetween(interval, current)) {
+							console.log('call shortner function for', order.f2);
+							let obj = {
+								longUrl: order.url,
+								followUp: 2,
+								id: order.id,
+								price: order.price,
+								phone: order.phone,
+								shop: store
+							};
+							const short = async () => {
+								let res = '';
+								res = await shorten(obj);
+								console.log('for followUP 2', res);
+							};
+							short();
+						} else console.log('time is not in range', order.f2);
+					}
+					if (order.f3 && order.purchase === false) {
+						if (moment(order.f3).isBetween(interval, current)) {
+							console.log('call shortner function for', order.f3);
+							let obj = {
+								longUrl: order.url,
+								followUp: 3,
+								id: order.id,
+								price: order.price,
+								phone: order.phone,
+								shop: store
+							};
+							const short = async () => {
+								let res = '';
+								res = await shorten(obj);
+								console.log('for followUP 3', res);
+							};
+							short();
+						} else console.log('time is not in range', order.f3);
+					}
+					if (order.f4 && order.purchase === false) {
+						if (moment(order.f4).isBetween(interval, current)) {
+							console.log('call shortner function for', order.f4);
+							let obj = {
+								longUrl: order.url,
+								followUp: 4,
+								phone: order.phone,
+								id: order.id,
+								price: order.price,
+								shop: store
+							};
+							const short = async () => {
+								let res = '';
+								res = await shorten(obj);
+								console.log('for followUP 4', res);
+							};
+							short();
+						} else console.log('time is not in range', order.f4);
+					}
+				});
+			} catch (error) {
+				console.error(error);
+			}
+		});
+	} catch (error) {
+		console.error(error);
+	}
 });
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('client/build'));
