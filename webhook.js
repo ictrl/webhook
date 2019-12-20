@@ -1132,29 +1132,28 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 					case 'app/uninstalled':
 						//! todo
 						console.log(`app uninstallation request from ${shop}`);
-						Store.findOneAndUpdate(
-							{
-								name: shop
-							},
-							{
-								$set: {
-									uninstalled: true
+
+						try {
+							const uninstalle = await Store.findOneAndUpdate(
+								{
+									name: shop
+								},
+								{
+									$set: {
+										uninstalled: true
+									}
+								},
+								{
+									new: true,
+									useFindAndModify: false
 								}
-							},
-							{
-								new: true,
-								useFindAndModify: false
-							},
-							(err, data) => {
-								if (!err) {
-									console.log(`uninstall registered for ${shop}`);
-								} else {
-									console.log(`uninstall registration failed for ${shop} because of ${err}`);
-								}
-							}
-						);
-						console.log('someone uninstalled app');
-						//do task you want to do after admin uninstall the app
+							);
+							console.log('someone uninstalled app', shop);
+							console.log(uninstalle);
+						} catch (error) {
+							console.error(error);
+						}
+
 						break;
 					default:
 						console.log('!possible');
@@ -1266,30 +1265,29 @@ const sndSms = async (phone, message, senderID, shop) => {
 			req.end();
 		} else if (data.smsCount < 1) {
 			console.log('SMS Quota Exhausted');
-			Store.findOneAndUpdate(
-				{
-					name: shop
-				},
-				{
-					$push: {
-						sms: obj
+
+			try {
+				const data = await Store.findOneAndUpdate(
+					{
+						name: shop
 					},
-					$set: {
-						smsCount: 0
+					{
+						$push: {
+							sms: obj
+						},
+						$set: {
+							smsCount: 0
+						}
+					},
+					{
+						new: true,
+						useFindAndModify: false
 					}
-				},
-				{
-					new: true,
-					useFindAndModify: false
-				},
-				(err, data) => {
-					if (!err) {
-						console.log('data');
-					} else {
-						console.log('err', err);
-					}
-				}
-			);
+				);
+				console.log(data);
+			} catch (error) {
+				console.error(error);
+			}
 		} else {
 			console.log('admin still not recharge');
 		}
@@ -1347,14 +1345,14 @@ const sndSms = async (phone, message, senderID, shop) => {
 	// req.end();
 };
 app.get('/api/option', async (req, res) => {
-	// req.session.shop = 'demo-mojito.myshopify.com';
+	req.session.shop = 'demo-mojito.myshopify.com';
 	if (req.session.shop) {
 		try {
-			const data = Store.findOne({
+			const result = await Store.findOne({
 				name: req.session.shop
 			});
 			console.log('data found');
-			res.send(data.data);
+			res.send(result.data);
 		} catch (error) {
 			res.send('');
 			console.error(error);

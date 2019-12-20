@@ -34,17 +34,17 @@ export default function Settings() {
 	const [ orderFulfilledAdmin, setOrderFulfilledAdmin ] = useState(false);
 	const handleOrderFulfilledAdmin = useCallback((value) => setOrderFulfilledAdmin(value), []);
 
-	const getOption = () => {
-		axios.get('/api/option/').then((res) => {
-			setAdminPhone(res.data['admin no']);
-			setSenderID(res.data['sender id']);
-			setOrderCreateCustomer(res.data['orders/create customer']);
-			setOrderCreateAdmin(res.data['orders/create admin']);
-			setOrderCancelledCustomer(res.data['orders/cancelled customer']);
-			setOrderCancelledAdmin(res.data['orders/cancelled admin']);
-			setOrderFulfilledAdmin(res.data['orders/fulfilled admin']);
-			setOrderFulfilledCustomer(res.data['orders/fulfilled customer']);
-		});
+	const getOption = async () => {
+		const res = await axios.get('/api/option/');
+		console.log(res);
+		setAdminPhone(res.data['admin no']);
+		setSenderID(res.data['sender id']);
+		setOrderCreateCustomer(res.data['orders/create customer']);
+		setOrderCreateAdmin(res.data['orders/create admin']);
+		setOrderCancelledCustomer(res.data['orders/cancelled customer']);
+		setOrderCancelledAdmin(res.data['orders/cancelled admin']);
+		setOrderFulfilledAdmin(res.data['orders/fulfilled admin']);
+		setOrderFulfilledCustomer(res.data['orders/fulfilled customer']);
 	};
 
 	let preference = {
