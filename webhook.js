@@ -1345,7 +1345,7 @@ const sndSms = async (phone, message, senderID, shop) => {
 	// req.end();
 };
 app.get('/api/option', async (req, res) => {
-	req.session.shop = 'demo-mojito.myshopify.com';
+	// req.session.shop = 'demo-mojito.myshopify.com';
 	if (req.session.shop) {
 		try {
 			const result = await Store.findOne({
