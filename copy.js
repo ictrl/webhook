@@ -8,7 +8,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 	useUnifiedTopology: true,
 	useCreateIndex: true
 });
-let shop = 'uadaan.myshopify.com';
+let shop = 'hamsterlondon1.myshopify.com';
 
 const Store = require('./models/Shop');
 const Url = require('./models/Url');
@@ -16,22 +16,37 @@ const Url = require('./models/Url');
 const app = express();
 app.use(express.json());
 
-app.get('/api/history', function(req, res) {
-	shop = 'uadaan.myshopify.com'; //delete this localTesting
+const functionn = async (params) => {
+	const result = await Store.findOne({
+		name: shop
+	});
 
-	console.log(req.body.session);
-
-	if (req.body.session.views[pathname]) {
-		Store.findOne({ name: shop }, function(err, data) {
-			if (data) {
-				var history = data.sms;
-				res.send(history);
-			}
-		});
+	// console.log(result.data);
+	if (result.data['orders/create admin'] === true) {
+		console.log('snd msg to admin');
 	} else {
-		console.log("can't  find session key form get /api/history || your session timeout");
+		console.log('dont snd msg to admin');
 	}
-});
+};
+
+functionn();
+
+// app.get('/api/history', function(req, res) {
+// 	shop = 'uadaan.myshopify.com'; //delete this localTesting
+
+// 	console.log(req.body.session);
+
+// 	if (req.body.session.views[pathname]) {
+// 		Store.findOne({ name: shop }, function(err, data) {
+// 			if (data) {
+// 				var history = data.sms;
+// 				res.send(history);
+// 			}
+// 		});
+// 	} else {
+// 		console.log("can't  find session key form get /api/history || your session timeout");
+// 	}
+// });
 
 // Url.findOneAndUpdate({
 //         id: 11999085264975

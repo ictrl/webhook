@@ -686,7 +686,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						// 	}
 						// }
 
-						if (data.data['orders/create customer'] != undefined && data.data['orders/create admin'] != undefined) {
+						if (data.data['orders/create customer'] === true && data.data['orders/create admin'] === true) {
 							// data.smsCount + 2
 							Store.findOneAndUpdate(
 								{
@@ -710,7 +710,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								}
 							);
 						}
-						if (data.data['orders/create customer'] != undefined) {
+						if (data.data['orders/create customer'] === true) {
 							message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
 							if (data.template !== undefined) {
 								data.template.forEach((element) => {
@@ -800,7 +800,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						//  //end
 						//  sndSms(phone, message, senderID, shop);
 						// }
-						if (data.data['orders/create admin'] != undefined) {
+						if (data.data['orders/create admin'] === true) {
 							message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
 							if (data.template !== undefined) {
 								data.template.forEach((element) => {
@@ -872,10 +872,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						fulfillment_status = request.body.fulfillment_status;
 						updated_at = request.body.updated_at;
 						order_status_url = request.body.order_status_url;
-						if (
-							data.data['orders/fulfilled customer'] != undefined &&
-							data.data['orders/fulfilled admin'] != undefined
-						) {
+						if (data.data['orders/fulfilled customer'] === true && data.data['orders/fulfilled admin'] === true) {
 							// data.smsCount + 2
 							Store.findOneAndUpdate(
 								{
@@ -899,7 +896,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								}
 							);
 						}
-						if (data.data['orders/fulfilled customer'] != undefined) {
+						if (data.data['orders/fulfilled customer'] === true) {
 							message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
 							//end
 							if (data.template !== undefined) {
@@ -947,7 +944,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								sndSms(phone, message, senderID, shop);
 							}
 						}
-						if (data.data['orders/fulfilled admin'] != undefined) {
+						if (data.data['orders/fulfilled admin'] === true) {
 							let admin = data.data['admin no'];
 							adminNumber = admin;
 							let senderID = data.data['sender id'];
@@ -1017,10 +1014,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						country = request.body.shipping_address.country;
 						cancelled_at = request.body.cancelled_at;
 						cancel_reason = request.body.cancel_reason;
-						if (
-							data.data['orders/cancelled customer'] != undefined &&
-							data.data['orders/cancelled admin'] != undefined
-						) {
+						if (data.data['orders/cancelled customer'] === true && data.data['orders/cancelled admin'] === true) {
 							Store.findOneAndUpdate(
 								{
 									name: shop
@@ -1043,7 +1037,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								}
 							);
 						}
-						if (data.data['orders/cancelled customer'] != undefined) {
+						if (data.data['orders/cancelled customer'] === true) {
 							message = `Hi%20${name}%20your%20order%20ID:%20${orderId}%20is%20cancelled.%20We%20will%20process%20refund%20soon.`;
 							if (data.template !== undefined) {
 								data.template.forEach((element) => {
@@ -1091,7 +1085,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								sndSms(phone, message, senderID, shop);
 							}
 						}
-						if (data.data['orders/cancelled admin'] != undefined) {
+						if (data.data['orders/cancelled admin'] === true) {
 							let admin = data.data['admin no'];
 							adminNumber = admin;
 							let senderID = data.data['sender id'];
