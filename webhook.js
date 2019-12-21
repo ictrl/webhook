@@ -686,7 +686,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						// 	}
 						// }
 
-						if (data.data['orders/create customer'] === true || data.data['orders/create admin'] !== true) {
+						if (data.data['orders/create customer'] === true || data.data['orders/create admin'] === true) {
 							// data.smsCount + 2
 							Store.findOneAndUpdate(
 								{
