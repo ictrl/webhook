@@ -1521,9 +1521,10 @@ app.get('/api/dashboard', async (req, res) => {
 		}
 	}
 });
+
 // save template to db
-app.post('/api/template', async (req, res) => {
-	// req.session.shop = 'demo-mojito.myshopify.com'; //delete this localTesting
+app.post('/api/template', function(req, res) {
+	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
 	console.log('template change request-->', req.body);
 	console.log('template change request shop-->', req.session.shop);
 	res.sendStatus(200);
@@ -1537,172 +1538,360 @@ app.post('/api/template', async (req, res) => {
 		console.log(topic);
 		console.log(customer);
 		if (req.session.shop) {
-			try {
-				const result = await Store.findOneAndUpdate(
-					{
-						'template.topic': topic
-					},
-					{
-						$set: {
-							'template.$.topic': topic,
-							'template.$.customer': customer
-						}
-					},
-					{
-						new: true,
-						useFindAndModify: false
+			Store.findOneAndUpdate(
+				{
+					'template.topic': topic
+				},
+				{
+					$set: {
+						'template.$.topic': topic,
+						'template.$.customer': customer
 					}
-				);
-
-				let obj = {
-					topic: topic,
-					customer: customer,
-					admin: admin
-				};
-				if (result === null) {
-					console.log('result === null');
-
-					try {
-						const data = await Store.findOneAndUpdate(
-							{
-								name: req.session.shop
-							},
-							{
-								// $addToSet: { template: req.body }
-								$addToSet: {
-									template: obj
+				},
+				{
+					new: true,
+					useFindAndModify: false
+				},
+				(err, result) => {
+					if (err) {
+						console.log(err);
+					} else {
+						let obj = {
+							topic: topic,
+							customer: customer,
+							admin: admin
+						};
+						if (result === null) {
+							console.log('result === null');
+							Store.findOneAndUpdate(
+								{
+									name: req.session.shop
+								},
+								{
+									// $addToSet: { template: req.body }
+									$addToSet: {
+										template: obj
+									}
+								},
+								{
+									new: true,
+									useFindAndModify: false
+								},
+								(err, data) => {
+									console.log('delte form db');
+									if (!err) {
+										console.log('data-template->', data);
+									} else {
+										console.log('err');
+									}
 								}
-							},
-							{
-								new: true,
-								useFindAndModify: false
-							}
-						);
-
-						console.log('templete form db');
-						console.log('data-template->', data);
-					} catch (error) {
-						console.error(error);
+							);
+						}
 					}
 				}
-			} catch (error) {
-				console.error(error);
-			}
+			);
 		} else {
 			console.log('session timeout');
 		}
 	} else {
 		admin = req.body['adminTemplate'];
 		if (req.session.shop) {
-			try {
-				const result = await Store.findOneAndUpdate(
-					{
-						'template.topic': topic
-					},
-					{
-						$set: {
-							'template.$.topic': topic,
-
-							'template.$.admin': admin
-						}
-					},
-					{
-						new: true,
-						useFindAndModify: false
+			Store.findOneAndUpdate(
+				{
+					'template.topic': topic
+				},
+				{
+					$set: {
+						'template.$.topic': topic,
+						// "template.$.customer": customer,
+						'template.$.admin': admin
 					}
-				);
-				let obj = {
-					topic: topic,
-					customer: customer,
-					admin: admin
-				};
-
-				if (result === null) {
-					try {
-						const data = await Store.findOneAndUpdate(
-							{
-								name: req.session.shop
-							},
-							{
-								$addToSet: {
-									template: obj
+				},
+				{
+					new: true,
+					useFindAndModify: false
+				},
+				(err, result) => {
+					if (err) {
+						console.log(err);
+					} else {
+						let obj = {
+							topic: topic,
+							customer: customer,
+							admin: admin
+						};
+						if (result === null) {
+							Store.findOneAndUpdate(
+								{
+									name: req.session.shop
+								},
+								{
+									// $addToSet: { template: req.body }
+									$addToSet: {
+										template: obj
+									}
+								},
+								{
+									new: true,
+									useFindAndModify: false
+								},
+								(err, data) => {
+									console.log('delte form db');
+									if (!err) {
+										console.log('data');
+									} else {
+										console.log('err');
+									}
 								}
-							},
-							{
-								new: true,
-								useFindAndModify: false
-							}
-						);
-
-						console.log('delte form db');
-
-						console.log(data, 'data');
-					} catch (error) {
-						console.error(error);
+							);
+						}
 					}
 				}
-			} catch (error) {
-				console.error(error);
-			}
+			);
 		} else {
 			console.log('session timeout');
 		}
 	}
 });
 // save abandan template to db
-app.post('/api/abandanTemplate', async (req, res) => {
+app.post('/api/abandanTemplate', function(req, res) {
 	console.log(req.body, 'AT body');
 	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
 	res.sendStatus(200);
 	if (req.session.shop) {
-		try {
-			const result = await Store.findOneAndUpdate(
-				{
-					'abandanTemplate.topic': req.body.topic
-				},
-				{
-					$set: {
-						'abandanTemplate.$.topic': req.body.topic,
-						'abandanTemplate.$.template': req.body.template,
-						'abandanTemplate.$.time': req.body.time,
-						'abandanTemplate.$.status': req.body.status
-					}
-				},
-				{
-					new: true,
-					useFindAndModify: false
+		Store.findOneAndUpdate(
+			{
+				'abandanTemplate.topic': req.body.topic
+			},
+			{
+				$set: {
+					'abandanTemplate.$.topic': req.body.topic,
+					'abandanTemplate.$.template': req.body.template,
+					'abandanTemplate.$.time': req.body.time,
+					'abandanTemplate.$.status': req.body.status
 				}
-			);
-			console.log(result);
-
-			if (result === null) {
-				try {
-					const data = await Store.findOneAndUpdate(
-						{
-							name: req.session.shop
-						},
-						{
-							$addToSet: {
-								abandanTemplate: req.body
+			},
+			{
+				new: true,
+				useFindAndModify: false
+			},
+			(err, result) => {
+				if (err) {
+					console.log(err);
+				} else {
+					if (result === null) {
+						Store.findOneAndUpdate(
+							{
+								name: req.session.shop
+							},
+							{
+								$addToSet: {
+									abandanTemplate: req.body
+								}
+							},
+							{
+								new: true,
+								useFindAndModify: false
+							},
+							(err, data) => {
+								if (!err) {
+									console.log('data');
+								} else {
+									console.log('err');
+								}
 							}
-						},
-						{
-							new: true,
-							useFindAndModify: false
-						}
-					);
-					console.log(data, 'data');
-				} catch (error) {
-					console.error(error);
+						);
+					}
 				}
 			}
-		} catch (error) {
-			console.error(error);
-		}
+		);
 	} else {
 		console.log('session timeout');
 	}
 });
+
+// save template to db
+// app.post('/api/template', async (req, res) => {
+// 	// req.session.shop = 'demo-mojito.myshopify.com'; //delete this localTesting
+// 	console.log('template change request-->', req.body);
+// 	console.log('template change request shop-->', req.session.shop);
+// 	res.sendStatus(200);
+// 	let topic = req.body.topic.trim();
+// 	let customer = '';
+// 	let admin = '';
+// 	//check in db if there is any template is present then switch it to value
+// 	if (req.body['customerTemplate'] != null) {
+// 		console.log('customer value 1 ');
+// 		customer = req.body['customerTemplate'];
+// 		console.log(topic);
+// 		console.log(customer);
+// 		if (req.session.shop) {
+// 			try {
+// 				const result = await Store.findOneAndUpdate(
+// 					{
+// 						'template.topic': topic
+// 					},
+// 					{
+// 						$set: {
+// 							'template.$.topic': topic,
+// 							'template.$.customer': customer
+// 						}
+// 					},
+// 					{
+// 						new: true,
+// 						useFindAndModify: false
+// 					}
+// 				);
+
+// 				let obj = {
+// 					topic: topic,
+// 					customer: customer,
+// 					admin: admin
+// 				};
+// 				if (result === null) {
+// 					console.log('result === null');
+
+// 					try {
+// 						const data = await Store.findOneAndUpdate(
+// 							{
+// 								name: req.session.shop
+// 							},
+// 							{
+// 								// $addToSet: { template: req.body }
+// 								$addToSet: {
+// 									template: obj
+// 								}
+// 							},
+// 							{
+// 								new: true,
+// 								useFindAndModify: false
+// 							}
+// 						);
+
+// 						console.log('templete form db');
+// 						console.log('data-template->', data);
+// 					} catch (error) {
+// 						console.error(error);
+// 					}
+// 				}
+// 			} catch (error) {
+// 				console.error(error);
+// 			}
+// 		} else {
+// 			console.log('session timeout');
+// 		}
+// 	} else {
+// 		admin = req.body['adminTemplate'];
+// 		if (req.session.shop) {
+// 			try {
+// 				const result = await Store.findOneAndUpdate(
+// 					{
+// 						'template.topic': topic
+// 					},
+// 					{
+// 						$set: {
+// 							'template.$.topic': topic,
+
+// 							'template.$.admin': admin
+// 						}
+// 					},
+// 					{
+// 						new: true,
+// 						useFindAndModify: false
+// 					}
+// 				);
+// 				let obj = {
+// 					topic: topic,
+// 					customer: customer,
+// 					admin: admin
+// 				};
+
+// 				if (result === null) {
+// 					try {
+// 						const data = await Store.findOneAndUpdate(
+// 							{
+// 								name: req.session.shop
+// 							},
+// 							{
+// 								$addToSet: {
+// 									template: obj
+// 								}
+// 							},
+// 							{
+// 								new: true,
+// 								useFindAndModify: false
+// 							}
+// 						);
+
+// 						console.log('delte form db');
+
+// 						console.log(data, 'data');
+// 					} catch (error) {
+// 						console.error(error);
+// 					}
+// 				}
+// 			} catch (error) {
+// 				console.error(error);
+// 			}
+// 		} else {
+// 			console.log('session timeout');
+// 		}
+// 	}
+// });
+// // save abandan template to db
+// app.post('/api/abandanTemplate', async (req, res) => {
+// 	console.log(req.body, 'AT body');
+// 	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
+// 	res.sendStatus(200);
+// 	if (req.session.shop) {
+// 		try {
+// 			const result = await Store.findOneAndUpdate(
+// 				{
+// 					'abandanTemplate.topic': req.body.topic
+// 				},
+// 				{
+// 					$set: {
+// 						'abandanTemplate.$.topic': req.body.topic,
+// 						'abandanTemplate.$.template': req.body.template,
+// 						'abandanTemplate.$.time': req.body.time,
+// 						'abandanTemplate.$.status': req.body.status
+// 					}
+// 				},
+// 				{
+// 					new: true,
+// 					useFindAndModify: false
+// 				}
+// 			);
+// 			console.log(result);
+
+// 			if (result === null) {
+// 				try {
+// 					const data = await Store.findOneAndUpdate(
+// 						{
+// 							name: req.session.shop
+// 						},
+// 						{
+// 							$addToSet: {
+// 								abandanTemplate: req.body
+// 							}
+// 						},
+// 						{
+// 							new: true,
+// 							useFindAndModify: false
+// 						}
+// 					);
+// 					console.log(data, 'data');
+// 				} catch (error) {
+// 					console.error(error);
+// 				}
+// 			}
+// 		} catch (error) {
+// 			console.error(error);
+// 		}
+// 	} else {
+// 		console.log('session timeout');
+// 	}
+// });
 // send rechage smscount to db
 app.post('/api/recharge', async (req, res) => {
 	let sms = req.body;
