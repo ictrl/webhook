@@ -597,6 +597,15 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						break;
 					case 'orders/create':
 						console.log('orders/create response');
+
+						console.log(
+							'some if result: ',
+							data.data['orders/create customer'],
+							data.data['orders/create admin'],
+							'data.data starts from hrer',
+							data.data
+						);
+
 						name = request.body.shipping_address.first_name;
 						email = request.body.email;
 						order_status_url = request.body.order_status_url;
@@ -686,7 +695,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						// 	}
 						// }
 
-						if (data.data['orders/create customer'] === true || data.data['orders/create admin'] === true) {
+						if (data.data['orders/create customer'] === true && data.data['orders/create admin'] === true) {
+							console.log('both true at orders/create');
 							// data.smsCount + 2
 							Store.findOneAndUpdate(
 								{
@@ -711,6 +721,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							);
 						}
 						if (data.data['orders/create customer'] === true) {
+							console.log('customer true at orders/create');
+
 							message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20will%20be%20shipped%20shortly.%20Your%20order%20ID:%20${orderId}`;
 							if (data.template !== undefined) {
 								data.template.forEach((element) => {
@@ -801,6 +813,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						//  sndSms(phone, message, senderID, shop);
 						// }
 						if (data.data['orders/create admin'] === true) {
+							console.log('admin true at orders/create');
+
 							message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
 							if (data.template !== undefined) {
 								data.template.forEach((element) => {
