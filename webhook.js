@@ -886,7 +886,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						fulfillment_status = request.body.fulfillment_status;
 						updated_at = request.body.updated_at;
 						order_status_url = request.body.order_status_url;
-						if (data.data['orders/fulfilled customer'] === true || data.data['orders/fulfilled admin'] === true) {
+						if (data.data['orders/fulfilled customer'] === true && data.data['orders/fulfilled admin'] === true) {
 							// data.smsCount + 2
 							Store.findOneAndUpdate(
 								{
@@ -1028,7 +1028,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						country = request.body.shipping_address.country;
 						cancelled_at = request.body.cancelled_at;
 						cancel_reason = request.body.cancel_reason;
-						if (data.data['orders/cancelled customer'] === true || data.data['orders/cancelled admin'] === true) {
+						if (data.data['orders/cancelled customer'] === true && data.data['orders/cancelled admin'] === true) {
 							Store.findOneAndUpdate(
 								{
 									name: shop
@@ -2137,8 +2137,8 @@ cron.schedule('*/2 * * * * ', async () => {
 			}
 		});
 
-		stores.forEach((store) => {
-			storeName.push(store.name);
+		stores.forEach(async (store) => {
+			await storeName.push(store.name);
 		});
 
 		let interval = moment().subtract(2, 'minutes').format();

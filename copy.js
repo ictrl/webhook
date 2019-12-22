@@ -16,20 +16,77 @@ const Url = require('./models/Url');
 const app = express();
 app.use(express.json());
 
-const functionn = async (params) => {
-	const result = await Store.findOne({
-		name: shop
-	});
+// const functionn = async (params) => {
+// 	const stores = await Store.find({
+// 		uninstalled: false,
+// 		smsCount: {
+// 			$gt: 0
+// 		}
+// 	});
+// 	console.log('type: ');
+// 	console.log(typeof stores);
+// 	console.log('stores content: ', stores);
+// };
 
-	// console.log(result.data);
-	if (result.data['orders/create admin'] === true) {
-		console.log('snd msg to admin');
-	} else {
-		console.log('dont snd msg to admin');
+////////////////////////////////////////////////////
+
+const functionn = async (params) => {
+	console.log('!production cron started');
+	var storeName = [];
+	try {
+		const stores = await Store.find({
+			uninstalled: false,
+			smsCount: {
+				$gt: 0
+			}
+		});
+		console.log(stores);
+
+		stores.forEach(async (store) => {
+			await storeName.push(store.name);
+		});
+
+		let interval = moment().subtract(5, 'minutes').format();
+		let current = moment().format();
+		console.log('current time-->', current);
+		console.log('interval time-->', interval);
+
+		storeName.forEach(async (store) => {
+			console.log('Performing on store-->', store);
+
+			try {
+				const data = await Store.findOne({ name: store });
+
+				data.orders.forEach(async (order) => {
+					if (order.f1 && order.purchase === false) {
+						if (moment(order.f1).isBetween(interval, current)) {
+							console.log('call shortner function for', order.f1);
+							let obj = {
+								longUrl: order.url,
+								phone: order.phone,
+								followUp: 1,
+								id: order.id,
+								price: order.price,
+
+								vendor: order.vendor,
+								name: order.name,
+								shop: store
+							};
+							console.log('objjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj:', obj);
+						} else console.log('time is not in range', order.f1);
+					}
+				});
+			} catch (error) {
+				console.error(error);
+			}
+		});
+	} catch (error) {
+		console.error(error);
 	}
 };
 
 functionn();
+///////////////////////////////////////////////////////////
 
 // app.get('/api/history', function(req, res) {
 // 	shop = 'uadaan.myshopify.com'; //delete this localTesting
