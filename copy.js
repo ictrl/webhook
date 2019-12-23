@@ -20,11 +20,32 @@ app.use(express.json());
 
 const functionn = async (params) => {
 	try {
-		let current = await Store.findOne({
-			name: shop
-		});
-		
-		
+		// 		let beforeUpdate = await Store.findOne({
+		// 			name: shop,
+		// 			'orders.id':
+		// })
+
+		let ourConverted = await Store.updateOne(
+			{
+				name: shop,
+				clicked: {
+					$elemMatch: {
+						checkoutId: 11961402982436
+					}
+				}
+			},
+			{
+				$set: {
+					'clicked.$.converted': true
+				}
+			}
+		);
+		console.log(ourConverted);
+		console.log('ourConverted');
+
+		// let current = await Store.findOne({
+		// 	name: shop
+		// });
 
 		// let updated = await Store.updateOne(
 		// 	{

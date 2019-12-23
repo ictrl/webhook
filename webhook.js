@@ -626,6 +626,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						try {
 							let updated = await Store.updateOne(
 								{
+									name: shop,
 									'orders.id': request.body.checkout_id
 								},
 								{
@@ -636,17 +637,13 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							);
 							if (updated) {
 								console.log(updated, 'updated');
-								if (updated.orders) {
-									console.log(updated.orders, 'updated.orders');
-									if (updated.orders.purchase) {
-										console.log(updated.orders.purchase, 'updated.orders.purchase');
-									}
-								}
+
 								//check if through our abandan message converted these sales
 
 								try {
 									let ourConverted = await Store.updateOne(
 										{
+											name: shop,
 											clicked: {
 												$elemMatch: {
 													checkoutId: request.body.checkout_id
@@ -669,33 +666,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							console.error(error);
 							console.log('unable to mark as purchase true');
 						}
-
-						// async (err, data) => {
-						// 	if (!err) {
-						// 		console.log('625 data -->', data);
-						// 		Store.updateOne(
-						// 			{
-						// 				clicked: {
-						// 					$elemMatch: {
-						// 						checkoutId: request.body.checkout_id
-						// 					}
-						// 				}
-						// 			},
-						// 			{
-						// 				$set:  {
-						// 					'clicked.$.converted': true
-						// 				}
-						// 			},
-						// 			(err, data) => {
-						// 				if (err) {
-						// 					console.log('err 597', err);
-						// 				} else console.log('data 598 -->', data);
-						// 			}
-						// 		);
-						// 	} else {
-						// 		console.log('602 err-->', err);
-						// 	}
-						// }
 
 						if (data.data['orders/create customer'] === true && data.data['orders/create admin'] === true) {
 							console.log('both true at orders/create');
@@ -775,6 +745,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 								console.log("create/order didn't come with phone no");
 							}
 						}
+
 						// if (data.data['orders/create admin'] != undefined) {
 						//  let admin = data.data['admin no'];
 						//  adminNumber = admin;
