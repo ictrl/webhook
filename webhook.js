@@ -21,14 +21,12 @@ const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require('connect-mongo')(session);
 const Url = require('./models/Url');
 const forwardingAddress = 'https://bell.ml'; // Replace this with your HTTPS Forwarding address
-// get the url pathname
-let pathname;
+const connectDB = require('./db/connectMongo');
+connectDB();
 
-mongoose.connect(process.env.MONGODB_URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useCreateIndex: true
-});
+// get the url pathname
+
+let pathname;
 
 app.use(bodyParser.json());
 app.use(
