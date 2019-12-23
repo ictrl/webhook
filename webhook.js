@@ -23,11 +23,13 @@ const Url = require('./models/Url');
 const forwardingAddress = 'https://bell.ml'; // Replace this with your HTTPS Forwarding address
 // get the url pathname
 let pathname;
+
 mongoose.connect(process.env.MONGODB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true
 });
+
 app.use(bodyParser.json());
 app.use(
 	bodyParser.urlencoded({
@@ -602,7 +604,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							'some if result: ',
 							data.data['orders/create customer'],
 							data.data['orders/create admin'],
-							'data.data starts from hrer',
+							'data.data starts from here',
 							data.data
 						);
 
@@ -1203,7 +1205,17 @@ const sndSms = (phone, message, senderID, shop) => {
 	phone = phone.replace(/ /g, '');
 	let fn = phone[0];
 	console.log(fn), 'fn';
-	if (fn === '0') {
+	if (fn === '0' || fn === '1' || fn === '2' || fn === '3' || fn === '4' || fn === '5') {
+		phone = phone.replace('0', '');
+	}
+	fn = phone[0];
+	console.log(fn), 'fn';
+	if (fn === '0' || fn === '1' || fn === '2' || fn === '3' || fn === '4' || fn === '5') {
+		phone = phone.replace('0', '');
+	}
+	fn = phone[0];
+	console.log(fn), 'fn';
+	if (fn === '0' || fn === '1' || fn === '2' || fn === '3' || fn === '4' || fn === '5') {
 		phone = phone.replace('0', '');
 	}
 	console.log(typeof phone, phone, 'after removing');
@@ -1636,13 +1648,13 @@ app.get('/api/dashboard', async (req, res) => {
 			});
 
 			if (data) {
-				let follow = [];
+				// let follow = [];
 				let price = [];
 				let inc = [];
-				let count1 = 0;
-				let count2 = 0;
-				let count3 = 0;
-				let count4 = 0;
+				// let count1 = 0;
+				// let count2 = 0;
+				// let count3 = 0;
+				// let count4 = 0;
 				let price1 = 0;
 				let price2 = 0;
 				let price3 = 0;
@@ -1651,7 +1663,56 @@ app.get('/api/dashboard', async (req, res) => {
 				let inc2 = 0;
 				let inc3 = 0;
 				let inc4 = 0;
-				data.clicked.forEach((e) => {
+				let conv1 = 0;
+				let conv2 = 0;
+				let conv3 = 0;
+				let conv4 = 0;
+				//converted
+				let convertedFollowUp = '';
+				let conv = [];
+
+				data.clicked.forEach(async (e) => {
+					if (e.converted === true) {
+						convertedSales.push(e.checkoutId);
+
+						let lastIndex = e.followUp.length - 1;
+						convertedFollowUp = e.followUp[lastIndex];
+						if (convertedFollowUp === 1) {
+							conv1++;
+						}
+						if (convertedFollowUp === 2) {
+							conv2++;
+						}
+						if (convertedFollowUp === 3) {
+							conv3++;
+						}
+						if (co4vertedFollowUp === 4) {
+							conv4++;
+						}
+
+						if (lastIndex === 1) {
+							count1++;
+							price1 = price1 + e.price;
+						}
+						if (lastIndex === 2) {
+							count2++;
+							price2 = price2 + e.price;
+						}
+						if (lastIndex === 3) {
+							count3++;
+							price3 = price3 + e.price;
+						}
+						if (lastIndex === 4) {
+							count4++;
+							price4 = price4 + e.price;
+						}
+					}
+					conv.push(conv1);
+					conv.push(conv2);
+					conv.push(conv3);
+					conv.push(conv4);
+					//clicked ctr
+
 					let idx = e.followUp.length - 1;
 					let dig = e.followUp[idx];
 					if (e.followUp.includes(1)) {
@@ -1666,42 +1727,30 @@ app.get('/api/dashboard', async (req, res) => {
 					if (e.followUp.includes(4)) {
 						inc4++;
 					}
-					if (dig === 1) {
-						count1++;
-						price1 = price1 + e.price;
-					}
-					if (dig === 2) {
-						count2++;
-						price2 = price2 + e.price;
-					}
-					if (dig === 3) {
-						count3++;
-						price3 = price3 + e.price;
-					}
-					if (dig === 4) {
-						count4++;
-						price4 = price4 + e.price;
-					}
+
+					inc.push(inc1);
+					inc.push(inc2);
+					inc.push(inc3);
+					inc.push(inc4);
+					//converted price
 				});
-				follow.push(count1);
-				follow.push(count2);
-				follow.push(count3);
-				follow.push(count4);
+				// follow.push(count1);
+				// follow.push(count2);
+				// follow.push(count3);
+				// follow.push(count4);
 				price.push(price1);
 				price.push(price2);
 				price.push(price3);
 				price.push(price4);
-				inc.push(inc1);
-				inc.push(inc2);
-				inc.push(inc3);
-				inc.push(inc4);
+
 				let json = {};
-				json.follow = follow;
+				json.follow = conv;
 				json.price = price;
 				json.inc = inc;
+				// json.conv = conv;
 				res.send(json);
 			} else {
-				console.log('else 1579');
+				console.log('else 1779');
 			}
 		} catch (error) {
 			console.error(error);
@@ -2125,7 +2174,7 @@ app.post('/api/recharge', async (req, res) => {
 	}
 });
 
-cron.schedule('*/2 * * * * ', async () => {
+cron.schedule('*/8 * * * * ', async () => {
 	//getting list of all store name
 	console.log('!production cron started');
 	var storeName = [];
@@ -2137,11 +2186,7 @@ cron.schedule('*/2 * * * * ', async () => {
 			}
 		});
 
-		stores.forEach(async (store) => {
-			await storeName.push(store.name);
-		});
-
-		let interval = moment().subtract(2, 'minutes').format();
+		let interval = moment().subtract(8, 'minutes').format();
 		let current = moment().format();
 		console.log('current time-->', current);
 		console.log('interval time-->', interval);

@@ -16,6 +16,75 @@ const Url = require('./models/Url');
 const app = express();
 app.use(express.json());
 
+////////////////////////////////////////////////////
+
+const functionn = async (params) => {
+	try {
+		let current = await Store.findOne({
+			name: shop
+		});
+		
+		
+
+		// let updated = await Store.updateOne(
+		// 	{
+		// 		'orders.id': request.body.checkout_id
+		// 	},
+		// 	{
+		// 		$set: {
+		// 			'orders.$.purchase': true
+		// 		}
+		// 	}
+		// );
+		// if (updated) {
+		// 	console.log(updated, 'updated');
+		// 	if (updated.orders) {
+		// 		console.log(updated.orders, 'updated.orders');
+		// 		if (updated.orders.purchase) {
+		// 			console.log(updated.orders.purchase, 'updated.orders.purchase');
+		// 		}
+		// 	}
+		// 	//check if through our abandan message converted these sales
+
+		// 	try {
+		// 		let ourConverted = await Store.updateOne(
+		// 			{
+		// 				clicked: {
+		// 					$elemMatch: {
+		// 						checkoutId: request.body.checkout_id
+		// 					}
+		// 				}
+		// 			},
+		// 			{
+		// 				$set: {
+		// 					'clicked.$.converted': true
+		// 				}
+		// 			}
+		// 		);
+
+		// 		console.log(ourConverted);
+		// 	} catch (error) {
+		// 		console.error(error);
+		// 	}
+		// }
+	} catch (error) {
+		console.error(error);
+		console.log('unable to mark as purchase true');
+	}
+};
+
+functionn();
+
+////////////////////////////////
+// console.log('!production cron started');
+// var storeName = [];
+// try {
+// 	const stores = await Store.find({
+// 		uninstalled: false,
+// 		smsCount: {
+// 			$gt: 0
+// 		}
+// 	});
 // const functionn = async (params) => {
 // 	const stores = await Store.find({
 // 		uninstalled: false,
@@ -27,65 +96,49 @@ app.use(express.json());
 // 	console.log(typeof stores);
 // 	console.log('stores content: ', stores);
 // };
+// 	console.log(stores);
 
-////////////////////////////////////////////////////
+// 	stores.forEach(async (store) => {
+// 		await storeName.push(store.name);
+// 	});
 
-const functionn = async (params) => {
-	console.log('!production cron started');
-	var storeName = [];
-	try {
-		const stores = await Store.find({
-			uninstalled: false,
-			smsCount: {
-				$gt: 0
-			}
-		});
-		console.log(stores);
+// 	let interval = moment().subtract(5, 'minutes').format();
+// 	let current = moment().format();
+// 	console.log('current time-->', current);
+// 	console.log('interval time-->', interval);
 
-		stores.forEach(async (store) => {
-			await storeName.push(store.name);
-		});
+// 	storeName.forEach(async (store) => {
+// 		console.log('Performing on store-->', store);
 
-		let interval = moment().subtract(5, 'minutes').format();
-		let current = moment().format();
-		console.log('current time-->', current);
-		console.log('interval time-->', interval);
+// 		try {
+// 			const data = await Store.findOne({ name: store });
 
-		storeName.forEach(async (store) => {
-			console.log('Performing on store-->', store);
+// 			data.orders.forEach(async (order) => {
+// 				if (order.f1 && order.purchase === false) {
+// 					if (moment(order.f1).isBetween(interval, current)) {
+// 						console.log('call shortner function for', order.f1);
+// 						let obj = {
+// 							longUrl: order.url,
+// 							phone: order.phone,
+// 							followUp: 1,
+// 							id: order.id,
+// 							price: order.price,
 
-			try {
-				const data = await Store.findOne({ name: store });
-
-				data.orders.forEach(async (order) => {
-					if (order.f1 && order.purchase === false) {
-						if (moment(order.f1).isBetween(interval, current)) {
-							console.log('call shortner function for', order.f1);
-							let obj = {
-								longUrl: order.url,
-								phone: order.phone,
-								followUp: 1,
-								id: order.id,
-								price: order.price,
-
-								vendor: order.vendor,
-								name: order.name,
-								shop: store
-							};
-							console.log('objjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj:', obj);
-						} else console.log('time is not in range', order.f1);
-					}
-				});
-			} catch (error) {
-				console.error(error);
-			}
-		});
-	} catch (error) {
-		console.error(error);
-	}
-};
-
-functionn();
+// 							vendor: order.vendor,
+// 							name: order.name,
+// 							shop: store
+// 						};
+// 						console.log('objjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj:', obj);
+// 					} else console.log('time is not in range', order.f1);
+// 				}
+// 			});
+// 		} catch (error) {
+// 			console.error(error);
+// 		}
+// 	});
+// } catch (error) {
+// 	console.error(error);
+// }
 ///////////////////////////////////////////////////////////
 
 // app.get('/api/history', function(req, res) {
