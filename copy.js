@@ -1,100 +1,73 @@
-require('dotenv').config();
-const moment = require('moment');
-const mongoose = require('mongoose');
-const express = require('express');
+require("dotenv").config();
+const moment = require("moment");
+const mongoose = require("mongoose");
+const express = require("express");
 
 mongoose.connect(process.env.MONGODB_URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useCreateIndex: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true
 });
-let shop = 'hamsterlondon1.myshopify.com';
+let shop = "hamsterlondon1.myshopify.com";
 
-const Store = require('./models/Shop');
-const Url = require('./models/Url');
+const Store = require("./models/Shop");
+const Url = require("./models/Url");
 
 const app = express();
 app.use(express.json());
 
-////////////////////////////////////////////////////
-
-const functionn = async (params) => {
-	try {
-		// 		let beforeUpdate = await Store.findOne({
-		// 			name: shop,
-		// 			'orders.id':
-		// })
-
-		let ourConverted = await Store.updateOne(
-			{
-				name: shop,
-				clicked: {
-					$elemMatch: {
-						checkoutId: 11961402982436
-					}
-				}
-			},
-			{
-				$set: {
-					'clicked.$.converted': true
-				}
-			}
-		);
-		console.log(ourConverted);
-		console.log('ourConverted');
-
-		// let current = await Store.findOne({
-		// 	name: shop
-		// });
-
-		// let updated = await Store.updateOne(
-		// 	{
-		// 		'orders.id': request.body.checkout_id
-		// 	},
-		// 	{
-		// 		$set: {
-		// 			'orders.$.purchase': true
-		// 		}
-		// 	}
-		// );
-		// if (updated) {
-		// 	console.log(updated, 'updated');
-		// 	if (updated.orders) {
-		// 		console.log(updated.orders, 'updated.orders');
-		// 		if (updated.orders.purchase) {
-		// 			console.log(updated.orders.purchase, 'updated.orders.purchase');
-		// 		}
-		// 	}
-		// 	//check if through our abandan message converted these sales
-
-		// 	try {
-		// 		let ourConverted = await Store.updateOne(
-		// 			{
-		// 				clicked: {
-		// 					$elemMatch: {
-		// 						checkoutId: request.body.checkout_id
-		// 					}
-		// 				}
-		// 			},
-		// 			{
-		// 				$set: {
-		// 					'clicked.$.converted': true
-		// 				}
-		// 			}
-		// 		);
-
-		// 		console.log(ourConverted);
-		// 	} catch (error) {
-		// 		console.error(error);
-		// 	}
-		// }
-	} catch (error) {
-		console.error(error);
-		console.log('unable to mark as purchase true');
-	}
+const functionn = async params => {
+  try {
+    let ourConverted = await Store.updateOne(
+      {
+        name: shop,
+        clicked: {
+          $elemMatch: {
+            checkoutId: 1234
+          }
+        }
+      },
+      {
+        $set: {
+          "clicked.$.followUp": [0, 0, 0, 0]
+        }
+      }
+    );
+    console.log(ourConverted.nModified);
+    if (!ourConverted.nModified) {
+      Store.findOneAndUpdate(
+        { name: shop },
+        {
+          $addToSet: {
+            clicked: {
+              checkoutId: 1234,
+              followUp: [1, 1, 1],
+              price: 69
+            }
+          }
+        },
+        { new: true, useFindAndModify: false },
+        (err, data) => {
+          if (!err) {
+            console.log(data);
+          } else {
+            console.log(err);
+          }
+        }
+      );
+    }
+    console.log("ourConverted");
+  } catch (error) {
+    console.error(error);
+    console.log("unable to mark as purchase true");
+  }
 };
 
 functionn();
+
+app.listen(4000, () => {
+  console.log("App listening on port 4000!");
+});
 
 ////////////////////////////////
 // console.log('!production cron started');
@@ -242,9 +215,6 @@ functionn();
 // 		console.log(data);
 // 	}
 // });
-app.listen(4000, () => {
-	console.log('App listening on port 4000!');
-});
 
 // console.log(message);
 //A.findOne({ _id: a._id, items: { $elemMatch: {$in: [1,5,9] }}}).exec(function (err, docs) {
