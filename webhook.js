@@ -2161,6 +2161,10 @@ cron.schedule('*/2 * * * * ', async () => {
 			}
 		});
 
+		stores.forEach(async (store) => {
+			await storeName.push(store.name);
+		});
+
 		let interval = moment().subtract(2, 'minutes').format();
 		let current = moment().format();
 		console.log('current time-->', current);
