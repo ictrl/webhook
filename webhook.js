@@ -1869,7 +1869,6 @@ app.post('/api/template', function(req, res) {
 app.post('/api/abandanTemplate', function(req, res) {
 	console.log(req.body, 'AT body');
 	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
-	res.sendStatus(200);
 	if (req.session.shop) {
 		Store.findOneAndUpdate(
 			{
@@ -1892,6 +1891,7 @@ app.post('/api/abandanTemplate', function(req, res) {
 					console.log(err);
 				} else {
 					if (result === null) {
+						console.log('result ==null')
 						Store.findOneAndUpdate(
 							{
 								name: req.session.shop
@@ -1907,7 +1907,7 @@ app.post('/api/abandanTemplate', function(req, res) {
 							},
 							(err, data) => {
 								if (!err) {
-									console.log('data');
+									console.log('data', data);
 								} else {
 									console.log('err');
 								}
@@ -1920,6 +1920,8 @@ app.post('/api/abandanTemplate', function(req, res) {
 	} else {
 		console.log('session timeout');
 	}
+
+	res.sendStatus(200);
 });
 
 // save template to db
