@@ -1752,6 +1752,7 @@ app.post('/api/template', function(req, res) {
 		if (req.session.shop) {
 			Store.findOneAndUpdate(
 				{
+					name: req.session.shop,
 					'template.topic': topic
 				},
 				{
@@ -1810,6 +1811,7 @@ app.post('/api/template', function(req, res) {
 		if (req.session.shop) {
 			Store.findOneAndUpdate(
 				{
+					name: req.session.shop,
 					'template.topic': topic
 				},
 				{
@@ -1872,6 +1874,7 @@ app.post('/api/abandanTemplate', function(req, res) {
 	if (req.session.shop) {
 		Store.findOneAndUpdate(
 			{
+				name: req.session.shop,
 				'abandanTemplate.topic': req.body.topic
 			},
 			{
