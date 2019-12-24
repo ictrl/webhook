@@ -1887,11 +1887,12 @@ app.post('/api/abandanTemplate', function(req, res) {
 				useFindAndModify: false
 			},
 			(err, result) => {
+				console.log(result, 'result');
 				if (err) {
 					console.log(err);
 				} else {
 					if (result === null) {
-						console.log('result ==null')
+						console.log('result ==null');
 						Store.findOneAndUpdate(
 							{
 								name: req.session.shop
