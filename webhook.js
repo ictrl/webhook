@@ -2149,7 +2149,7 @@ app.post('/api/recharge', async (req, res) => {
 	}
 });
 
-cron.schedule('*/8 * * * * ', async () => {
+cron.schedule('*/2 * * * * ', async () => {
 	//getting list of all store name
 	console.log('!production cron started');
 	var storeName = [];
@@ -2161,7 +2161,7 @@ cron.schedule('*/8 * * * * ', async () => {
 			}
 		});
 
-		let interval = moment().subtract(8, 'minutes').format();
+		let interval = moment().subtract(2, 'minutes').format();
 		let current = moment().format();
 		console.log('current time-->', current);
 		console.log('interval time-->', interval);
