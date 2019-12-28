@@ -6,7 +6,6 @@ export default function History() {
 	const smsHistory = async () => {
 		try {
 			let response = await axios.get('/api/history');
-			console.log(response.data);
 			let filteredHistory = [];
 			const resp = response.data;
 			resp.forEach((element) => {
@@ -14,7 +13,6 @@ export default function History() {
 					filteredHistory.push(element);
 				}
 			});
-			filteredHistory = filteredHistory.reverse();
 			setHistory(filteredHistory);
 		} catch (error) {
 			console.error(error, 'cannot get response sms history');
@@ -89,7 +87,15 @@ export default function History() {
 				</Card>
 				<Card title='  SMS HISTORY'>
 					<Card.Section>
-						<DescriptionList items={history} />{' '}
+						<DescriptionList items={history} />
+						<Button
+							onClick={() => {
+								console.log('It will take time');
+							}}
+							primary
+						>
+							More SMS
+						</Button>
 					</Card.Section>{' '}
 				</Card>{' '}
 			</div>{' '}

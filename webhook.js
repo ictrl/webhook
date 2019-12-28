@@ -1338,6 +1338,8 @@ app.get('/api/history', async (req, res) => {
 		let data = await Store.findOne({ name: req.session.shop });
 		if (data) {
 			var history = data.sms;
+			history = history.reverse();
+			history.length = 50;
 			res.send(history);
 		}
 	} catch (error) {
