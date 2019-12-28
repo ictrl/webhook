@@ -1440,10 +1440,7 @@ app.get('/api/dashboard', async (req, res) => {
 					inc.push(inc4);
 					//converted price
 				});
-				// follow.push(count1);
-				// follow.push(count2);
-				// follow.push(count3);
-				// follow.push(count4);
+
 				price.push(price1);
 				price.push(price2);
 				price.push(price3);
