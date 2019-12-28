@@ -1,20 +1,47 @@
-// require("dotenv").config();
-// const moment = require("moment");
-// const mongoose = require("mongoose");
-// const express = require("express");
+require('dotenv').config();
+const colors = require('colors');
 
-// mongoose.connect(process.env.MONGODB_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   useCreateIndex: true
-// });
-// let shop = "hamsterlondon1.myshopify.com";
+const mongoose = require('mongoose');
+const express = require('express');
+colors.enable();
+mongoose.connect(process.env.MONGODB_URI, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useCreateIndex: true
+});
+let shop = 'hamsterlondon1.myshopify.com';
 
-// const Store = require("./models/Shop");
-// const Url = require("./models/Url");
+const Store = require('./models/Shop');
+const Url = require('./models/Url');
 
-// const app = express();
-// app.use(express.json());
+const app = express();
+app.use(express.json());
+
+console.log('suru'.cyan);
+const checkoutsConverted = async () => {
+	try {
+		let ourConverted = await Store.updateOne(
+			{
+				name: shop,
+				clicked: {
+					$elemMatch: {
+						checkoutId: 11959582228516
+					}
+				}
+			},
+			{
+				$set: {
+					'clicked.$.converted': true
+				}
+			}
+		);
+
+		console.log(ourConverted);
+	} catch (error) {
+		console.error(error);
+	}
+};
+checkoutsConverted();
 
 // const functionn = async params => {
 //   try {

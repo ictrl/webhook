@@ -6,6 +6,7 @@ const session = require('express-session');
 const shortid = require('shortid');
 const validUrl = require('valid-url');
 const mongoose = require('mongoose');
+const colors = require('colors');
 const path = require('path');
 const moment = require('moment');
 const app = express();
@@ -16,6 +17,7 @@ const nonce = require('nonce')();
 const querystring = require('querystring');
 const request = require('request-promise');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require('connect-mongo')(session);
@@ -48,6 +50,11 @@ app.use(function(req, res, next) {
 	res.locals.session = req.session;
 	next();
 });
+
+if (process.env.NODE_ENV === 'development') {
+	app.use(morgan('dev'));
+}
+
 app.use(function(req, res, next) {
 	if (!req.session.views) {
 		req.session.views = {};
@@ -484,7 +491,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 		async (err, data) => {
 			if (!err) {
 				let name;
-				let email;
+
 				let vendor;
 				let title;
 				let orderId;
@@ -492,9 +499,7 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 				let phone;
 				let phone1;
 				let phone2;
-				let address1;
-				let address2;
-				let adminNumber;
+
 				let message;
 				let checkoutName;
 				switch (topic) {
@@ -633,33 +638,33 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 									}
 								}
 							);
-							if (updated) {
-								console.log(updated, 'updated');
+							// if (updated) {
+							console.log(updated, 'updated');
 
-								//check if through our abandan message converted these sales
+							//check if through our abandan message converted these sales
 
-								try {
-									let ourConverted = await Store.updateOne(
-										{
-											name: shop,
-											clicked: {
-												$elemMatch: {
-													checkoutId: request.body.checkout_id
-												}
-											}
-										},
-										{
-											$set: {
-												'clicked.$.converted': true
+							try {
+								let ourConverted = await Store.updateOne(
+									{
+										name: shop,
+										clicked: {
+											$elemMatch: {
+												checkoutId: request.body.checkout_id
 											}
 										}
-									);
+									},
+									{
+										$set: {
+											'clicked.$.converted': true
+										}
+									}
+								);
 
-									console.log(ourConverted);
-								} catch (error) {
-									console.error(error);
-								}
+								console.log(ourConverted);
+							} catch (error) {
+								console.error(error);
 							}
+							// }
 						} catch (error) {
 							console.error(error);
 							console.log('unable to mark as purchase true');
@@ -744,45 +749,6 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 							}
 						}
 
-						// if (data.data['orders/create admin'] != undefined) {
-						//  let admin = data.data['admin no'];
-						//  adminNumber = admin;
-						//  let senderID = data.data['sender id'];
-						//  //check in data base if there is exist any template for  orders/create for admin
-						//  message = `Customer%20name:%20${name},from%20shop:${shop}%20order%20ID:%20${orderId}`;
-						//  if (data.template !== undefined) {
-						//      data.template.forEach((element) => {
-						//          if (element.topic === topic) {
-						//              if (element.admin) {
-						//                  message = element.admin;
-						//                  for (let i = 0; i < message.length; i++) {
-						//                      if (message.includes('${name}')) {
-						//                          message = message.replace('${name}', name);
-						//                      }
-						//                      if (message.includes('${vendor}')) {
-						//                          message = message.replace('${vendor}', vendor);
-						//                      }
-						//                      if (message.includes('${price}')) {
-						//                          message = message.replace('${price}', price);
-						//                      }
-						//                      if (message.includes('${order_id}')) {
-						//                          message = message.replace('${order_id}', orderId);
-						//                      }
-						//                      if (message.includes('${title}')) {
-						//                          message = message.replace('${title}', title);
-						//                      }
-						//                  }
-						//              } else {
-						//                  console.log('orders/create admin message template not found');
-						//              }
-						//          } else {
-						//              console.log('orders/create admin message template not found');
-						//          }
-						//      });
-						//  }
-						//  //end
-						//  sndSms(phone, message, senderID, shop);
-						// }
 						if (data.data['orders/create admin'] === true) {
 							console.log('admin true at orders/create');
 
@@ -1282,54 +1248,6 @@ const sndSms = (phone, message, senderID, shop) => {
 							}
 						}
 					);
-					// notify admin to recharge
-					//send SMS mgs91ed
-					// try {
-					//  phone = adminNumber;
-					// } catch (error) {
-					//  phone = 7821915962
-					// }
-					// message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
-					// var options = {
-					//   method: "GET",
-					//   hostname: "api.msg91.com",
-					//   port: null,
-					//   path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
-					//   headers: {}
-					// };
-					// var req = http.request(options, function(res) {
-					//   var chunks = [];
-					//   res.on("data", function(chunk) {
-					//     chunks.push(chunk);
-					//   });
-					//   res.on("end", function() {
-					//     var body = Buffer.concat(chunks);
-					//     console.log(body.toString());
-					//   });
-					// });
-					//save sms data to DB
-					// var obj = {
-					//   description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
-					//   term: phone
-					// };
-					// Store.findOneAndUpdate(
-					//   { name: shop },
-					//   {
-					//     $push: { sms: obj },
-					//     $set: {
-					//       smsCount: data.smsCount - 1
-					//     }
-					//   },
-					//   { new: true, useFindAndModify: false },
-					//   (err, data) => {
-					//     if (!err) {
-					//       console.log("data");
-					//     } else {
-					//       console.log("err", err);
-					//     }
-					//   }
-					// );
-					// req.end();
 				} else {
 					console.log('admin still not recharge');
 				}
@@ -1337,184 +1255,6 @@ const sndSms = (phone, message, senderID, shop) => {
 		}
 	);
 };
-
-// const sndSms = async (phone, message, senderID, shop) => {
-// 	message = message.replace(/ /g, '%20');
-// 	console.log('type:->> ', typeof phone, phone, 'phone 971 webhook');
-// 	console.log(phone, '<-- phone sndSmS');
-// 	console.log(message, '<-- messge sndSmS');
-// 	console.log(senderID, '<-- senderID sndSmS');
-// 	console.log(shop, '<-- shop sndSmS');
-// 	//to ensure message does not contains backticks
-// 	for (let i = 0; i < message.length; i++) {
-// 		message = message.replace('`', '');
-// 		message = message.replace('$', '');
-// 		// message = message.replace('%', '');
-// 		message = message.replace('@', '');
-// 		message = message.replace('^', '');
-// 		message = message.replace('&', '');
-// 		message = message.replace('*', '');
-// 		message = message.replace('<', '');
-// 		message = message.replace('>', '');
-// 		message = message.replace('#', '');
-// 	}
-// 	// to ensure phone no. is of 10 digits remove first "0" of phone no
-// 	phone = phone.toString();
-// 	if (phone.includes('e') || phone.includes('-')) {
-// 		console.log("phone no. includes '-' or 'e', that's why we can't send message");
-// 	}
-// 	phone = phone.replace(/ /g, '');
-// 	let fn = phone[0];
-// 	console.log(fn), 'fn';
-// 	if (fn === '0') {
-// 		phone = phone.replace('0', '');
-// 	}
-// 	console.log(typeof phone, phone, 'after removing');
-// 	console.log(phone.length);
-// 	if (phone.length >= 10) {
-// 		phone = parseInt(phone);
-// 		console.log(typeof phone, phone, 'after converting');
-// 	} else {
-// 		console.log(" can't send sms because, phone number is < 10 digits i.e : ", phone);
-// 	}
-
-// 	try {
-// 		const data = await Store.findOne({
-// 			name: shop
-// 		});
-// 		let smsapi = process.env.SMS_API;
-// 		if (data.smsCount > 0) {
-// 			//send SMS
-// 			var options = {
-// 				method: 'GET',
-// 				hostname: 'api.msg91.com',
-// 				port: null,
-// 				path: `/api/sendhttp.php?mobiles=${phone}&authkey=${smsapi}&route=4&sender=${senderID}&message=${message}&country=91`,
-// 				headers: {}
-// 			};
-// 			try {
-// 				var req = http.request(options, function(res) {
-// 					var chunks = [];
-// 					res.on('data', function(chunk) {
-// 						chunks.push(chunk);
-// 					});
-// 					res.on('end', function() {
-// 						var body = Buffer.concat(chunks);
-// 						console.log(body.toString());
-// 					});
-// 				});
-// 			} catch (error) {
-// 				console.error("sms couldn't send because of:", error);
-// 			}
-// 			//save sms data to DB
-// 			var obj = {
-// 				description: message.replace(/%20/g, ' ').replace(/%0A/g, ' '),
-// 				term: phone
-// 			};
-
-// 			try {
-// 				const data = Store.findOneAndUpdate(
-// 					{
-// 						name: shop
-// 					},
-// 					{
-// 						$push: {
-// 							sms: obj
-// 						},
-// 						$set: {
-// 							smsCount: data.smsCount - 1
-// 						}
-// 					},
-// 					{
-// 						new: true,
-// 						useFindAndModify: false
-// 					}
-// 				);
-// 				console.log(data);
-// 			} catch (error) {
-// 				console.error(error);
-// 			}
-// 			req.end();
-// 		} else if (data.smsCount < 1) {
-// 			console.log('SMS Quota Exhausted');
-
-// 			try {
-// 				const data = await Store.findOneAndUpdate(
-// 					{
-// 						name: shop
-// 					},
-// 					{
-// 						$push: {
-// 							sms: obj
-// 						},
-// 						$set: {
-// 							smsCount: 0
-// 						}
-// 					},
-// 					{
-// 						new: true,
-// 						useFindAndModify: false
-// 					}
-// 				);
-// 				console.log(data);
-// 			} catch (error) {
-// 				console.error(error);
-// 			}
-// 		} else {
-// 			console.log('admin still not recharge');
-// 		}
-// 	} catch (error) {
-// 		console.error(error);
-// 	}
-
-// notify admin to recharge
-//send SMS mgs91ed
-// try {
-//  phone = adminNumber;
-// } catch (error) {
-//  phone = 7821915962
-// }
-// message = `Your%20SMS_UPDATE%20pack%20is%20exausted,from%20shop:${shop}plesase%20recharge`;
-// var options = {
-//   method: "GET",
-//   hostname: "api.msg91.com",
-//   port: null,
-//   path: `/api/sendhttp.php?mobiles=${phone}&authkey=${process.env.SMS_API}&route=4&sender=MOJITO&message=${message}&country=91`,
-//   headers: {}
-// };
-// var req = http.request(options, function(res) {
-//   var chunks = [];
-//   res.on("data", function(chunk) {
-//     chunks.push(chunk);
-//   });
-//   res.on("end", function() {
-//     var body = Buffer.concat(chunks);
-//     console.log(body.toString());
-//   });
-// });
-//save sms data to DB
-// var obj = {
-//   description: message.replace(/%20/g, " ").replace(/%0A/g, " "),
-//   term: phone
-// };
-// Store.findOneAndUpdate(
-//   { name: shop },
-//   {
-//     $push: { sms: obj },
-//     $set: {
-//       smsCount: data.smsCount - 1
-//     }
-//   },
-//   { new: true, useFindAndModify: false },
-//   (err, data) => {
-//     if (!err) {
-//       console.log("data");
-//     } else {
-//       console.log("err", err);
-//     }
-//   }
-// );
-// req.end();
 
 app.get('/api/option', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com';
@@ -1617,13 +1357,9 @@ app.get('/api/dashboard', async (req, res) => {
 			});
 
 			if (data) {
-				// let follow = [];
 				let price = [];
 				let inc = [];
-				// let count1 = 0;
-				// let count2 = 0;
-				// let count3 = 0;
-				// let count4 = 0;
+
 				let price1 = 0;
 				let price2 = 0;
 				let price3 = 0;
@@ -1639,6 +1375,7 @@ app.get('/api/dashboard', async (req, res) => {
 				//converted
 				let convertedFollowUp = '';
 				let conv = [];
+				convertedSales = [];
 
 				data.clicked.forEach(async (e) => {
 					if (e.converted === true) {
@@ -1927,189 +1664,6 @@ app.post('/api/abandanTemplate', function(req, res) {
 
 	res.sendStatus(200);
 });
-
-// save template to db
-// app.post('/api/template', async (req, res) => {
-// 	// req.session.shop = 'demo-mojito.myshopify.com'; //delete this localTesting
-// 	console.log('template change request-->', req.body);
-// 	console.log('template change request shop-->', req.session.shop);
-// 	res.sendStatus(200);
-// 	let topic = req.body.topic.trim();
-// 	let customer = '';
-// 	let admin = '';
-// 	//check in db if there is any template is present then switch it to value
-// 	if (req.body['customerTemplate'] != null) {
-// 		console.log('customer value 1 ');
-// 		customer = req.body['customerTemplate'];
-// 		console.log(topic);
-// 		console.log(customer);
-// 		if (req.session.shop) {
-// 			try {
-// 				const result = await Store.findOneAndUpdate(
-// 					{
-// 						'template.topic': topic
-// 					},
-// 					{
-// 						$set: {
-// 							'template.$.topic': topic,
-// 							'template.$.customer': customer
-// 						}
-// 					},
-// 					{
-// 						new: true,
-// 						useFindAndModify: false
-// 					}
-// 				);
-
-// 				let obj = {
-// 					topic: topic,
-// 					customer: customer,
-// 					admin: admin
-// 				};
-// 				if (result === null) {
-// 					console.log('result === null');
-
-// 					try {
-// 						const data = await Store.findOneAndUpdate(
-// 							{
-// 								name: req.session.shop
-// 							},
-// 							{
-// 								// $addToSet: { template: req.body }
-// 								$addToSet: {
-// 									template: obj
-// 								}
-// 							},
-// 							{
-// 								new: true,
-// 								useFindAndModify: false
-// 							}
-// 						);
-
-// 						console.log('templete form db');
-// 						console.log('data-template->', data);
-// 					} catch (error) {
-// 						console.error(error);
-// 					}
-// 				}
-// 			} catch (error) {
-// 				console.error(error);
-// 			}
-// 		} else {
-// 			console.log('session timeout');
-// 		}
-// 	} else {
-// 		admin = req.body['adminTemplate'];
-// 		if (req.session.shop) {
-// 			try {
-// 				const result = await Store.findOneAndUpdate(
-// 					{
-// 						'template.topic': topic
-// 					},
-// 					{
-// 						$set: {
-// 							'template.$.topic': topic,
-
-// 							'template.$.admin': admin
-// 						}
-// 					},
-// 					{
-// 						new: true,
-// 						useFindAndModify: false
-// 					}
-// 				);
-// 				let obj = {
-// 					topic: topic,
-// 					customer: customer,
-// 					admin: admin
-// 				};
-
-// 				if (result === null) {
-// 					try {
-// 						const data = await Store.findOneAndUpdate(
-// 							{
-// 								name: req.session.shop
-// 							},
-// 							{
-// 								$addToSet: {
-// 									template: obj
-// 								}
-// 							},
-// 							{
-// 								new: true,
-// 								useFindAndModify: false
-// 							}
-// 						);
-
-// 						console.log('delte form db');
-
-// 						console.log(data, 'data');
-// 					} catch (error) {
-// 						console.error(error);
-// 					}
-// 				}
-// 			} catch (error) {
-// 				console.error(error);
-// 			}
-// 		} else {
-// 			console.log('session timeout');
-// 		}
-// 	}
-// });
-// // save abandan template to db
-// app.post('/api/abandanTemplate', async (req, res) => {
-// 	console.log(req.body, 'AT body');
-// 	// req.session.shop = 'uadaan.myshopify.com'; //delete this localTesting
-// 	res.sendStatus(200);
-// 	if (req.session.shop) {
-// 		try {
-// 			const result = await Store.findOneAndUpdate(
-// 				{
-// 					'abandanTemplate.topic': req.body.topic
-// 				},
-// 				{
-// 					$set: {
-// 						'abandanTemplate.$.topic': req.body.topic,
-// 						'abandanTemplate.$.template': req.body.template,
-// 						'abandanTemplate.$.time': req.body.time,
-// 						'abandanTemplate.$.status': req.body.status
-// 					}
-// 				},
-// 				{
-// 					new: true,
-// 					useFindAndModify: false
-// 				}
-// 			);
-// 			console.log(result);
-
-// 			if (result === null) {
-// 				try {
-// 					const data = await Store.findOneAndUpdate(
-// 						{
-// 							name: req.session.shop
-// 						},
-// 						{
-// 							$addToSet: {
-// 								abandanTemplate: req.body
-// 							}
-// 						},
-// 						{
-// 							new: true,
-// 							useFindAndModify: false
-// 						}
-// 					);
-// 					console.log(data, 'data');
-// 				} catch (error) {
-// 					console.error(error);
-// 				}
-// 			}
-// 		} catch (error) {
-// 			console.error(error);
-// 		}
-// 	} else {
-// 		console.log('session timeout');
-// 	}
-// });
 // send rechage smscount to db
 app.post('/api/recharge', async (req, res) => {
 	let sms = req.body;
@@ -2156,6 +1710,7 @@ cron.schedule('*/2 * * * * ', async () => {
 	try {
 		const stores = await Store.find({
 			uninstalled: false,
+
 			smsCount: {
 				$gt: 0
 			}
