@@ -1352,7 +1352,11 @@ app.get('/api/history', async (req, res) => {
 // dashboard
 app.get('/api/dashboard', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com';
+
 	if (req.session.shop) {
+		let convertedFolowUpCount = [ 0, 0, 0, 0 ];
+		let convertedFolowUpPrice = [ 0, 0, 0, 0 ];
+		let clickThroughCount = [ 0, 0, 0, 0 ];
 		try {
 			const currentStore = await Store.findOne({
 				name: req.session.shop
