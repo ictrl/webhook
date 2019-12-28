@@ -1321,8 +1321,7 @@ app.get('/api/smsCount', async (req, res) => {
 			let our = await Store.findOne({ name: req.session.shop });
 			let leftSMS = our.smsCount - our.sms.length;
 			leftSMS = leftSMS + '';
-			res.sendStatus(200);
-			res.send(leftSMS);
+			res.send(leftSMS).status(200);
 		} catch (error) {
 			res.send('0');
 			console.error(error);
