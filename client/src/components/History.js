@@ -7,7 +7,7 @@ export default function History() {
 		try {
 			let response = await axios.get('/api/history');
 			console.log(response.data);
-			const filteredHistory = [];
+			let filteredHistory = [];
 			const resp = response.data;
 			resp.forEach((element) => {
 				if (element) {
