@@ -16,71 +16,105 @@ const Url = require('./models/Url');
 
 const app = express();
 app.use(express.json());
-
-let convertedFolowUpCount = [ 0, 0, 0, 0 ];
-let convertedFolowUpPrice = [ 0, 0, 0, 0 ];
-let clickThroughCount = [ 0, 0, 0, 0 ];
+//POST recharge
 const foo = async () => {
 	try {
-		const currentStore = await Store.findOne({
-			name: shop
-		});
-
-		currentStore.clicked.forEach(async (element) => {
-			//converted followUp count and price
-			if (element.converted === true) {
-				let last = element.followUp[element.followUp.length - 1];
-				if (last === 1) {
-					convertedFolowUpCount[0]++;
-					console.log(element.price, 1);
-					convertedFolowUpPrice[0] = convertedFolowUpPrice[0] + element.price;
-				}
-				if (last === 2) {
-					console.log(element.price, 2);
-					convertedFolowUpCount[1]++;
-					convertedFolowUpPrice[1] = convertedFolowUpPrice[1] + element.price;
-				}
-				if (last === 3) {
-					console.log(element.price, 3);
-					convertedFolowUpCount[2]++;
-					convertedFolowUpPrice[2] = convertedFolowUpPrice[2] + element.price;
-				}
-				if (last === 4) {
-					console.log(element.price, 4);
-					convertedFolowUpCount[3]++;
-					convertedFolowUpPrice[3] = convertedFolowUpPrice[3] + element.price;
-				}
-			} else {
-				if (element.followUp.includes(1)) {
-					clickThroughCount[0]++;
-				}
-				if (element.followUp.includes(2)) {
-					clickThroughCount[1]++;
-				}
-				if (element.followUp.includes(3)) {
-					clickThroughCount[2]++;
-				}
-				if (element.followUp.includes(4)) {
-					clickThroughCount[3]++;
+		let our = await Store.findOne({ name: shop });
+		let rechargeCount = our.recharge;
+		rechargeCount = rechargeCount + 20;
+		let ourConverted = await Store.updateOne(
+			{
+				name: shop
+			},
+			{
+				$set: {
+					recharge: rechargeCount
 				}
 			}
-		});
-		console.log(convertedFolowUpCount, 'count');
-		console.log(convertedFolowUpPrice, 'price');
-		console.log(clickThroughCount, 'click');
-		res.send({ convertedFolowUpPrice, convertedFolowUpCount, clickThroughCount });
+		);
+		console.log(ourConverted);
 	} catch (error) {
 		console.error(error);
-
-		res.send({
-			convertedFolowUpCount: [ 9, 9, 9, 9 ],
-			clickThroughCount: [ 99, 99, 99, 99 ],
-			convertedFolowUpPrice: [ 999, 999, 999, 9 ]
-		});
-		console.log('cant find session key form get /api/dashboard || your session timeout');
 	}
 };
-foo();
+// foo();
+/////////
+//GET show remining smsCount
+const boo = async () => {
+	try {
+		let our = await Store.findOne({ name: 'uadaan.myshopify.com' });
+		console.log(our);
+		console.log(our.smsCount - our.sms.length);
+	} catch (error) {
+		console.error(error);
+	}
+};
+boo();
+
+///////////
+
+// let convertedFolowUpCount = [ 0, 0, 0, 0 ];
+// let convertedFolowUpPrice = [ 0, 0, 0, 0 ];
+// let clickThroughCount = [ 0, 0, 0, 0 ];
+
+// try {
+// 	const currentStore = await Store.findOne({
+// 		name: shop
+// 	});
+
+// 	currentStore.clicked.forEach(async (element) => {
+// 		//converted followUp count and price
+// 		if (element.converted === true) {
+// 			let last = element.followUp[element.followUp.length - 1];
+// 			if (last === 1) {
+// 				convertedFolowUpCount[0]++;
+// 				console.log(element.price, 1);
+// 				convertedFolowUpPrice[0] = convertedFolowUpPrice[0] + element.price;
+// 			}
+// 			if (last === 2) {
+// 				console.log(element.price, 2);
+// 				convertedFolowUpCount[1]++;
+// 				convertedFolowUpPrice[1] = convertedFolowUpPrice[1] + element.price;
+// 			}
+// 			if (last === 3) {
+// 				console.log(element.price, 3);
+// 				convertedFolowUpCount[2]++;
+// 				convertedFolowUpPrice[2] = convertedFolowUpPrice[2] + element.price;
+// 			}
+// 			if (last === 4) {
+// 				console.log(element.price, 4);
+// 				convertedFolowUpCount[3]++;
+// 				convertedFolowUpPrice[3] = convertedFolowUpPrice[3] + element.price;
+// 			}
+// 		} else {
+// 			if (element.followUp.includes(1)) {
+// 				clickThroughCount[0]++;
+// 			}
+// 			if (element.followUp.includes(2)) {
+// 				clickThroughCount[1]++;
+// 			}
+// 			if (element.followUp.includes(3)) {
+// 				clickThroughCount[2]++;
+// 			}
+// 			if (element.followUp.includes(4)) {
+// 				clickThroughCount[3]++;
+// 			}
+// 		}
+// 	});
+// 	console.log(convertedFolowUpCount, 'count');
+// 	console.log(convertedFolowUpPrice, 'price');
+// 	console.log(clickThroughCount, 'click');
+// 	res.send({ convertedFolowUpPrice, convertedFolowUpCount, clickThroughCount });
+// } catch (error) {
+// 	console.error(error);
+
+// 	res.send({
+// 		convertedFolowUpCount: [ 9, 9, 9, 9 ],
+// 		clickThroughCount: [ 99, 99, 99, 99 ],
+// 		convertedFolowUpPrice: [ 999, 999, 999, 9 ]
+// 	});
+// 	console.log('cant find session key form get /api/dashboard || your session timeout');
+// }
 
 // let arr = [ 1, 2, 3, 4 ];
 // arr.unshift(6);

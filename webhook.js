@@ -369,6 +369,7 @@ app.post('/api/myaction', function(req, res) {
 					const store = new Store({
 						name: shop,
 						uninstalled: false,
+						recharge: 10,
 						data: req.body,
 						smsCount: 10,
 						template: [
@@ -1317,20 +1318,39 @@ app.get('/api/smsCount', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com'; //delete this localTesting
 	if (req.session.shop) {
 		try {
-			const data = await Store.findOne({
-				name: req.session.shop
-			});
+			let our = await Store.findOne({ name: req.session.shop });
 
-			var sms = data.smsCount + '';
-			res.send(sms);
+			res.send(our.smsCount - our.sms.length);
 		} catch (error) {
 			console.error(error);
-			res.send('0');
 		}
 	} else {
 		console.log('cant find session key form get /api/smsCount || your session timeout');
 	}
 });
+///////////////////
+// app.post('/rechargeSMS', async (req, res) => {
+// 	try {
+// 		let our = await Store.findOne({ name: req.body.shop });
+// 		let rechargeCount = our.recharge;
+// 		rechargeCount = rechargeCount + req.body.recharge;
+// 		let ourRecharged = await Store.updateOne(
+// 			{
+// 				name: req.body.shop
+// 			},
+// 			{
+// 				$set: {
+// 					recharge: rechargeCount
+// 				}
+// 			}
+// 		);
+// 		console.log(ourRecharged);
+// 		res.send(ourRecharged);
+// 	} catch (error) {
+// 		console.error(error);
+// 	}
+// });
+//////////////////
 app.get('/api/history', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com';
 	// if (req.session.views[pathname]) {
@@ -1669,8 +1689,6 @@ cron.schedule('*/2 * * * * ', async () => {
 
 		let interval = moment().subtract(2, 'minutes').format();
 		let current = moment().format();
-		console.log('current time-->', current);
-		console.log('interval time-->', interval);
 
 		storeName.forEach(async (store) => {
 			console.log('Performing on store-->', store);
@@ -1698,7 +1716,7 @@ cron.schedule('*/2 * * * * ', async () => {
 								console.log('for followUP 1', res);
 							};
 							short();
-						} else console.log('time is not in range', order.f1);
+						}
 					}
 					if (order.f2 && order.purchase === false) {
 						if (moment(order.f2).isBetween(interval, current)) {
@@ -1717,7 +1735,7 @@ cron.schedule('*/2 * * * * ', async () => {
 								console.log('for followUP 2', res);
 							};
 							short();
-						} else console.log('time is not in range', order.f2);
+						}
 					}
 					if (order.f3 && order.purchase === false) {
 						if (moment(order.f3).isBetween(interval, current)) {
@@ -1736,7 +1754,7 @@ cron.schedule('*/2 * * * * ', async () => {
 								console.log('for followUP 3', res);
 							};
 							short();
-						} else console.log('time is not in range', order.f3);
+						}
 					}
 					if (order.f4 && order.purchase === false) {
 						if (moment(order.f4).isBetween(interval, current)) {
@@ -1755,7 +1773,7 @@ cron.schedule('*/2 * * * * ', async () => {
 								console.log('for followUP 4', res);
 							};
 							short();
-						} else console.log('time is not in range', order.f4);
+						}
 					}
 				});
 			} catch (error) {
