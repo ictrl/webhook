@@ -34,6 +34,7 @@ const shopSchema = new mongoose.Schema({
 
 	sms: Array,
 	smsCount: Number,
+	recharge: { type: Number, default: 10 },
 	template: [
 		{
 			_id: false,

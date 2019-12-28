@@ -1354,117 +1354,60 @@ app.get('/api/dashboard', async (req, res) => {
 	// req.session.shop = 'demo-mojito.myshopify.com';
 	if (req.session.shop) {
 		try {
-			const data = await Store.findOne({
+			const currentStore = await Store.findOne({
 				name: req.session.shop
 			});
 
-			if (data) {
-				let price = [];
-				let inc = [];
-
-				let price1 = 0;
-				let price2 = 0;
-				let price3 = 0;
-				let price4 = 0;
-				let inc1 = 0;
-				let inc2 = 0;
-				let inc3 = 0;
-				let inc4 = 0;
-
-				let conv1 = 0;
-				let conv2 = 0;
-				let conv3 = 0;
-				let conv4 = 0;
-				//converted
-				let convertedFollowUp = '';
-				let conv = [];
-				convertedSales = [];
-
-				data.clicked.forEach(async (e) => {
-					if (e.converted === true) {
-						convertedSales.push(e.checkoutId);
-
-						let lastIndex = e.followUp.length - 1;
-						convertedFollowUp = e.followUp[lastIndex];
-						if (convertedFollowUp === 1) {
-							conv1++;
-						}
-						if (convertedFollowUp === 2) {
-							conv2++;
-						}
-						if (convertedFollowUp === 3) {
-							conv3++;
-						}
-						if (co4vertedFollowUp === 4) {
-							conv4++;
-						}
-
-						if (lastIndex === 1) {
-							count1++;
-							price1 = price1 + e.price;
-						}
-						if (lastIndex === 2) {
-							count2++;
-							price2 = price2 + e.price;
-						}
-						if (lastIndex === 3) {
-							count3++;
-							price3 = price3 + e.price;
-						}
-						if (lastIndex === 4) {
-							count4++;
-							price4 = price4 + e.price;
-						}
+			currentStore.clicked.forEach(async (element) => {
+				//converted followUp count and price
+				if (element.converted === true) {
+					let last = element.followUp[element.followUp.length - 1];
+					if (last === 1) {
+						convertedFolowUpCount[0]++;
+						console.log(element.price, 1);
+						convertedFolowUpPrice[0] = convertedFolowUpPrice[0] + element.price;
 					}
-					conv.push(conv1);
-					conv.push(conv2);
-					conv.push(conv3);
-					conv.push(conv4);
-					//clicked ctr
-
-					let idx = e.followUp.length - 1;
-					let dig = e.followUp[idx];
-					if (e.followUp.includes(1)) {
-						inc1++;
+					if (last === 2) {
+						console.log(element.price, 2);
+						convertedFolowUpCount[1]++;
+						convertedFolowUpPrice[1] = convertedFolowUpPrice[1] + element.price;
 					}
-					if (e.followUp.includes(2)) {
-						inc2++;
+					if (last === 3) {
+						console.log(element.price, 3);
+						convertedFolowUpCount[2]++;
+						convertedFolowUpPrice[2] = convertedFolowUpPrice[2] + element.price;
 					}
-					if (e.followUp.includes(3)) {
-						inc3++;
+					if (last === 4) {
+						console.log(element.price, 4);
+						convertedFolowUpCount[3]++;
+						convertedFolowUpPrice[3] = convertedFolowUpPrice[3] + element.price;
 					}
-					if (e.followUp.includes(4)) {
-						inc4++;
+				} else {
+					if (element.followUp.includes(1)) {
+						clickThroughCount[0]++;
 					}
-
-					inc.push(inc1);
-					inc.push(inc2);
-					inc.push(inc3);
-					inc.push(inc4);
-					//converted price
-				});
-
-				price.push(price1);
-				price.push(price2);
-				price.push(price3);
-				price.push(price4);
-
-				let json = {};
-				json.follow = conv;
-				json.price = price;
-				json.inc = inc;
-				// json.conv = conv;
-				res.send(json);
-			} else {
-				console.log('else 1779');
-			}
+					if (element.followUp.includes(2)) {
+						clickThroughCount[1]++;
+					}
+					if (element.followUp.includes(3)) {
+						clickThroughCount[2]++;
+					}
+					if (element.followUp.includes(4)) {
+						clickThroughCount[3]++;
+					}
+				}
+			});
+			console.log(convertedFolowUpCount, 'count');
+			console.log(convertedFolowUpPrice, 'price');
+			console.log(clickThroughCount, 'click');
+			res.send({ convertedFolowUpPrice, convertedFolowUpCount, clickThroughCount });
 		} catch (error) {
 			console.error(error);
 
 			res.send({
-				follow: [ 1, 2, 3, 4 ],
-				inc: [ 4, 5, 0, 9 ],
-				price: [ 501, 202, 133, 432 ]
+				convertedFolowUpCount: [ 9, 9, 9, 9 ],
+				clickThroughCount: [ 99, 99, 99, 99 ],
+				convertedFolowUpPrice: [ 999, 999, 999, 9 ]
 			});
 			console.log('cant find session key form get /api/dashboard || your session timeout');
 		}

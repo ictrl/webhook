@@ -12,10 +12,10 @@ function Dashboard() {
 		try {
 			let res = await axios.get('/api/dashboard/');
 			console.log(res);
-			let { follow, inc, price } = res.data;
-			setBar(follow);
-			setLine(inc);
-			setPie(price);
+			let { convertedFolowUpPrice, convertedFolowUpCount, clickThroughCount } = res.data;
+			setBar(convertedFolowUpCount);
+			setLine(clickThroughCount);
+			setPie(convertedFolowUpPrice);
 		} catch (err) {
 			console.error(err);
 		}
@@ -26,6 +26,14 @@ function Dashboard() {
 	return (
 		<Layout>
 			<Layout.AnnotatedSection
+				title='Click Through Rate'
+				description='Number of clicked abandan links from followUp message will appear here, according to their order.'
+			>
+				<Card sectioned>
+					<Linee ldata={line} />
+				</Card>
+			</Layout.AnnotatedSection>
+			<Layout.AnnotatedSection
 				title='Converted FollowUp'
 				description='All the converted sales from followUp message will appear here, according to their order.'
 			>
@@ -34,19 +42,11 @@ function Dashboard() {
 				</Card>
 			</Layout.AnnotatedSection>
 			<Layout.AnnotatedSection
-				title='Click Through Rate'
-				description='Number of clicked abandan links from followUp message will appear here, according to their order.'
-			>
-				<Card sectioned>
-					<Piee pdata={pie} />
-				</Card>
-			</Layout.AnnotatedSection>
-			<Layout.AnnotatedSection
 				title='Converted Sales'
 				description='Total amount of converted sales from followUp message will appear here, according to their order. Price in Rupees.'
 			>
 				<Card sectioned>
-					<Linee ldata={line} />
+					<Piee pdata={pie} />
 				</Card>
 			</Layout.AnnotatedSection>
 		</Layout>

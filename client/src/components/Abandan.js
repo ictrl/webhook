@@ -119,9 +119,9 @@ export default function Abandan() {
 
 	const option2 = [
 		{ label: '60 minutes later', value: '60' },
+		{ label: '3 hours later', value: '180' },
 		{ label: '6 hours later', value: '360' },
-		{ label: '10 hours later', value: '600' },
-		{ label: '12 hours later', value: '720' }
+		{ label: '10 hours later', value: '600' }
 	];
 	const statusOption2 = [ { label: 'Enabled', value: '1' }, { label: 'Disabled', value: '0' } ];
 	////////////////////////////////33333333333333333333
