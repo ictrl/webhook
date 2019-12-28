@@ -674,27 +674,27 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						if (data.data['orders/create customer'] === true && data.data['orders/create admin'] === true) {
 							console.log('both true at orders/create');
 							// data.smsCount + 2
-							Store.findOneAndUpdate(
-								{
-									name: shop
-								},
-								{
-									$set: {
-										smsCount: data.smsCount - 1
-									}
-								},
-								{
-									new: true,
-									useFindAndModify: false
-								},
-								(err, data) => {
-									if (!err) {
-										console.log('data remove', topic, data);
-									} else {
-										console.log('err 620', err);
-									}
-								}
-							);
+							// Store.findOneAndUpdate(
+							// 	{
+							// 		name: shop
+							// 	},
+							// 	{
+							// 		$set: {
+							// 			smsCount: data.smsCount - 1
+							// 		}
+							// 	},
+							// 	{
+							// 		new: true,
+							// 		useFindAndModify: false
+							// 	},
+							// 	(err, data) => {
+							// 		if (!err) {
+							// 			console.log('data remove', topic, data);
+							// 		} else {
+							// 			console.log('err 620', err);
+							// 		}
+							// 	}
+							// );
 						}
 						if (data.data['orders/create customer'] === true) {
 							console.log('customer true at orders/create');
@@ -826,27 +826,27 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						order_status_url = request.body.order_status_url;
 						if (data.data['orders/fulfilled customer'] === true && data.data['orders/fulfilled admin'] === true) {
 							// data.smsCount + 2
-							Store.findOneAndUpdate(
-								{
-									name: shop
-								},
-								{
-									$set: {
-										smsCount: data.smsCount - 1
-									}
-								},
-								{
-									new: true,
-									useFindAndModify: false
-								},
-								(err, data) => {
-									if (!err) {
-										console.log('datacount + 1');
-									} else {
-										console.log('err', err);
-									}
-								}
-							);
+							// Store.findOneAndUpdate(
+							// 	{
+							// 		name: shop
+							// 	},
+							// 	{
+							// 		$set: {
+							// 			smsCount: data.smsCount - 1
+							// 		}
+							// 	},
+							// 	{
+							// 		new: true,
+							// 		useFindAndModify: false
+							// 	},
+							// 	(err, data) => {
+							// 		if (!err) {
+							// 			console.log('datacount + 1');
+							// 		} else {
+							// 			console.log('err', err);
+							// 		}
+							// 	}
+							// );
 						}
 						if (data.data['orders/fulfilled customer'] === true) {
 							message = `Hi%20${name},%20Thanks%20for%20shopping%20with%20us!%20Your%20order%20is%20confirmed,%20and%20fulfillment%20status%20is%20${fulfillment_status}%20updated%20at%20${updated_at}.Your%order%status%20${order_status_url}.%20Your%20order%20ID:%20${orderId}`;
@@ -967,27 +967,27 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 						cancelled_at = request.body.cancelled_at;
 						cancel_reason = request.body.cancel_reason;
 						if (data.data['orders/cancelled customer'] === true && data.data['orders/cancelled admin'] === true) {
-							Store.findOneAndUpdate(
-								{
-									name: shop
-								},
-								{
-									$set: {
-										smsCount: data.smsCount - 1
-									}
-								},
-								{
-									new: true,
-									useFindAndModify: false
-								},
-								(err, data) => {
-									if (!err) {
-										console.log('datacount + 1');
-									} else {
-										console.log('err', err);
-									}
-								}
-							);
+							// Store.findOneAndUpdate(
+							// 	{
+							// 		name: shop
+							// 	},
+							// 	{
+							// 		$set: {
+							// 			smsCount: data.smsCount - 1
+							// 		}
+							// 	},
+							// 	{
+							// 		new: true,
+							// 		useFindAndModify: false
+							// 	},
+							// 	(err, data) => {
+							// 		if (!err) {
+							// 			console.log('datacount + 1');
+							// 		} else {
+							// 			console.log('err', err);
+							// 		}
+							// 	}
+							// );
 						}
 						if (data.data['orders/cancelled customer'] === true) {
 							message = `Hi%20${name}%20your%20order%20ID:%20${orderId}%20is%20cancelled.%20We%20will%20process%20refund%20soon.`;
@@ -1169,7 +1169,8 @@ const sndSms = (phone, message, senderID, shop) => {
 		function(err, data) {
 			if (!err) {
 				let smsapi = process.env.SMS_API;
-				if (data.smsCount > 0) {
+				let LeftSMS = data.smsCount - data.sms.length;
+				if (LeftSMS > 0) {
 					//send SMS
 					var options = {
 						method: 'GET',
@@ -1205,9 +1206,6 @@ const sndSms = (phone, message, senderID, shop) => {
 						{
 							$push: {
 								sms: obj
-							},
-							$set: {
-								smsCount: data.smsCount - 1
 							}
 						},
 						{
@@ -1223,32 +1221,32 @@ const sndSms = (phone, message, senderID, shop) => {
 						}
 					);
 					req.end();
-				} else if (data.smsCount < 1) {
+				} else if (LeftSMS < 1) {
 					console.log('SMS Quota Exhausted');
-					Store.findOneAndUpdate(
-						{
-							name: shop
-						},
-						{
-							$push: {
-								sms: obj
-							},
-							$set: {
-								smsCount: 0
-							}
-						},
-						{
-							new: true,
-							useFindAndModify: false
-						},
-						(err, data) => {
-							if (!err) {
-								console.log('data');
-							} else {
-								console.log('err', err);
-							}
-						}
-					);
+					// Store.findOneAndUpdate(
+					// 	{
+					// 		name: shop
+					// 	},
+					// 	{
+					// 		$push: {
+					// 			sms: obj
+					// 		},
+					// 		$set: {
+					// 			smsCount: 0
+					// 		}
+					// 	},
+					// 	{
+					// 		new: true,
+					// 		useFindAndModify: false
+					// 	},
+					// 	(err, data) => {
+					// 		if (!err) {
+					// 			console.log('data');
+					// 		} else {
+					// 			console.log('err', err);
+					// 		}
+					// 	}
+					// );
 				} else {
 					console.log('admin still not recharge');
 				}
@@ -1634,43 +1632,43 @@ app.post('/api/abandanTemplate', function(req, res) {
 	res.sendStatus(200);
 });
 // send rechage smscount to db
-app.post('/api/recharge', async (req, res) => {
-	let sms = req.body;
-	if (req.session.shop) {
-		try {
-			const result = await Store.findOne({
-				name: req.session.shop
-			});
+// app.post('/api/recharge', async (req, res) => {
+// 	let sms = req.body;
+// 	if (req.session.shop) {
+// 		try {
+// 			const result = await Store.findOne({
+// 				name: req.session.shop
+// 			});
 
-			var smsLeft = result.smsCount;
-			console.log('smsLeft', smsLeft);
+// 			var smsLeft = result.smsCount;
+// 			console.log('smsLeft', smsLeft);
 
-			try {
-				const data = await Store.findOneAndUpdate(
-					{
-						name: req.session.shop
-					},
-					{
-						$set: {
-							smsCount: smsLeft + parseInt(sms.smsCount)
-						}
-					},
-					{
-						new: true,
-						useFindAndModify: false
-					}
-				);
-				console.log(data, 'data');
-			} catch (error) {
-				console.error(error);
-			}
-		} catch (error) {
-			console.error(error);
-		}
-	} else {
-		console.log('sesssion timeout');
-	}
-});
+// 			try {
+// 				const data = await Store.findOneAndUpdate(
+// 					{
+// 						name: req.session.shop
+// 					},
+// 					{
+// 						$set: {
+// 							smsCount: smsLeft + parseInt(sms.smsCount)
+// 						}
+// 					},
+// 					{
+// 						new: true,
+// 						useFindAndModify: false
+// 					}
+// 				);
+// 				console.log(data, 'data');
+// 			} catch (error) {
+// 				console.error(error);
+// 			}
+// 		} catch (error) {
+// 			console.error(error);
+// 		}
+// 	} else {
+// 		console.log('sesssion timeout');
+// 	}
+// });
 
 cron.schedule('*/2 * * * * ', async () => {
 	//getting list of all store name
@@ -1678,16 +1676,21 @@ cron.schedule('*/2 * * * * ', async () => {
 	var storeName = [];
 	try {
 		const stores = await Store.find({
-			uninstalled: false,
+			uninstalled: false
 
-			smsCount: {
-				$gt: 0
+			// smsCount: {
+			// 	$gt: 0
+			// }
+		});
+
+		stores.forEach(async (smsLeftStore) => {
+			if (smsLeftStore.smsCount - smsLeftStore.sms.length > 0) {
+				await storeName.push(smsLeftStore.name);
 			}
 		});
 
-		stores.forEach(async (store) => {
-			await storeName.push(store.name);
-		});
+		// stores.forEach(async (store) => {
+		// });
 
 		let interval = moment().subtract(2, 'minutes').format();
 		let current = moment().format();
@@ -1786,6 +1789,7 @@ cron.schedule('*/2 * * * * ', async () => {
 		console.error(error);
 	}
 });
+
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('client/build'));
 	app.get('*', (req, res) => {
