@@ -1141,17 +1141,17 @@ const sndSms = (phone, message, senderID, shop) => {
 	let fn = phone[0];
 	console.log(fn), 'fn';
 	if (fn === '0' || fn === '1' || fn === '2' || fn === '3' || fn === '4' || fn === '5') {
-		phone = phone.replace('0', '');
+		phone = phone.replace(fn, '');
 	}
 	fn = phone[0];
 	console.log(fn), 'fn';
 	if (fn === '0' || fn === '1' || fn === '2' || fn === '3' || fn === '4' || fn === '5') {
-		phone = phone.replace('0', '');
+		phone = phone.replace(fn, '');
 	}
 	fn = phone[0];
 	console.log(fn), 'fn';
 	if (fn === '0' || fn === '1' || fn === '2' || fn === '3' || fn === '4' || fn === '5') {
-		phone = phone.replace('0', '');
+		phone = phone.replace(fn, '');
 	}
 	console.log(typeof phone, phone, 'after removing');
 	console.log(phone.length);
@@ -1368,6 +1368,7 @@ app.get('/api/dashboard', async (req, res) => {
 				let inc2 = 0;
 				let inc3 = 0;
 				let inc4 = 0;
+
 				let conv1 = 0;
 				let conv2 = 0;
 				let conv3 = 0;

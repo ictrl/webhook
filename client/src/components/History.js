@@ -14,7 +14,7 @@ export default function History() {
 					filteredHistory.push(element);
 				}
 			});
-			console.log(filteredHistory);
+			filteredHistory = filteredHistory.reverse();
 			setHistory(filteredHistory);
 		} catch (error) {
 			console.error(error, 'cannot get response sms history');

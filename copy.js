@@ -9,7 +9,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 	useUnifiedTopology: true,
 	useCreateIndex: true
 });
-let shop = 'hamsterlondon1.myshopify.com';
+let shop = 'demo-mojito.myshopify.com';
 
 const Store = require('./models/Shop');
 const Url = require('./models/Url');
@@ -17,31 +17,52 @@ const Url = require('./models/Url');
 const app = express();
 app.use(express.json());
 
-console.log('suru'.cyan);
-const checkoutsConverted = async () => {
-	try {
-		let ourConverted = await Store.updateOne(
-			{
-				name: shop,
-				clicked: {
-					$elemMatch: {
-						checkoutId: 11959582228516
-					}
-				}
-			},
-			{
-				$set: {
-					'clicked.$.converted': true
-				}
-			}
-		);
+// { array: { $push: { property: {$each: ['value'], $position: 0 } } } },
 
-		console.log(ourConverted);
+var obj = {
+	description:
+		"Hey Jassi Quick! We noticed you left some items in your cart. Get them before they're gone! Visit this link to complete the order: https://bell.ml/s/b5zPRJAv. -hamsterlondon",
+	term: 9092954999
+};
+
+const foo = async () => {
+	try {
+		let updated = await console.log(updated);
 	} catch (error) {
-		console.error(error);
+		console.error(`error : ${error}`.red.bold);
 	}
 };
-checkoutsConverted();
+foo();
+
+// let arr = [ 1, 2, 3, 4 ];
+// arr.unshift(6);
+// console.log(`array is ${arr}`.cyan);
+
+// console.log('suru'.cyan);
+// const checkoutsConverted = async () => {
+// 	try {
+// 		let ourConverted = await Store.updateOne(
+// 			{
+// 				name: shop,
+// 				clicked: {
+// 					$elemMatch: {
+// 						checkoutId: 11959582228516
+// 					}
+// 				}
+// 			},
+// 			{
+// 				$set: {
+// 					'clicked.$.converted': true
+// 				}
+// 			}
+// 		);
+
+// 		console.log(ourConverted);
+// 	} catch (error) {
+// 		console.error(error);
+// 	}
+// };
+// checkoutsConverted();
 
 // const functionn = async params => {
 //   try {
