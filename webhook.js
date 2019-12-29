@@ -68,13 +68,14 @@ app.use('/s', require('./routes/index'));
 const Store = require('./models/Shop');
 //!URL SHORTNER
 const shorten = async (params) => {
+	console.log(params);
 	const { longUrl } = params;
 	const { followUp } = params;
 	const { id } = params;
 	const { price } = params;
 	const { phone } = params;
 	const { shop } = params;
-	//   const { name } = params;
+	const { name } = params;
 	const baseUrl = process.env.BASEURL;
 	// Check base url
 	if (!validUrl.isUri(baseUrl)) {
@@ -220,7 +221,7 @@ const shorten = async (params) => {
 						if (err) {
 							console.log(err);
 						} else {
-							data.abandanTemplate.forEach((e) => {
+							data.abandanTemplate.forEach(async (e) => {
 								if (e.topic === followUp + '') {
 									message = e.template;
 									for (let i = 0; i < message.length; i++) {
@@ -1732,6 +1733,8 @@ cron.schedule('*/2 * * * * ', async () => {
 								id: order.id,
 								price: order.price,
 								phone: order.phone,
+								vendor: order.vendor,
+								name: order.name,
 								shop: store
 							};
 							const short = async () => {
@@ -1751,6 +1754,8 @@ cron.schedule('*/2 * * * * ', async () => {
 								id: order.id,
 								price: order.price,
 								phone: order.phone,
+								vendor: order.vendor,
+								name: order.name,
 								shop: store
 							};
 							const short = async () => {
@@ -1770,6 +1775,8 @@ cron.schedule('*/2 * * * * ', async () => {
 								phone: order.phone,
 								id: order.id,
 								price: order.price,
+								vendor: order.vendor,
+								name: order.name,
 								shop: store
 							};
 							const short = async () => {
