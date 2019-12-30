@@ -69,14 +69,14 @@ const Store = require('./models/Shop');
 //!URL SHORTNER
 const shorten = async (params) => {
 	console.log(params);
-	const { longUrl } = params;
-	const { followUp } = params;
-	const { id } = params;
-	const { price } = params;
-	const { phone } = params;
-	const { shop } = params;
-	const { name } = params;
-	const baseUrl = process.env.BASEURL;
+	let { longUrl } = params;
+	let { followUp } = params;
+	let { id } = params;
+	let { price } = params;
+	let { phone } = params;
+	let { shop } = params;
+	let { name } = params;
+	let baseUrl = process.env.BASEURL;
 	// Check base url
 	if (!validUrl.isUri(baseUrl)) {
 		return 'Invalid base url';
