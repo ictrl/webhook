@@ -22,6 +22,7 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require('connect-mongo')(session);
 const Url = require('./models/Url');
+require('newrelic');
 const forwardingAddress = 'https://bell.ml'; // Replace this with your HTTPS Forwarding address
 const connectDB = require('./db/connectMongo');
 connectDB();
