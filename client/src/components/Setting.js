@@ -78,7 +78,7 @@ export default function Settings() {
 			<Form onSubmit={handleSubmit}>
 				<div style={{ marginBottom: '3rem' }}>
 					<Card sectioned>
-						<h4>Rate :- 43 paisa per sms only</h4>
+						<h4>Rate :- 43 paisa per SMS only</h4>
 					</Card>
 				</div>
 
