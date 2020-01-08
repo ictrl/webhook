@@ -76,6 +76,12 @@ export default function Settings() {
 	return (
 		<Fragment>
 			<Form onSubmit={handleSubmit}>
+				<div style={{ marginBottom: '3rem' }}>
+					<Card sectioned>
+						<h4>Rate :- 43 paisa per sms only</h4>
+					</Card>
+				</div>
+
 				<Layout>
 					<Layout.AnnotatedSection
 						title='Admin Phone No.'
