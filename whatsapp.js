@@ -104,3 +104,5 @@
 // 	return Math.floor((number / Math.pow(10, location - 1)) % 10);
 // }
 // let fn = getDigit(7821915962, 1, 'fromLeft');
+
+//just to build
