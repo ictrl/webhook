@@ -1174,13 +1174,13 @@ const sndSms = (phone, message, senderID, shop) => {
 				let LeftSMS = data.smsCount - data.sms.length;
 				if (LeftSMS > 0) {
 					//send SMS
-					var options = {
-						method: 'GET',
-						hostname: 'api.msg91.com',
-						port: null,
-						path: `/api/sendhttp.php?mobiles=${phone}&authkey=${smsapi}&route=4&sender=${senderID}&message=${message}&country=91`,
-						headers: {}
-					};
+					 var options = {
+            method: "GET",
+            hostname: "api.datagenit.com",
+            port: null,
+            path: `/sms?auth=${smsapi}&msisdn=${phone}&senderid=${senderID}&message=${message}`,
+            headers: {},
+          };
 					try {
 						var req = http.request(options, function(res) {
 							var chunks = [];
