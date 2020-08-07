@@ -1199,17 +1199,22 @@ var options = {
 					try {
 						console.log("options", options);
 
-						var req =  http.request(options, function(res) {
-							console.log(res);
-							var chunks = [];
-							// res.on('data', function(chunk) {
-							// 	chunks.push(chunk);
-							// });
-							// res.on('end', function() {
-							// 	var body = Buffer.concat(chunks);
-							// 	console.log(body.toString());
-							// });
-						});
+								var req = request(options, function (error, response, body) {
+								  if (error) throw new Error("sms error send",error);
+
+								  console.log(body);
+								});
+						// var req =  request(options, function(res) {
+						// 	console.log(res);
+						// 	var chunks = [];
+						// 	// res.on('data', function(chunk) {
+						// 	// 	chunks.push(chunk);
+						// 	// });
+						// 	// res.on('end', function() {
+						// 	// 	var body = Buffer.concat(chunks);
+						// 	// 	console.log(body.toString());
+						// 	// });
+						// });
 					} catch (error) {
 						console.error("sms couldn't send because of:", error);
 					}
