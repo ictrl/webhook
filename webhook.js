@@ -1198,7 +1198,7 @@ var options = {
           // };
 					try {
 						console.log("options", options);
-						var req = await request(options, function(res) {
+						var req = await http.request(options, function(res) {
 							console.log(res);
 							var chunks = [];
 							// res.on('data', function(chunk) {
