@@ -1178,7 +1178,7 @@ const sndSms = (phone, message, senderID, shop) => {
             method: "GET",
             hostname: "api.datagenit.com",
             port: null,
-            path: `/sms?auth=${smsapi}&msisdn=${phone}&senderid=${senderID}&message=${message}`,
+            path: `https://api.datagenit.com/sms?auth=${smsapi}&msisdn=${phone}&senderid=${senderID}&message=${message}`,
             headers: {},
           };
 					try {
