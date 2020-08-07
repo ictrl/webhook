@@ -22,6 +22,7 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require('connect-mongo')(session);
 const axios = require('axios');
+const smsRequest = require('request')
 const Url = require('./models/Url');
 require('newrelic');
 const forwardingAddress = 'https://bell.ml'; // Replace this with your HTTPS Forwarding address
@@ -1199,9 +1200,9 @@ var options = {
 					try {
 						console.log("options", options);
 
-								var req = request(options, function (error, response, body) {
+								var req = smsRequest(options, function (error, response, body) {
 								  if (error) throw new Error("sms error send",error);
-
+									console.log(response);
 								  console.log(body);
 								});
 						// var req =  request(options, function(res) {
