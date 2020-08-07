@@ -21,6 +21,7 @@ const morgan = require('morgan');
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require('connect-mongo')(session);
+const axios = require('axios');
 const Url = require('./models/Url');
 require('newrelic');
 const forwardingAddress = 'https://bell.ml'; // Replace this with your HTTPS Forwarding address
@@ -1181,30 +1182,14 @@ const sndSms = (phone, message, senderID, shop) => {
           //   path: `/sms?auth=${smsapi}&msisdn=${phone}&senderid=${senderID}&message=${message}`,
           //   headers: {},
 					// };
-					var options = {
-						method: 'GET',
-						url: 'https://global.datagenit.com/API/sms-api.php',
-						qs:
-						 { auth: smsapi,
-							 senderid: senderID,
-							 msisdn: phone,
-							 message: message },
-						headers:
-						 {'cache-control': 'no-cache' } };
-					try {
-						var req = http.request(options, function(res) {
-							var chunks = [];
-							res.on('data', function(chunk) {
-								chunks.push(chunk);
-							});
-							res.on('end', function() {
-								var body = Buffer.concat(chunks);
-								console.log(body.toString());
-							});
-						});
-					} catch (error) {
-						console.error("sms couldn't send because of:", error);
-					}
+					axios.get(`https://api.datagenit.com/sms?auth=${smsapi}&msisdn=${phone}&senderid=${senderID}&message${message}`)
+  .then(response => {
+    console.log(response.data)
+  })
+  .catch(error => {
+    console.log(error);
+  });
+				
 					//save sms data to DB
 					var obj = {
 						description: message.replace(/%20/g, ' ').replace(/%0A/g, ' '),
