@@ -1192,7 +1192,8 @@ var options = {
           //   path: `https://api.datagenit.com/sms?auth=${smsapi}&msisdn=${phone}&senderid=${senderID}&message=${message}`,
           //   headers: {},
           // };
-					try {
+					try {\
+						console.log("options", options);
 						var req = http.request(options, function(res) {
 							var chunks = [];
 							res.on('data', function(chunk) {
@@ -1809,12 +1810,14 @@ cron.schedule('*/2 * * * * ', async () => {
 	}
 });
 
-if (process.env.NODE_ENV === 'production') {
+// if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('client/build'));
 	app.get('*', (req, res) => {
 		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 	});
-}
+// }
+
+
 app.post('/whatsapp', function(req, res) {
 	res.sendStatus(200);
 	console.log(req.body, 'whatsapp response');
