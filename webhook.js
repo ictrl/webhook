@@ -1171,6 +1171,7 @@ const sndSms = (phone, message, senderID, shop) => {
 		},
 		function(err, data) {
 			if (!err) {
+				console.log('dddsdsd df dkv dv ckd v d')
 				let smsapi = process.env.SMS_API;
 				let LeftSMS = data.smsCount - data.sms.length;
 				if (LeftSMS > 0) {
@@ -1182,7 +1183,7 @@ const sndSms = (phone, message, senderID, shop) => {
           //   path: `/sms?auth=${smsapi}&msisdn=${phone}&senderid=${senderID}&message=${message}`,
           //   headers: {},
 					// };
-					axios.get(`https://api.datagenit.com/sms?auth=${smsapi}&msisdn=${phone}&senderid=${senderID}&message${message}`)
+					axios.get(`https://api.datagenit.com/sms?auth=D!~42924V0hc35Jaf&msisdn=7988783588&senderid=ALERTS&message=TEST%20ABHI`)
   .then(response => {
     console.log(response.data)
   })
