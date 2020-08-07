@@ -21,6 +21,7 @@ const morgan = require('morgan');
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require('connect-mongo')(session);
+const axios = require('axios');
 const Url = require('./models/Url');
 require('newrelic');
 const forwardingAddress = 'https://bell.ml'; // Replace this with your HTTPS Forwarding address
@@ -1170,6 +1171,7 @@ const sndSms = (phone, message, senderID, shop) => {
 		},
 		function(err, data) {
 			if (!err) {
+				console.log('dddsdsd df dkv dv ckd v d')
 				let smsapi = process.env.SMS_API;
 				let LeftSMS = data.smsCount - data.sms.length;
 				if (LeftSMS > 0) {
@@ -1192,7 +1194,7 @@ var options = {
           //   path: `https://api.datagenit.com/sms?auth=${smsapi}&msisdn=${phone}&senderid=${senderID}&message=${message}`,
           //   headers: {},
           // };
-					try {\
+					try {
 						console.log("options", options);
 						var req = http.request(options, function(res) {
 							var chunks = [];
