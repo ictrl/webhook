@@ -1200,7 +1200,7 @@ var options = {
 					try {
 						console.log("options", options);
 
-								var req = smsRequest(options, function (error, response, body) {
+								var req = await smsRequest(options, function (error, response, body) {
 								  if (error) throw new Error("sms error send",error);
 									console.log(response);
 								  console.log(body);
