@@ -1171,7 +1171,7 @@ const sndSms = async (phone, message, senderID, shop) => {
 		{
 			name: shop
 		},
-		function(err, data) {
+		function (err, data){
 			if (!err) {
 				console.log('dddsdsd df dkv dv ckd v d')
 				let smsapi = process.env.SMS_API;
@@ -1198,8 +1198,8 @@ var options = {
           // };
 					try {
 						console.log("options", options);
-						
-						var req = await http.request(options, function(res) {
+
+						var req =  http.request(options, function(res) {
 							console.log(res);
 							var chunks = [];
 							// res.on('data', function(chunk) {
