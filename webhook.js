@@ -443,6 +443,7 @@ app.post('/api/myaction', function(req, res) {
 					];
 					topics.forEach((topic) => {
 						makeWebook(topic, token, hmac, shop);
+						console.log({topic, token, hmac, shop});
 					});
 					res.sendStatus(200);
 					// .redirect(`https://${shop}/admin/apps/sms_update`);
@@ -1116,7 +1117,8 @@ app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 	response.sendStatus(200);
 });
 
-const sndSms = (phone, message, senderID, shop) => {
+const sndSms = async (phone, message, senderID, shop) => {
+	console.log("sms api hit");
 	message = message.replace(/ /g, '%20');
 	console.log('type:->> ', typeof phone, phone, 'phone 971 webhook');
 	console.log(phone, '<-- phone sndSmS');
@@ -1196,15 +1198,16 @@ var options = {
           // };
 					try {
 						console.log("options", options);
-						var req = http.request(options, function(res) {
+						var req = await request(options, function(res) {
+							console.log(res);
 							var chunks = [];
-							res.on('data', function(chunk) {
-								chunks.push(chunk);
-							});
-							res.on('end', function() {
-								var body = Buffer.concat(chunks);
-								console.log(body.toString());
-							});
+							// res.on('data', function(chunk) {
+							// 	chunks.push(chunk);
+							// });
+							// res.on('end', function() {
+							// 	var body = Buffer.concat(chunks);
+							// 	console.log(body.toString());
+							// });
 						});
 					} catch (error) {
 						console.error("sms couldn't send because of:", error);
