@@ -1185,7 +1185,7 @@ var options = {
   url: 'https://global.datagenit.com/API/sms-api.php',
   qs:
    { auth: 'D!~42924V0hc35Jaf',
-     senderid: "ALERTS",
+     senderid: senderID,
      msisdn: phone,
      message: message },
   headers:
@@ -1203,7 +1203,7 @@ var options = {
 
 								var req =  request(options, function (error, response, body) {
 								  if (error) throw new Error("sms error send",error);
-									
+
 								  console.log(body);
 									return body
 								});

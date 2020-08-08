@@ -13,7 +13,7 @@ export default function Settings() {
 	const [ adminPhone, setAdminPhone ] = useState('');
 	const handleChangePhone = useCallback((newNumber) => setAdminPhone(newNumber), []);
 
-	const [ senderID, setSenderID ] = useState('');
+	const [ senderID, setSenderID ] = useState('ALERTS');
 	const handleChangeSenderID = useCallback((newValue) => setSenderID(newValue), []);
 
 	const [ orderCreateCustomer, setOrderCreateCustomer ] = useState(false);
@@ -113,7 +113,9 @@ export default function Settings() {
 									maxLength='6'
 									value={senderID}
 									showCharacterCount
+									disabled
 								/>
+								<small>If you want to change sender id then email us to <a href="">a.modi.abhishek@gmail.com</a></small>
 							</div>
 						</Card>
 					</Layout.AnnotatedSection>
