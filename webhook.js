@@ -1172,7 +1172,7 @@ const sndSms = async (phone, message, senderID, shop) => {
 		{
 			name: shop
 		},
-		function (err, data){
+		async function (err, data){
 			if (!err) {
 				console.log('dddsdsd df dkv dv ckd v d')
 				let smsapi = process.env.SMS_API;
