@@ -22,7 +22,7 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const mongoConnect = require('connect-mongo')(session);
 const axios = require('axios');
-const smsRequest = require('request')
+
 const Url = require('./models/Url');
 require('newrelic');
 const forwardingAddress = 'https://bell.ml'; // Replace this with your HTTPS Forwarding address
@@ -1184,12 +1184,13 @@ var options = {
 	method: 'GET',
   url: 'https://global.datagenit.com/API/sms-api.php',
   qs:
-   { auth: smsapi,
-     senderid: senderID,
+   { auth: 'D!~42924V0hc35Jaf',
+     senderid: "ALERTS",
      msisdn: phone,
      message: message },
   headers:
-   {'cache-control': 'no-cache' } };
+   {'cache-control': 'no-cache' },
+ rejectUnauthorized: false };
 					//  var options = {
           //   method: "GET",
           //   hostname: "api.datagenit.com",
@@ -1200,10 +1201,11 @@ var options = {
 					try {
 						console.log("options", options);
 
-								var req = await smsRequest(options, function (error, response, body) {
+								var req =  request(options, function (error, response, body) {
 								  if (error) throw new Error("sms error send",error);
-									console.log(response);
+									
 								  console.log(body);
+									return body
 								});
 						// var req =  request(options, function(res) {
 						// 	console.log(res);
